@@ -1,0 +1,64 @@
+<template>
+  <section class="app-main">
+    <subTabs v-if="showSubTabs" />
+    <transition-group tag="div" class="transition-group" name="fade-transform" mode="out-in">
+      <router-view :key="transitionKey" />
+    </transition-group>
+  </section>
+</template>
+
+<script>
+import subTabs from './subTabs'
+export default {
+  name: 'AppMain',
+  components: { subTabs },
+  data () {
+    return {
+      showSubTabs: false,
+      transitionKey: 0
+    }
+  },
+  watch: {
+    $route (val) {
+      this.transitionKey++
+      this.handleIsShowSubTabs(val)
+    }
+  },
+  created () {
+    this.handleIsShowSubTabs(this.$route, true)
+  },
+  methods: {
+    handleIsShowSubTabs (val, isRefresh = false) {
+      let { title, level } = val.meta
+      let index = -1
+      let subTabsArr = JSON.parse(sessionStorage.getItem('subTabs')) || []
+      if (isRefresh && level && Number(level) > 2) {
+        this.showSubTabs = true
+      } else if (level && Number(level) > 2) {
+        this.showSubTabs = false
+        index = subTabsArr.findIndex(item => item.path === val.path)
+        index > -1 ? subTabsArr.pop() : subTabsArr.push({ title, path: val.path })
+        sessionStorage.setItem('subTabs', JSON.stringify(subTabsArr))
+        this.$nextTick(() => {
+          this.showSubTabs = true
+        })
+      } else if (subTabsArr.length > 0) {
+        this.showSubTabs = false
+        sessionStorage.removeItem('subTabs')
+      }
+    }
+  }
+}
+</script>
+
+<style lang="less">
+.app-main {
+  min-height: calc(100vh - 55px);
+  padding: 0 14px 0;
+  position: relative;
+  overflow: hidden;
+  .transition-group{
+    margin-top: 20px;
+  }
+}
+</style>

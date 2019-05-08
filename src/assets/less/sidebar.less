@@ -1,0 +1,67 @@
+.app-wrapper{
+  display: flex;
+  .sidebar-container{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 225px;
+    height: 100vh;
+    background: @themeColor;
+    h1{
+      height: 55px;
+      line-height: 55px;
+      background: rgba(0, 0, 0, .5);
+      text-align: center;
+      color: #fff;
+      font-size: 14px;
+      font-weight: normal;
+    }
+    .el-scrollbar{
+      height: calc(100% - 55px);
+      .el-scrollbar__wrap{
+        overflow: visible;
+        overflow-y: scroll;
+      }
+      .el-scrollbar__view{
+        height: 100%;
+        .el-menu{
+          min-height: 100%;
+          border-right: none;
+          background: rgba(0, 0, 0, .5);
+          .el-submenu__title{
+            height: 40px;
+            line-height: 40px;
+            opacity: .5;
+            i{
+              color: #fff;
+              font-size: 12px;
+            }
+            &:hover{
+              background: #4162DB;
+              opacity: 1;
+            }
+          }
+          .el-submenu{
+            &.is-active.el-submenu__title{
+              opacity: 1;
+            }
+          }
+          .el-menu-item{
+            height: 40px;
+            line-height: 40px;
+            font-size: 12px;
+            opacity: .5;
+            &.is-active{
+              background: #4162DB;
+              opacity: 1;
+            }
+            &:focus, &:hover{
+              background: #4162DB;
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+  }
+}
