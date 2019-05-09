@@ -1,21 +1,59 @@
 <template>
   <div class="bl-login">
-    <el-form ref="login" :model="loginForm" :rules="rules">
+    <el-form
+      ref="login"
+      :model="loginForm"
+      :rules="rules"
+    >
       <h3>百凌管理系统</h3>
       <el-form-item prop="userName">
-        <el-input autofocus v-model="loginForm.userName" placeholder="请输入账号"></el-input>
+        <el-input
+          autofocus
+          v-model="loginForm.userName"
+          placeholder="账号"
+          @blur="handleBlur('userName')"
+        />
       </el-form-item>
+
       <el-form-item prop="password">
-        <el-input type="password" v-model="loginForm.password" placeholder="登录密码"></el-input>
+        <el-input
+          type="password"
+          v-model="loginForm.password"
+          placeholder="密码"
+          @blur="handleBlur('password')"
+        />
       </el-form-item>
-      <el-form-item prop="verificationCode" class="codeWrap" v-if="!ipIsTrue">
-        <el-input v-model="loginForm.verificationCode" placeholder="短信验证码"></el-input>
-        <span class="sendCode cm-color" v-if="!hasSendCode" @click="handleGetCode">获取验证码</span>
-        <span class="sendCode" v-else>重新发送({{time}}S)</span>
+
+      <el-form-item
+        v-if="!ipIsTrue"
+        prop="verificationCode"
+        class="codeWrap"
+      >
+        <el-input
+          v-model="loginForm.verificationCode"
+          placeholder="短信验证码"
+           @blur="handleBlur('verificationCode')"
+        />
+        <span
+          class="sendCode cm-color"
+          v-if="!hasSendCode"
+          @click="handleGetCode"
+        >获取验证码</span>
+        <span
+          class="sendCode"
+          v-else
+        >重新发送({{time}}S)</span>
       </el-form-item>
-      <el-form-item>
-        <el-button class="cm-bg-color" type="primary" @click.native.prevent="submitForm('login')">登 录</el-button>
+
+      <el-form-item class="noMargin">
+        <el-button
+          :loading="isLoading"
+          class="cm-bg-color"
+          type="primary"
+          @click.native.prevent="submitForm('login')"
+        >登 录</el-button>
       </el-form-item>
+      <p class="forgetPwd cm-hover-color">忘记密码？</p>
     </el-form>
   </div>
 </template>
@@ -23,15 +61,17 @@
 <script>
 import { apiUserLogin, apiGetSmsCode, apiGetButtonsByUserId, apiGetIp, apiCheckIp } from '@/api/login'
 import MD5 from 'js-md5'
-import { login } from './mixins'
+import rules from './rules'
 export default {
-  mixins: [login],
+  mixins: [rules],
   data () {
     return {
       hasSendCode: false,
       time: 0,
       loginForm: { userName: '', password: '', verificationCode: '' },
-      ipIsTrue: false
+      ipIsTrue: false,
+      nowErrorCode: '',
+      isLoading: false
     }
   },
   created () {
@@ -39,6 +79,15 @@ export default {
     this.handleCheckIp()
   },
   methods: {
+    // 失焦
+    handleBlur (type) {
+      let code = this.nowErrorCode
+      if (code) {
+        if (this.errorCodeObj[code] && this.errorCodeObj[code].type === type) {
+          this.nowErrorCode = ''
+        }
+      }
+    },
     // 校验IP
     handleCheckIp () {
       apiGetIp().then(res => {
@@ -69,6 +118,10 @@ export default {
               }
               this.time--
             }, 1000)
+          } else {
+            if (!this.handleSpeciaCode(res.code)) {
+              this.$message.error(res.message)
+            }
           }
         })
       }
@@ -77,6 +130,8 @@ export default {
     submitForm (form) {
       this.$refs[form].validate((valid) => {
         if (valid) {
+          this.isLoading = true
+          this.nowErrorCode = ''
           let params = Object.assign({}, this.loginForm)
           params.password = MD5(params.password)
           params.loginIp = this.ip
@@ -84,6 +139,10 @@ export default {
             if (res.code === '208999') {
               sessionStorage.setItem('userInfo', JSON.stringify(res.resultMap))
               this.$router.push('/')
+            } else {
+              if (!this.handleSpeciaCode(res.code)) {
+                this.$message.error(res.message)
+              }
             }
           }).then(res => {
             apiGetButtonsByUserId({}).then(res => {
@@ -94,6 +153,15 @@ export default {
           })
         }
       })
+    },
+    // 特殊code码进行提示
+    handleSpeciaCode (code) {
+      if (Object.keys(this.errorCodeObj).includes(code)) {
+        this.nowErrorCode = code
+        this.$refs['login'].validateField([this.errorCodeObj[code].type])
+        return true
+      }
+      return false
     }
   }
 }
@@ -133,8 +201,8 @@ export default {
       border-radius: 4px;
       background: #fff;
     }
-    .el-form-item:last-child{
-      margin-bottom: 0;
+    .el-form-item.noMargin{
+      margin-bottom: 8px;
     }
     .el-button.cm-bg-color{
       width: 100%;
@@ -153,6 +221,11 @@ export default {
         cursor: pointer;
         color: #ddd;
       }
+    }
+    .forgetPwd{
+      margin: 0;
+      font-size: 13px;
+      text-align: center;
     }
   }
 </style>

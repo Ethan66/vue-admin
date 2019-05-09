@@ -93,7 +93,7 @@ function handleSpecialError (response) {
     })
     return true
   }
-  if (res.code !== '208999') {
+  if (res.code === '-208999') {
     Message.error({
       message: res.message, type: 'error'
     })
