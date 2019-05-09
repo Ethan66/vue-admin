@@ -143,6 +143,7 @@ export default {
               if (!this.handleSpeciaCode(res.code)) {
                 this.$message.error(res.message)
               }
+              throw new Error()
             }
           }).then(res => {
             apiGetButtonsByUserId({}).then(res => {
@@ -150,6 +151,8 @@ export default {
                 sessionStorage.setItem('btnList', JSON.stringify(res.resultMap.buttonList))
               }
             })
+          }).catch (e => {
+            this.isLoading = false
           })
         }
       })

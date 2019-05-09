@@ -22,7 +22,8 @@ export default {
       if (!value.trim()) {
         return callback(new Error('请输入账号'))
       }
-      if (this.nowErrorCode) {
+      let code = this.nowErrorCode
+      if (code && this.errorCodeObj[code].type === 'userName') {
         return callback(new Error(this.errorCodeObj[this.nowErrorCode].msg))
       }
       callback()
@@ -32,7 +33,8 @@ export default {
       if (!value.trim()) {
         return callback(new Error('请输入密码'))
       }
-      if (this.nowErrorCode) {
+      let code = this.nowErrorCode
+      if (code && this.errorCodeObj[code].type === 'password') {
         return callback(new Error(this.errorCodeObj[this.nowErrorCode].msg))
       }
       callback()
@@ -42,7 +44,8 @@ export default {
       if (!value.trim()) {
         return callback(new Error('请输入短信验证码'))
       }
-      if (this.nowErrorCode) {
+      let code = this.nowErrorCode
+      if (code && this.errorCodeObj[code].type === 'verificationCode') {
         return callback(new Error(this.errorCodeObj[this.nowErrorCode].msg))
       }
       callback()
