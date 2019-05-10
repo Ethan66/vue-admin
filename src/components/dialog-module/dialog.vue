@@ -135,7 +135,7 @@ export default {
     }
   },
   created () {
-    this.$setItem(this.dialogItem, 'dialog')
+    // this.$setItem(this.dialogItem, 'dialog')
   },
   methods: {
     handleClass (span = 12) {

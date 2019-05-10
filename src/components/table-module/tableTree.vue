@@ -20,6 +20,7 @@
           :min-width="item.width"
           :prop="item.prop"
           :label="item.label"
+          :fixed="item.fixed"
           header-align="center">
           <template slot-scope="scope">
           <span class="menuNameWrap" @click.prevent="handleToggle(scope.$index, scope.row)" :style="handleStyle(scope.row)">
@@ -29,6 +30,7 @@
         </el-table-column>
         <el-table-column
           v-if="item.type!=='btn' && item.type!=='selection' && item.type!=='tree'"
+          :fixed="item.fixed"
           :key="`content${i}`"
           :min-width="item.width"
           :prop="item.prop"
@@ -94,7 +96,7 @@ export default {
     }
   },
   created () {
-    this.$setItem(this.tableItem, 'table')
+    // this.$setItem(this.tableItem, 'table')
   },
   mounted () {
     this.$nextTick(() => {

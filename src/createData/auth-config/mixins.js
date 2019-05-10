@@ -1,7 +1,10 @@
-import { basicObj, tableObj, dialogObj } from '@/components/basicObj'
+import { basicInitObj } from '@/components/basicObj'
 import { setBtnConfig } from '@/components/methods'
+import { buttonTest } from '@/test/auth-config'
 
-export const menu = {
+const initData = Object.assign({}, basicInitObj)
+
+/* export const menu = {
   data () {
     return setBtnConfig({ ...tableObj, ...dialogObj }, ['edit', 'delete', { setting: { name: '按钮管理', clickFn: 'handleBtnManage' } }])
   },
@@ -19,7 +22,7 @@ export const menu = {
     // 对话框配置
     this.dialogItem = [
       {
-        parentMenuName: '父菜单名称',
+        menuParentId: '父菜单名称',
         placeholder: '父菜单名称',
         type: 'select',
         options: []
@@ -41,34 +44,27 @@ export const menu = {
       ]
     }
   }
-}
+} */
 
 export const button = {
   data () {
-    return setBtnConfig(basicObj)
+    return setBtnConfig(JSON.parse(JSON.stringify(initData)))
   },
   created () {
-    // 搜索配置
-    this.searchItem = [ // type/disabled/placeholder/changeFn可不填
-      { buttonName: '按钮名称', placeholder: '请输入按钮名称' }
-    ]
-    // 表格配置
-    this.tableItem = [ // type: 'selection: 选择框可显示隐藏'，width: 单元格宽度, prop: '数据的key'
-      { id: '按钮id', width: '80' },
-      { buttonName: '按钮名称', width: '200' },
-      { buttonMenuName: '所属菜单名称', width: '100' },
-      { buttonCode: '按钮编码', width: '100' },
-      { gmtCreate: '创建时间', width: '200' },
-      { gmtModified: '修改时间', width: '80' },
-      { isDelete: '状态', width: '80' },
-      { type: 'btn', width: '80' },
-      { type: 'setting', width: '80' }
-    ]
-    // 对话框配置
-    this.dialogItem = [
-      { buttonName: '按钮名称', placeholder: '按钮名称' },
-      { buttonCode: '按钮编码', placeholder: '按钮编码' }
-    ]
+    let configSearchItem = ['buttonName']
+    let configTableItem = {
+      id: 80,
+      buttonName: 200,
+      buttonMenuName: 100,
+      buttonCode: 100,
+      gmtCreate: 200,
+      gmtModified: 80,
+      isDelete: 80
+    }
+    let configDialogItem = ['buttonName', 'buttonCode']
+    this.searchItem = this.$setItem(buttonTest, configSearchItem, 'search')
+    this.tableItem = this.$setItem(buttonTest, configTableItem, 'table')
+    this.dialogItem = this.$setItem(buttonTest, configDialogItem, 'dialog')
     this.rules = {
       buttonName: [
         {required: true, message: '请输入按钮名称', trigger: 'blur'}

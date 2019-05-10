@@ -182,9 +182,6 @@ export default {
       return parent.tableLoading
     }
   },
-  created () {
-    this.$setItem(this.tableItem, 'table')
-  },
   mounted () {
     this.$nextTick(() => {
       this.showTableHeadSetting && setHeadIcon()

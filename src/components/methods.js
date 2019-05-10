@@ -1,4 +1,5 @@
 import { tableBtn, dialogBtn } from './table-module/config/defaultBtnData'
+import { SetItem } from './constructFn'
 
 // 初始化编辑数据
 export const initEditData = (dialogItem) => {
@@ -47,7 +48,7 @@ export const setBtnConfig = (obj, tableBtnKeys = ['edit', 'delete'], dialogBtnKe
   return Object.assign({}, obj)
 }
 
-// 处理searchItem, tableItem, dialogItem 转为label,key格式
+/* // 处理searchItem, tableItem, dialogItem 转为label,key格式
 export const setItem = (arr, type = 'search') => {
   let key = 'key'
   if (type === 'table') {
@@ -66,4 +67,22 @@ export const setItem = (arr, type = 'search') => {
     item.label = item[key0]
     delete item[key0]
   })
+} */
+
+export const setItem = (dataArr, config, type) => {
+  let data = new SetItem(dataArr, type)
+  if (type === 'table') {
+    data.initTableConfig(config, 'hide', 'sort', 'fix')
+    data.deleteKey('canSet')
+  } else {
+    data.filterField(config)
+    data.setPlaceholder()
+    if (type === 'search') {
+      data.deleteKey('canSet', 'sort', 'fix', 'disabled')
+    } else if (type === 'dialog') {
+      data.deleteKey('sort', 'fix', 'disabled')
+    }
+  }
+  data.setKey()
+  return data.dataArrFilter
 }

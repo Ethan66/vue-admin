@@ -86,7 +86,6 @@ export default {
     }
   },
   created () {
-    this.$setItem(this.searchItem)
     this.initSearchValues()
   },
   methods: {
