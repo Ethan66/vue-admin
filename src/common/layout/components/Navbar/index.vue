@@ -17,7 +17,7 @@
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item class="width100">修改密码</el-dropdown-item>
         <el-dropdown-item>
-          <span @click="logout" class="width100">登出</span>
+          <span @click="logout" class="width100">退出</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>

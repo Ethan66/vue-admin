@@ -83,7 +83,8 @@ export default {
     handleBlur (type) {
       let code = this.nowErrorCode
       if (code) {
-        if (this.errorCodeObj[code] && this.errorCodeObj[code].type === type) {
+        let obj = this.errorCodeObj[code]
+        if (obj && (obj.type === type || (obj.connect && obj.connect === type))) {
           this.nowErrorCode = ''
         }
       }
