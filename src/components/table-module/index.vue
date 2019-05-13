@@ -42,6 +42,14 @@
           <span v-else>{{ scope.row[item.prop] }}</span>
         </template>
         </el-table-column>
+        <cell-tree
+          v-if="item.type==='tree'"
+          :key="`tree${i}`"
+          :item="item"
+          :tableData="tableData"
+          @handAddTableData="handAddTableData"
+        >
+        </cell-tree>
         <el-table-column
           v-if="item.type==='btn'"
           :key="`btn${i}`"
@@ -110,10 +118,11 @@
 import userDefineHeadList from './components/userDefineHeadList' // 自定义表头设置模块
 import tableBtn from './components/tableBtn' // 按钮模块
 import inlineEdit from './components/inlineEdit' // 行内编辑
+import cellTree from './components/cellTree'
 import { getTableHeight, getCellClass, setHeadIcon } from './config/method'
 export default {
   name: 'tableModule',
-  components: { userDefineHeadList, tableBtn, inlineEdit },
+  components: { userDefineHeadList, tableBtn, inlineEdit, cellTree },
   props: {
     // 全部的自定义表头
     totalSetHeadList: Array,
@@ -232,6 +241,10 @@ export default {
     // 行内编辑点击编辑按钮时修改tableData
     handleInlineEditTableData (index, row) {
       this.$set(this.tableData, index, row)
+    },
+    // 树表格修改tableData
+    handAddTableData (tableData) {
+      this.$emit('update:tableData', tableData)
     },
     // 事件：选中一条数据后保存选中状态按钮
     handleSelectChange (val) {
