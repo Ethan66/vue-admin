@@ -68,8 +68,10 @@ SetItem.prototype.setKey = function () {
     }
   })
   this.dataArrFilter.forEach(item => {
-    item.prop = item.key
-    delete item.key
+    if (type === 'table') {
+      item.prop = item.key
+      delete item.key
+    }
     !item.type && (item.type = 'input')
   })
 }
