@@ -4,7 +4,7 @@
     :key="`btn${i}`"
     :label="item.label || '操作'"
     :width="item.width"
-    :header-align="item.align || 'center'"
+    :header-align="item.align || 'left'"
     :fixed="item.fixed || 'right'"
   >
   <template slot-scope="scope">

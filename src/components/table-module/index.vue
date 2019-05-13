@@ -31,7 +31,7 @@
           :sortable="item.sortStatus || false"
           :show-overflow-tooltip="item.overflow || true"
           :label="item.label"
-          :align="item.align || 'center'"
+          :align="item.align || 'left'"
         >
         <template slot-scope="scope">
           <inline-edit

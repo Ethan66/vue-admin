@@ -72,6 +72,12 @@ SetItem.prototype.setKey = function () {
       item.prop = item.key
       delete item.key
     }
-    !item.type && (item.type = 'input')
+    if (!item.type) {
+      if (type === 'table') {
+        item.type = 'cell'
+      } else {
+        item.type = 'input'
+      }
+    }
   })
 }

@@ -54,11 +54,11 @@ export default {
 <style lang="less">
 .app-main {
   min-height: calc(100vh - 55px);
-  padding: 0 14px 0;
+  padding: 0 15px 0;
   position: relative;
   overflow: hidden;
   .transition-group{
-    margin-top: 20px;
+    margin-top: 15px;
   }
 }
 </style>

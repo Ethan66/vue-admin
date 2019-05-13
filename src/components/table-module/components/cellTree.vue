@@ -4,7 +4,7 @@
     :prop="item.prop"
     :label="item.label"
     :fixed="item.fixed"
-    header-align="center">
+    header-align="left">
     <template slot-scope="scope">
       <span class="menuNameWrap"
         @click.prevent="handleToggle(scope.$index, scope.row)"
