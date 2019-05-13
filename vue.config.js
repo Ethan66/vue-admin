@@ -1,6 +1,6 @@
 module.exports = {
-  indexPath: 'blfa/index.html',
-  assetsDir: 'blfa/static',
+  indexPath: 'blow/index.html',
+  assetsDir: 'blow/static',
   publicPath: '/',
   devServer: {
     proxy: {
