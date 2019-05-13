@@ -22,14 +22,6 @@
       :dialogBtn="dialogBtn"
       :rules="rules"
     />
-    <!-- <el-dialog title="按钮管理" :visible.sync="showDialogBtnManage">
-      <table-module
-        isInlineEdit
-        :table-data="dialogTableData"
-        :table-item="inlineEditTableItem"
-        :table-btn="inlineEditTableBtn"
-      />
-    </el-dialog> -->
   </div>
 </template>
 
@@ -42,27 +34,7 @@ import { debuglog } from 'util';
 
 export default {
   mixins: [basicMethod, menu],
- /*  data () {
-    return {
-      showDialogBtnManage: false,
-      dialogTableData: [],
-      inlineEditTableItem: [],
-      inlineEditTableBtn: []
-    }
-  }, */
   created () {
-   /*  // 行内可编辑表格配置
-    this.inlineEditTableItem = [
-      { buttonName: '按钮名称', type: 'input', width: '200', isEdit: true },
-      { buttonCode: '按钮编码', type: 'input', width: '80', isEdit: true },
-      { type: 'btn', width: '96' }
-    ]
-    // 行内可编辑表格按钮
-    this.inlineEditTableBtn = [ // status/show可不填
-      { name: '编辑', icon: 'edit', color: 'primary', clickFn: 'handleSaveBtn', status: '', show: true },
-      { name: '取消', icon: 'refresh', color: 'warning', status: false, show: true },
-      { name: '删除', icon: 'delete', clickFn: 'handleDeleteBtn', show: true }
-    ] */
     this.tablePages.pageSize = 10000
     this.handleGetTableData(apiListSysMenu)
   },
@@ -93,39 +65,6 @@ export default {
       this.nowBtnMenuId = row.id
       this.apiGetButtonAuth(row.id)
     },
-    /* // 按钮管理对话框保存按钮
-    handleSaveBtn (row) {
-      let params = { buttonName: row.buttonName, buttonCode: row.buttonCode, buttonMenuId: this.nowBtnMenuId }
-      if (row.isAdd) {
-        apiCreateSysButton(params).then(res => {
-          if (res.code === '208999') {
-            this.$notify({ title: '成功', message: '操作成功', type: 'success' })
-            this.apiGetButtonAuth(this.nowBtnMenuId)
-          }
-        })
-        return true
-      }
-      params.id = row.id
-      apiEditeSysButton(params).then(res => {
-        if (res.code === '208999') {
-          this.$notify({ title: '成功', message: '操作成功', type: 'success' })
-          this.apiGetButtonAuth(this.nowBtnMenuId)
-        }
-      })
-    },
-    // 点击按钮管理中的删除按钮
-    handleDeleteBtn (row) {
-      if (row.isAdd) {
-        this.dialogTableData.pop()
-        return
-      }
-      apiDeleteSysButton({ id: row.id }).then(res => {
-        if (res.code === '208999') {
-          this.$notify({ title: '成功', message: '操作成功', type: 'success' })
-          this.apiGetButtonAuth(this.nowBtnMenuId)
-        }
-      })
-    }, */
     // 点击对话框确认按钮
     handleSubmit () {
       if (this.editData.menuParentId) {

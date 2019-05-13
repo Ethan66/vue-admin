@@ -103,7 +103,7 @@ function handleSpecialError (response) {
 }
 
 let handleGetMenuCode = () => {
-  let pathname = window.location.pathname.replace('/blfa', '')
+  let pathname = window.location.pathname.replace('/blow', '')
   let menuList = JSON.parse(sessionStorage.getItem('menuList'))
   let menuCode = { pmenuCode: '' }
   try {
