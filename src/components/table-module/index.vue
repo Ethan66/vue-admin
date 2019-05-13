@@ -50,31 +50,17 @@
           @handAddTableData="handAddTableData"
         >
         </cell-tree>
-        <el-table-column
+        <table-btn
           v-if="item.type==='btn'"
           :key="`btn${i}`"
-          :label="item.label || '操作'"
-          :width="item.width"
-          :header-align="item.align || 'center'"
-          :fixed="item.fixed || 'right'"
-        >
-          <template slot-scope="scope">
-            <template v-for="(child, index) in tableBtn">
-              <!-- 个性化操作按钮 -->
-              <table-btn
-                v-if="handleShowBtn(child, scope.row)"
-                :key="i+index"
-                :btn="child"
-                :row="scope.row"
-                :index="scope.$index"
-                :isInlineEdit="isInlineEdit"
-                :tableItem="tableItem"
-                @handleInlineEditTableData="handleInlineEditTableData"
-                :rowOrignData="rowOrignData"
-              />
-            </template>
-          </template>
-        </el-table-column>
+          :item="item"
+          :i="i"
+          :tableBtn="tableBtn"
+          :isInlineEdit="isInlineEdit"
+          :tableItem="tableItem"
+          :rowOrignData="rowOrignData"
+          @handleInlineEditTableData="handleInlineEditTableData"
+        />
         <el-table-column
           v-if="item.type==='setting'"
           :key="`selection${i}`"
@@ -202,10 +188,6 @@ export default {
     }
   },
   methods: {
-    // 是否显示按钮
-    handleShowBtn (btn, row) {
-      return btn.show || (row.showBtn && row.showBtn.includes(btn.name))
-    },
     // 发送自定义表头
     handleSendHead (val) {
       this.$emit('handleSendHead', val)
