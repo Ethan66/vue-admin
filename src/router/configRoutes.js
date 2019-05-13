@@ -8,11 +8,11 @@ export default [
     ]
   },
   {
-    path: '/main/auth-config/menu',
+    path: '/main/develop-center/menu-manage',
     component: Layout,
     children: [
-      { path: 'newpage', component: () => import('@/pages/auth-config/menu/newpage'), meta: { title: '新页面', level: 3 } },
-      { path: 'fourpage', component: () => import('@/pages/auth-config/menu/fourpage'), meta: { title: '四级页面', level: 4 } }
+      { path: 'newpage', component: () => import('@/pages/develop-center/menu-manage/newpage'), meta: { title: '新页面', level: 3 } },
+      { path: 'fourpage', component: () => import('@/pages/develop-center/menu-manage/fourpage'), meta: { title: '四级页面', level: 4 } }
     ]
   }
 ]

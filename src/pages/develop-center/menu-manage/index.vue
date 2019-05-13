@@ -11,6 +11,7 @@
       :table-btn="tableBtn">
       <div class="btn-content" slot="btn">
         <el-button @click="handleAdd">新增菜单</el-button>
+        <el-button @click="$router.push({ path: '/main/develop-center/menu-manage/newpage' })">跳转页面</el-button>
       </div>
     </table-module>
     <dialog-module
