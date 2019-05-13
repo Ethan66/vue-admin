@@ -48,7 +48,7 @@ export default {
   },
   data () {
     return {
-      defaultSearchObj: {a: 1}
+      defaultSearchObj: { a: 1 }
     }
   },
   methods: {

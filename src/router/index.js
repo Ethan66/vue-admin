@@ -13,7 +13,7 @@ Vue.use(Router)
 
 NProgress.configure({ showSpinner: false })
 const router = new Router({
-  base: '/blfa/',
+  base: '/blow/',
   mode: 'history',
   scrollBehavior: () => ({ y: 0 }),
   isAddDynamicMenuRoutes: false, // 记录是否已加载动态路由
