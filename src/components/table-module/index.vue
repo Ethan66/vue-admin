@@ -23,6 +23,7 @@
           :selectable="handleSelect"
           align="center"
           type="selection"
+          :fixed="item.fixed"
         />
         <el-table-column
           v-if="item.type === 'cell' || item.type === 'input'"
@@ -32,6 +33,7 @@
           :show-overflow-tooltip="item.overflow || true"
           :label="item.label"
           :align="item.align || 'left'"
+          :fixed="item.fixed"
         >
         <template slot-scope="scope">
           <inline-edit
@@ -105,7 +107,7 @@ import userDefineHeadList from './components/userDefineHeadList' // 自定义表
 import tableBtn from './components/tableBtn' // 按钮模块
 import inlineEdit from './components/inlineEdit' // 行内编辑
 import cellTree from './components/cellTree'
-import { getTableHeight, getCellClass, setHeadIcon } from './config/method'
+import { getTableHeight, getCellClass, setHeadIcon, setInitTableStyle } from './config/method'
 export default {
   name: 'tableModule',
   components: { userDefineHeadList, tableBtn, inlineEdit, cellTree },
@@ -151,7 +153,8 @@ export default {
   data () {
     return {
       tableHeight: 10000,
-      rowOrignData: [] // 行内编辑编辑时保存的原始数据
+      rowOrignData: [], // 行内编辑编辑时保存的原始数据
+      parent: ''
     }
   },
   computed: {
@@ -174,7 +177,15 @@ export default {
         i++
         if (i === 5) break
       }
+      this.parent = parent
       return parent.tableLoading
+    }
+  },
+  watch: {
+    tableLoading (val) {
+      if (!val) {
+        setInitTableStyle()
+      }
     }
   },
   mounted () {
@@ -199,14 +210,7 @@ export default {
     // 监听排序
     handleSort (column, prop, order) {
       if (!this.sortFn) return
-      let i = 0
-      let parent = this.$parent
-      while (!parent[this.sortFn]) {
-        parent = parent.$parent
-        i++
-        if (i === 5) break
-      }
-      parent[this.sortFn](column, prop, order)
+      this.parent[this.sortFn](column, prop, order)
     },
     // 判断此行是否要勾选
     handleSelect (row, index) {

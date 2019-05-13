@@ -11,6 +11,18 @@
   .el-table .cell, .el-table th div, .el-table--border td:first-child .cell, .el-table--border th:first-child .cell{
     padding-left: 15px;
   }
+  .el-table--border td, .el-table--border th, .el-table__body-wrapper .el-table--border.is-scrolling-left~.el-table__fixed{
+    border-right-color: transparent;
+  }
+  .el-table__fixed-body-wrapper{
+    border-right: 1px solid #e8e8e8;
+  }
+  .el-table__row td.headSetting{
+    border-left: 2px solid #e8e8e8;
+  }
+  .el-table__fixed-right td.headSetting{
+    border-left-width: 1px;
+  }
   .el-table{
     .el-table__body-wrapper::-webkit-scrollbar {/*滚动条整体样式*/
           width: 8px;     /*高宽分别对应横竖滚动条的尺寸*/
@@ -58,7 +70,7 @@
     }
   }
   .el-table__fixed-right-patch{
-    background-color: transparent;
+    background-color: #F2F4F5;
   }
   .right{
     height: 50px;

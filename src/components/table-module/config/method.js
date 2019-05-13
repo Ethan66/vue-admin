@@ -20,7 +20,7 @@ export const getTableHeight = (totalClsName, reduceClsNameList = []) => {
 export const getCellClass = (row, newTableItem) => {
   const lastIndex = newTableItem.length - 1
   let clsName = ''
-  if (row.rowIndex === 0 && row.columnIndex === lastIndex) {
+  if (row.columnIndex === lastIndex) {
     clsName = 'headSetting'
   }
   return clsName
@@ -31,4 +31,17 @@ export const setHeadIcon = () => {
   Array.from(document.querySelectorAll('.tableModule .el-table th.headSetting .cell')).forEach(item => {
     item.classList.add('el-icon-setting')
   })
+}
+
+// mounted中设置table样式
+export const setInitTableStyle = () => {
+  setTimeout(() => {
+    Array.from(document.querySelectorAll('.el-table__fixed-right')).forEach(item => {
+      item.style.bottom = '7px'
+      item.style.right = '7px'
+    })
+    Array.from(document.querySelectorAll('.el-table__fixed')).forEach(item => {
+      item.style.bottom = '7px'
+    })
+  }, 1000)
 }
