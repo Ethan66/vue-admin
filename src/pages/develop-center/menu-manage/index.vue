@@ -1,19 +1,18 @@
 <template>
   <div class="catalog">
-   <!--  <search-module
+    <search-module
       :search-item="searchItem"
       :search-values="searchValues"
-      :search-default-obj="defaultSearchObj"
       @handleSearch="handleSearch"
-    ></search-module> -->
-    <table-tree
+    ></search-module>
+    <table-module
       :table-data.sync="tableData"
       :table-item="tableItem"
       :table-btn="tableBtn">
       <div class="btn-content" slot="btn">
         <el-button @click="handleAdd">新增菜单</el-button>
       </div>
-    </table-tree>
+    </table-module>
     <dialog-module
       ref="dialog"
       :dialogTitle="dialogTitle"
