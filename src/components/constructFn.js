@@ -57,11 +57,15 @@ SetItem.prototype.setKey = function () {
   let type = this.type
   Object.keys(configObj).forEach(key => {
     let val = configObj[key]
-    let obj = dataArrFilter.find(item => item.key === key)
+    let obj = dataArrFilter.find(item => item.key === key || item.type === 'btn')
     if (obj) {
       if (type === 'table') {
         if (Object.prototype.toString.call(val) !== '[object Object]') {
           obj.width = Number(val)
+        }
+        if (obj.fix === 1) {
+          obj.fixed = true
+          delete obj.fix
         }
       }
       Object.assign(obj, val)

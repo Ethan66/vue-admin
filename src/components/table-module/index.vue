@@ -194,6 +194,7 @@ export default {
       this.tableHeight = getTableHeight(this.totalHeightClsName, this.reduceHeightClsNameList)
     })
     window.onresize = () => {
+      setInitTableStyle()
       this.showTableHeadSetting && setHeadIcon()
       this.tableHeight = getTableHeight(this.totalHeightClsName, this.reduceHeightClsNameList)
     }

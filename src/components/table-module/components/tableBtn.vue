@@ -12,32 +12,47 @@
         <template
           v-if="handleShowBtn(btn, scope.row)"
         >
-          <template v-if="!isInlineEdit">
-            <el-tooltip
-              v-if="btn.show || (scope.row.showBtn && scope.row.showBtn.includes(btn.name))"
-              :key="i+index"
-              :disabled="btn.disabled || (scope.row.disabledBtn && scope.row.disabledBtn.includes(btn.name))"
-              effect="dark"
-              :content="btn.name"
-              placement="top-start">
-              <i
-                :class="'el-icon el-icon-' + btn.icon"
-                @click="handleBtnClick(btn.clickFn, scope.row, index, btn.name)"></i>
-            </el-tooltip>
-          </template>
+          <template v-if="!btn.list">
+            <template v-if="!isInlineEdit">
+              <p
+                v-if="btn.show || (scope.row.showBtn && scope.row.showBtn.includes(btn.name))"
+                class="btnCls"
+                :key="i+index"
+                :disabled="btn.disabled || (scope.row.disabledBtn && scope.row.disabledBtn.includes(btn.name))"
+                @click="handleBtnClick(btn.clickFn, scope.row, index, btn.name)"
+              >{{ btn.name }}</p>
+            </template>
 
-          <template v-if="isInlineEdit">
-            <el-tooltip
+            <template v-if="isInlineEdit">
+              <p
+                v-if="btn.show || (scope.row.showBtn && scope.row.showBtn.includes(btn.name))"
+                class="btnCls"
+                :key="i+index"
+                :disabled="btn.disabled || (scope.row.disabledBtn && scope.row.disabledBtn.includes(btn.name))"
+                @click="handleBtnClick(btn.clickFn, scope.row, index, btn.name)"
+              >{{ handleSetInlineShowName(btn, scope.row) }}</p>
+            </template>
+          </template>
+          <template v-if="btn.list">
+            <el-dropdown
               v-if="btn.show || (scope.row.showBtn && scope.row.showBtn.includes(btn.name))"
               :key="i+index"
-              :disabled="btn.disabled || (scope.row.disabledBtn && scope.row.disabledBtn.includes(btn.name))"
-              effect="dark"
-              :content="handleSetInlineShowName(btn, scope.row)"
-              placement="top-start">
-              <i
-                :class="'el-icon el-icon-' + btn.icon"
-                @click="handleBtnClick(btn.clickFn, scope.row, index, btn.name)"></i>
-            </el-tooltip>
+              @command="handleChooseBtn"
+            >
+              <p
+                class="btnCls"
+              >{{ btn.name }}<i class="el-icon-arrow-down"></i></p>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item
+                  v-for="(operato, i) in btn.list"
+                  :key="i"
+                  :disabled="operato.disabled"
+                  :command="handleCreateCommand(operato, scope.row, index)"
+                >
+                  {{ operato.name }}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
           </template>
         </template>
       </template>
@@ -53,7 +68,8 @@ export default {
     tableBtn: Array,
     isInlineEdit: Boolean,
     tableItem: Array,
-    rowOrignData: Array
+    rowOrignData: Array,
+    isMore: Boolean
   },
   data () {
     return {
@@ -125,6 +141,16 @@ export default {
           this.parent[fn](row)
         }
       }
+    },
+    // 更多按钮时下拉选择触发
+    handleChooseBtn (command) {
+      console.log(arguments)
+      let { operato, row, index } = command
+      this.handleBtnClick(operato.clickFn, row, index, operato.name)
+    },
+    // 更多按钮下拉选择生成command
+    handleCreateCommand (operato, row, index) {
+      return { operato, row, index }
     }
   }
 }
@@ -136,5 +162,35 @@ export default {
     & + .table-btn{
       margin-left: 12px;
     }
+  }
+  .tableModule{
+    .btnCls{
+      position: relative;
+      display: inline-block;
+      padding: 0 7px;
+      margin: 0;
+      color: #4162DB;
+      .el-icon-arrow-down{
+        margin-left: 2px;
+        font-size: 12px;
+      }
+      &:hover{
+        cursor: pointer;
+      }
+      &:first-child{
+      padding-left: 0;
+    }
+    }
+     .btnCls+.btnCls, .el-dropdown{
+        padding-left: 9px;
+        &::before{
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-57%);
+        display: block;
+        content: '|';
+    }
+     }
   }
 </style>

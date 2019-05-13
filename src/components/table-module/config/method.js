@@ -43,5 +43,5 @@ export const setInitTableStyle = () => {
     Array.from(document.querySelectorAll('.el-table__fixed')).forEach(item => {
       item.style.bottom = '7px'
     })
-  }, 1000)
+  }, 100)
 }
