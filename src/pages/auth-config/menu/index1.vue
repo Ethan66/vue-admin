@@ -198,7 +198,7 @@ export default {
       }).then(res => {
         if (res.code === '208999') {
           let arr = res.resultMap.data.map(item => {
-            return {label: item.menuName, value: item.id}
+            return { label: item.menuName, value: item.id }
           })
           this.dialogItem[0].options = arr
         }

@@ -51,7 +51,7 @@ export default {
     },
     // 接口：删除表格数据
     apiDeleteData (deleteDataApi, id, getTableDataApi) {
-      deleteDataApi({id: id}).then(res => {
+      deleteDataApi({ id: id }).then(res => {
         if (res.code === '208999') {
           this.$getSuccessMsg(this, '删除成功')
           getTableDataApi && this.handleGetTableData(getTableDataApi)

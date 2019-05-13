@@ -79,7 +79,7 @@
 import mySwitch from '@/components/modules/switch'
 export default {
   name: 'dialogModule',
-  components: {mySwitch},
+  components: { mySwitch },
   props: {
     dialogTitle: {
       type: String,

@@ -105,7 +105,7 @@ function handleSpecialError (response) {
 let handleGetMenuCode = () => {
   let pathname = window.location.pathname.replace('/blfa', '')
   let menuList = JSON.parse(sessionStorage.getItem('menuList'))
-  let menuCode = {pmenuCode: ''}
+  let menuCode = { pmenuCode: '' }
   try {
     menuList.forEach(item => {
       item.list.forEach(item => {

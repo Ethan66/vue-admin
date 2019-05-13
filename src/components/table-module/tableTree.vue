@@ -140,7 +140,7 @@ export default {
       return res
     },
     handleStyle (row) {
-      return {'padding-left': row.level * 25 + 'px'}
+      return { 'padding-left': row.level * 25 + 'px' }
     },
     // 打开（关闭）树结构
     handleToggle (index, row) {

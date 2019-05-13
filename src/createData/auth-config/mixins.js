@@ -31,13 +31,13 @@ export const menu = {
     ]
     this.rules = {
       id: [
-        {required: true, message: '请输入菜单id', trigger: 'blur'}
+        { required: true, message: '请输入菜单id', trigger: 'blur' }
       ],
       menuName: [
-        {required: true, message: '请输入菜单名称', trigger: 'blur'}
+        { required: true, message: '请输入菜单名称', trigger: 'blur' }
       ],
       menuLevel: [
-        {required: true, message: '请选择菜单类型', trigger: 'change'}
+        { required: true, message: '请选择菜单类型', trigger: 'change' }
       ]
     }
   }
@@ -71,10 +71,10 @@ export const button = {
     ]
     this.rules = {
       buttonName: [
-        {required: true, message: '请输入按钮名称', trigger: 'blur'}
+        { required: true, message: '请输入按钮名称', trigger: 'blur' }
       ],
       buttonCode: [
-        {required: true, message: '请输入按钮编码', trigger: 'blur'}
+        { required: true, message: '请输入按钮编码', trigger: 'blur' }
       ]
     }
   }
@@ -104,10 +104,10 @@ export const role = {
     ]
     this.rules = {
       roleName: [
-        {required: true, message: '请输入角色名称', trigger: 'blur'}
+        { required: true, message: '请输入角色名称', trigger: 'blur' }
       ],
       roleCode: [
-        {required: true, message: '请输入角色编码', trigger: 'blur'}
+        { required: true, message: '请输入角色编码', trigger: 'blur' }
       ]
     }
   }
