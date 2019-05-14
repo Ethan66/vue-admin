@@ -4,10 +4,10 @@ import { menuTest } from '@/test/develop-center'
 const initData = Object.assign({}, basicInitObj)
 
 const menuMoreList = [
-  { name: '新建平级部门', clickFn: 'handleCreateLevelDepartment' },
-  { name: '新建下级部门', clickFn: 'handleCreateNextLevelDepartment' },
-  { name: '停用', clickFn: 'handleStop' },
-  { name: '删除', clickFn: 'handleDelete' }
+  { name: '新建平级菜单', clickFn: 'handleCreateLevelMenu' },
+  { name: '新建下级菜单', clickFn: 'handleCreateNextLevelMenu' },
+  { name: '删除', clickFn: 'handleDelete' },
+  { name: '详情', clickFn: 'handleGoDetail' }
 ]
 
 export const menu = {
@@ -17,6 +17,7 @@ export const menu = {
   created () {
     let configSearchItem = ['id', 'menuName', 'menuLevel', 'parentMenuName', 'menuUrl']
     let configTableItem = {
+      selection: 50,
       id: 80,
       menuName: { type: 'tree', width: 200 },
       menuLevel: { clsName: 'menuLevel', width: 100 },
