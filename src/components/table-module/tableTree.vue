@@ -212,7 +212,7 @@ export default {
           left: 0; top: 4px;
         }
         &.arrowRight:before{
-          border-left-color: #333;
+          border-left-color: #B2B2B2;
         }
       }
     }

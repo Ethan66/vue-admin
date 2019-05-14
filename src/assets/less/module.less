@@ -24,6 +24,7 @@
     border-left-width: 1px;
   }
   .el-table{
+    color: #666;
     .el-table__body-wrapper::-webkit-scrollbar {/*滚动条整体样式*/
           width: 8px;     /*高宽分别对应横竖滚动条的尺寸*/
           height: 8px;
@@ -43,8 +44,8 @@
       }
     .el-checkbox__input.is-checked .el-checkbox__inner,
     .el-checkbox__input.is-indeterminate .el-checkbox__inner{
-      background: #4162DB;
-      border-color: #4162DB;
+      background: @buttonColor;
+      border-color: @buttonColor;
     }
     th{
       background: #F2F4F5;
@@ -86,7 +87,7 @@
       right: 15px;
       top: 40%;
       &.is-background .el-pager li:not(.disabled).active{
-        background: #4162DB;
+        background: @buttonColor;
       }
       .btn-prev, .btn-next, .el-pager .number{
         border: 1px solid #D9D9D9;
