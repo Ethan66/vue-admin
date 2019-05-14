@@ -1,4 +1,5 @@
 const searchInitObj = {
+  showAll: false, // 是否全部展示
   searchItem: null, // 搜索的配置
   searchValues: {} // 用户搜索的内容
 }
