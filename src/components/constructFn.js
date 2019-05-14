@@ -13,7 +13,6 @@ SetItem.prototype.initTableConfig = function (config, hide, sort, fixed) {
   }).sort((v1, v2) => v1[sort] - v2[sort])
   if (this.configObj.selection) {
     this.dataArrFilter.unshift(Object.assign({}, tableSelection))
-    debugger
   }
   if (this.configObj.btn) {
     this.dataArrFilter.push(Object.assign({}, tableBtnConfig))

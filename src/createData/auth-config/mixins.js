@@ -71,28 +71,30 @@ export const role = {
 // IP控制
 export const ipControl = {
   data () {
-    return setBtnConfig(JSON.parse(JSON.stringify(initData)))
+    return setBtnConfig(JSON.parse(JSON.stringify(initData)), ['edit', { cancel: { name: '启 用', clickFn: 'handleOpen' } }, { cancel: { name: '停 用', clickFn: 'handleStop' } }])
   },
   created () {
     let configSearchItem = [
-      ['id'],
+      ['id', 'buttonMenuName'],
       {
-        gmtModified: { type: 'select',
+        buttonMenuName: { type: 'select',
           options: [
-            { label: '正常', value: '1' },
-            { label: '停用', value: '2' }
-          ]
+            { label: '成功', value: '1' },
+            { label: '失败', value: '2' }
+          ] 
         }
       }
     ]
     let configTableItem = {
+      selection: 50,
       id: 80,
       buttonName: 200,
-      buttonMenuName: 100,
+      buttonMenuName: { clsName: 'buttonMenuName', width: 100 },
       buttonCode: 100,
       gmtCreate: 200,
       gmtModified: 80,
-      isDelete: 80
+      isDelete: 80,
+      btn: 120
     }
     let configDialogItem = ['id', 'buttonCode']
     this.searchItem = this.$setItem(ipTableItem, configSearchItem, 'search')
