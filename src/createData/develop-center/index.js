@@ -19,7 +19,7 @@ export const menu = {
     let configTableItem = {
       id: 80,
       menuName: { type: 'tree', width: 200 },
-      menuLevel: 100,
+      menuLevel: { clsName: 'menuLevel', width: 100 },
       parentMenuName: 100,
       menuUrl: 200,
       btn: 120

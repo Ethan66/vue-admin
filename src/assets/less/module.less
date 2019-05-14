@@ -40,6 +40,17 @@
       .el-table__body-wrapper{
         & > table {
           border-right: 1px solid #e8e8e8;
+          tr td span.status{
+            margin-left: -14px;
+            &>.status-i {
+              display: inline-block;
+              width: 6px;
+              height: 6px;
+              margin-right: 6px;
+              vertical-align: middle;
+              border-radius: 50%;
+            }
+          }
         }
       }
     .el-checkbox__input.is-checked .el-checkbox__inner,
