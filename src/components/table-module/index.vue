@@ -108,6 +108,8 @@ import tableBtn from './components/tableBtn' // 按钮模块
 import inlineEdit from './components/inlineEdit' // 行内编辑
 import cellTree from './components/cellTree'
 import { getTableHeight, getCellClass, setHeadIcon, setInitTableStyle } from './config/method'
+import { setTimeout, clearTimeout } from 'timers';
+import { debuglog } from 'util';
 export default {
   name: 'tableModule',
   components: { userDefineHeadList, tableBtn, inlineEdit, cellTree },
@@ -191,7 +193,10 @@ export default {
   mounted () {
     this.$nextTick(() => {
       this.showTableHeadSetting && setHeadIcon()
-      this.tableHeight = getTableHeight(this.totalHeightClsName, this.reduceHeightClsNameList)
+      let timer = setTimeout(() => {
+        this.tableHeight = getTableHeight(this.totalHeightClsName, this.reduceHeightClsNameList)
+        clearTimeout(timer)
+      }, 100)
     })
     window.onresize = () => {
       setInitTableStyle()

@@ -35,7 +35,7 @@ export const setHeadIcon = () => {
 
 // mounted中设置table样式
 export const setInitTableStyle = () => {
-  setTimeout(() => {
+  let timer = setTimeout(() => {
     Array.from(document.querySelectorAll('.el-table__fixed-right')).forEach(item => {
       item.style.bottom = '7px'
       item.style.right = '7px'
@@ -43,5 +43,8 @@ export const setInitTableStyle = () => {
     Array.from(document.querySelectorAll('.el-table__fixed')).forEach(item => {
       item.style.bottom = '7px'
     })
+    let tableContent = document.querySelector('.el-table__body-wrapper>table')
+    tableContent.style.width = tableContent.style.width.slice(0, 2) + 9 + 'px'
+    clearTimeout(timer)
   }, 100)
 }
