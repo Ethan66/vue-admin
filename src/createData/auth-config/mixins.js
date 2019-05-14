@@ -66,3 +66,33 @@ export const role = {
     }
   }
 }
+
+export const staff = {
+  data () {
+    return setBtnConfig(JSON.parse(JSON.stringify(initData)))
+  },
+  created () {
+    let configSearchItem = ['buttonName']
+    let configTableItem = {
+      id: 80,
+      buttonName: 200,
+      buttonMenuName: 100,
+      buttonCode: 100,
+      gmtCreate: 200,
+      gmtModified: 80,
+      isDelete: 80
+    }
+    let configDialogItem = ['buttonName', 'buttonCode']
+    this.searchItem = this.$setItem(buttonTest, configSearchItem, 'search')
+    this.tableItem = this.$setItem(buttonTest, configTableItem, 'table')
+    this.dialogItem = this.$setItem(buttonTest, configDialogItem, 'dialog')
+    this.rules = {
+      buttonName: [
+        { required: true, message: '请输入按钮名称', trigger: 'blur' }
+      ],
+      buttonCode: [
+        { required: true, message: '请输入按钮编码', trigger: 'blur' }
+      ]
+    }
+  }
+}
