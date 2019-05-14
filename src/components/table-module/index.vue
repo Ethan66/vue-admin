@@ -17,7 +17,7 @@
     >
       <template v-for="(item, i) in tableItem">
         <el-table-column
-          v-if="item.type==='selection' && item.show"
+          v-if="item.type==='selection'"
           :key="`selection${i}`"
           :width="item.width"
           :selectable="handleSelect"
@@ -41,7 +41,13 @@
             :row="scope.row"
             :prop="item.prop"
           />
-          <span v-else>{{ scope.row[item.prop] }}</span>
+          <span
+            v-else
+            :class="handleSetStatusClsName(item.clsName || '', scope.row[item.prop])"
+          >
+            <i :class="handleSetStatusClsName(item.clsName || '', scope.row[item.prop], 'i')"></i>
+            {{ scope.row[item.prop] }}
+          </span>
         </template>
         </el-table-column>
         <cell-tree
@@ -106,9 +112,9 @@
 import userDefineHeadList from './components/userDefineHeadList' // 自定义表头设置模块
 import tableBtn from './components/tableBtn' // 按钮模块
 import inlineEdit from './components/inlineEdit' // 行内编辑
-import cellTree from './components/cellTree'
+import cellTree from './components/cellTree' // 表格树
+import statusClsName from './config/defaultStatusClsName'
 import { getTableHeight, getCellClass, setHeadIcon, setInitTableStyle } from './config/method'
-import { setTimeout, clearTimeout } from 'timers';
 export default {
   name: 'tableModule',
   components: { userDefineHeadList, tableBtn, inlineEdit, cellTree },
@@ -204,6 +210,18 @@ export default {
     }
   },
   methods: {
+    // 设置状态clsName
+    handleSetStatusClsName (type, value, i) {
+      if (type) {
+        if (i && statusClsName[type]) {
+          return ['status-i', type, statusClsName[type][value]]
+        }
+         else if (statusClsName[type]) {
+          return ['status', type, value]
+        }
+        return [type, value]
+      }
+    },
     // 发送自定义表头
     handleSendHead (val) {
       this.$emit('handleSendHead', val)
