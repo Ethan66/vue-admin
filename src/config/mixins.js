@@ -1,4 +1,11 @@
 export default {
+  watch: {
+    showAll () {
+      this.$nextTick(() => {
+        this.$refs.table.handleSetTableHeight()
+      })
+    }
+  },
   methods: {
     // 点击搜索按钮
     handleSearch (val) {

@@ -15,7 +15,7 @@ export const menu = {
     return this.$setBtnConfig(JSON.parse(JSON.stringify(initData)), ['edit', { more: { list: menuMoreList } }])
   },
   created () {
-    let configSearchItem = ['menuName']
+    let configSearchItem = ['id', 'menuName', 'menuLevel', 'parentMenuName', 'menuUrl']
     let configTableItem = {
       id: 80,
       menuName: { type: 'tree', width: 200 },

@@ -1,9 +1,9 @@
 <template>
   <div class="searchContent">
-    <h3>查询条件<span class="cm-btn-color">高级搜索</span></h3>
+    <h3>查询条件<span class="cm-btn-color" @click="handleShowAll">更多搜索</span></h3>
     <el-form :inline="true" :model="searchValues" size="small">
       <div class="searchWrap">
-        <template v-for="(item, i) in searchItem">
+        <template v-for="(item, i) in searchItem1">
           <el-form-item :label="item.label" :key="i" v-if="item.type!=='date'">
             <el-input
               clearable
@@ -71,7 +71,18 @@ export default {
   },
   data () {
     return {
-      dateObj: {} // 存储选择的日期范围
+      dateObj: {}, // 存储选择的日期范围
+      defaultShowNumber: 6, // 默认展示的搜索条数
+      showAll: false
+    }
+  },
+  computed: {
+    searchItem1 () {
+      if (this.showAll) {
+        return this.searchItem
+      } else {
+        return this.searchItem.slice(0, this.defaultShowNumber)
+      }
     }
   },
   watch: {
@@ -89,6 +100,7 @@ export default {
     this.initSearchValues()
   },
   methods: {
+    // 初始化searchValues
     initSearchValues () {
       this.searchItem.forEach(item => {
         if (Array.isArray(item.key)) {
@@ -100,6 +112,7 @@ export default {
         }
       })
     },
+    // 清空搜索数据
     handleClear () {
       this.initSearchValues()
       this.searchItem.forEach(item => {
@@ -108,8 +121,9 @@ export default {
         }
       })
     },
+    // 监听输入框数据变化
     handleChange (fn) {
-      if (fn) {
+      if (fn && !this.parent) {
         let i = 0
         let parent = this.$parent
         while (!parent[fn]) {
@@ -117,9 +131,17 @@ export default {
           i++
           if (i === 5) break
         }
-        parent[fn]()
+        this.parent = parent
+        this.parent[fn]()
       }
     },
+    // 是否展示全部
+    handleShowAll () {
+      if (this.searchItem.length <= 6) return false
+      this.$parent.showAll = true
+      this.showAll = true
+    },
+    // 搜索
     handleSearch () {
       for (let key in this.dateObj) {
         key.split(',').forEach((item, i) => {
@@ -174,6 +196,7 @@ export default {
       font-size: 16px;
       margin-bottom: 25px;
       span{
+        cursor: pointer;
         font-size: 14px;
         font-weight: normal;
         margin-left: 10px;

@@ -6,6 +6,7 @@
       @handleSearch="handleSearch"
     ></search-module>
     <table-module
+      ref="table"
       :table-data.sync="tableData"
       :table-item="tableItem"
       :table-btn="tableBtn">
