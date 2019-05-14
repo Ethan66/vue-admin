@@ -17,7 +17,7 @@
     >
       <template v-for="(item, i) in tableItem">
         <el-table-column
-          v-if="item.type==='selection' && item.show"
+          v-if="item.type==='selection'"
           :key="`selection${i}`"
           :width="item.width"
           :selectable="handleSelect"
