@@ -1,9 +1,7 @@
 <template>
   <section class="app-main">
     <subTabs v-if="showSubTabs" />
-    <transition-group tag="div" class="transition-group" name="fade-transform" mode="out-in">
-      <router-view :key="transitionKey" />
-    </transition-group>
+    <router-view class="transition-group"></router-view>
   </section>
 </template>
 
