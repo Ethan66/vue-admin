@@ -109,7 +109,6 @@ import inlineEdit from './components/inlineEdit' // 行内编辑
 import cellTree from './components/cellTree'
 import { getTableHeight, getCellClass, setHeadIcon, setInitTableStyle } from './config/method'
 import { setTimeout, clearTimeout } from 'timers';
-import { debuglog } from 'util';
 export default {
   name: 'tableModule',
   components: { userDefineHeadList, tableBtn, inlineEdit, cellTree },
