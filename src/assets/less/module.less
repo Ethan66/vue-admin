@@ -36,6 +36,11 @@
           border-radius: 0;
           background: transparent;
       }
+      .el-table__body-wrapper{
+        & > table {
+          border-right: 1px solid #e8e8e8;
+        }
+      }
     .el-checkbox__input.is-checked .el-checkbox__inner,
     .el-checkbox__input.is-indeterminate .el-checkbox__inner{
       background: #4162DB;
@@ -74,16 +79,12 @@
   }
   .right{
     height: 50px;
-    margin: 15px -15px 21px;
-    background: #e8e8e8;
+    margin: 0 -15px;
     position: relative;
     .el-pagination{
       position: absolute;
-      right: 0;
+      right: 15px;
       top: 40%;
-      .el-input{
-        border: 1px solid #e8e8e8;
-      }
       &.is-background .el-pager li:not(.disabled).active{
         background: #4162DB;
       }
