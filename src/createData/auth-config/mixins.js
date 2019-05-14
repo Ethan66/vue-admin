@@ -11,6 +11,7 @@ export const button = {
   created () {
     let configSearchItem = ['buttonName']
     let configTableItem = {
+      selection: 50,
       id: 80,
       buttonName: 200,
       buttonMenuName: 100,

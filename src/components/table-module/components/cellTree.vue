@@ -60,19 +60,19 @@ export default {
   .menuNameWrap{
     padding: 0 10px;
     .arrow{
-      display: inline-block; width: 12px; height:12px;
+      display: inline-block; width: 14px; height:12px;
       position: relative;
       &:before{
         display: inline-block; content: ''; width: 0; height: 0;
-        border: 4.5px solid transparent; border-left-color: #333;
-        position: absolute; left: 2px; top: 3px;
+        border: 5px solid transparent; border-left-color: #b2b2b2;
+        position: absolute; left: 0; top: 2px;
       }
       &.arrowDown:before{
         transform: rotate(90deg);
-        left: 0; top: 4px;
+        left: -2px; top: 4px;
       }
       &.arrowRight:before{
-        border-left-color: #333;
+        border-left-color: #b2b2b2;
       }
     }
   }

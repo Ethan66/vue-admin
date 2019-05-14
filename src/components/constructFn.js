@@ -3,13 +3,17 @@ export const SetItem = function (dataArr, type) {
   this.dataArrFilter = JSON.parse(JSON.stringify(dataArr))
   this.type = type
 }
-// 初始化table配置(排序，隐藏，固定，添加按钮)
+// 初始化table配置(排序，隐藏，固定，添加按钮, 添加selection)
 SetItem.prototype.initTableConfig = function (config, hide, sort, fixed) {
   this.configObj = config
   let tableBtnConfig = { fixed: 'right', label: '操作', type: 'btn' }
+  let tableSelection = { type: 'selection' }
   this.dataArrFilter = this.dataArrFilter.filter(item => {
     return item[hide] === 0
   }).sort((v1, v2) => v1[sort] - v2[sort])
+  if (this.configObj.selection) {
+    this.dataArrFilter.unshift(Object.assign({}, tableSelection, this.configObj.selection))
+  }
   if (this.configObj.btn) {
     this.dataArrFilter.push(Object.assign({}, tableBtnConfig, this.configObj.btn))
   }
@@ -57,7 +61,7 @@ SetItem.prototype.setKey = function () {
   let type = this.type
   Object.keys(configObj).forEach(key => {
     let val = configObj[key]
-    let obj = dataArrFilter.find(item => item.key === key || item.type === 'btn')
+    let obj = dataArrFilter.find(item => item.key === key || item.type === 'btn' || item.type === 'selection')
     if (obj) {
       if (type === 'table') {
         if (Object.prototype.toString.call(val) !== '[object Object]') {
@@ -69,6 +73,9 @@ SetItem.prototype.setKey = function () {
         }
       }
       Object.assign(obj, val)
+    }
+    if (dataArrFilter[0].type === 'selection' && dataArrFilter[1].fixed) {
+      dataArrFilter[0].fixed = true
     }
   })
   this.dataArrFilter.forEach(item => {

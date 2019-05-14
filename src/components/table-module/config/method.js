@@ -20,6 +20,7 @@ export const getTableHeight = (totalClsName, reduceClsNameList = []) => {
 export const getCellClass = (row, newTableItem) => {
   const lastIndex = newTableItem.length - 1
   let clsName = ''
+  console.log(111, row)
   if (row.columnIndex === lastIndex) {
     clsName = 'headSetting'
   }
