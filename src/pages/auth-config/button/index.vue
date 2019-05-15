@@ -8,6 +8,7 @@
       @handleSearch="handleSearch"
     />
     <table-module
+      ref="table"
       :table-data="tableData"
       :table-item="tableItem"
       :table-btn="tableBtn"

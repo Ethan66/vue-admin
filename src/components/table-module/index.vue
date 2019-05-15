@@ -199,17 +199,21 @@ export default {
     this.$nextTick(() => {
       this.showTableHeadSetting && setHeadIcon()
       let timer = setTimeout(() => {
-        this.tableHeight = getTableHeight(this.totalHeightClsName, this.reduceHeightClsNameList)
+        this.handleSetTableHeight()
         clearTimeout(timer)
       }, 100)
     })
     window.onresize = () => {
       setInitTableStyle()
       this.showTableHeadSetting && setHeadIcon()
-      this.tableHeight = getTableHeight(this.totalHeightClsName, this.reduceHeightClsNameList)
+      this.handleSetTableHeight()
     }
   },
   methods: {
+    // 设置表格高度
+    handleSetTableHeight () {
+      this.tableHeight = getTableHeight(this.totalHeightClsName, this.reduceHeightClsNameList)
+    },
     // 设置状态clsName
     handleSetStatusClsName (type, value, i) {
       if (type) {
