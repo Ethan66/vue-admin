@@ -53,10 +53,30 @@
     <el-dialog
       title="添加员工"
       :visible.sync="staffAddDialog"
-      width="30%"
+      width="520px"
       :before-close="handleClose">
-      
-      
+      <el-form :model="staffForm" :inline="true" label-position="left" ref="ruleForm" class="demo-ruleForm">
+        <el-form-item label="请选择员工" prop="name">
+          <el-input v-model="staffForm.name"></el-input>
+          <span class="selectTips">支持一个员工有多个角色</span>
+        </el-form-item>
+        <div class="roleConfigTips">角色配置<span>（请勾选需要的角色）</span></div>
+        <el-form-item label="管理员角色" prop="type" :inline="true" label-width="100px">
+          <el-checkbox-group v-model="staffForm.type">
+            <el-checkbox label="超级管理员" name="type"></el-checkbox>
+            <el-checkbox label="管理员" name="type"></el-checkbox>
+            <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
+            <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
+            <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+        <el-form-item label="运营角色" prop="type" :inline="true" label-width="100px">
+          <el-checkbox-group v-model="staffForm.type">
+            <el-checkbox label="运营经理" name="type"></el-checkbox>
+            <el-checkbox label="用户" name="type"></el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+      </el-form>
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="staffAddDialog = false">取 消</el-button>
@@ -100,7 +120,8 @@ export default {
             {id: 8, name: '用户运营', num: '3'},
           ]
         }
-      ]
+      ],
+      staffForm: {}
     }
   },
   methods: {
@@ -207,6 +228,80 @@ export default {
     .box-right {
       flex: 1;
       max-width: calc(100% - 210px);
+    }
+    .el-dialog__wrapper {
+      .el-dialog {
+        .el-dialog__header {
+          border-bottom: 1px solid #E8E8E8;
+          padding: 15px 20px;
+          .el-dialog__title{
+            font-family: PingFangSC-Regular;
+            font-size: 16px;
+            color: #333333;
+          }
+        }
+        .el-dialog__body {
+          padding: 30px 30px;
+          .el-form {
+            .el-form-item {
+              display: flex;
+              margin-right: 0px;
+              margin-bottom: 0px;
+              .el-form-item__label {
+                min-width: 100px;
+              }
+              .el-form-item__content {
+                .el-checkbox-group {
+                  .el-checkbox {
+                    width: 118px;
+                    margin-left: 0;
+                    .el-checkbox__input.is-checked+.el-checkbox__label {
+                      color: #666;
+                    }
+                    .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+                      background-color: #4162DB;
+                      border-color: #4162DB;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        .el-dialog__footer {
+          border-top: 1px solid #E8E8E8;
+          padding: 20px;
+          .dialog-footer {
+            .el-button {
+              width: 60px;
+              height: 30px;
+              padding: 0;
+            }
+            .el-button--default {
+              color: #666;
+              border: 1px solid #E8E8E8;
+            }
+          }
+        }
+      }
+    }
+    .selectTips {
+      font-family: PingFangSC-Regular;
+      font-size: 12px;
+      color: #9B9B9B;
+      letter-spacing: -0.37px;
+    }
+    .roleConfigTips {
+      font-family: PingFangSC-Regular;
+      font-size: 14px;
+      color: #333;
+      letter-spacing: -0.43px;
+      line-height: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #e8e8e8;
+      span {
+        color: #999;
+      }
     }
   }
 </style>
