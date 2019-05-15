@@ -256,7 +256,7 @@ export default {
     overflow: hidden;
     margin-bottom: 20px;
     .date-width {
-      width: 283px;
+      width: 230px;
       margin-left: 10px;
       .el-range-separator {
         line-height: 24px !important;
@@ -268,7 +268,6 @@ export default {
     }
   }
   .text-input {
-    width: 357px;
     textarea {
       height: 90px;
     }

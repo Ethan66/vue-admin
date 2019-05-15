@@ -118,7 +118,7 @@ export default {
     width: {
       type: Number,
       default () {
-        return 335;
+        return ;
       }
     },
     height: {
