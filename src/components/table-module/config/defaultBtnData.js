@@ -8,5 +8,6 @@ export const tableBtn = {
   delete: { name: '删除', clickFn: 'handleDeleteData', disabled: false, show: true },
   cancel: { name: '取消', disabled: false, show: true },
   setting: { name: '管理', disabled: false, show: true },
-  more: { name: '更多', disabled: false, show: true }
+  more: { name: '更多', disabled: false, show: true },
+  detail: { name: '详情', clickFn: 'handleShowDetailDialog', disabled: false, show: true }
 }

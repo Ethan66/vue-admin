@@ -7,7 +7,7 @@ const menuMoreList = [
   { name: '新建平级菜单', clickFn: 'handleCreateLevelMenu' },
   { name: '新建下级菜单', clickFn: 'handleCreateNextLevelMenu' },
   { name: '删除', clickFn: 'handleDelete' },
-  { name: '详情', clickFn: 'handleGoDetail' }
+  { name: '详情', clickFn: 'handleShowDetailDialog' }
 ]
 
 export const menu = {
@@ -30,7 +30,9 @@ export const menu = {
     }
     let configDialogItem = [
       { parentMenuName: { label: '上级菜单', type: 'select', options: [{ label: '一', value: 1 }, { label: '二', value: 2 }] } },
-      'menuName', 'menuLevel', 'menuCode', 'menuUrl', 'sort', 'status'
+      'menuName', 'menuLevel', 'menuCode', 'menuUrl', 'sort',
+      { status: { type: 'radio', options: [{ label: '正常', value: '1' }, { label: '停用', value: '0' }] } },
+      { menuDesc: { label: '描述', type: 'textarea', rows: 4 } }
     ]
     this.searchItem = this.$setItem(menuTest, configSearchItem, 'search')
     this.tableItem = this.$setItem(menuTest, configTableItem, 'table')

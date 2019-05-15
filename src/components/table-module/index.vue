@@ -261,14 +261,7 @@ export default {
     },
     // 事件：选中一条数据后保存选中状态按钮
     handleSelectChange (val) {
-      let i = 0
-      let parent = this.$parent
-      while (!parent.chooseDataArr) {
-        parent = parent.$parent
-        i++
-        if (i === 5) break
-      }
-      parent.chooseDataArr = val
+      this.parent.chooseDataArr = val
     },
     // 事件：每页几条
     handleSizeChange (val) {
