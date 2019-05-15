@@ -13,7 +13,6 @@ SetItem.prototype.initTableConfig = function (config, hide, sort, fixed) {
   }).sort((v1, v2) => v1[sort] - v2[sort])
   if (this.configObj.selection) {
     this.dataArrFilter.unshift(Object.assign({}, tableSelection))
-    debugger
   }
   if (this.configObj.btn) {
     this.dataArrFilter.push(Object.assign({}, tableBtnConfig))
@@ -27,12 +26,26 @@ SetItem.prototype.initTableConfig = function (config, hide, sort, fixed) {
 // 过滤对象(搜索和对话框)
 SetItem.prototype.filterField = function (config) {
   if (Array.isArray(config)) {
-    if (Array.isArray(config[0])) {
-      this.dataArrFilter = this.dataArrFilter.filter(item => config[0].includes(item.key))
-      config[1] && (this.configObj = config[1])
-    } else {
-      this.dataArrFilter = this.dataArrFilter.filter(item => config.includes(item.key))
-    }
+    let configObj = this.configObj
+    let dataArrFilter = this.dataArrFilter
+    let addDataArr = []
+    let arr = config.map(item => {
+      if (typeof item === 'string') {
+        return item
+      } else if (item.constructor === Object) {
+        let key = Object.keys(item)[0]
+        if (dataArrFilter.find(child => child.key === key)) {
+          configObj[key] = item[key]
+          return key
+        } else {
+          let obj = { label: '', key, canSet: 1 }
+          addDataArr.push(Object.assign({}, obj, item[key]))
+        }
+      }
+    })
+    this.dataArrFilter = dataArrFilter.filter(item => arr.includes(item.key)).concat(addDataArr)
+  } else {
+    console.error('搜索或对话框配置必须是数组')
   }
 }
 // 设置placeholder
@@ -74,6 +87,8 @@ SetItem.prototype.setKey = function () {
           obj.fixed = true
           delete obj.fix
         }
+      } else {
+        Object.assign(obj, val)
       }
     }
   })
