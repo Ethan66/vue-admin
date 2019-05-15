@@ -5,34 +5,24 @@
         <el-col :class="item.clsName || ''">
           <el-form-item class="cl1" :label="item.label" :prop="item.key">
             <el-select
-              v-if="item.type === 'select' || item.type === 'selectMore'"
-              v-model="editData[item.key]"
-              :placeholder="item.placeholder"
-              :filterable="item.type === 'select'"
-              :multiple="item.type === 'selectMore'"
-              @change="handleChange(item.changeFn, editData[item.key])"
-              :disabled="item.disabled || allRead"
+                      v-if="item.type === 'select' || item.type === 'selectMore'"
+                      v-model="editData[item.key]"
+                      :placeholder="item.placeholder"
+                      :filterable="item.type === 'select'"
+                      :multiple="item.type === 'selectMore'"
+                      @change="handleChange(item.changeFn, editData[item.key])"
+                      :disabled="item.disabled || allRead"
             >
               <el-option v-for="(child, k) in item.options" :label="child.label" :value="child.value" :key="k"></el-option>
             </el-select>
-            <el-input v-model="editData[item.key]"
+            <el-input
+                      v-model="editData[item.key]"
+                      :type="item.type"
                       :placeholder="item.placeholder"
                       :disabled="item.disabled || allRead"
                       @input="handleChange(item.changeFn, editData[item.key])"
-                      v-if="item.type==='input'">
-            </el-input>
-            <el-input v-model="editData[item.key]"
-                      :placeholder="item.placeholder"
-                      :disabled="item.disabled || allRead"
-                      @blur="handleJudgeNum(item.key, editData[item.key])"
-                      type="number"
-                      v-if="item.type==='number'">
-            </el-input>
-            <el-input v-model="editData[item.key]" type="password"
-                      :placeholder="item.placeholder"
-                      :disabled="item.disabled || allRead"
-                      @change="handleChange(item.changeFn, editData[item.key])"
-                      v-if="item.type==='password'">
+                      v-if="item.type==='input' || item.type === 'number' || item.type === 'password'"
+            >
             </el-input>
             <el-input v-model="editData[item.key]" type="textarea"
                       :placeholder="item.placeholder"
