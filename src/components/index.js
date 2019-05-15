@@ -1,10 +1,11 @@
 import searchModule from './search-module'
 import dialogModule from './dialog-module'
+import dialogDetail from './dialog-module/detail'
 import tableModule from './table-module'
 import tableTree from './table-module/tableTree'
 
 const components = [
-  searchModule, tableModule, dialogModule, tableTree
+  searchModule, tableModule, dialogModule, tableTree, dialogDetail
 ]
 
 components.forEach(item => {
@@ -21,5 +22,5 @@ const adminModule = (Vue) => {
 
 export {
   adminModule,
-  searchModule, tableModule, dialogModule, tableTree
+  searchModule, tableModule, dialogModule, tableTree, dialogDetail
 }
