@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="dialogTitle" :visible.sync="showDialogForm1" class="dialogModule" :close-on-click-modal="false">
+  <el-dialog :title="dialogTitle" :visible.sync="showDialogForm1" :custom-class="['dialogModule', { doubleColumn }]" :close-on-click-modal="false">
     <el-form :model="editData" :rules="rules" ref="editData">
       <el-row v-for="(item, i) in dialogItem" :key="i" :class="handleClass(item.span)">
         <el-col :class="item.clsName || ''">
@@ -99,17 +99,10 @@ export default {
         return {}
       }
     },
-    showDialogForm: {
-      type: Boolean,
-      default: false
-    },
-    dialogBtn: {
-      type: Array
-    },
-    allRead: {
-      type: Boolean,
-      default: false
-    }
+    doubleColumn: Boolean,
+    showDialogForm: Boolean,
+    dialogBtn: Array,
+    allRead: Boolean
   },
   data () {
     return {
@@ -245,8 +238,13 @@ export default {
 
 <style lang="less">
   .dialogModule {
+     &.doubleColumn{
+      .el-dialog{
+        min-width: 800px;
+      }
+    }
     .el-dialog{
-      min-width: 700px;
+      min-width: 520px;
       border-radius: 4px;
       .el-dialog__header{
         padding: 15px 15px 12px;
