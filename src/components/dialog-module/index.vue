@@ -1,46 +1,41 @@
 <template>
-  <el-dialog :title="dialogTitle" :visible.sync="showDialogForm1" :custom-class="['dialogModule', { doubleColumn }]" :close-on-click-modal="false">
+  <el-dialog :title="dialogTitle" :visible.sync="showDialogForm1" :class="['dialogModule', { doubleColumn }]" :close-on-click-modal="false">
     <el-form :model="editData" :rules="rules" ref="editData">
       <el-row v-for="(item, i) in dialogItem" :key="i" :class="handleClass(item.span)">
         <el-col :class="item.clsName || ''">
-          <el-form-item :label="item.label" :prop="item.key">
-            <el-select v-model="editData[item.key]"
-                       :placeholder="item.placeholder || ''"
-                       filterable
-                       @change="handleChange(item.changeFn, editData[item.key])"
-                       :disabled="item.disabled || allRead"
-                       v-if="item.type==='select'">
-              <el-option v-for="(child, k) in item.options" :label="child.label" :value="child.value" :key="k"></el-option>
-            </el-select>
-            <el-select v-model="editData[item.key]"
-                       :placeholder="item.placeholder || ''"
-                       multiple
-                       @change="handleChange(item.changeFn, editData[item.key])"
-                       :disabled="item.disabled || allRead"
-                       v-if="item.type==='selectMore'">
+          <el-form-item class="cl1" :label="item.label" :prop="item.key">
+            <el-select
+              v-if="item.type === 'select' || item.type === 'selectMore'"
+              v-model="editData[item.key]"
+              :placeholder="item.placeholder"
+              :filterable="item.type === 'select'"
+              :multiple="item.type === 'selectMore'"
+              @change="handleChange(item.changeFn, editData[item.key])"
+              :disabled="item.disabled || allRead"
+            >
               <el-option v-for="(child, k) in item.options" :label="child.label" :value="child.value" :key="k"></el-option>
             </el-select>
             <el-input v-model="editData[item.key]"
-                      :placeholder="item.placeholder || ''"
+                      :placeholder="item.placeholder"
                       :disabled="item.disabled || allRead"
                       @input="handleChange(item.changeFn, editData[item.key])"
-                      v-if="item.type==='input' || !item.type">
+                      v-if="item.type==='input'">
             </el-input>
             <el-input v-model="editData[item.key]"
-                      :placeholder="item.placeholder || ''"
+                      :placeholder="item.placeholder"
                       :disabled="item.disabled || allRead"
                       @blur="handleJudgeNum(item.key, editData[item.key])"
                       type="number"
                       v-if="item.type==='number'">
             </el-input>
             <el-input v-model="editData[item.key]" type="password"
-                      :placeholder="item.placeholder || ''"
+                      :placeholder="item.placeholder"
                       :disabled="item.disabled || allRead"
                       @change="handleChange(item.changeFn, editData[item.key])"
                       v-if="item.type==='password'">
             </el-input>
             <el-input v-model="editData[item.key]" type="textarea"
-                      :placeholder="item.placeholder || ''"
+                      :placeholder="item.placeholder"
                       :disabled="item.disabled || allRead"
                       :rows="item.rows"
                       :maxlength="item.maxlength"
@@ -77,6 +72,7 @@
 
 <script>
 import mySwitch from '@/components/modules/switch'
+import { setTimeout } from 'timers';
 export default {
   name: 'dialogModule',
   components: { mySwitch },
@@ -127,11 +123,24 @@ export default {
       }
     }
   },
+  computed: {
+    parent () {
+      let parent = this.$parent
+      let i = 0
+      while (parent.dialogItem !== this.dialogItem) {
+        parent = parent.$parent
+        i++
+        if (i === 5) break
+      }
+      return parent
+    }
+  },
   created () {
     // this.$setItem(this.dialogItem, 'dialog')
   },
   methods: {
-    handleClass (span = 12) {
+    handleClass (span = 24) {
+      if (this.doubleColumn) span = 12
       return ['width', `width${span}`]
     },
     // 对editData多选项进行初始化操作
@@ -139,16 +148,9 @@ export default {
       // 找出多选的选项，转化为数组
       this.dialogItem.forEach(item => {
         if (item.type === 'selectMore') {
-          let parent = this.$parent
-          let i = 0
-          while (!typeof parent.isEdit === 'number') {
-            parent = parent.$parent
-            i++
-            if (i === 5) break
-          }
-          if (parent.isEdit === 0) {
+          if (this.parent.isEdit === 0) {
             this.editData[item.key] = []
-          } else if (parent.isEdit === 1) {
+          } else if (this.parent.isEdit === 1) {
             if (this.editData[item.key] === '') {
               this.editData[item.key] = []
             } else {
@@ -160,19 +162,12 @@ export default {
     },
     // 点击按钮事件
     handleFn (type, clickFn = '') {
-      let parent = this.$parent
-      let i = 0
-      while (!parent[clickFn]) {
-        parent = parent.$parent
-        i++
-        if (i === 5) break
-      }
       if (type === 'delete') {
         if (clickFn === '') {
           this.showDialogForm1 = false
           return true
         } else {
-          parent[clickFn]()
+          this.parent[clickFn]()
           return true
         }
       } else if (type === 'edit') {
@@ -183,10 +178,10 @@ export default {
         if (this.handleConfirmEdit('editData') === false) return false
         if (clickFn === '') {
           this.showDialogForm1 = false
-          parent.apiCreateData(this.editData)
+          this.parent.apiCreateData(this.editData)
           return true
         }
-        parent[clickFn]()
+        this.parent[clickFn]()
       }
     },
     // 失去焦点判断输入框的值
@@ -204,14 +199,7 @@ export default {
     },
     handleChange (fn, val) {
       if (fn) {
-        let parent = this.$parent
-        let i = 0
-        while (!parent[fn]) {
-          parent = parent.$parent
-          i++
-          if (i === 5) break
-        }
-        parent[fn](val)
+        this.parent[fn](val)
       }
     },
     // 点击确认时校验
@@ -240,11 +228,11 @@ export default {
   .dialogModule {
      &.doubleColumn{
       .el-dialog{
-        min-width: 800px;
+        max-width: 800px;
       }
     }
     .el-dialog{
-      min-width: 520px;
+      max-width: 520px;
       border-radius: 4px;
       .el-dialog__header{
         padding: 15px 15px 12px;
@@ -255,9 +243,9 @@ export default {
         }
       }
       .el-dialog__body{
-        padding: 28px 30px 0;
+        padding: 28px 70px 0 50px;
         .el-form{
-          min-width: 570px;
+          width: 100%;
           .el-form-item{
             margin-bottom: 30px;
           }

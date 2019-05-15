@@ -1,5 +1,5 @@
 import searchModule from './search-module'
-import dialogModule from './dialog-module/dialog'
+import dialogModule from './dialog-module'
 import tableModule from './table-module'
 import tableTree from './table-module/tableTree'
 
