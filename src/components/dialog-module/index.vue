@@ -1,9 +1,9 @@
 <template>
   <el-dialog :title="dialogTitle" :visible.sync="showDialogForm1" :class="['dialogModule', { doubleColumn }]" :close-on-click-modal="false">
     <el-form :model="editData" :rules="rules" ref="editData">
-      <el-row v-for="(item, i) in dialogItem" :key="i" :class="handleClass(item.span)">
+      <el-row v-for="(item, i) in dialogItem" :key="i" :class="handleClass(item.span, item.type)">
         <el-col :class="item.clsName || ''">
-          <el-form-item class="cl1" :label="item.label" :prop="item.key">
+          <el-form-item :class="['label' + chineseTybe, { radio: item.type==='radio' }]" :label="item.label" :prop="item.key">
             <el-select
                       v-if="item.type === 'select' || item.type === 'selectMore'"
                       v-model="editData[item.key]"
@@ -33,7 +33,7 @@
                       v-if="item.type==='textarea'">
             </el-input>
             <el-radio-group v-model="editData[item.key]" v-if="item.type==='radio'" :disabled="item.disabled || allRead" size="small">
-              <el-radio v-for="(child, k) in item.options" @change="handleChange(item.changeFn, editData[item.key])" :label="child.label" :key="k" border>{{child.label}}</el-radio>
+              <el-radio v-for="(child, k) in item.options" @change="handleChange(item.changeFn, editData[item.key])" :label="child.label" :key="k">{{child.label}}</el-radio>
             </el-radio-group>
             <el-date-picker type="datetime" :placeholder="item.placeholder || ''" style="width: 100%;"
                             format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss"
@@ -92,6 +92,7 @@ export default {
   },
   data () {
     return {
+      chineseTybe: 0,
       showDialogForm1: false,
       oldEditData: null
     }
@@ -126,11 +127,17 @@ export default {
     }
   },
   created () {
+    this.dialogItem.forEach(item => {
+      if (item.label.length > this.chineseTybe) {
+        this.chineseTybe = item.label.length
+      }
+    })
     // this.$setItem(this.dialogItem, 'dialog')
   },
   methods: {
-    handleClass (span = 24) {
+    handleClass (span = 24, type) {
       if (this.doubleColumn) span = 12
+      if (this.doubleColumn && type === 'textarea') span = 24
       return ['width', `width${span}`]
     },
     // 对editData多选项进行初始化操作
@@ -216,9 +223,24 @@ export default {
 
 <style lang="less">
   .dialogModule {
+    .el-radio__input.is-checked+.el-radio__label{
+      color: #4162DB;
+    }
+    .el-radio__input.is-checked .el-radio__inner{
+      background: #4162DB;
+      border-color: #4162DB;
+    }
+    .el-radio+.el-radio{
+      margin-left: 12px;
+    }
+    .el-radio__label{
+      padding-left: 5px;
+      color: #333;
+    }
      &.doubleColumn{
       .el-dialog{
         max-width: 800px;
+        width: 800px;
       }
     }
     .el-dialog{
@@ -233,15 +255,55 @@ export default {
         }
       }
       .el-dialog__body{
-        padding: 28px 70px 0 50px;
+        padding: 34px 70px 0 50px;
         .el-form{
           width: 100%;
           .el-form-item{
-            margin-bottom: 30px;
+            margin-bottom: 25px;
+            &.label5, &.label6{
+              .el-form-item__label{
+                width: 100px;
+              }
+              .el-form-item__content{
+                margin-left: 100px;
+              }
+            }
+            &.label4{
+              .el-form-item__label{
+                width: 96px;
+              }
+              .el-form-item__content{
+                margin-left: 96px;
+              }
+            }
+            &.label3{
+              .el-form-item__label{
+                width: 83px;
+              }
+              .el-form-item__content{
+                margin-left: 83px;
+              }
+            }
+            &.label2{
+              .el-form-item__label{
+                width: 82px;
+              }
+              .el-form-item__content{
+                margin-left: 82px;
+              }
+            }
+            &.radio{
+              .el-form-item__label, .el-form-item__content{
+                line-height: 18px;
+                height: 18px;
+              }
+            }
           }
         }
+        .el-row:last-child{
+          margin-bottom: 5px;
+        }
         .el-form-item__label {
-          width: 100px;
           line-height: 30px;
           font-weight: normal;
           color: #1c1c1c;
@@ -260,14 +322,13 @@ export default {
         }
       }
        .el-dialog__footer{
-        height: 60px;
-        padding: 14px 15px;
+        padding: 20px;
         border-top: 1px solid #e8e8e8;
         .el-button{
           width: 60px;
-          height: 32px;
+          height: 30px;
           padding: 0;
-          line-height: 32px;
+          line-height: 30px;
         }
       }
     }
