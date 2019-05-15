@@ -118,7 +118,7 @@ export default {
     width: {
       type: Number,
       default () {
-        return 355;
+        return 335;
       }
     },
     height: {
@@ -286,6 +286,9 @@ export default {
       height: 100%;
       opacity: 0;
       z-index: 11;
+      position: fixed;
+      top: 0;
+      left: 0;
     }
     .common-tree{
       overflow: auto;

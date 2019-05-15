@@ -122,10 +122,17 @@ export const ipControl = {
 // 账户控制
 export const account = {
   data () {
-    return setBtnConfig(JSON.parse(JSON.stringify(initData)))
+    return setBtnConfig(JSON.parse(JSON.stringify(initData)), [{ cancel: { name: '失 效', clickFn: 'handleInvalid' } }])
   },
   created () {
-    let configSearchItem = ['buttonName']
+    let configSearchItem = [
+      'id',
+      { buttonMenuName:
+        { type: 'select',
+          options: [{ label: '成功', value: '1' }, { label: '失败', value: '2' }]
+        }
+      }
+    ]
     let configTableItem = {
       id: 80,
       buttonName: 200,
@@ -133,19 +140,10 @@ export const account = {
       buttonCode: 100,
       gmtCreate: 200,
       gmtModified: 80,
-      isDelete: 80
+      isDelete: 80,
+      btn: 70
     }
-    let configDialogItem = ['buttonName', 'buttonCode']
     this.searchItem = this.$setItem(accountTableItem, configSearchItem, 'search')
     this.tableItem = this.$setItem(accountTableItem, configTableItem, 'table')
-    this.dialogItem = this.$setItem(accountTableItem, configDialogItem, 'dialog')
-    this.rules = {
-      buttonName: [
-        { required: true, message: '请输入按钮名称', trigger: 'blur' }
-      ],
-      buttonCode: [
-        { required: true, message: '请输入按钮编码', trigger: 'blur' }
-      ]
-    }
   }
 }
