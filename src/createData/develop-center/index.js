@@ -26,10 +26,7 @@ export const menu = {
       btn: 120
     }
     let configDialogItem = [
-      [ 'parentMenuName', 'menuName', 'menuCode', 'menuSort', 'menuUrl' ],
-      {
-        parentMenuName: { type: 'select' }
-      }
+      'menuName', { parentMenuName: { type: 'select', options: [{ label: '一', value: 1 }, { label: '二', value: 2 }] } }
     ]
     this.searchItem = this.$setItem(menuTest, configSearchItem, 'search')
     this.tableItem = this.$setItem(menuTest, configTableItem, 'table')

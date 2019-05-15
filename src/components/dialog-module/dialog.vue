@@ -249,7 +249,7 @@ export default {
       min-width: 700px;
       border-radius: 4px;
       .el-dialog__header{
-        padding: 15px 15px 10px;
+        padding: 15px 15px 12px;
         border-bottom: 1px solid #e8e8e8;
         .el-dialog__title{
           font-size: 16px;
