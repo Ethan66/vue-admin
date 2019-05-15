@@ -53,7 +53,7 @@ export default {
     handleEditData (row) {
       this.editData = JSON.parse(JSON.stringify(row))
       this.editData.menuLevel = this.editData.menuLevel === '一级菜单' ? '0' : '1'
-      this.dialogItem[2].disabled = true
+      // this.dialogItem[2].disabled = true
       this.isEdit = 1
       this.dialogTitle = '编辑菜单'
       this.showDialogForm = true

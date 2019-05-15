@@ -15,7 +15,10 @@ export const menu = {
     return this.$setBtnConfig(JSON.parse(JSON.stringify(initData)), ['edit', { more: { list: menuMoreList } }])
   },
   created () {
-    let configSearchItem = ['id', 'menuName', 'menuLevel', 'parentMenuName', 'menuUrl']
+    let configSearchItem = [
+      'menuName',
+      { status: { type: 'select', options: [{ label: '正常', value: 1 }, { label: '失效', value: 2 }] } }
+    ]
     let configTableItem = {
       selection: 50,
       id: 80,
@@ -26,10 +29,8 @@ export const menu = {
       btn: 120
     }
     let configDialogItem = [
-      [ 'parentMenuName', 'menuName', 'menuCode', 'menuSort', 'menuUrl' ],
-      {
-        parentMenuName: { type: 'select' }
-      }
+      { parentMenuName: { label: '上级菜单', type: 'select', options: [{ label: '一', value: 1 }, { label: '二', value: 2 }] } },
+      'menuName', 'menuLevel', 'menuCode', 'menuUrl', 'sort', 'status'
     ]
     this.searchItem = this.$setItem(menuTest, configSearchItem, 'search')
     this.tableItem = this.$setItem(menuTest, configTableItem, 'table')
