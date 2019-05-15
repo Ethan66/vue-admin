@@ -1,40 +1,36 @@
 <template>
   <div class="staff-admin">
-    <el-row>
-      <el-col :span="4">
-        <div class="tree-box">
-          <h2>组织架构</h2>
-          <el-tree
-            :data="data"
-            :highlight-current="true"
-            @node-click="handleNodeClick"></el-tree>
+    <div class="box-left">
+      <div class="tree-box">
+        <h2>组织架构</h2>
+        <el-tree
+          :data="data"
+          :highlight-current="true"
+          @node-click="handleNodeClick"></el-tree>
+      </div>
+    </div>
+    <div class="box-right">
+      <search-module
+        class="searchContent"
+        :search-item="searchItem"
+        :search-values="searchValues"
+        :search-default-obj="defaultSearchObj"
+        @handleSearch="handleSearch"
+      />
+      <table-module
+        :table-data="tableData"
+        :table-item="tableItem"
+        :table-btn="tableBtn"
+        :table-pages="tablePages"
+        @handleSendHead="handleSendHead"
+        @table-jump="handleJump">
+        <div class="btn-content" slot="btn">
+          <el-button @click="handleAdd">新建员工</el-button>
         </div>
-      </el-col>
-      <el-col :span="20">
-        <search-module
-          class="searchContent"
-          :search-item="searchItem"
-          :search-values="searchValues"
-          :search-default-obj="defaultSearchObj"
-          @handleSearch="handleSearch"
-        />
-        <table-module
-          :table-data="tableData"
-          :table-item="tableItem"
-          :table-btn="tableBtn"
-          :table-pages="tablePages"
-          @handleSendHead="handleSendHead"
-          @table-jump="handleJump">
-          <div class="btn-content" slot="btn">
-            <el-button @click="handleStop">新建员工</el-button>
-          </div>
-          <div class="total-content" slot="total">
-            <b>统计数据</b>
-            <span>借款人数 517 人，借款本金 340,000.00 元，待还本金 140,000.00 元</span>
-          </div>
-        </table-module>
-      </el-col>
-    </el-row>
+      </table-module>
+    </div>
+
+    <!-- 员工信息 -->
     <el-dialog
       title="员工信息"
       :visible.sync="staffInfoVisible"
@@ -72,8 +68,9 @@
         <el-button type="primary" @click="handleStaffInfoClose">关 闭</el-button>
       </span>
     </el-dialog>
+    <!-- 添加编辑员工 -->
     <el-dialog
-      title="添加员工"
+      :title="staffDialogTitle"
       :visible.sync="addStaffVisible"
       width="810px"
       :before-close="handleAddStaffVisibleClose">
@@ -100,14 +97,11 @@
           <div class="form-title">职位信息</div>
           <div class="form-flex-box">
             <el-form-item label="部门">
-              <selectTree
-                :props="props"
-                :options="optionData"
-                :value="valueId"
-                :clearable="isClearable"
-                :accordion="isAccordion"
-                @getValue="getValue($event)"
-              />
+              <tree-select
+                :data="dialogData"
+                :defaultProps="defaultProps"
+                nodeKey="menuId" :checkedKeys="defaultCheckedKeys"
+                @popoverHide="popoverHide"/>
             </el-form-item>
             <el-form-item label="职位" prop="name">
               <el-input v-model="staffForm.name"></el-input>
@@ -127,9 +121,9 @@
 </template>
 
 <script>
-import { staff } from '@/createData/auth-config/mixins'
+import { staff } from './mixins'
 import basicMethod from '@/config/mixins'
-import selectTree from '@/components/select-tree/select-tree'
+import treeSelect from '@/components/tree-select'
 import { apiDeleteSysButton, apiEditeSysButton, apiListSysButton, apiCreateSysButton } from '@/api/authority'
 export default {
   mixins: [basicMethod, staff],
@@ -151,8 +145,9 @@ export default {
           }]
         }
       ],
+      staffDialogTitle: '添加员工',
       staffInfoVisible: false,
-      addStaffVisible: true,
+      addStaffVisible: false,
       staffForm: {},
       staffFormRules: {
         name: [
@@ -176,8 +171,89 @@ export default {
         {id:5, parentId:1,name:"二级菜单A-B",rank:2},
         {id:6, parentId:2,name:"二级菜单B-A",rank:2},
         {id:7, parentId:4,name:"三级菜单A-A-A",rank:3}
-      ]
+      ],
+      dialogData: [{
+        menuId: 1,
+        menuName: '霖梓网络',
+        childrenList: [{
+          menuId: '1-1',
+          menuName: '百凌事业部',
+          childrenList: [{
+            menuId: '1-1-1',
+            menuName: '前端'
+          }, {
+            menuId: '1-1-2',
+            menuName: '后端'
+          }, {
+            menuId: '1-1-3',
+            menuName: '产品'
+          }, {
+            menuId: '1-1-4',
+            menuName: '运营'
+          }, {
+            menuId: '1-1-5',
+            menuName: '运维'
+          }]
+        }, {
+          menuId: '1-2',
+          menuName: '联通事业部',
+          childrenList: [{
+            menuId: '1-2-1',
+            menuName: '前端'
+          }, {
+            menuId: '1-2-2',
+            menuName: '后端'
+          }, {
+            menuId: '1-2-3',
+            menuName: '测试'
+          }, {
+            menuId: '1-2-4',
+            menuName: '产品'
+          }, {
+            menuId: '1-2-5',
+            menuName: '运营'
+          }, {
+            menuId: '1-2-6',
+            menuName: '运维'
+          }]
+        }]
+      }, {
+        menuId: 2,
+        menuName: '霖扬网络',
+        childrenList: [{
+          menuId: '2-1',
+          menuName: 'in有',
+          childrenList: [{
+            menuId: '2-1-1',
+            menuName: '前端'
+          }, {
+            menuId: '2-1-2',
+            menuName: '后端'
+          }, {
+            menuId: '2-1-3',
+            menuName: '运维'
+          }, {
+            menuId: '2-1-4',
+            menuName: '运营'
+          }]
+        }, {
+          menuId: '2-2',
+          menuName: '二级 2-2',
+          childrenList: [{
+            menuId: '2-2-1',
+            menuName: '三级 2-2-1'
+          }]
+        }]
+      }],
+      defaultProps: {
+        children: 'childrenList',
+        label: 'menuName'
+      },
+      defaultCheckedKeys: [],
     }
+  },
+  created () {
+    this.handleGetTableData(apiListSysButton)
   },
   computed: {
     /* 转树形数据 */
@@ -191,6 +267,8 @@ export default {
     }
   },
   methods: {
+    popoverHide (checkedIds, checkedData) {
+    },
     handleNodeClick (data) {
       console.log(data)
     },
@@ -211,15 +289,15 @@ export default {
     handleEditData (row) {
       this.editData = JSON.parse(JSON.stringify(row))
       this.isEdit = 1
-      this.dialogTitle = '编辑员工'
-      this.showDialogForm = true
+      this.staffDialogTitle = '编辑员工'
+      this.addStaffVisible = true
     },
     // 点击新增按钮
     handleAdd () {
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
       this.isEdit = 0
-      this.dialogTitle = '添加员工'
-      this.showDialogForm = true
+      this.staffDialogTitle = '添加员工'
+      this.addStaffVisible = true
     },
     // 停用账号
     handleStop () {
@@ -265,7 +343,7 @@ export default {
 
       })
     },
-    // 允许登录
+    // 重置密码
     handleResetPassword () {
       this.$confirm('确定重置该员工账号密码吗？新密码将以短信发送。', '温馨提醒', {
         confirmButtonText: '确定',
@@ -289,49 +367,59 @@ export default {
     }
   },
   components: {
-    selectTree
+    treeSelect
   }
 }
 </script>
 
 <style lang="less">
   .staff-admin {
-    .tree-box {
+    display: flex;
+    .box-left {
+      width: 200px;
+      min-width: 200px;
       background: #fff;
       margin-right: 10px;
-      h2 {
-        font-family: PingFangSC-Semibold;
-        font-size: 16px;
-        color: #333333;
-        line-height: 16px;
-        padding: 20px 0 20px 15px;
-      }
-      .el-tree {
-        .el-tree-node {
-          .el-tree-node__content {
-            height: 30px;
-            .el-icon-caret-right {
-              color: #B2B2B2;
+      .tree-box {
+        background: #fff;
+        h2 {
+          font-family: PingFangSC-Semibold;
+          font-size: 16px;
+          color: #333333;
+          line-height: 16px;
+          padding: 20px 0 20px 15px;
+        }
+        .el-tree {
+          .el-tree-node {
+            .el-tree-node__content {
+              height: 30px;
+              .el-icon-caret-right {
+                color: #B2B2B2;
+              }
+              .el-tree-node__label {
+                font-family: PingFangSC-Regular;
+                font-size: 14px;
+                color: #333333;
+              }
             }
-            .el-tree-node__label {
-              font-family: PingFangSC-Regular;
-              font-size: 14px;
-              color: #333333;
+          }
+          .is-current {
+            >.el-tree-node__content{
+              background: rgba(66, 99, 219, 0.095);
+              .el-icon-caret-right {
+                color: #4162DB;
+              }
+              .el-tree-node__label {
+                color: #4162DB;
+              }
             }
           }
         }
-        .is-current {
-          >.el-tree-node__content{
-            background: rgba(66, 99, 219, 0.095);
-            .el-icon-caret-right {
-              color: #4162DB;
-            }
-            .el-tree-node__label {
-              color: #4162DB;
-            }
-          }
-        }
       }
+    }
+    .box-right {
+      flex: 1;
+      max-width: calc(100% - 210px);
     }
     .el-dialog{
       min-width: 700px;

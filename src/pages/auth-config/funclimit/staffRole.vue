@@ -1,5 +1,5 @@
 <template>
-  <div class="staff-role clearfix">
+  <div class="staff-role">
     <div class="box-left">
       <h2>角色分类</h2>
       <h3>全部用户(60)</h3>
