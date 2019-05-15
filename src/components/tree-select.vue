@@ -21,9 +21,9 @@
      */
 -->
 <template>
-  <div>
+  <div class="tree-select">
     <div class="mask" v-show="isShowSelect" @click="isShowSelect = !isShowSelect"></div>
-    <el-popover placement="bottom-start" :width="264" trigger="manual"
+    <el-popover placement="bottom-start" :width="style" trigger="manual"
                 v-model="isShowSelect" @hide="popoverHide">
       <el-tree class="common-tree" :style="style" ref="tree" :data="data" :props="defaultProps"
               :show-checkbox="multiple"
@@ -35,7 +35,7 @@
               :highlight-current="true"
               @node-click="handleNodeClick"
               @check-change="handleCheckChange"></el-tree>
-      <el-select :style="selectStyle" slot="reference" ref="select" :size="size"
+      <el-select :style="selectStyle" slot="reference" width="375" ref="select" :size="size"
                  v-model="selectedData"
                  :multiple="multiple"
                  :clearable="clearable"
@@ -118,7 +118,7 @@ export default {
     width: {
       type: Number,
       default () {
-        return 250;
+        return 355;
       }
     },
     height: {
@@ -280,20 +280,20 @@ export default {
 };
 </script>
  
-<style>
+<style lang="less">
   .mask{
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    z-index: 11;
-  }
-  .common-tree{
-    overflow: auto;
-  }
-  .tree-select{
-    z-index: 111;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      z-index: 11;
+    }
+    .common-tree{
+      overflow: auto;
+    }
+    .tree-select{
+      z-index: 111;
+    }
+  .el-popover .el-checkbox{
+    margin-bottom: 0px;
   }
 </style>

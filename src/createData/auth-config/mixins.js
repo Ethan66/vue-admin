@@ -75,20 +75,17 @@ export const ipControl = {
   },
   created () {
     let configSearchItem = [
-      ['id', 'buttonMenuName'],
-      {
-        buttonMenuName: { type: 'select',
-          options: [
-            { label: '成功', value: '1' },
-            { label: '失败', value: '2' }
-          ] 
+      'id',
+      { buttonMenuName:
+        { type: 'select',
+          options: [{ label: '成功', value: '1' }, { label: '失败', value: '2' }]
         }
       }
     ]
     let configTableItem = {
       selection: 50,
       id: 80,
-      buttonName: 200,
+      buttonName: 100,
       buttonMenuName: { clsName: 'buttonMenuName', width: 100 },
       buttonCode: 100,
       gmtCreate: 200,
@@ -96,15 +93,26 @@ export const ipControl = {
       isDelete: 80,
       btn: 120
     }
-    let configDialogItem = ['id', 'buttonCode']
+    let configDialogItem = [
+      ['id', 'buttonMenuName'],
+      {
+        buttonMenuName: { type: 'select',
+          options: [
+            { label: '成功', value: '1' },
+            { label: '失败', value: '2' }
+          ]
+        }
+      }
+    ]
     this.searchItem = this.$setItem(ipTableItem, configSearchItem, 'search')
     this.tableItem = this.$setItem(ipTableItem, configTableItem, 'table')
     this.dialogItem = this.$setItem(ipTableItem, configDialogItem, 'dialog')
+    console.log(this.dialogItem)
     this.rules = {
-      buttonName: [
+      id: [
         { required: true, message: '请输入IP地址', trigger: 'blur' }
       ],
-      buttonCode: [
+      buttonName: [
         { required: true, message: '请输入按钮编码', trigger: 'blur' }
       ]
     }

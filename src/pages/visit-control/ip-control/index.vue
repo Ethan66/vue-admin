@@ -30,17 +30,12 @@
       :dialogBtn="dialogBtn"
       :rules="rules"
     />
-    <!-- <tree-select :data="dataTree"
-                 :defaultProps="defaultProps" multiple
-                 :nodeKey="nodeKey" :checkedKeys="defaultCheckedKeys"
-                 @popoverHide="popoverHide"></tree-select> -->
   </div>
 </template>
 
 <script>
 import { ipControl } from '@/createData/auth-config/mixins'
 import basicMethod from '@/config/mixins'
-// import treeSelect from '@/components/tree-select'
 import { apiDeleteSysButton, apiEditeSysButton, apiListSysButton, apiCreateSysButton } from '@/api/authority'
 
 export default {
@@ -48,96 +43,12 @@ export default {
   created () {
     this.handleGetTableData(apiListSysButton)
   },
-  // components: { treeSelect },
   data () {
     return {
       defaultSearchObj: { a: 1 },
-      // defaultProps: {
-      //   children: 'childrenList',
-      //   label: 'menuName'
-      // },
-      // nodeKey: 'menuId',
-      // defaultCheckedKeys: [],
-      // dataTree: [{
-        //   menuId: 1,
-        //   menuName: '霖梓网络',
-        //   childrenList: [{
-        //     menuId: '1-1',
-        //     menuName: '百凌事业部',
-        //     childrenList: [{
-        //       menuId: '1-1-1',
-        //       menuName: '前端'
-        //     },{
-        //       menuId: '1-1-2',
-        //       menuName: '后端'
-        //     },{
-        //       menuId: '1-1-3',
-        //       menuName: '产品'
-        //     },{
-        //       menuId: '1-1-4',
-        //       menuName: '运营'
-        //     },{
-        //       menuId: '1-1-5',
-        //       menuName: '运维'
-        //     }]
-        //   },{
-        //     menuId: '1-2',
-        //     menuName: '联通事业部',
-        //     childrenList: [{
-        //       menuId: '1-2-1',
-        //       menuName: '前端'
-        //     },{
-        //       menuId: '1-2-2',
-        //       menuName: '后端'
-        //     },{
-        //       menuId: '1-2-3',
-        //       menuName: '测试'
-        //     },{
-        //       menuId: '1-2-4',
-        //       menuName: '产品'
-        //     },{
-        //       menuId: '1-2-5',
-        //       menuName: '运营'
-        //     },{
-        //       menuId: '1-2-6',
-        //       menuName: '运维'
-        //     }]
-        //   }]
-        // }, {
-        //   menuId: 2,
-        //   menuName: '霖扬网络',
-        //   childrenList: [{
-        //     menuId: '2-1',
-        //     menuName: 'in有',
-        //     childrenList: [{
-        //       menuId: '2-1-1',
-        //       menuName: '前端'
-        //     },{
-        //       menuId: '2-1-2',
-        //       menuName: '后端'
-        //     },{
-        //       menuId: '2-1-3',
-        //       menuName: '运维'
-        //     },{
-        //       menuId: '2-1-4',
-        //       menuName: '运营'
-        //     }]
-        //   }, {
-        //     menuId: '2-2',
-        //     menuName: '二级 2-2',
-        //     childrenList: [{
-        //       menuId: '2-2-1',
-        //       menuName: '三级 2-2-1'
-        //     }]
-        //   }]
-        // }] 
     }
   },
   methods: {
-    popoverHide (checkedIds, checkedData) {
-      console.log(checkedIds);
-      console.log(checkedData);
-    },
     // 点击新增按钮
     handleAdd () {
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据

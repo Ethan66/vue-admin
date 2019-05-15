@@ -14,31 +14,188 @@
       :table-pages="tablePages"
       @handleSendHead="handleSendHead"
       @table-jump="handleJump">
+      <div class="btn-content" slot="btn">
+        <span v-if="chooseDataArr.length > 0">已选择 <i>{{ chooseDataArr.length }}</i> 条</span>
+        <el-button @click="handleAdd" v-if="chooseDataArr.length < 1">添加授权</el-button>
+        <el-button @click="handleInvalid" v-if="chooseDataArr.length > 0">失 效</el-button>
+      </div>
     </table-module>
+    <el-dialog :title="dialogTitle" :visible.sync="showDialogForm1" class="dialogModule" :close-on-click-modal="false">
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+        <el-form-item label="请选择员工" prop="region" required>
+          <tree-select :data="dialogData"
+                 :defaultProps="defaultProps" multiple
+                 :nodeKey="nodeKey" :checkedKeys="defaultCheckedKeys"
+                 @popoverHide="popoverHide"></tree-select>
+        </el-form-item>
+        <el-form-item label="授权时间" prop="resource" required>
+          <el-radio-group v-model="ruleForm.resource">
+            <div class="radio-wap">
+              <el-radio class="radioDis" label="时间段"></el-radio>
+              <el-date-picker
+                class="date-width"
+                v-model="ruleForm.date"
+                type="daterange"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期">
+              </el-date-picker>
+            </div>
+            <el-radio label="永久授权"></el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="描述" prop="desc" required>
+          <el-input type="textarea" v-model="ruleForm.desc"></el-input>
+        </el-form-item>
+      </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="handleFn('ruleForm')">取消</el-button>
+      <el-button type="primary" @click="handleFn()">确定</el-button>
+    </div>
+  </el-dialog>
   </div>
 </template>
 
 <script>
 import { account } from '@/createData/auth-config/mixins'
 import basicMethod from '@/config/mixins'
+import treeSelect from '@/components/tree-select'
 import { apiDeleteSysButton, apiEditeSysButton, apiListSysButton, apiCreateSysButton } from '@/api/authority'
 
 export default {
   mixins: [basicMethod, account],
+  components: { treeSelect },
   created () {
     this.handleGetTableData(apiListSysButton)
   },
   data () {
     return {
+      dialogData: [{
+          menuId: 1,
+          menuName: '霖梓网络',
+          childrenList: [{
+            menuId: '1-1',
+            menuName: '百凌事业部',
+            childrenList: [{
+              menuId: '1-1-1',
+              menuName: '前端'
+            },{
+              menuId: '1-1-2',
+              menuName: '后端'
+            },{
+              menuId: '1-1-3',
+              menuName: '产品'
+            },{
+              menuId: '1-1-4',
+              menuName: '运营'
+            },{
+              menuId: '1-1-5',
+              menuName: '运维'
+            }]
+          },{
+            menuId: '1-2',
+            menuName: '联通事业部',
+            childrenList: [{
+              menuId: '1-2-1',
+              menuName: '前端'
+            },{
+              menuId: '1-2-2',
+              menuName: '后端'
+            },{
+              menuId: '1-2-3',
+              menuName: '测试'
+            },{
+              menuId: '1-2-4',
+              menuName: '产品'
+            },{
+              menuId: '1-2-5',
+              menuName: '运营'
+            },{
+              menuId: '1-2-6',
+              menuName: '运维'
+            }]
+          }]
+        }, {
+          menuId: 2,
+          menuName: '霖扬网络',
+          childrenList: [{
+            menuId: '2-1',
+            menuName: 'in有',
+            childrenList: [{
+              menuId: '2-1-1',
+              menuName: '前端'
+            },{
+              menuId: '2-1-2',
+              menuName: '后端'
+            },{
+              menuId: '2-1-3',
+              menuName: '运维'
+            },{
+              menuId: '2-1-4',
+              menuName: '运营'
+            }]
+          }, {
+            menuId: '2-2',
+            menuName: '二级 2-2',
+            childrenList: [{
+              menuId: '2-2-1',
+              menuName: '三级 2-2-1'
+            }]
+          }]
+        }],
+      defaultProps: {
+        children: 'childrenList',
+        label: 'menuName'
+      },
+      nodeKey: 'menuId',
+      defaultCheckedKeys: [],
+      ruleForm: {
+          region: '',
+          date: '',
+          resource: '',
+          desc: ''
+        },
+         rules: {
+          region: [
+            { required: true, message: '请选择员工', trigger: 'change' }
+          ],
+          date: [
+            { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+          ],
+          resource: [
+            { required: true, message: '请选择活动资源', trigger: 'change' }
+          ],
+          desc: [
+            { required: true, message: '请填写活动形式', trigger: 'blur' }
+          ]
+        },
+      showDialogForm1: true,
       defaultSearchObj: { a: 1 }
     }
   },
   methods: {
+    popoverHide (checkedIds, checkedData) {
+      console.log(checkedIds);
+      console.log(checkedData);
+    },
+    submitForm(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            alert('submit!');
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
+      },
     // 点击新增按钮
     handleAdd () {
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
       this.isEdit = 0
-      this.dialogTitle = '新增按钮'
+      this.dialogTitle = '添加授权'
       this.showDialogForm = true
     },
     // 点击表格编辑按钮
@@ -51,6 +208,9 @@ export default {
     // 点击表格删除按钮
     handleDeleteData (row) {
       this.apiDeleteData(apiDeleteSysButton, row.id, apiListSysButton)
+    },
+    handleInvalid () {
+      console.log('失效')
     },
     // 点击对话框确认按钮
     handleSubmit () {
@@ -73,3 +233,17 @@ export default {
   }
 }
 </script>
+<style lang="less">
+.radio-wap {
+  width: 375px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  .date-width {
+    width: 283px;
+    margin-left: 10px;
+    .el-date-editor .el-range-separator {
+      width: 10%;
+    }
+  }
+}
+</style>
