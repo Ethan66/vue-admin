@@ -29,7 +29,7 @@ SetItem.prototype.filterField = function (config) {
     let configObj = this.configObj
     let dataArrFilter = this.dataArrFilter
     let addDataArr = []
-    let arr = config.map(item => {
+    let arr = config.map((item, i) => {
       if (typeof item === 'string') {
         return item
       } else if (item.constructor === Object) {
@@ -38,12 +38,15 @@ SetItem.prototype.filterField = function (config) {
           configObj[key] = item[key]
           return key
         } else {
-          let obj = { label: '', key, canSet: 1 }
+          let obj = { label: '', key, canSet: 1, sort: i }
           addDataArr.push(Object.assign({}, obj, item[key]))
         }
       }
     })
-    this.dataArrFilter = dataArrFilter.filter(item => arr.includes(item.key)).concat(addDataArr)
+    this.dataArrFilter = dataArrFilter.filter(item => arr.includes(item.key))
+    addDataArr.forEach(item => {
+      this.dataArrFilter.splice(item.sort, 0, item)
+    })
   } else {
     console.error('搜索或对话框配置必须是数组')
   }
