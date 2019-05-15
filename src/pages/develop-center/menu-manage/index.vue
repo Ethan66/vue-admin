@@ -17,12 +17,19 @@
     </table-module>
     <dialog-module
       ref="dialog"
+      doubleColumn
       :dialogTitle="dialogTitle"
       :showDialogForm.sync="showDialogForm"
       :editData="editData"
       :dialogItem="dialogItem"
       :dialogBtn="dialogBtn"
       :rules="rules"
+    />
+    <dialog-detail
+      title="详情"
+      :showDetail.sync="showDetail"
+      :dialogItem="dialogItem"
+      :editData="editData"
     />
   </div>
 </template>
@@ -36,6 +43,11 @@ import { debuglog } from 'util';
 
 export default {
   mixins: [basicMethod, menu],
+  data () {
+    return {
+      showDetail: false
+    }
+  },
   created () {
     this.tablePages.pageSize = 10000
     this.handleGetTableData(apiListSysMenu)
@@ -61,6 +73,11 @@ export default {
     // 点击表格删除按钮
     handleDeleteData (row) {
       this.apiDeleteData(apiDeleteSysMenu, row.id, apiListSysMenu)
+    },
+    // 点击详情
+    handleShowDetailDialog (row) {
+      this.editData = JSON.parse(JSON.stringify(row))
+      this.showDetail = true
     },
     // 点击按钮管理按钮
     handleBtnManage (row) {
