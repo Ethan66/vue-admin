@@ -50,8 +50,10 @@ SetItem.prototype.filterField = function (config) {
     this.dataArrFilter = []
     sortArr.forEach(item => {
       let obj = dataArrFilter.find(child => child.key === item)
-      obj.show = true
-      obj && this.dataArrFilter.push(obj)
+      if (obj) {
+        obj.show = true
+        this.dataArrFilter.push(obj)
+      }
     })
   } else {
     console.error('搜索或对话框配置必须是数组')
