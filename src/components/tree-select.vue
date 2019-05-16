@@ -296,7 +296,10 @@ export default {
     .tree-select{
       z-index: 111;
     }
-  .el-popover .el-checkbox{
-    margin-bottom: 0px;
+  .el-popover{
+    width: 300px;
+    .el-checkbox{
+      margin-bottom: 0px;
+    }
   }
 </style>
