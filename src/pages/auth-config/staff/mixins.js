@@ -24,7 +24,7 @@ export const staff = {
       report: 100,
       status: 80,
       role: 80,
-      btn: 120
+      btn: 260
     }
     this.searchItem = this.$setItem(staffTest, configSearchItem, 'search')
     this.tableItem = this.$setItem(staffTest, configTableItem, 'table')
