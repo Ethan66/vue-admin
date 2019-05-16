@@ -37,12 +37,10 @@
 <script>
 import { ipControl } from '@/createData/auth-config/mixins'
 import basicMethod from '@/config/mixins'
-import dialogConfirm from '@/components/dialog-module/dialog-confirm'
 import { apiDeleteSysButton, apiEditeSysButton, apiListSysButton, apiCreateSysButton } from '@/api/authority'
 
 export default {
   mixins: [basicMethod, ipControl],
-  components: { dialogConfirm },
   created () {
     this.handleGetTableData(apiListSysButton)
   },
