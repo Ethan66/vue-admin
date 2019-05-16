@@ -20,10 +20,12 @@
                       :type="item.type"
                       :placeholder="item.placeholder"
                       :disabled="item.disabled || allRead"
+                      :maxlength="item.maxlength"
                       @input="handleChange(item.changeFn, editData[item.key])"
                       v-if="item.type==='input' || item.type === 'number' || item.type === 'password'"
             >
             </el-input>
+            <span v-if="item.type === 'docs'">{{editData[item.key]}}</span>
             <el-input v-model="editData[item.key]" type="textarea"
                       :placeholder="item.placeholder"
                       :disabled="item.disabled || allRead"
