@@ -107,7 +107,6 @@ export const ipControl = {
     this.searchItem = this.$setItem(ipTableItem, configSearchItem, 'search')
     this.tableItem = this.$setItem(ipTableItem, configTableItem, 'table')
     this.dialogItem = this.$setItem(ipTableItem, configDialogItem, 'dialog')
-    console.log(this.dialogItem)
     this.rules = {
       id: [
         { required: true, message: '请输入IP地址', trigger: 'blur' }
@@ -134,6 +133,7 @@ export const account = {
       }
     ]
     let configTableItem = {
+      selection: 80,
       id: 80,
       buttonName: 200,
       buttonMenuName: 100,
