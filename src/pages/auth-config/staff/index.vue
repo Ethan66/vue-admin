@@ -249,7 +249,7 @@ export default {
         children: 'childrenList',
         label: 'menuName'
       },
-      defaultCheckedKeys: [],
+      defaultCheckedKeys: []
     }
   },
   created () {
