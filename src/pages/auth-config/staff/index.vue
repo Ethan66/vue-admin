@@ -4,8 +4,8 @@
       <div class="tree-box">
         <h2>组织架构</h2>
         <el-tree
-          :data="data"
-          :highlight-current="true"
+          node-key="label" :data="treeData" :props="treeProps"
+          default-expand-all
           @node-click="handleNodeClick"></el-tree>
       </div>
     </div>
@@ -62,21 +62,6 @@ export default {
   data () {
     return {
       defaultSearchObj: { a: 1 },
-      data: [
-        {
-          label: '霖梓网络',
-          children: [{
-            label: '百凌事业部',
-            children: [{
-              label: '产品'
-            }, {
-              label: '机构合作'
-            }, {
-              label: '测试'
-            }]
-          }]
-        }
-      ],
       staffInfoVisible: false,
       staffDialogVisible: false,
       staffForm: {},
@@ -284,7 +269,48 @@ export default {
       staffInfoTitle: '员工信息',
       staffInfoBtn: [
         { label: '关闭', type: 'edit', color: 'primary', clickfn: 'handleStaffInfoDialogClose' }
-      ]
+      ],
+      treeProps: {
+        children: 'children',
+        label: 'label'
+      },
+      treeData: [
+        {
+          label: '一级 1',
+          children: [{
+            label: '二级 1-1',
+            children: [{
+              label: '三级 1-1-1'
+            }]
+          }]
+        }, {
+          label: '一级 2',
+          children: [{
+            label: '二级 2-1',
+            children: [{
+              label: '三级 2-1-1'
+            }]
+          }, {
+            label: '二级 2-2',
+            children: [{
+              label: '三级 2-2-1'
+            }]
+          }]
+        }, {
+          label: '一级 3',
+          children: [{
+            label: '二级 3-1',
+            children: [{
+              label: '三级 3-1-1'
+            }]
+          }, {
+            label: '二级 3-2',
+            children: [{
+              label: '三级 3-2-1'
+            }]
+          }]
+        }
+      ],
     }
   },
   created () {
@@ -431,9 +457,6 @@ export default {
           .el-tree-node {
             .el-tree-node__content {
               height: 30px;
-              .el-icon-caret-right {
-                color: #B2B2B2;
-              }
               .el-tree-node__label {
                 font-family: PingFangSC-Regular;
                 font-size: 14px;
@@ -446,6 +469,9 @@ export default {
               background: rgba(66, 99, 219, 0.095);
               .el-icon-caret-right {
                 color: #4162DB;
+              }
+              .is-leaf.el-icon-caret-right {
+                color: transparent;
               }
               .el-tree-node__label {
                 color: #4162DB;
