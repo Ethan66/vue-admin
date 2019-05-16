@@ -19,7 +19,7 @@
                 class="btnCls"
                 :key="i+index"
                 :disabled="btn.disabled || (scope.row.disabledBtn && scope.row.disabledBtn.includes(btn.name))"
-                @click="handleBtnClick(btn.clickFn, scope.row, index, btn.name)"
+                @click="handleBtnClick(btn.clickFn, scope.row, scope.$index, btn.name)"
               >{{ btn.name }}</p>
             </template>
 
@@ -29,7 +29,7 @@
                 class="btnCls"
                 :key="i+index"
                 :disabled="btn.disabled || (scope.row.disabledBtn && scope.row.disabledBtn.includes(btn.name))"
-                @click="handleBtnClick(btn.clickFn, scope.row, index, btn.name)"
+                @click="handleBtnClick(btn.clickFn, scope.row, scope.$index, btn.name)"
               >{{ handleSetInlineShowName(btn, scope.row) }}</p>
             </template>
           </template>
@@ -120,6 +120,10 @@ export default {
           row.editBtnName = '保存'
           row.editBtnColor = 'success'
           this.$emit('handleInlineEditTableData', index, row)
+          this.$nextTick(() => {
+            let input = document.querySelector('.tableModule .edit-input input[type=text]')
+            input && input.focus()
+          })
         } else if (btnName === '编辑' && row.editBtnName === '保存') { // 点击保存按钮
           row.editStatus = false
           row.editBtnName = undefined
@@ -130,7 +134,7 @@ export default {
           if (!row.editStatus) return
           row.editStatus = false
           this.tableItem.forEach(item => {
-            if (item.isEdit) {
+            if (item.canEdit === 1) {
               row[item.prop] = this.rowOrignData[index][item.prop]
             }
           })

@@ -14,5 +14,12 @@ export default [
       { path: 'newpage', component: () => import('@/pages/develop-center/menu-manage/newpage'), meta: { title: '新页面', level: 3 } },
       { path: 'fourpage', component: () => import('@/pages/develop-center/menu-manage/fourpage'), meta: { title: '四级页面', level: 4 } }
     ]
+  },
+  {
+    path: '/main/develop-center/page-manage',
+    component: Layout,
+    children: [
+      { path: 'tybemanage', component: () => import('@/pages/develop-center/page-manage/tybemanage'), meta: { title: '字段页面', level: 3 } }
+    ]
   }
 ]

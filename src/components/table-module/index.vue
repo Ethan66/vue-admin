@@ -26,7 +26,7 @@
           :fixed="item.fixed"
         />
         <el-table-column
-          v-if="item.type === 'cell' || item.type === 'input'"
+          v-if="['cell', 'input', 'select'].includes(item.type)"
           :key="`content${i}`"
           :min-width="item.width"
           :sortable="item.sortStatus || false"
@@ -37,13 +37,16 @@
         >
         <template slot-scope="scope">
           <inline-edit
-            v-if="item.type === 'input' && scope.row.editStatus"
+            v-if="scope.row.editStatus && ['input', 'select'].includes(item.type)"
+            :item="item"
+            :type="item.type"
             :row="scope.row"
             :prop="item.prop"
           />
           <span
             v-else
             :class="handleSetStatusClsName(item.clsName || '', scope.row[item.prop])"
+            @click="handleCellClick(item.clickFn)"
           >
             <i :class="handleSetStatusClsName(item.clsName || '', scope.row[item.prop], 'i')"></i>
             {{ scope.row[item.prop] }}
@@ -273,6 +276,10 @@ export default {
     handleCurrentChange (val) {
       this.$emit('table-jump', val)
       this.tablePages.current = val
+    },
+    handleCellClick (fn) {
+      console.log(fn)
+      this.parent[fn] && this.parent[fn]()
     }
   }
 }
