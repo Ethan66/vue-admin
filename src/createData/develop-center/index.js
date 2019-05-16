@@ -51,7 +51,7 @@ export const menu = {
 
 export const pageManage = {
   data () {
-    return this.$setBtnConfig(JSON.parse(JSON.stringify(searchTableInitObj)), [{ edit: { clickFn: 'handleGoTybe' } }])
+    return this.$setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), ['edit'])
   },
   created () {
     let configSearchItem = [
@@ -70,9 +70,10 @@ export const pageManage = {
       btn: 70
     }
     let configDialogItem = [
-      { parentMenuName: { label: '上级菜单', type: 'select', options: [{ label: '一', value: 1 }, { label: '二', value: 2 }] } },
-      'menuName', 'menuLevel', 'menuCode', 'menuUrl', 'sort',
+      'menuName', 'menuCode', 'menuUrl',
       { status: { type: 'radio', options: [{ label: '正常', value: '1' }, { label: '停用', value: '0' }] } },
+      { creater: { label: '创建人', type: 'docs' } },
+      { gmtCreate: { label: '创建时间', type: 'docs' } },
       { menuDesc: { label: '描述', type: 'textarea', rows: 4 } }
     ]
     this.searchItem = this.$setItem(pageManageTest, configSearchItem, 'search')
