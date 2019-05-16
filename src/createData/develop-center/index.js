@@ -1,7 +1,5 @@
-import { basicInitObj } from '@/components/basicObj'
-import { menuTest } from '@/test/develop-center'
-
-const initData = Object.assign({}, basicInitObj)
+import { basicInitObj, searchTableInitObj } from '@/components/basicObj'
+import { menuTest, pageManageTest, tybeManageTest } from '@/test/develop-center'
 
 const menuMoreList = [
   { name: '新建平级菜单', clickFn: 'handleCreateLevelMenu' },
@@ -12,7 +10,7 @@ const menuMoreList = [
 
 export const menu = {
   data () {
-    return this.$setBtnConfig(JSON.parse(JSON.stringify(initData)), ['edit', { more: { list: menuMoreList } }])
+    return this.$setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), ['edit', { more: { list: menuMoreList } }])
   },
   created () {
     let configSearchItem = [
@@ -37,6 +35,91 @@ export const menu = {
     this.searchItem = this.$setItem(menuTest, configSearchItem, 'search')
     this.tableItem = this.$setItem(menuTest, configTableItem, 'table')
     this.dialogItem = this.$setItem(menuTest, configDialogItem, 'dialog')
+    this.rules = {
+      id: [
+        { required: true, message: '请输入菜单id', trigger: 'blur' }
+      ],
+      menuName: [
+        { required: true, message: '请输入菜单名称', trigger: 'blur' }
+      ],
+      menuLevel: [
+        { required: true, message: '请选择菜单类型', trigger: 'change' }
+      ]
+    }
+  }
+}
+
+export const pageManage = {
+  data () {
+    return this.$setBtnConfig(JSON.parse(JSON.stringify(searchTableInitObj)), [{ edit: { clickFn: 'handleGoTybe' } }])
+  },
+  created () {
+    let configSearchItem = [
+      'menuName',
+      { status: { type: 'select', options: [{ label: '正常', value: 1 }, { label: '失效', value: 2 }] } }
+    ]
+    let configTableItem = {
+      menuName: { width: 100, clickFn: 'handleGoPage', clsName: 'cm-btn-color' },
+      pageCode: 80,
+      menuCode: 120,
+      creater: 80,
+      status: 80,
+      parentMenuName: 100,
+      menuDesc: 80,
+      menuUrl: 200,
+      btn: 70
+    }
+    let configDialogItem = [
+      { parentMenuName: { label: '上级菜单', type: 'select', options: [{ label: '一', value: 1 }, { label: '二', value: 2 }] } },
+      'menuName', 'menuLevel', 'menuCode', 'menuUrl', 'sort',
+      { status: { type: 'radio', options: [{ label: '正常', value: '1' }, { label: '停用', value: '0' }] } },
+      { menuDesc: { label: '描述', type: 'textarea', rows: 4 } }
+    ]
+    this.searchItem = this.$setItem(pageManageTest, configSearchItem, 'search')
+    this.tableItem = this.$setItem(pageManageTest, configTableItem, 'table')
+    this.dialogItem = this.$setItem(pageManageTest, configDialogItem, 'dialog')
+    this.rules = {
+      id: [
+        { required: true, message: '请输入菜单id', trigger: 'blur' }
+      ],
+      menuName: [
+        { required: true, message: '请输入菜单名称', trigger: 'blur' }
+      ],
+      menuLevel: [
+        { required: true, message: '请选择菜单类型', trigger: 'change' }
+      ]
+    }
+  }
+}
+
+export const tybeManage = {
+  data () {
+    return this.$setBtnConfig(JSON.parse(JSON.stringify(searchTableInitObj)), ['edit', 'cancel', 'delete'])
+  },
+  created () {
+    let configSearchItem = [
+      'menuName',
+      { status: { type: 'select', options: [{ label: '正常', value: 1 }, { label: '失效', value: 2 }] } }
+    ]
+    let configTableItem = {
+      menuName: { width: 100, clickFn: 'handleGoPage', clsName: 'cm-btn-color', type: 'input', canEdit: 1 },
+      pageCode: 80,
+      creater: { width: 120, type: 'select', canEdit: 1, options: [{ label: '是', value: '1' }, { label: '否', value: '0' }] },
+      status: { width: 80, type: 'select', canEdit: 1, options: [{ label: '是', value: '1' }, { label: '否', value: '0' }] },
+      parentMenuName: { width: 100, type: 'select', canEdit: 1, options: [{ label: '是', value: '1' }, { label: '否', value: '0' }] },
+      menuDesc: { width: 80, type: 'select', canEdit: 1, options: [{ label: '是', value: '1' }, { label: '否', value: '0' }] },
+      menuUrl: { width: 200, type: 'select', canEdit: 1, options: [{ label: '是', value: '1' }, { label: '否', value: '0' }] },
+      btn: 160
+    }
+    let configDialogItem = [
+      { parentMenuName: { label: '上级菜单', type: 'select', options: [{ label: '一', value: 1 }, { label: '二', value: 2 }] } },
+      'menuName', 'menuLevel', 'menuCode', 'menuUrl', 'sort',
+      { status: { type: 'radio', options: [{ label: '正常', value: '1' }, { label: '停用', value: '0' }] } },
+      { menuDesc: { label: '描述', type: 'textarea', rows: 4 } }
+    ]
+    this.searchItem = this.$setItem(tybeManageTest, configSearchItem, 'search')
+    this.tableItem = this.$setItem(tybeManageTest, configTableItem, 'table')
+    this.dialogItem = this.$setItem(tybeManageTest, configDialogItem, 'dialog')
     this.rules = {
       id: [
         { required: true, message: '请输入菜单id', trigger: 'blur' }

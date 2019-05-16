@@ -68,7 +68,6 @@ export const role = {
   }
 }
 
-
 // IP控制
 export const ipControl = {
   data () {
@@ -94,27 +93,19 @@ export const ipControl = {
       isDelete: 80,
       btn: 120
     }
-    let configDialogItem = [
-      ['id', 'buttonMenuName'],
-      {
-        buttonMenuName: { type: 'select',
-          options: [
-            { label: '成功', value: '1' },
-            { label: '失败', value: '2' }
-          ]
-        }
-      }
-    ]
+    let configDialogItem = ['id', 'buttonCode', 'gmtCreate']
     this.searchItem = this.$setItem(ipTableItem, configSearchItem, 'search')
     this.tableItem = this.$setItem(ipTableItem, configTableItem, 'table')
     this.dialogItem = this.$setItem(ipTableItem, configDialogItem, 'dialog')
-    console.log(this.dialogItem)
     this.rules = {
       id: [
         { required: true, message: '请输入IP地址', trigger: 'blur' }
       ],
-      buttonName: [
-        { required: true, message: '请输入按钮编码', trigger: 'blur' }
+      buttonCode: [
+        { required: true, message: '请选择状态', trigger: 'change' }
+      ],
+      gmtCreate: [
+        { required: true, message: '请输入描述内容', trigger: 'change' }
       ]
     }
   }
@@ -135,6 +126,7 @@ export const account = {
       }
     ]
     let configTableItem = {
+      selection: 80,
       id: 80,
       buttonName: 200,
       buttonMenuName: 100,

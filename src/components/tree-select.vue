@@ -293,10 +293,22 @@ export default {
     .common-tree{
       overflow: auto;
     }
+    .common-tree::-webkit-scrollbar {/*滚动条整体样式*/
+        width: 7px;     /*高宽分别对应横竖滚动条的尺寸*/
+        height: 1px;
+    }
+    .common-tree::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+        border-radius: 10px;
+        background: rgba(65,98,219,0.5);
+        // background: #4162DB;
+    }
     .tree-select{
       z-index: 111;
     }
-  .el-popover .el-checkbox{
-    margin-bottom: 0px;
+  .el-popover{
+    width: 300px;
+    .el-checkbox{
+      margin-bottom: 0px;
+    }
   }
 </style>

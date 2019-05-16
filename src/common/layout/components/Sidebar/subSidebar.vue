@@ -78,7 +78,7 @@ export default {
   methods: {
     // 添加tab和设置mainActivedTab
     handleAddTabs (child) {
-      const tab = { name: child.menuName, url: child.menuUrl }
+      const tab = { name: child.menuName, url: child.menuUrl, code: child.menuCode }
       if (!this.mainTabs.find(item => {
         if (item === null) {
           return false
