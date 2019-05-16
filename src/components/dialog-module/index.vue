@@ -1,11 +1,11 @@
 <template>
   <el-dialog :title="dialogTitle" :visible.sync="showDialogForm1" :class="['dialogModule', { doubleColumn }]" :close-on-click-modal="false">
     <el-form :model="editData" :rules="rules" ref="editData">
-      <el-row v-for="(item, i) in dialogItem" :key="i" :class="handleClass(item.span, item.type)">
+      <el-row v-for="(item, i) in dialogItem1" :key="i" :class="handleClass(item.span, item.type)">
         <el-col :class="item.clsName || ''">
-          <el-form-item :class="['label' + chineseTybe, { radio: item.type==='radio' }]" :label="item.label" :prop="item.key">
+          <el-form-item :class="['label' + chineseTybe, { radio: ['radio', 'docs'].includes(item.type) }]" :label="item.label" :prop="item.key">
             <el-select
-                      v-if="item.type === 'select' || item.type === 'selectMore'"
+                      v-if="['select', 'selectMore'].includes(item.type)"
                       v-model="editData[item.key]"
                       :placeholder="item.placeholder"
                       :filterable="item.type === 'select'"
@@ -22,7 +22,7 @@
                       :disabled="item.disabled || allRead"
                       :maxlength="item.maxlength"
                       @input="handleChange(item.changeFn, editData[item.key])"
-                      v-if="item.type==='input' || item.type === 'number' || item.type === 'password'"
+                      v-if="['input', 'number', 'password'].includes(item.type)"
             >
             </el-input>
             <span v-if="item.type === 'docs'">{{editData[item.key]}}</span>
@@ -126,10 +126,13 @@ export default {
         if (i === 5) break
       }
       return parent
+    },
+    dialogItem1 () {
+      return this.dialogItem.filter(item => item.show)
     }
   },
   created () {
-    this.dialogItem.forEach(item => {
+    this.dialogItem1.forEach(item => {
       if (item.label.length > this.chineseTybe) {
         this.chineseTybe = item.label.length
       }
@@ -145,7 +148,7 @@ export default {
     // 对editData多选项进行初始化操作
     handleInieEditData () {
       // 找出多选的选项，转化为数组
-      this.dialogItem.forEach(item => {
+      this.dialogItem1.forEach(item => {
         if (item.type === 'selectMore') {
           if (this.parent.isEdit === 0) {
             this.editData[item.key] = []
