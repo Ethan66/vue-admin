@@ -3,7 +3,8 @@ export default {
     '一级菜单': 'colorBlue',
     '1': 'colorRed'
   },
-  buttonMenuName: {
-    '借款查询': 'colorBlue'
+  loginStatus: {
+    '成功': 'colorBlue',
+    '失败': 'colorRed'
   }
 }
