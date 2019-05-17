@@ -5,7 +5,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/bl/console': {
-        target: 'https://tconsole3.bailingpay.com'
+        target: 'https://tconsole4.bailingpay.com'
       },
       '/uploadFile': {
         target: 'https://tconsole3.bailingpay.com',
