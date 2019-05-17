@@ -1,6 +1,6 @@
 import { basicInitObj } from '@/components/basicObj'
 import { setBtnConfig } from '@/components/methods'
-import { buttonTest, ipTableItem, accountTableItem } from '@/test/auth-config'
+import { buttonTest, ipTableItem, accountTableItem, organizationTest } from '@/test/auth-config'
 
 const initData = Object.assign({}, basicInitObj)
 
@@ -138,5 +138,53 @@ export const account = {
     }
     this.searchItem = this.$setItem(accountTableItem, configSearchItem, 'search')
     this.tableItem = this.$setItem(accountTableItem, configTableItem, 'table')
+  }
+}
+
+const organizationMoreList = [
+  { name: '新建平级部门', clickFn: 'handleCreateDepartment' },
+  { name: '新建下级部门', clickFn: 'handleCreateNextLevelDepartment' },
+  { name: '停用', clickFn: 'handleStop' },
+  { name: '删除', clickFn: 'handleDelete' }
+]
+
+export const organization = {
+  data () {
+    return this.$setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), ['edit', { more: { list: organizationMoreList } }])
+  },
+  created () {
+    let configSearchItem = [
+      'menuName',
+      { status: { type: 'select', options: [{ label: '正常', value: 1 }, { label: '失效', value: 2 }] } }
+    ]
+    let configTableItem = {
+      selection: 50,
+      id: 80,
+      sort: 60,
+      menuName: { type: 'tree', width: 200 },
+      menuCode: 80,
+      status: 80,
+      menuLevel: { clsName: 'menuLevel', width: 100 },
+      btn: 120
+    }
+    let configDialogItem = [
+      { parentMenuName: { label: '上级部门', type: 'select', options: [{ label: '一', value: 1 }, { label: '二', value: 2 }] } },
+      'menuName', 'menuLevel', 'menuCode', 'sort',
+      { status: { type: 'radio', options: [{ label: '正常', value: '1' }, { label: '停用', value: '0' }] } }
+    ]
+    this.searchItem = this.$setItem(organizationTest, configSearchItem, 'search')
+    this.tableItem = this.$setItem(organizationTest, configTableItem, 'table')
+    this.dialogItem = this.$setItem(organizationTest, configDialogItem, 'dialog')
+    this.rules = {
+      id: [
+        { required: true, message: '请输入菜单id', trigger: 'blur' }
+      ],
+      menuName: [
+        { required: true, message: '请输入菜单名称', trigger: 'blur' }
+      ],
+      menuLevel: [
+        { required: true, message: '请选择菜单类型', trigger: 'change' }
+      ]
+    }
   }
 }
