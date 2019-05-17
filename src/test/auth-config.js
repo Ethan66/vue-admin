@@ -9,12 +9,12 @@ export const buttonTest = [
 ]
 
 export const staffTest = [
-  { label: '昵称', key: 'user_name', hide: 0, canSet: 1, sort: 1, fix: 1 },
-  { label: '姓名', key: 'real_name', hide: 0, canSet: 1, sort: 1, fix: 0 },
+  { label: '昵称', key: 'realName', hide: 0, canSet: 1, sort: 1, fix: 1 },
+  { label: '姓名', key: 'realName', hide: 0, canSet: 1, sort: 1, fix: 0 },
   { label: '手机号', key: 'telephone', hide: 0, canSet: 1, sort: 2, fix: 0 },
-  { label: '部门名称', key: 'department_id', hide: 0, canSet: 1, sort: 3, fix: 0 },
+  { label: '部门名称', key: 'departmentName', hide: 0, canSet: 1, sort: 3, fix: 0 },
   { label: '职位', key: 'position', hide: 0, canSet: 4, sort: 5, fix: 0 },
-  { label: '汇报对象', key: 'report_to', hide: 0, canSet: 1, sort: 5, fix: 0 },
+  { label: '汇报对象', key: 'reportToName', hide: 0, canSet: 1, sort: 5, fix: 0 },
   { label: '状态',
     type: 'select',
     options: [
@@ -27,7 +27,7 @@ export const staffTest = [
     canSet: 1,
     sort: 5,
     fix: 0 },
-  { label: '角色', key: 'role_name', hide: 0, canSet: 1, sort: 5, fix: 0 }
+  { label: '角色', key: 'roleName', hide: 0, canSet: 1, sort: 5, fix: 0 }
 ]
 
 export const ipTableItem = [

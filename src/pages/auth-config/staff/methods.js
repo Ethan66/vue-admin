@@ -1,11 +1,18 @@
-import { apiCreateConsoleUser, apiQueryLowerLevelList, apiEditConsoleUser, apiListConsoleUser, apiQueryConsoleUserInfo, apiEditConsoleUserStatus, apiEditConsoleUserPassword } from '@/api/staff'
+import { apiCreateConsoleUser, apiQueryLowerLevelList, apiEditConsoleUser, apiListConsoleUser, apiQueryConsoleUserInfo, apiEditConsoleUserStatus, apiResetConsoleUserPassword } from '@/api/staff'
 export const methods = {
   methods: {
     // 查询用户部门及下级部门列表和人员列表
     handleApiQueryLowerLevelList () {
       apiQueryLowerLevelList().then(res => {
         if (res.code === '208999') {
-
+          this.staffFormItem[0].formItem.map(item => {
+            item.dialogData = item.departmentTree
+          })
+          this.staffFormItem[1].formItem.map(item => {
+            if (item.key === 'report') {
+              item.options = res.resultMap.userlist || []
+            }
+          })
         } else {
           this.$message.error(res.message)
         }
@@ -77,10 +84,12 @@ export const methods = {
     },
     /**
      * 编辑系统用户状态
+     * @param {*} id 表格id
      * @param {*} status 0:正常; 1:停用，2:禁止登陆',
      */
-    handleApiEditConsoleUserStatus (status = 0) {
+    handleApiEditConsoleUserStatus (id, status = 0) {
       let params = {
+        id: id,
         status: status
       }
       apiEditConsoleUserStatus(params).then(res => {
@@ -92,8 +101,8 @@ export const methods = {
       })
     },
     // 重置系统用户密码
-    handleApiEditConsoleUserPassword () {
-      apiEditConsoleUserPassword().then(res => {
+    handleApiResetConsoleUserPassword () {
+      apiResetConsoleUserPassword().then(res => {
         if (res.code === '208999') {
 
         } else {

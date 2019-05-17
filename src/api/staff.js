@@ -30,6 +30,6 @@ export const apiEditConsoleUserStatus = (params) => {
   return postRequest(base + '/editConsoleUserStatus', params)
 }
 // 重置系统用户密码
-export const apiEditConsoleUserPassword = (params) => {
-  return postRequest(base + '/editConsoleUserPassword', params)
+export const apiResetConsoleUserPassword = (params) => {
+  return postRequest(base + '/resetConsoleUserPassword', params)
 }

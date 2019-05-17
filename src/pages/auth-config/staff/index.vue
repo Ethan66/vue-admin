@@ -58,7 +58,7 @@ import { methods } from './methods'
 import basicMethod from '@/config/mixins'
 import staffDialog from './staffDialog'
 import staffInfoDialog from './staffInfoDialog'
-
+import { apiListConsoleUser } from '@/api/staff'
 export default {
   mixins: [basicMethod, staff, methods],
   data () {
@@ -100,10 +100,10 @@ export default {
         {
           title: '账号信息',
           formItem: [
-            { label: '昵称', key: 'nikeName', type: 'input' },
-            { label: '姓名', key: 'name', type: 'input' },
-            { label: '手机号', key: 'phone', type: 'input' },
-            { label: '邮箱', key: 'email', type: 'input' },
+            { label: '昵称', key: 'userName', type: 'input' },
+            { label: '姓名', key: 'realName', type: 'input' },
+            { label: '手机号', key: 'telephone', type: 'input' },
+            { label: '邮箱', key: 'mailbox', type: 'input' },
             { label: '初始密码', key: 'password', type: 'input' }
           ]
         }, {
@@ -111,7 +111,7 @@ export default {
           formItem: [
             {
               label: '部门',
-              key: 'department',
+              key: 'departmentId',
               type: 'selectTree',
               defaultProps: {
                 children: 'childrenList',
@@ -174,70 +174,11 @@ export default {
                 }]
               }]
             },
-            { label: '职位', key: 'job', type: 'input' },
+            { label: '职位', key: 'reportToName', type: 'input' },
             { label: '汇报对象',
-              key: 'report',
-              type: 'selectTree',
-              defaultProps: {
-                children: 'childrenList',
-                label: 'menuName'
-              },
-              defaultCheckedKeys: [],
-              dialogData: [{
-                menuId: 1,
-                menuName: '霖梓网络',
-                childrenList: [{
-                  menuId: '1-1',
-                  menuName: '百凌事业部',
-                  childrenList: [{
-                    menuId: '1-1-1',
-                    menuName: '前端'
-                  }, {
-                    menuId: '1-1-2',
-                    menuName: '后端'
-                  }]
-                }, {
-                  menuId: '1-2',
-                  menuName: '联通事业部',
-                  childrenList: [{
-                    menuId: '1-2-1',
-                    menuName: '前端'
-                  }, {
-                    menuId: '1-2-2',
-                    menuName: '后端'
-                  }, {
-                    menuId: '1-2-3',
-                    menuName: '测试'
-                  }]
-                }]
-              }, {
-                menuId: 2,
-                menuName: '霖扬网络',
-                childrenList: [{
-                  menuId: '2-1',
-                  menuName: 'in有',
-                  childrenList: [{
-                    menuId: '2-1-1',
-                    menuName: '前端'
-                  }, {
-                    menuId: '2-1-2',
-                    menuName: '后端'
-                  }, {
-                    menuId: '2-1-3',
-                    menuName: '运维'
-                  }, {
-                    menuId: '2-1-4',
-                    menuName: '运营'
-                  }]
-                }, {
-                  menuId: '2-2',
-                  menuName: '二级 2-2',
-                  childrenList: [{
-                    menuId: '2-2-1',
-                    menuName: '三级 2-2-1'
-                  }]
-                }]
-              }] }
+              key: 'reportTo',
+              type: 'select',
+              options: [] }
           ]
         }
       ],
@@ -340,29 +281,41 @@ export default {
     handleTableData (tableData) {
       tableData.forEach(item => {
         item.isDelete = item.isDelete === '0' ? '有效' : '无效'
+        item.userType = item.userType === '0' ? '百凌管理平台用户' : item.userType === '1' ? '商户系统用户' : '其他'
+        if (item.status === 0) {
+          item.showBtn = ['停 用', '禁止登录']
+        }
+        if (item.status === 1) {
+          item.showBtn = ['启 用', '允许登录']
+        }
+        if (item.status === 2) {
+          item.showBtn = ['允许登录']
+        }
       })
     },
     // 点击表格编辑按钮
     handleEditData (row) {
-      this.editData = JSON.parse(JSON.stringify(row))
+      this.handleApiQueryLowerLevelList()
+      this.staffFormData = JSON.parse(JSON.stringify(row))
       this.isEdit = 1
       this.staffDialogTitle = '编辑员工'
       this.staffDialogVisible = true
     },
     // 点击新增按钮
     handleAdd () {
-      this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
+      this.staffFormData = this.$options.data().staffFormData
       this.isEdit = 0
       this.staffDialogTitle = '添加员工'
+      this.handleApiQueryLowerLevelList()
       this.staffDialogVisible = true
     },
     // 停用账号
-    handleStop () {
+    handleStop (row) {
       this.$confirm('确定停用该员工账号吗？停用后该员工将无法登录后台管理系统。', '温馨提醒', {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-        this.handleApiEditConsoleUserStatus(1)
+        this.handleApiEditConsoleUserStatus(row.id, 1)
       })
     },
     // 启用账号
@@ -375,12 +328,12 @@ export default {
       })
     },
     // 禁止登录
-    handleForbidLogin () {
+    handleForbidLogin (row) {
       this.$confirm('确定禁止该员工账号登录吗？', '温馨提醒', {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-        this.handleApiEditConsoleUserStatus(2)
+        this.handleApiEditConsoleUserStatus(row.id, 2)
       })
     },
     // 允许登录
@@ -398,7 +351,7 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-        this.handleApiEditConsoleUserPassword()
+        this.handleApiResetConsoleUserPassword()
       })
     },
     // 关闭员工信息弹框
