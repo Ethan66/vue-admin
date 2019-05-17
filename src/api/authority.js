@@ -68,3 +68,13 @@ export const apiEditeSysRole = (params) => {
 export const apiDeleteSysRole = (params) => {
   return postRequest(base + '/deleteSysRole', params)
 }
+
+// 登陆日志
+export const apiListPageLoginLog = (params) => {
+  return postRequest(base + '/listPageLoginLog', params)
+}
+
+// 登陆异常日志
+export const apiListPageLoginErrorLog = (params) => {
+  return postRequest(base + '/listPageLoginLog', params)
+}
