@@ -16,7 +16,7 @@ export const button = {
           options: [
             { label: '成功', value: '1' },
             { label: '失败', value: '2' }
-          ] 
+          ]
         }
       }
     ]

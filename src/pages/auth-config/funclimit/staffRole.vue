@@ -76,70 +76,70 @@ export default {
     this.handleGetTableData(apiListSysButton)
     this.classifyList = [
       {
-      "check": false,
-      "creater": 0,
-      "gmtCreate": "2019-05-13 19:52:10",
-      "gmtModified": null,
-      "id": 1,
-      "isDelete": "0",
-      "modifier": 0,
-      "resourceParentId": 0,
-      "resourceType": 1,
-      "roleCode": "RO001",
-      "roleName": "管理员角色",
-      "roleType": 1,
-      "sortNo": 1,
-      "userCount": 0
+        'check': false,
+        'creater': 0,
+        'gmtCreate': '2019-05-13 19:52:10',
+        'gmtModified': null,
+        'id': 1,
+        'isDelete': '0',
+        'modifier': 0,
+        'resourceParentId': 0,
+        'resourceType': 1,
+        'roleCode': 'RO001',
+        'roleName': '管理员角色',
+        'roleType': 1,
+        'sortNo': 1,
+        'userCount': 0
       },
       {
-      "check": false,
-      "creater": 0,
-      "gmtCreate": "2019-05-15 14:20:27",
-      "gmtModified": "2019-05-15 14:22:01",
-      "id": 11,
-      "isDelete": "0",
-      "modifier": 0,
-      "resourceParentId": 0,
-      "resourceType": 1,
-      "roleCode": "RO002",
-      "roleName": "未分类角色",
-      "roleType": 0,
-      "sortNo": 2,
-      "userCount": 0
+        'check': false,
+        'creater': 0,
+        'gmtCreate': '2019-05-15 14:20:27',
+        'gmtModified': '2019-05-15 14:22:01',
+        'id': 11,
+        'isDelete': '0',
+        'modifier': 0,
+        'resourceParentId': 0,
+        'resourceType': 1,
+        'roleCode': 'RO002',
+        'roleName': '未分类角色',
+        'roleType': 0,
+        'sortNo': 2,
+        'userCount': 0
       },
       {
-      "check": false,
-      "creater": 40,
-      "gmtCreate": "2019-05-15 19:39:00",
-      "gmtModified": null,
-      "id": 13,
-      "isDelete": "0",
-      "modifier": 0,
-      "resourceParentId": 14,
-      "resourceType": 0,
-      "roleCode": "RO20190515073900112dD",
-      "roleName": "测试角色1",
-      "roleType": 2,
-      "sortNo": 3,
-      "userCount": 0
+        'check': false,
+        'creater': 40,
+        'gmtCreate': '2019-05-15 19:39:00',
+        'gmtModified': null,
+        'id': 13,
+        'isDelete': '0',
+        'modifier': 0,
+        'resourceParentId': 14,
+        'resourceType': 0,
+        'roleCode': 'RO20190515073900112dD',
+        'roleName': '测试角色1',
+        'roleType': 2,
+        'sortNo': 3,
+        'userCount': 0
       },
       {
-      "check": false,
-      "creater": 40,
-      "gmtCreate": "2019-05-15 19:42:46",
-      "gmtModified": "2019-05-15 19:48:15",
-      "id": 14,
-      "isDelete": "0",
-      "modifier": 40,
-      "resourceParentId": 0,
-      "resourceType": 1,
-      "roleCode": "RO201905150742460721I",
-      "roleName": "测试角色2019",
-      "roleType": 2,
-      "sortNo": 4,
-      "userCount": 0
+        'check': false,
+        'creater': 40,
+        'gmtCreate': '2019-05-15 19:42:46',
+        'gmtModified': '2019-05-15 19:48:15',
+        'id': 14,
+        'isDelete': '0',
+        'modifier': 40,
+        'resourceParentId': 0,
+        'resourceType': 1,
+        'roleCode': 'RO201905150742460721I',
+        'roleName': '测试角色2019',
+        'roleType': 2,
+        'sortNo': 4,
+        'userCount': 0
       }
-      ]
+    ]
   },
   computed: {
     optionData () {
@@ -336,27 +336,33 @@ export default {
     handleAddRole (id) {
       this.typeDialogTitle = '新建角色'
       this.formItem = [
-        { label: '所属分类', key: 'classfy', type: 'select', options: [
-          { label: '分类1', value: 'a' },
-          { label: '分类2', value: 'b' }
-        ] },
+        { label: '所属分类',
+          key: 'classfy',
+          type: 'select',
+          options: [
+            { label: '分类1', value: 'a' },
+            { label: '分类2', value: 'b' }
+          ] },
         { label: '角色名称', key: 'roleName', type: 'input' },
         { label: '显示排序', key: 'srot', type: 'input' },
-        { label: '复制角色权限', key: 'roleLimit', type: 'selectDouble', options: [
-          {
-            label: '热门尘世',
-            options: [{
-              label: '上海',
-              value: 'shanghai'
-            }]
-          }, {
-            label: '城市名',
-            options: [{
-              label: '成都',
-              value: 'chengdu'
-            }]
-          }
-        ]}
+        { label: '复制角色权限',
+          key: 'roleLimit',
+          type: 'selectDouble',
+          options: [
+            {
+              label: '热门尘世',
+              options: [{
+                label: '上海',
+                value: 'shanghai'
+              }]
+            }, {
+              label: '城市名',
+              options: [{
+                label: '成都',
+                value: 'chengdu'
+              }]
+            }
+          ] }
       ]
       this.typeDialogVisible = true
     },

@@ -1,5 +1,5 @@
 <template>
-<!-- confirmTitle: 弹窗标题 
+<!-- confirmTitle: 弹窗标题
      confirmContent： 提示内容
      showDialogForm： 是否显示弹窗
      confirmFn: 确认按钮函数
@@ -87,7 +87,7 @@ export default {
         color: #666666;
       }
     }
-    .el-dialog { 
+    .el-dialog {
       .el-dialog__body {
         padding: 0 30 30px;
       }
