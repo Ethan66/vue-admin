@@ -19,12 +19,12 @@ export const errorLog = {
     ]
     let configTableItem = {
       userName: 80,
-      buttonName: 100,
+      departmentName: 100,
       terminalType: 100,
       operateSystem: 100,
-      loginIp: 200,
+      loginIp: 100,
       gmtModified: 80,
-      loginStatus: 80,
+      loginStatus: { clsName: 'loginStatus', width: 80 },
       gmtCreate: 80
     }
     this.searchItem = this.$setItem(errorTableItem, configSearchItem, 'search')

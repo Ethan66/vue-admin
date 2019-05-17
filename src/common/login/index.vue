@@ -157,8 +157,9 @@ export default {
           params.terminal = this.systemObj.browser
           apiUserLogin(params).then(res => {
             if (res.code === '208999') {
-              sessionStorage.setItem('userInfo', JSON.stringify(res.resultMap))
-              this.$router.push('/')
+              sessionStorage.setItem('userInfo', JSON.stringify(res.resultMap.data))
+              this.$router.push('/main/log/error-log/index')
+              // this.$router.push('/')
             } else {
               if (!this.handleSpeciaCode(res.code)) {
                 this.$message.error(res.message)

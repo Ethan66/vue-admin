@@ -40,7 +40,7 @@ export default {
     // 处理表格数据
     handleTableData (tableData) {
       tableData.forEach(item => {
-        item.isDelete = item.isDelete === '0' ? '有效' : '无效'
+        item.loginStatus = item.loginStatus === 1 ? '失败' : '成功'
       })
     }
   }
