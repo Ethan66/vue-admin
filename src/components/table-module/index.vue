@@ -45,8 +45,8 @@
           />
           <span
             v-else
-            :class="handleSetStatusClsName(item.clsName || '', scope.row[item.prop])"
-            @click="handleCellClick(item.clickFn)"
+            :class="[handleSetStatusClsName(item.clsName || '', scope.row[item.prop]), { canClick: item.clickFn !== undefined }]"
+            @click="handleCellClick(item.clickFn, scope.row)"
           >
             <i :class="handleSetStatusClsName(item.clsName || '', scope.row[item.prop], 'i')"></i>
             {{ scope.row[item.prop] }}
@@ -136,6 +136,8 @@ export default {
       type: Array,
       required: true
     },
+    // 自定义最大高度
+    maxHeight: String,
     // 是否为行内编辑
     isInlineEdit: Boolean,
     // 默认总高度为菜单高度
@@ -201,6 +203,10 @@ export default {
   mounted () {
     this.$nextTick(() => {
       this.showTableHeadSetting && setHeadIcon()
+       if (this.maxHeight) {
+        this.tableHeight = this.maxHeight
+        return false
+      }
       let timer = setTimeout(() => {
         this.handleSetTableHeight()
         clearTimeout(timer)
@@ -208,6 +214,10 @@ export default {
     })
     window.onresize = () => {
       setInitTableStyle()
+      if (this.maxHeight) {
+        this.tableHeight = this.maxHeight
+        return false
+      }
       this.showTableHeadSetting && setHeadIcon()
       this.handleSetTableHeight()
     }
@@ -276,9 +286,8 @@ export default {
       this.$emit('table-jump', val)
       this.tablePages.current = val
     },
-    handleCellClick (fn) {
-      console.log(fn)
-      this.parent[fn] && this.parent[fn]()
+    handleCellClick (fn, row) {
+      this.parent[fn] && this.parent[fn](row)
     }
   }
 }

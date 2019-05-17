@@ -78,9 +78,9 @@ export const setItem = (dataArr, config, type) => {
     data.filterField(config)
     data.setPlaceholder()
     if (type === 'search') {
-      data.deleteKey('canSet', 'sort', 'fix', 'disabled')
+      data.deleteKey('canSet', 'sort', 'fix', 'disabled', 'hide')
     } else if (type === 'dialog') {
-      data.deleteKey('sort', 'fix', 'disabled')
+      data.deleteKey('sort', 'fix', 'disabled', 'hide')
     }
   }
   data.setKey()

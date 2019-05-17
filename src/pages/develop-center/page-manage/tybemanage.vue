@@ -15,10 +15,16 @@
       @table-jump="handleJump"
       >
       <div class="btn-content" slot="btn">
-        <el-button @click="handleAdd">新增菜单</el-button>
-        <el-button @click="$router.push({ path: '/main/develop-center/menu-manage/newpage' })">跳转页面</el-button>
+        <el-button @click="handleFastCreate">快速生成</el-button>
+        <el-button @click="handleHandAdd">手动添加</el-button>
+        <el-button @click="$router.push({ path: '/main/develop-center/menu-manage/newpage' })">返回列表</el-button>
       </div>
     </table-module>
+    <create-tybe
+      :showCreateTybe.sync="showCreateTybe"
+      :type="type"
+      :dialogTitle="dialogTitle"
+      />
   </div>
 </template>
 
@@ -27,21 +33,33 @@ import { tybeManage } from '@/createData/develop-center'
 import basicMethod from '@/config/mixins'
 import { menuRelation } from '@/config/utils'
 import { apiListSysMenu, apiQueryParentSysMenu, apiCreateSysMenu, apiEditSysMenu, apiDeleteSysMenu, apiListSysButton, apiEditeSysButton, apiCreateSysButton, apiDeleteSysButton } from '@/api/authority'
-import { debuglog } from 'util';
+import createTybe from './createtybe'
 
 export default {
   mixins: [basicMethod, tybeManage],
+  components: { createTybe },
+  data () {
+    return {
+      showCreateTybe: false,
+      type: 'handCreate',
+      dialogTitle: ''
+    }
+  },
   created () {
     this.handleGetTableData(apiListSysMenu)
   },
   methods: {
-    // 点击新增按钮
-    handleAdd () {
-      this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
+    // 点击快速生成按钮
+    handleFastCreate () {
       this.isEdit = 0
-      this.apiGetParantMenu(1)
+      this.type = 'fastCreate'
       this.dialogTitle = '新增菜单'
-      this.showDialogForm = true
+      this.showCreateTybe = true
+    },
+    // 点击手动添加按钮
+    handleHandAdd () {
+      this.type = 'handCreate'
+      this.showCreateTybe = true
     },
     // 页面名称字段点击事件
     handleGoPage () {
