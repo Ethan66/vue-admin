@@ -3,26 +3,12 @@
     <div class="box-left">
       <h2>角色分类</h2>
       <h3>全部用户(60)</h3>
-      <template>
-        <div class="classfy" v-for="(item, index) in classList" :key="index">
-          <div class="title">
-            {{item.name}}({{item.num}})
-            <span class="showIcon">
-              <i class="el-icon-edit-outline" @click="handleEditClass(item.id, 'classfy')"></i>
-              <i class="el-icon-circle-plus-outline" @click="handleAddClass(item.id, 'classfy')"></i>
-              <i class="el-icon-delete" @click="handleDelClass(item.id, 'classfy')"></i>
-            </span>
-          </div>
-          <div class="role" v-for="(roleItem, index) in item.roleList" :key="index" @click="handleRoleClick(roleItem.id)">
-            {{roleItem.name}}({{roleItem.num}})
-            <span class="showIcon">
-              <i class="el-icon-edit-outline" @click.stop="handleEditRole(roleItem.id)"></i>
-              <i class="el-icon-circle-plus-outline" @click.stop="handleAddRole(roleItem.id)"></i>
-              <i class="el-icon-delete" @click.stop="handleDelRole(roleItem.id)"></i>
-            </span>
-          </div>
-        </div>
-      </template>
+      <classify
+        :classifyList="optionData"
+        @classify="handleClassify"
+        @role="handleRole"
+        @roleClick="handleRoleClick"
+      />
     </div>
     <div class="box-right">
       <search-module
@@ -50,48 +36,19 @@
       </table-module>
     </div>
 
-    <el-dialog
-      class="staff-dialog"
-      :visible.sync="staffDialog"
-      width="520px">
-      <div slot="title" class="dialog-title">
-        <span>{{staffDialogTitle}}</span><i>角色配置,请勾选需要的角色</i>
-      </div>
-      <el-form
-        :model="staffForm" :inline="true"
-        label-position="left" ref="ruleForm" class="demo-ruleForm">
-        <el-form-item v-if="!isDialogEdit" label="请选择员工" prop="name">
-          <tree-select
-            :data="dialogData"
-            :defaultProps="defaultProps"
-            multiple
-            nodeKey="menuId" :checkedKeys="defaultCheckedKeys"
-            @popoverHide="popoverHide"></tree-select>
-          <span class="selectTips">支持一个员工有多个角色</span>
-        </el-form-item>
-        <div v-if="!isDialogEdit" class="roleConfigTips">角色配置<span>（请勾选需要的角色）</span></div>
-        <el-form-item label="管理员角色" prop="type" :inline="true" label-width="100px">
-          <el-checkbox-group v-model="staffForm.type">
-            <el-checkbox label="超级管理员" name="type"></el-checkbox>
-            <el-checkbox label="管理员" name="type"></el-checkbox>
-            <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-            <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-            <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-          </el-checkbox-group>
-        </el-form-item>
-        <el-form-item label="运营角色" prop="type" :inline="true" label-width="100px">
-          <el-checkbox-group v-model="staffForm.type">
-            <el-checkbox label="运营经理" name="type"></el-checkbox>
-            <el-checkbox label="用户" name="type"></el-checkbox>
-          </el-checkbox-group>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="staffDialog = false">取 消</el-button>
-        <el-button type="primary" @click="staffDialog = false">确 定</el-button>
-      </span>
-    </el-dialog>
-    
+    <!-- 添加编辑员工弹框 -->
+    <staffDialog
+      ref="staffDialog"
+      :dialogTitle="staffDialogTitle"
+      :formItem="staffDialogFormItem"
+      :formData="staffDialogFormData"
+      :dialogVisible.sync="staffDialogVisible"
+      :dialogBtn="staffDialogBtn"
+      :treeCheckedData="treeCheckedData"
+      :treeList="treeList"
+      :isEdit="staffDialogIsEdit"
+    />
+    <!-- 添加编辑角色分类弹框 -->
     <typeDialog
       ref="typeDialog"
       :dialogVisible.sync="typeDialogVisible"
@@ -101,51 +58,152 @@
       :dialogTitle="typeDialogTitle"
       :dialogBtn="typeDialogBtn"
     />
-
   </div>
 </template>
 
 <script>
-import { button } from '@/createData/auth-config/mixins'
+import { staffRole } from './mixins'
 import dialogConfig from './dialogConfig.js'
 import basicMethod from '@/config/mixins'
-import treeSelect from '@/components/tree-select'
 import typeDialog from './typeDialog'
+import classify from './components/classify'
+import staffDialog from './components/staffDialog'
 import { apiDeleteSysButton, apiEditeSysButton, apiListSysButton, apiCreateSysButton } from '@/api/authority'
+
 export default {
-  mixins: [basicMethod, button, dialogConfig],
+  mixins: [basicMethod, staffRole, dialogConfig],
   created () {
     this.handleGetTableData(apiListSysButton)
+    this.classifyList = [
+      {
+        'check': false,
+        'creater': 0,
+        'gmtCreate': '2019-05-13 19:52:10',
+        'gmtModified': null,
+        'id': 1,
+        'isDelete': '0',
+        'modifier': 0,
+        'resourceParentId': 0,
+        'resourceType': 1,
+        'roleCode': 'RO001',
+        'roleName': '管理员角色',
+        'roleType': 1,
+        'sortNo': 1,
+        'userCount': 0
+      },
+      {
+        'check': false,
+        'creater': 0,
+        'gmtCreate': '2019-05-15 14:20:27',
+        'gmtModified': '2019-05-15 14:22:01',
+        'id': 11,
+        'isDelete': '0',
+        'modifier': 0,
+        'resourceParentId': 0,
+        'resourceType': 1,
+        'roleCode': 'RO002',
+        'roleName': '未分类角色',
+        'roleType': 0,
+        'sortNo': 2,
+        'userCount': 0
+      },
+      {
+        'check': false,
+        'creater': 40,
+        'gmtCreate': '2019-05-15 19:39:00',
+        'gmtModified': null,
+        'id': 13,
+        'isDelete': '0',
+        'modifier': 0,
+        'resourceParentId': 14,
+        'resourceType': 0,
+        'roleCode': 'RO20190515073900112dD',
+        'roleName': '测试角色1',
+        'roleType': 2,
+        'sortNo': 3,
+        'userCount': 0
+      },
+      {
+        'check': false,
+        'creater': 40,
+        'gmtCreate': '2019-05-15 19:42:46',
+        'gmtModified': '2019-05-15 19:48:15',
+        'id': 14,
+        'isDelete': '0',
+        'modifier': 40,
+        'resourceParentId': 0,
+        'resourceType': 1,
+        'roleCode': 'RO201905150742460721I',
+        'roleName': '测试角色2019',
+        'roleType': 2,
+        'sortNo': 4,
+        'userCount': 0
+      }
+    ]
+  },
+  computed: {
+    optionData () {
+      let cloneData = JSON.parse(JSON.stringify(this.classifyList)) // 对源数据深度克隆
+      return cloneData.filter(father => { // 循环所有项，并添加children属性
+        let branchArr = cloneData.filter(child => father.id === child.resourceParentId) // 返回每一项的子级数组
+        father.children = branchArr.length > 0 ? branchArr : '' // 给父级添加一个children属性，并赋值
+        return father.resourceParentId === 0 // 返回第一层
+      })
+    }
   },
   data () {
     return {
       defaultSearchObj: { a: 1 },
-      staffDialog: false,
       selectStaff: [],
-      classList: [
+      classifyList: [
         {
           id: 1,
           name: '管理员角色',
           num: '2',
           roleList: [
-            {id: 2, name: '超级管理员', num: '2'},
-            {id: 3, name: '管理员', num: '3'},
-            {id: 4, name: '菜鸡管理员', num: '1'},
+            { id: 2, name: '超级管理员', num: '2' },
+            { id: 3, name: '管理员', num: '3' },
+            { id: 4, name: '菜鸡管理员', num: '1' }
           ]
         }, {
           id: 6,
           name: '运营角色',
           num: '2',
           roleList: [
-            {id: 7, name: '运营经理', num: '2'},
-            {id: 8, name: '用户运营', num: '3'},
+            { id: 7, name: '运营经理', num: '2' },
+            { id: 8, name: '用户运营', num: '3' }
           ]
         }
       ],
-      isDialogEdit: false,
+      staffDialogIsEdit: false,
+      staffDialogVisible: false,
       staffDialogTitle: '添加员工',
-      staffForm: {},
-      dialogData: [{
+      staffDialogFormData: {
+        admin: [],
+        marketing: []
+      },
+      staffDialogFormItem: [
+        {
+          label: '管理员角色',
+          key: 'admin',
+          options: [
+            { label: '超级管理员', value: '1' },
+            { label: '管理员', value: '2' }
+          ]
+        }, {
+          label: '运营角色',
+          key: 'marketing',
+          options: [
+            { label: '运营经理', value: '3' },
+            { label: '用户运营', value: '4' }
+          ]
+        }
+      ],
+      staffDialogBtn: [
+        { label: '取 消', type: 'delete', clickfn: 'handleRefuse' },
+        { label: '确 认', type: 'edit', color: 'primary', clickfn: 'handleSubmit' }
+      ],
+      treeList: [{
         menuId: 1,
         menuName: '霖梓网络',
         childrenList: [{
@@ -218,18 +276,11 @@ export default {
           }]
         }]
       }],
-      defaultProps: {
-        children: 'childrenList',
-        label: 'menuName'
-      },
-      defaultCheckedKeys: [],
+      treeCheckedData: []
     }
   },
   methods: {
-    popoverHide (checkedIds, checkedData) {
-    },
-    handleClose () {},
-    handleEditClass (id) {
+    handleEditClass (item) {
       this.typeDialogTitle = '编辑类型'
       this.formItem = [
         { label: '分类名称', key: 'name', type: 'input' },
@@ -237,6 +288,7 @@ export default {
         { label: '创建人', type: 'text', content: '系统' },
         { label: '创建时间', type: 'text', content: '2019/04/26 15:23' }
       ]
+      this.isEdit = true
       this.typeDialogVisible = true
     },
     handleAddClass (id) {
@@ -245,6 +297,7 @@ export default {
         { label: '分类名称', key: 'name', type: 'input' },
         { label: '显示排序', key: 'srot', type: 'input' }
       ]
+      this.isEdit = false
       this.typeDialogVisible = true
     },
     handleDelClass (id) {
@@ -252,8 +305,22 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-      }).catch(() => {
+        this.handleApiDelConsoleRole()
       })
+    },
+    /**
+     * type: 点击icon的类型
+     * item: 当前项数据
+     */
+    handleClassify (type, item) {
+      this.isRole = 0
+      if (type === 'add') {
+        this.handleAddClass(item)
+      } else if (type === 'del') {
+        this.handleDelClass(item)
+      } else if (type === 'edit') {
+        this.handleEditClass(item)
+      }
     },
     handleEditRole (id) {
       this.typeDialogTitle = '编辑角色'
@@ -269,27 +336,33 @@ export default {
     handleAddRole (id) {
       this.typeDialogTitle = '新建角色'
       this.formItem = [
-        { label: '所属分类', key: 'classfy', type: 'select', options: [
-          { label: '分类1', value: 'a' },
-          { label: '分类2', value: 'b' }
-        ] },
+        { label: '所属分类',
+          key: 'classfy',
+          type: 'select',
+          options: [
+            { label: '分类1', value: 'a' },
+            { label: '分类2', value: 'b' }
+          ] },
         { label: '角色名称', key: 'roleName', type: 'input' },
         { label: '显示排序', key: 'srot', type: 'input' },
-        { label: '复制角色权限', key: 'roleLimit', type: 'selectDouble', options: [
-          {
-            label: '热门尘世',
-            options: [{
-              label: '上海',
-              value: 'shanghai'
-            }]
-          }, {
-            label: '城市名',
-            options: [{
-              label: '成都',
-              value: 'chengdu'
-            }]
-          }
-        ]},
+        { label: '复制角色权限',
+          key: 'roleLimit',
+          type: 'selectDouble',
+          options: [
+            {
+              label: '热门尘世',
+              options: [{
+                label: '上海',
+                value: 'shanghai'
+              }]
+            }, {
+              label: '城市名',
+              options: [{
+                label: '成都',
+                value: 'chengdu'
+              }]
+            }
+          ] }
       ]
       this.typeDialogVisible = true
     },
@@ -298,36 +371,45 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
+        this.handleApiDelConsoleRole()
       }).catch(() => {
       })
+    },
+    /**
+     * type: 点击icon的类型
+     * item: 当前项数据
+     */
+    handleRole (type, item) {
+      this.isRole = 1
+      if (type === 'add') {
+        this.handleAddRole(item)
+      } else if (type === 'del') {
+        this.handleDelRole(item)
+      } else if (type === 'edit') {
+        this.handleEditRole(item)
+      }
     },
     // 单击角色，更新表格数据
-    handleRoleClick (id) {
-      console.log('role', id)
+    handleRoleClick (type, item) {
+      this.isRole = type === 'role' ? 1 : 0
+      this.handleApiPageQueryUserRole()
     },
     handleAddStaff () {
-      this.isDialogEdit = false
+      this.staffDialogIsEdit = false
       this.staffDialogTitle = '添加员工'
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
-      this.staffDialog = true
+      this.staffDialogVisible = true
     },
-    handleEditStaff (row) {
-      this.isDialogEdit = true
+    // 表格编辑按钮
+    handleEditData (row) {
+      this.staffDialogIsEdit = true
       this.staffDialogTitle = '编辑员工'
       this.editData = JSON.parse(JSON.stringify(row))
-      this.staffDialog = true
+      this.staffDialogVisible = true
     },
-    // 删除员工
-    handleDelStaff (row) {
-      this.$confirm('确认删除该员工所有角色？', '温馨提醒', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消'
-      }).then(() => {
-      }).catch(() => {
-      })
-    },
-    handleSendHead (val) {
-      console.log(val)
+    // 点击表格删除按钮
+    handleDeleteData (row) {
+      this.apiDeleteData(apiDeleteSysButton, row.id, apiListSysButton)
     },
     // 处理表格数据
     handleTableData (tableData) {
@@ -335,20 +417,31 @@ export default {
         item.isDelete = item.isDelete === '0' ? '有效' : '无效'
       })
     },
-    // 点击表格删除按钮
-    handleDeleteData (row) {
-      this.apiDeleteData(apiDeleteSysButton, row.id, apiListSysButton)
+    handleSendHead (val) {
+      console.log(val)
     },
-    handleRefuse() {
+    handleRefuse () {
+      this.$refs.staffDialog.staffDialogVisible = false
+    },
+    handleSubmit () {
+      this.$refs.staffDialog.staffDialogVisible = false
+    },
+    handleTypeDialogRefuse () {
       this.$refs.typeDialog.typeVisible = false
     },
-    handleSubmit() {
-
+    handleTypeDialogSubmit () {
+      if (this.isEdit) {
+        this.handleApiEditeConsoleRole()
+      } else {
+        this.handleApiCreateConsoleRole()
+      }
+      this.$refs.typeDialog.typeVisible = false
     }
   },
   components: {
-    treeSelect,
-    typeDialog
+    staffDialog,
+    typeDialog,
+    classify
   }
 }
 </script>
@@ -376,138 +469,10 @@ export default {
         line-height: 40px;
         padding-left: 15px;
       }
-      .classfy {
-        .title {
-          font-family: PingFangSC-Regular;
-          font-size: 12px;
-          color: #999999;
-          line-height: 40px;
-          padding-left: 15px;
-          i {
-            padding-left: 7px;
-          }
-        }
-        .role {
-          font-family: PingFangSC-Regular;
-          font-size: 12px;
-          color: #333333;
-          line-height: 40px;
-          padding-left: 40px;
-          i {
-            padding-left: 7px;
-            color: #999;
-          }
-        }
-        .showIcon {
-          display: none;
-        }
-        .title:hover .showIcon{
-          display: inline-block;
-        }
-        .role:hover .showIcon{
-          display: inline-block;
-        }
-      }
     }
     .box-right {
       flex: 1;
       max-width: calc(100% - 210px);
-    }
-    .el-dialog__wrapper.staff-dialog {
-      .el-dialog {
-        .el-dialog__header {
-          border-bottom: 1px solid #E8E8E8;
-          padding: 15px 20px;
-          .dialog-title {
-            span {
-              font-family: PingFangSC-Regular;
-              font-size: 16px;
-              color: #333333;
-              padding-right: 10px;
-            }
-            i {
-              font-family: PingFangSC-Regular;
-              font-size: 14px;
-              color: #999999;
-              letter-spacing: -0.43px;
-            }
-          }
-          .el-dialog__title{
-            font-family: PingFangSC-Regular;
-            font-size: 16px;
-            color: #333333;
-          }
-        }
-        .el-dialog__body {
-          padding: 30px 30px;
-          .el-form {
-            .el-form-item {
-              display: flex;
-              margin-right: 0px;
-              margin-bottom: 0px;
-              .el-form-item__label {
-                min-width: 100px;
-              }
-              .el-form-item__content {
-                .el-checkbox-group {
-                  .el-checkbox {
-                    width: 118px;
-                    margin-left: 0;
-                    .el-checkbox__input.is-checked+.el-checkbox__label {
-                      color: #666;
-                    }
-                    .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
-                      background-color: #4162DB;
-                      border-color: #4162DB;
-                    }
-                  }
-                }
-              }
-            }
-            .tree-select {
-              .el-select {
-                width: 358px !important;
-                .el-input__inner {
-                  height: 35px !important;
-                }
-              }
-            }
-          }
-        }
-        .el-dialog__footer {
-          border-top: 1px solid #E8E8E8;
-          padding: 20px;
-          .dialog-footer {
-            .el-button {
-              width: 60px;
-              height: 30px;
-              padding: 0;
-            }
-            .el-button--default {
-              color: #666;
-              border: 1px solid #E8E8E8;
-            }
-          }
-        }
-      }
-    }
-    .selectTips {
-      font-family: PingFangSC-Regular;
-      font-size: 12px;
-      color: #9B9B9B;
-      letter-spacing: -0.37px;
-    }
-    .roleConfigTips {
-      font-family: PingFangSC-Regular;
-      font-size: 14px;
-      color: #333;
-      letter-spacing: -0.43px;
-      line-height: 20px;
-      padding-bottom: 15px;
-      border-bottom: 1px solid #e8e8e8;
-      span {
-        color: #999;
-      }
     }
   }
 </style>

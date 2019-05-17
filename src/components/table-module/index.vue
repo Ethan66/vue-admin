@@ -232,8 +232,7 @@ export default {
       if (type) {
         if (i && statusClsName[type]) {
           return ['status-i', type, statusClsName[type][value]]
-        }
-         else if (statusClsName[type]) {
+        } else if (statusClsName[type]) {
           return ['status', type, value]
         }
         return [type, value]
