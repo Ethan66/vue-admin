@@ -103,6 +103,22 @@ function handleSpecialError (response) {
 }
 
 let handleGetMenuCode = () => {
-  let mainActivedTab = JSON.parse((sessionStorage.getItem('mainActivedTab')))
-  return { pmenuCode: mainActivedTab.code }
+  let pathname = window.location.pathname.replace('/blow', '')
+  let menuList = JSON.parse(sessionStorage.getItem('menuList'))
+  let menuCode = { pmenuCode: '' }
+  try {
+    menuList.forEach(item => {
+      item.list.forEach(item => {
+        if (item.menuUrl === pathname) {
+          menuCode.pmenuCode = item.menuCode
+          throw new Error('StopIteration')
+        }
+      })
+    })
+  } catch (e) {
+  }
+  if (menuCode.pmenuCode === '') {
+    menuCode.pmenuCode = sessionStorage.getItem('nowPmenuCode')
+  }
+  return menuCode
 }
