@@ -32,7 +32,7 @@ export default {
     },
     // 选择页面跳转
     handleJump (currentPage) {
-      this.handleGetTableData(this.getTableDataApi, this.sarchValues, currentPage)
+      this.handleGetTableData(this.getTableDataApi, this.searchValues, currentPage)
     },
     // 接口：创建表格数据
     apiCreateData (createDataApi, obj, getTableDataApi) {
