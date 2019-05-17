@@ -35,39 +35,6 @@ export const button = {
   }
 }
 
-export const role = {
-  data () {
-    return setBtnConfig(basicInitObj)
-  },
-  created () {
-    // 搜索配置
-    this.searchItem = [ // type/disabled/placeholder/changeFn可不填
-      { buttonName: '部门名称', placeholder: '请输入' }
-    ]
-    // 表格配置
-    this.tableItem = [ // type: 'selection: 选择框可显示隐藏'，width: 单元格宽度, prop: '数据的key'
-      { roleName: '角色名', width: '80' },
-      { roleCode: '角色编码', width: '200' },
-      { gmtCreate: '创建时间', width: '200' },
-      { gmtModified: '修改时间', width: '80' },
-      { type: 'btn', width: '80' }
-    ]
-    // 对话框配置
-    this.dialogItem = [
-      { roleName: '角色名称', placeholder: '角色名称' },
-      { roleCode: '角色编码', placeholder: '角色编码' }
-    ]
-    this.rules = {
-      roleName: [
-        { required: true, message: '请输入角色名称', trigger: 'blur' }
-      ],
-      roleCode: [
-        { required: true, message: '请输入角色编码', trigger: 'blur' }
-      ]
-    }
-  }
-}
-
 // IP控制
 export const ipControl = {
   data () {
