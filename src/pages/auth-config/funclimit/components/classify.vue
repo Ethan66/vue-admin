@@ -1,7 +1,7 @@
 <template>
   <div class="classify">
     <template v-for="item in classifyList">
-      <div class="title" :key=item.id @click="handleRoleClick(roleItem, 'classify')">
+      <div class="title" :key=item.id @click="handleRoleClick(item, 'classify')">
         {{item.roleName}}({{item.userCount}})
         <span class="showIcon">
           <i class="el-icon-edit-outline" @click="handleClass(item, 'edit')"></i>
@@ -9,7 +9,7 @@
           <i class="el-icon-delete" @click="handleClass(item, 'del')"></i>
         </span>
       </div>
-      <div class="role" @click="handleRoleClick(roleItem, 'role')"
+      <div class="role" @click="handleRoleClick(item, 'role')"
         v-for="roleItem in item.children" :key="roleItem.id">
         {{roleItem.roleName}}({{roleItem.userCount}})
         <span class="showIcon">
