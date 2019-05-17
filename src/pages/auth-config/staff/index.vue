@@ -56,7 +56,7 @@ import { staff } from './mixins'
 import basicMethod from '@/config/mixins'
 import staffDialog from './staffDialog'
 import staffInfoDialog from './staffInfoDialog'
-import { apiDeleteSysButton, apiEditeSysButton, apiListSysButton, apiCreateSysButton } from '@/api/authority'
+import { apiCreateConsoleUser, apiQueryLowerLevelList, apiEditConsoleUser, apiListConsoleUser, apiQueryConsoleUserInfo, apiEditConsoleUserStatus, apiEditConsoleUserPassword } from '@/api/staff'
 export default {
   mixins: [basicMethod, staff],
   data () {
@@ -310,11 +310,11 @@ export default {
             }]
           }]
         }
-      ],
+      ]
     }
   },
   created () {
-    this.handleGetTableData(apiListSysButton)
+    this.handleGetTableData(apiListConsoleUser)
   },
   computed: {
     /* 转树形数据 */
@@ -342,7 +342,7 @@ export default {
     },
     // 点击表格删除按钮
     handleDeleteData (row) {
-      this.apiDeleteData(apiDeleteSysButton, row.id, apiListSysButton)
+      // this.apiDeleteData(apiDeleteSysButton, row.id, apiListConsoleUser)
     },
     // 点击表格编辑按钮
     handleEditData (row) {
