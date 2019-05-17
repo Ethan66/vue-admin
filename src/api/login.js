@@ -3,7 +3,7 @@ const base = '/bl/console/api'
 
 // 获取验证码
 export const apiGetCode = (params) => {
-  return postRequest(base + '/getVerificationCode', params)
+  return postRequest('/bl/console/user/getVerificationCode', params)
 }
 
 // 获取IP
@@ -13,17 +13,17 @@ export const apiGetIp = (params) => {
 
 // 检查IP
 export const apiCheckIp = (params) => {
-  return postRequest(base + '/checkLoginIpWhite', params)
+  return postRequest('/bl/console/user/checkLoginIpWhite', params)
 }
 
 // 登录
 export const apiUserLogin = (reqParams) => {
-  return postRequest(base + '/userLogin', reqParams)
+  return postRequest('/bl/console/user/userLogin', reqParams)
 }
 
 // 短信验证码
 export const apiGetSmsCode = (reqParams) => {
-  return postRequest(base + '/getVerificationCode', reqParams)
+  return postRequest('/bl/console/user/getVerificationCode', reqParams)
 }
 
 // 登出

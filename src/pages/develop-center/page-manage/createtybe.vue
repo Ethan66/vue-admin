@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="快速生成" :visible.sync="showDialog" class="create-tybe">
+  <el-dialog title="快速生成" :visible.sync="showDialog" :class="[`create-tybe`, { 'handCreate': this.type==='handCreate' }]">
     <template v-if="type==='fastCreate' && step !== 2">
       <el-steps :active="step" finish-status="success">
         <el-step title="选择表"></el-step>
@@ -38,8 +38,9 @@
     </template>
     <span slot="footer" class="dialog-footer" v-if="step !== 2">
       <el-button @click="showDialog = false">取 消</el-button>
-      <el-button v-if="step===1" type="primary" @click="step--">上一步</el-button>
-      <el-button v-if="[0, 1].includes(step)" type="primary" @click="handleGoNext">下一步</el-button>
+      <el-button v-if="step===1 && type==='fastCreate'" type="primary" @click="step--">上一步</el-button>
+      <el-button v-if="step===0" type="primary" @click="handleGoNext">下一步</el-button>
+      <el-button v-if="step===1" type="primary" @click="handleGoNext">提交</el-button>
     </span>
   </el-dialog>
 </template>
@@ -66,6 +67,9 @@ export default {
     showCreateTybe (val) {
       if (val) {
         this.showDialog = true
+        if (this.type === 'handCreate') {
+          this.step++
+        }
       }
     },
     showDialog (val) {
@@ -105,6 +109,11 @@ export default {
 
 <style lang="less">
   .create-tybe{
+    &.handCreate{
+      .el-dialog{
+        min-height: 425px;
+      }
+    }
     .el-dialog{
       width: 900px;
       min-height: 555px;

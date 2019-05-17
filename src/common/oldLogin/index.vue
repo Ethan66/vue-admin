@@ -6,12 +6,12 @@
       :rules="rules"
     >
       <h3>百凌管理系统</h3>
-      <el-form-item prop="user">
+      <el-form-item prop="userName">
         <el-input
           autofocus
-          v-model="loginForm.user"
+          v-model="loginForm.userName"
           placeholder="账号"
-          @blur="handleBlur('user')"
+          @blur="handleBlur('userName')"
         />
       </el-form-item>
 
@@ -68,11 +68,7 @@ export default {
     return {
       hasSendCode: false,
       time: 0,
-      systemObj: {
-        system: '',
-        browser: 'IE'
-      },
-      loginForm: { user: '', password: '', verificationCode: '' },
+      loginForm: { userName: '', password: '', verificationCode: '' },
       ipIsTrue: false,
       nowErrorCode: '',
       isLoading: false
@@ -95,23 +91,10 @@ export default {
     },
     // 校验IP
     handleCheckIp () {
-      let version = navigator.userAgent
-      let systemObj = this.systemObj
-      systemObj.system = version.replace(/.+(Windows ).+?([\d\.]+).+/g, '$1$2')
-      if (!systemObj.system) { // mac版本
-        systemObj.system = version.replace(/.+(Mac.+?)\).+/g, RegExp.$1)
-        if (navigator.vendor.incldes('Google')) {
-          systemObj.browser = 'Chrome'
-        }
-      }
-      if (systemObj.browser === 'IE') {
-        let arr = ['Chrome', 'Firefox', 'Opera', 'Safari'].filter(item => version.includes(item))
-        arr && (systemObj.browser = arr[0])
-      }
       apiGetIp().then(res => {
         res && (this.ip = res.match(/[\d.]+/g).join())
       }).then(() => {
-        apiCheckIp({ loginIp: this.ip, operatingSystem: systemObj.system, terminal: systemObj.browser }).then(res => {
+        apiCheckIp({ loginIp: this.ip }).then(res => {
           if (res.code === '208999') {
             this.ipIsTrue = res.resultMap.data
           }
@@ -120,10 +103,10 @@ export default {
     },
     // 获取验证码
     handleGetCode () {
-      let { user, password } = this.loginForm
-      this.$refs['login'].validateField(['user', 'password'])
-      if (user.trim() && password.trim()) {
-        let params = { user, password }
+      let { userName, password } = this.loginForm
+      this.$refs['login'].validateField(['userName', 'password'])
+      if (userName.trim() && password.trim()) {
+        let params = { userName, password }
         params.password = MD5(params.password)
         apiGetSmsCode(params).then(res => {
           if (res.code === '208999') {
@@ -153,8 +136,6 @@ export default {
           let params = Object.assign({}, this.loginForm)
           params.password = MD5(params.password)
           params.loginIp = this.ip
-          params.operatingSystem = this.systemObj.system
-          params.terminal = this.systemObj.browser
           apiUserLogin(params).then(res => {
             if (res.code === '208999') {
               sessionStorage.setItem('userInfo', JSON.stringify(res.resultMap))
