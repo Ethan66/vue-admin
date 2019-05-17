@@ -36,6 +36,7 @@
       :dialogVisible.sync="staffInfoVisible"
       :dialogTitle="staffInfoTitle"
       :dialogBtn="staffInfoBtn"
+      :infoItem="staffInfoItem"
       :infoData="staffInfoData"
     />
     <!-- 添加编辑员工 -->
@@ -53,12 +54,13 @@
 
 <script>
 import { staff } from './mixins'
+import { methods } from './methods'
 import basicMethod from '@/config/mixins'
 import staffDialog from './staffDialog'
 import staffInfoDialog from './staffInfoDialog'
-import { apiCreateConsoleUser, apiQueryLowerLevelList, apiEditConsoleUser, apiListConsoleUser, apiQueryConsoleUserInfo, apiEditConsoleUserStatus, apiEditConsoleUserPassword } from '@/api/staff'
+
 export default {
-  mixins: [basicMethod, staff],
+  mixins: [basicMethod, staff, methods],
   data () {
     return {
       defaultSearchObj: { a: 1 },
@@ -239,33 +241,33 @@ export default {
           ]
         }
       ],
-      staffInfoData: [
+      staffInfoItem: [
         {
           infoTitle: '孙华杰',
           infoList: [
-            { label: '状态', value: '禁止登录' },
-            { label: '创建时间', value: '2019/4/26 10:17' },
-            { label: '状态', value: '禁止登录' },
-            { label: '状态', value: '禁止登录' }
+            { label: '状态', key: 'status' },
+            { label: '创建时间', key: 'gmtCreate' },
+            { label: '创建人', key: '禁止登录' },
+            { label: '上次登录时间', key: '禁止登录' }
           ]
         }, {
-          infoTitle: '孙华杰',
+          infoTitle: '账号信息',
           infoList: [
-            { label: '状态', value: '禁止登录' },
-            { label: '创建时间', value: '2019/4/26 10:17' },
-            { label: '状态', value: '禁止登录' },
-            { label: '状态', value: '禁止登录' }
+            { label: '昵称', key: 'realName' },
+            { label: '姓名', key: 'userName' },
+            { label: '手机号', key: 'telphonen' },
+            { label: '邮箱', key: 'mailbox' }
           ]
         }, {
-          infoTitle: '孙华杰',
+          infoTitle: '职位信息',
           infoList: [
-            { label: '状态', value: '禁止登录' },
-            { label: '创建时间', value: '2019/4/26 10:17' },
-            { label: '状态', value: '禁止登录' },
-            { label: '状态', value: '禁止登录' }
+            { label: '部门', key: 'departmentName' },
+            { label: '职位', key: 'position' },
+            { label: '汇报对象', key: 'reportToName' }
           ]
         }
       ],
+      staffInfoData: {},
       staffInfoTitle: '员工信息',
       staffInfoBtn: [
         { label: '关闭', type: 'edit', color: 'primary', clickfn: 'handleStaffInfoDialogClose' }
@@ -340,10 +342,6 @@ export default {
         item.isDelete = item.isDelete === '0' ? '有效' : '无效'
       })
     },
-    // 点击表格删除按钮
-    handleDeleteData (row) {
-      // this.apiDeleteData(apiDeleteSysButton, row.id, apiListConsoleUser)
-    },
     // 点击表格编辑按钮
     handleEditData (row) {
       this.editData = JSON.parse(JSON.stringify(row))
@@ -364,9 +362,7 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-
-      }).catch(() => {
-
+        this.handleApiEditConsoleUserStatus(1)
       })
     },
     // 启用账号
@@ -375,9 +371,7 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-
-      }).catch(() => {
-
+        this.handleApiEditConsoleUserStatus(0)
       })
     },
     // 禁止登录
@@ -386,9 +380,7 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-
-      }).catch(() => {
-
+        this.handleApiEditConsoleUserStatus(2)
       })
     },
     // 允许登录
@@ -397,9 +389,7 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-
-      }).catch(() => {
-
+        this.handleApiEditConsoleUserStatus(0)
       })
     },
     // 重置密码
@@ -408,9 +398,7 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-
-      }).catch(() => {
-
+        this.handleApiEditConsoleUserPassword()
       })
     },
     // 关闭员工信息弹框
@@ -419,10 +407,16 @@ export default {
     },
     // staffdialog 取消按钮
     handleRefuse () {
+      this.staffFormData = this.$options.data().staffFormData
       this.$refs.staffDialog.staffVisible = false
     },
-    // staffdialog 确认按钮
+    // staffdialog 确认新建员工
     handleSubmit () {
+      if (this.isEdit) {
+        this.handleApiEditConsoleUser()
+      } else {
+        this.handleApiCreateConsoleUser()
+      }
       this.$refs.staffDialog.staffVisible = false
     },
     handleStaffInfoDialogClose () {

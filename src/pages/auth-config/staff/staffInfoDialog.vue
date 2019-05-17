@@ -2,11 +2,11 @@
   <div class="staff-info-dialog">
     <el-dialog
       :title="dialogTitle" :visible.sync="staffInfoVisible"  width="700px">
-      <div class="user-info" v-for="(item, index) in infoData" :key="index">
+      <div class="user-info" v-for="(item, index) in infoItem" :key="index">
         <div class="info-title">{{item.infoTitle}}</div>
         <div class="info-content">
           <div v-for="(infoItem, index) in item.infoList" :key="index">
-            {{infoItem.label}}：<span>{{infoItem.value}}</span>
+            {{infoItem.label}}：<span>{{infoData[infoItem.key]}}</span>
           </div>
         </div>
       </div>
@@ -32,8 +32,11 @@ export default {
     dialogVisible: {
       type: Boolean
     },
-    infoData: {
+    infoItem: {
       type: Array
+    },
+    infoData: {
+      type: Object
     }
   },
   data () {
