@@ -23,7 +23,10 @@ const dialogInitObj = {
   dialogItem: null, // 对话框的配置
   dialogBtn: [], // 对话框的按钮
   showDialogForm: false, // 是否展示对话框
-  allRead: false // 点击编辑时对话框里的全部数据都是只读，不能编辑
+  allRead: false, // 点击编辑时对话框里的全部数据都是只读，不能编辑
+  confirmFn: '', // 消息提示确认按钮函数名称
+  confirmContent: '', // 消息提示框文案
+  confrimDiaShow: false // 消息提示框是否显示
 }
 
 const basicInitObj = Object.assign({}, searchInitObj, tableInitObj, dialogInitObj)

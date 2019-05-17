@@ -4,30 +4,28 @@ import { tableItemList } from '@/test/log'
 
 const initData = Object.assign({}, basicInitObj)
 
-export const button = {
+export const loginLog = {
   data () {
     return setBtnConfig(JSON.parse(JSON.stringify(initData)))
   },
   created () {
     let configSearchItem = [
-      [ 'id', 'gmtModified' ],
-      {
-        gmtModified: { type: 'select',
-          options: [
-            { label: '成功', value: '1' },
-            { label: '失败', value: '2' }
-          ]
+      'userName',
+      { loginStatus:
+        { type: 'select',
+          options: [{ label: '成功', value: '0' }, { label: '失败', value: '1' }]
         }
       }
     ]
     let configTableItem = {
-      id: 80,
+      userName: 80,
       buttonName: 100,
-      buttonMenuName: 100,
-      buttonCode: 100,
-      gmtCreate: 200,
+      terminalType: 100,
+      operateSystem: 100,
+      loginIp: 200,
       gmtModified: 80,
-      isDelete: 80
+      loginStatus: 80,
+      gmtCreate: 80
     }
     this.searchItem = this.$setItem(tableItemList, configSearchItem, 'search')
     this.tableItem = this.$setItem(tableItemList, configTableItem, 'table')

@@ -47,9 +47,6 @@ export default {
   data () {
     return {
       defaultSearchObj: { a: 1 },
-      confirmContent: '',
-      confrimDiaShow: false,
-      confirmFn: '',
       saveTableData: {}
     }
   },
