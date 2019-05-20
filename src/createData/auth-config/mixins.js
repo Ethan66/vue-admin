@@ -1,6 +1,6 @@
 import { basicInitObj } from '@/components/basicObj'
 import { setBtnConfig } from '@/components/methods'
-import { buttonTest, ipTableItem, accountTableItem } from '@/test/auth-config'
+import { buttonTest, ipTableItem, accountTableItem, organizationTest } from '@/test/auth-config'
 
 const initData = Object.assign({}, basicInitObj)
 
@@ -30,39 +30,6 @@ export const button = {
       ],
       buttonCode: [
         { required: true, message: '请输入按钮编码', trigger: 'blur' }
-      ]
-    }
-  }
-}
-
-export const role = {
-  data () {
-    return setBtnConfig(basicInitObj)
-  },
-  created () {
-    // 搜索配置
-    this.searchItem = [ // type/disabled/placeholder/changeFn可不填
-      { buttonName: '部门名称', placeholder: '请输入' }
-    ]
-    // 表格配置
-    this.tableItem = [ // type: 'selection: 选择框可显示隐藏'，width: 单元格宽度, prop: '数据的key'
-      { roleName: '角色名', width: '80' },
-      { roleCode: '角色编码', width: '200' },
-      { gmtCreate: '创建时间', width: '200' },
-      { gmtModified: '修改时间', width: '80' },
-      { type: 'btn', width: '80' }
-    ]
-    // 对话框配置
-    this.dialogItem = [
-      { roleName: '角色名称', placeholder: '角色名称' },
-      { roleCode: '角色编码', placeholder: '角色编码' }
-    ]
-    this.rules = {
-      roleName: [
-        { required: true, message: '请输入角色名称', trigger: 'blur' }
-      ],
-      roleCode: [
-        { required: true, message: '请输入角色编码', trigger: 'blur' }
       ]
     }
   }
@@ -138,5 +105,53 @@ export const account = {
     }
     this.searchItem = this.$setItem(accountTableItem, configSearchItem, 'search')
     this.tableItem = this.$setItem(accountTableItem, configTableItem, 'table')
+  }
+}
+
+const organizationMoreList = [
+  { name: '新建平级部门', clickFn: 'handleCreateDepartment' },
+  { name: '新建下级部门', clickFn: 'handleCreateNextLevelDepartment' },
+  { name: '停用', clickFn: 'handleStop' },
+  { name: '删除', clickFn: 'handleDelete' }
+]
+
+export const organization = {
+  data () {
+    return this.$setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), ['edit', { more: { list: organizationMoreList } }])
+  },
+  created () {
+    let configSearchItem = [
+      'menuName',
+      { status: { type: 'select', options: [{ label: '正常', value: 1 }, { label: '失效', value: 2 }] } }
+    ]
+    let configTableItem = {
+      selection: 50,
+      id: 80,
+      sort: 60,
+      menuName: { type: 'tree', width: 200 },
+      menuCode: 80,
+      status: 80,
+      menuLevel: { clsName: 'menuLevel', width: 100 },
+      btn: 120
+    }
+    let configDialogItem = [
+      { parentMenuName: { label: '上级部门', type: 'select', options: [{ label: '一', value: 1 }, { label: '二', value: 2 }] } },
+      'menuName', 'menuLevel', 'menuCode', 'sort',
+      { status: { type: 'radio', options: [{ label: '正常', value: '1' }, { label: '停用', value: '0' }] } }
+    ]
+    this.searchItem = this.$setItem(organizationTest, configSearchItem, 'search')
+    this.tableItem = this.$setItem(organizationTest, configTableItem, 'table')
+    this.dialogItem = this.$setItem(organizationTest, configDialogItem, 'dialog')
+    this.rules = {
+      id: [
+        { required: true, message: '请输入菜单id', trigger: 'blur' }
+      ],
+      menuName: [
+        { required: true, message: '请输入菜单名称', trigger: 'blur' }
+      ],
+      menuLevel: [
+        { required: true, message: '请选择菜单类型', trigger: 'change' }
+      ]
+    }
   }
 }

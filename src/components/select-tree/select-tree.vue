@@ -71,7 +71,7 @@ export default {
         this.valueTitle = this.$refs.selectTree.getNode(this.valueId).data[this.props.label] // 初始化显示
         this.$refs.selectTree.setCurrentKey(this.valueId) // 设置默认选中
         this.defaultExpandedKey = [this.valueId] // 设置默认展开
-      } 
+      }
       this.initScroll()
     },
     // 初始化滚动条
@@ -80,14 +80,14 @@ export default {
         let scrollWrap = document.querySelectorAll('.el-scrollbar .el-select-dropdown__wrap')[0]
         let scrollBar = document.querySelectorAll('.el-scrollbar .el-scrollbar__bar')
         scrollWrap.style.cssText = 'margin: 0px; max-height: none; overflow: hidden;'
-        scrollBar.forEach(ele => ele.style.width = 0)
+        scrollBar.forEach(ele => { ele.style.width = 0 })
       })
     },
     // 切换选项
     handleNodeClick (node) {
       this.valueTitle = node[this.props.label]
       this.valueId = node[this.props.value]
-      this.$emit('getValue',this.valueId)
+      this.$emit('getValue', this.valueId)
       this.defaultExpandedKey = []
     },
     // 清除选中

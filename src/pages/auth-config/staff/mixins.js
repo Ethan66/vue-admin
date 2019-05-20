@@ -14,17 +14,18 @@ export const staff = {
     ])
   },
   created () {
-    let configSearchItem = ['department', 'status']
+    let configSearchItem = ['department_id', 'status']
     let configTableItem = {
       selection: 50,
-      name: 80,
-      phone: 100,
-      department: 100,
+      user_name: 80,
+      real_name: 100,
+      telephone: 100,
+      department_id: 100,
       position: 100,
-      report: 100,
+      report_to: 80,
       status: 80,
-      role: 80,
-      btn: 120
+      role_name: 80,
+      btn: 260
     }
     this.searchItem = this.$setItem(staffTest, configSearchItem, 'search')
     this.tableItem = this.$setItem(staffTest, configTableItem, 'table')

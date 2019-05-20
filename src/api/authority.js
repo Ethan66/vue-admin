@@ -1,5 +1,5 @@
 import { postRequest } from '@/config/network'
-const base = '/bl/console/user'
+const base = '/bl/console/api'
 
 // 菜单管理
 // 获取所有菜单
