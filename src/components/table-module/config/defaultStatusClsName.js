@@ -6,5 +6,9 @@ export default {
   loginStatus: {
     '成功': 'colorBlue',
     '失败': 'colorRed'
+  },
+  opTypeDesc: {
+    '成功': 'colorBlue',
+    '失败': 'colorRed'
   }
 }
