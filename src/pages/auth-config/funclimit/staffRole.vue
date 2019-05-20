@@ -2,9 +2,9 @@
   <div class="staff-role">
     <div class="box-left">
       <h2>角色分类</h2>
-      <h3>全部用户(60)</h3>
       <classify
         :classifyList="optionData"
+        :total="roleCount"
         @classify="handleClassify"
         @role="handleRole"
         @roleClick="handleRoleClick"
@@ -63,83 +63,20 @@
 
 <script>
 import { staffRole } from './mixins'
+import methods from './methods'
 import dialogConfig from './dialogConfig.js'
 import basicMethod from '@/config/mixins'
 import typeDialog from './typeDialog'
 import classify from './components/classify'
 import staffDialog from './components/staffDialog'
-import { apiDeleteSysButton, apiEditeSysButton, apiListSysButton, apiCreateSysButton } from '@/api/authority'
+import { apiPageQueryUserRole } from '@/api/role'
 
 export default {
-  mixins: [basicMethod, staffRole, dialogConfig],
+  mixins: [basicMethod, staffRole, dialogConfig, methods],
   created () {
-    this.handleGetTableData(apiListSysButton)
-    this.classifyList = [
-      {
-        'check': false,
-        'creater': 0,
-        'gmtCreate': '2019-05-13 19:52:10',
-        'gmtModified': null,
-        'id': 1,
-        'isDelete': '0',
-        'modifier': 0,
-        'resourceParentId': 0,
-        'resourceType': 1,
-        'roleCode': 'RO001',
-        'roleName': '管理员角色',
-        'roleType': 1,
-        'sortNo': 1,
-        'userCount': 0
-      },
-      {
-        'check': false,
-        'creater': 0,
-        'gmtCreate': '2019-05-15 14:20:27',
-        'gmtModified': '2019-05-15 14:22:01',
-        'id': 11,
-        'isDelete': '0',
-        'modifier': 0,
-        'resourceParentId': 0,
-        'resourceType': 1,
-        'roleCode': 'RO002',
-        'roleName': '未分类角色',
-        'roleType': 0,
-        'sortNo': 2,
-        'userCount': 0
-      },
-      {
-        'check': false,
-        'creater': 40,
-        'gmtCreate': '2019-05-15 19:39:00',
-        'gmtModified': null,
-        'id': 13,
-        'isDelete': '0',
-        'modifier': 0,
-        'resourceParentId': 14,
-        'resourceType': 0,
-        'roleCode': 'RO20190515073900112dD',
-        'roleName': '测试角色1',
-        'roleType': 2,
-        'sortNo': 3,
-        'userCount': 0
-      },
-      {
-        'check': false,
-        'creater': 40,
-        'gmtCreate': '2019-05-15 19:42:46',
-        'gmtModified': '2019-05-15 19:48:15',
-        'id': 14,
-        'isDelete': '0',
-        'modifier': 40,
-        'resourceParentId': 0,
-        'resourceType': 1,
-        'roleCode': 'RO201905150742460721I',
-        'roleName': '测试角色2019',
-        'roleType': 2,
-        'sortNo': 4,
-        'userCount': 0
-      }
-    ]
+    this.handleApiGetConsoleRoleById()
+    this.handleGetTableData(apiPageQueryUserRole)
+    this.handleApiGetAllRoleRequestTree()
   },
   computed: {
     optionData () {
@@ -155,26 +92,7 @@ export default {
     return {
       defaultSearchObj: { a: 1 },
       selectStaff: [],
-      classifyList: [
-        {
-          id: 1,
-          name: '管理员角色',
-          num: '2',
-          roleList: [
-            { id: 2, name: '超级管理员', num: '2' },
-            { id: 3, name: '管理员', num: '3' },
-            { id: 4, name: '菜鸡管理员', num: '1' }
-          ]
-        }, {
-          id: 6,
-          name: '运营角色',
-          num: '2',
-          roleList: [
-            { id: 7, name: '运营经理', num: '2' },
-            { id: 8, name: '用户运营', num: '3' }
-          ]
-        }
-      ],
+      classifyList: [],
       staffDialogIsEdit: false,
       staffDialogVisible: false,
       staffDialogTitle: '添加员工',
@@ -182,6 +100,7 @@ export default {
         admin: [],
         marketing: []
       },
+      roleCount: 0,
       staffDialogFormItem: [
         {
           label: '管理员角色',
@@ -389,10 +308,20 @@ export default {
         this.handleEditRole(item)
       }
     },
-    // 单击角色，更新表格数据
+    /**
+     * 单击角色，更新表格数据
+     * type: role: 单击的角色； all: 单击的全部用户； 否则就是单击的分类
+     * item: 
+     */
     handleRoleClick (type, item) {
-      this.isRole = type === 'role' ? 1 : 0
-      this.handleApiPageQueryUserRole()
+      if (type === 'role') {
+        this.isRole = 1
+      } else if (type === 'all') {
+        this.isRole = ''
+      } else {
+        this.isRole = 0
+      }
+      this.handleGetTableData(apiPageQueryUserRole, { resourceType: this.isRole, roleId: item.id })
     },
     handleAddStaff () {
       this.staffDialogIsEdit = false
@@ -409,7 +338,7 @@ export default {
     },
     // 点击表格删除按钮
     handleDeleteData (row) {
-      this.apiDeleteData(apiDeleteSysButton, row.id, apiListSysButton)
+      this.apiDeleteData(apiPageQueryUserRole, row.id, apiPageQueryUserRole)
     },
     // 处理表格数据
     handleTableData (tableData) {
@@ -460,14 +389,6 @@ export default {
         color: #333333;
         line-height: 16px;
         padding: 20px 0 20px 15px;
-      }
-      h3 {
-        background: rgba(65, 98, 219, .05);
-        font-family: PingFangSC-Regular;
-        font-size: 12px;
-        color: #4162DB;
-        line-height: 40px;
-        padding-left: 15px;
       }
     }
     .box-right {

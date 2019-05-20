@@ -10,6 +10,10 @@ export const apiCreateConsoleRole = (params) => {
 export const apiEditeConsoleRole = (params) => {
   return postRequest(base + '/editeConsoleRole', params)
 }
+// 获取角色或者角色分类信息
+export const apiGetConsoleRoleById = (params) => {
+  return postRequest(base + '/getConsoleRoleById', params)
+}
 
 // 删除角色或角色分类
 export const apiDelConsoleRole = (params) => {
