@@ -47,12 +47,12 @@ export const accountTableItem = [
 ]
 
 export const organizationTest = [
-  { label: '部门名称', key: 'menuName', hide: 0, canSet: 1, sort: 2, fix: 1 },
-  { label: '人数', key: 'id', hide: 0, canSet: 1, sort: 3, fix: 0 },
-  { label: '类型', key: 'menuLevel', hide: 0, canSet: 1, sort: 3, fix: 0 },
-  { label: '显示排序', key: 'sort', hide: 0, canSet: 1, sort: 3, fix: 0 },
-  { label: '负责人', key: 'menuCode', hide: 0, canSet: 1, sort: 3, fix: 0 },
-  { label: '状态', key: 'status', hide: 0, canSet: 1, sort: 3, fix: 0 }
+  { label: '部门名称', key: 'departmentName', hide: 0, canSet: 1, sort: 2, fix: 1 },
+  { label: '人数', key: 'departmentCount', hide: 0, canSet: 1, sort: 3, fix: 0 },
+  { label: '类型', key: 'departmentChType', hide: 0, canSet: 1, sort: 3, fix: 0 },
+  { label: '显示排序', key: 'sortNo', hide: 0, canSet: 1, sort: 3, fix: 0 },
+  { label: '负责人', key: 'directorName', hide: 0, canSet: 1, sort: 3, fix: 0 },
+  { label: '状态', key: 'departmentChStatus', hide: 0, canSet: 1, sort: 3, fix: 0 }
 ]
 
 export const staffRoleTest = [

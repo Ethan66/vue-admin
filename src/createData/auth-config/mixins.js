@@ -108,6 +108,7 @@ export const account = {
   }
 }
 
+// 组织架构
 const organizationMoreList = [
   { name: '新建平级部门', clickFn: 'handleCreateDepartment' },
   { name: '新建下级部门', clickFn: 'handleCreateNextLevelDepartment' },
@@ -120,24 +121,27 @@ export const organization = {
     return this.$setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), ['edit', { more: { list: organizationMoreList } }])
   },
   created () {
+    this.tybeArr = organizationTest
     let configSearchItem = [
-      'menuName',
-      { status: { type: 'select', options: [{ label: '正常', value: 1 }, { label: '失效', value: 2 }] } }
+      'departmentName',
+      { departmentStatus: { type: 'select', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }] } }
     ]
     let configTableItem = {
-      selection: 50,
-      id: 80,
-      sort: 60,
-      menuName: { type: 'tree', width: 200 },
-      menuCode: 80,
-      status: 80,
-      menuLevel: { clsName: 'menuLevel', width: 100 },
+      departmentCount: 80,
+      sortNo: 60,
+      departmentName: { type: 'tree', width: 200 },
+      directorName: 80,
+      departmentChStatus: { clsName: 'departmentChStatus', width: 80 },
+      departmentType: 100,
       btn: 120
     }
     let configDialogItem = [
       { parentMenuName: { label: '上级部门', type: 'select', options: [{ label: '一', value: 1 }, { label: '二', value: 2 }] } },
-      'menuName', 'menuLevel', 'menuCode', 'sort',
-      { status: { type: 'radio', options: [{ label: '正常', value: '1' }, { label: '停用', value: '0' }] } }
+      'departmentName',
+      {
+        departmentType: { type: 'select', options: [{ label: '集团', value: 0 }, { label: '公司', value: 1 }, { label: '事业部', value: 2 }, { label: '部门', value: 3 }] }
+      }, 'sortNo', 'directorName',
+      { departmentStatus: { type: 'radio', options: [{ label: '正常', value: 1 }, { label: '停用', value: 0 }] } }
     ]
     this.searchItem = this.$setItem(organizationTest, configSearchItem, 'search')
     this.tableItem = this.$setItem(organizationTest, configTableItem, 'table')

@@ -3,8 +3,8 @@ const base = '/bl/console/api'
 
 // 菜单管理
 // 获取所有菜单
-export const apiListSysMenu = (params) => {
-  return postRequest(base + '/listSysMenu', params)
+export const apiListConsoleMenu = (params) => {
+  return postRequest(base + '/listConsoleMenu', params)
 }
 
 // 编辑菜单
@@ -77,4 +77,20 @@ export const apiListPageLoginLog = (params) => {
 // 登陆异常日志
 export const apiListPageLoginErrorLog = (params) => {
   return postRequest(base + '/listPageLoginLog', params)
+}
+
+// 组织架构
+// 查询部门
+export const apiQueryDepartmentList = (params) => {
+  return postRequest(base + '/queryDepartmentList', params)
+}
+
+// 停用部门
+export const apiStopDepartment = (params) => {
+  return postRequest(base + '/stopDepartment', params)
+}
+
+// 编辑部门
+export const apiEditDepartment = (params) => {
+  return postRequest(base + '/editDepartment', params)
 }

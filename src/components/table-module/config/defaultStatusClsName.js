@@ -1,7 +1,7 @@
 export default {
-  menuLevel: {
-    '一级菜单': 'colorBlue',
-    '1': 'colorRed'
+  departmentChStatus: {
+    '正常': 'colorBlue',
+    '停用': 'colorRed'
   },
   loginStatus: {
     '成功': 'colorBlue',

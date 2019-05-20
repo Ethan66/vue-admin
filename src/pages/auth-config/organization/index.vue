@@ -37,7 +37,7 @@
 import { organization } from '@/createData/auth-config/mixins'
 import basicMethod from '@/config/mixins'
 import { menuRelation } from '@/config/utils'
-import { apiListSysMenu, apiQueryParentSysMenu, apiCreateSysMenu, apiEditSysMenu, apiDeleteSysMenu, apiListSysButton, apiEditeSysButton, apiCreateSysButton, apiDeleteSysButton } from '@/api/authority'
+import { apiQueryDepartmentList, apiStopDepartment, apiEditDepartment, apiQueryParentSysMenu, apiCreateSysMenu, apiEditSysMenu, apiDeleteSysMenu, apiListSysButton, apiEditeSysButton, apiCreateSysButton, apiDeleteSysButton } from '@/api/authority'
 import { debuglog } from 'util';
 
 export default {
@@ -49,7 +49,7 @@ export default {
   },
   created () {
     this.tablePages.pageSize = 10000
-    this.handleGetTableData(apiListSysMenu)
+    this.handleGetTableData(apiQueryDepartmentList)
   },
   methods: {
     // 点击新增按钮
@@ -57,21 +57,27 @@ export default {
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
       this.isEdit = 0
       this.apiGetParantMenu(1)
-      this.dialogTitle = '新增菜单'
+      this.dialogTitle = '新增部门'
       this.showDialogForm = true
     },
     // 点击表格编辑按钮
     handleEditData (row) {
       this.editData = JSON.parse(JSON.stringify(row))
-      this.editData.menuLevel = this.editData.menuLevel === '一级菜单' ? '0' : '1'
-      // this.dialogItem[2].disabled = true
       this.isEdit = 1
-      this.dialogTitle = '编辑菜单'
+      this.dialogTitle = '编辑部门'
       this.showDialogForm = true
+    },
+    // 点击表格停用按钮
+    handleStop (row) {
+      apiStopDepartment({id: row.id}).then(res => {
+        if (res.code === '208999') {
+          this.$getSuccessMsg(this, res.message)
+        }
+      })
     },
     // 点击表格删除按钮
     handleDeleteData (row) {
-      this.apiDeleteData(apiDeleteSysMenu, row.id, apiListSysMenu)
+      this.apiDeleteData(apiDeleteSysMenu, row.id, apiQueryDepartmentList)
     },
     // 点击详情
     handleShowDetailDialog (row) {
@@ -85,38 +91,76 @@ export default {
     },
     // 点击对话框确认按钮
     handleSubmit () {
-      if (this.editData.menuParentId) {
-        if (this.editData.menuUrl === '') {
-          this.$message.error('二级菜单必须要填写uxrl')
-          return false
-        }
-      }
-      if (this.editData.menuUrl === '') {
-        this.editData.menuUrl = 'null'
-      }
+      let edit = this.edit
       this.$refs.dialog.showDialogForm1 = false
-      if (this.isEdit === 0) {
-        this.apiCreateData(apiCreateSysMenu, this.editData, apiListSysMenu)
-      } else {
-        this.apiEditData(apiEditSysMenu, this.editData, apiListSysMenu)
+      let obj = {
+        department: edit.department,
+        departmentName: edit.departmentName,
+        departmentType: edit.departmentType,
+        id: edit.id,
+        sortNo: edit.sortNo
       }
+      if (this.isEdit === 0) {
+        this.apiCreateData(apiCreateSysMenu, this.editData, apiQueryDepartmentList)
+      } else {
+        this.apiEditData(apiEditDepartment, obj, apiQueryDepartmentList)
+      }
+    },
+    // 获取表格数据
+    handleGetTableData (api, val, currentPage = 1) {
+      this.getTableDataApi = api
+      this.tableLoading = true
+      api(val).then(res => {
+        if (res.code === '208999') {
+          this.tablePages.current = currentPage
+          this.allData = res.resultMap.data
+          this.tableData = this.allData
+          this.handleTableData && this.handleTableData(this.tableData || [])
+          this.tableLoading = false
+        }
+      })
     },
     // 处理表格数据
     handleTableData (tableData, index) {
+      this.tybeArr.forEach(item => {
+        if (item.key === 'departmentChType') {
+          this.searchItem[1].label = item.label
+          this.dialogItem[2].label = item.label
+        }
+        if (item.key === 'departmentChStatus') {
+          this.dialogItem[5].label = item.label
+        }
+      })
       if (tableData.length === 0) {
         this.tableData = []
         return
       }
-      tableData = menuRelation(tableData, 'id', 'menuParentId', 'menuSort')
-      this.tableData = tableData.filter(item => {
-        if (item.menuLevel === 0) {
-          item.menuLevel = '一级菜单'
-        } else if (item.menuLevel === 1) {
-          item.menuLevel = '二级菜单'
-          item.showBtn = ['编辑']
+      tableData.forEach(item => {
+        switch (item.departmentStatus) {
+          case 0:
+            item.departmentChStatus = '正常'
+            break
+          case 1:
+            item.departmentChStatus = '停用'
+            break
         }
-        return item
+        switch (item.departmentType) {
+          case 0:
+            item.departmentChType = '集团'
+            break
+          case 1:
+            item.departmentChType = '公司'
+            break
+          case 2:
+            item.departmentChType = '事业部'
+            break
+          case 3:
+            item.departmentChType = '部门'
+            break
+        }
       })
+      // this.searchItem[1].label = 
+      this.tableData = menuRelation(tableData, 'id', 'parentId', 'departmentLevel', 'sortNo')
     },
     // 接口：获取菜单按钮
     apiGetButtonAuth (buttonMenuId) {
