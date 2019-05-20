@@ -30,7 +30,8 @@ export default {
       type: Array
     },
     dialogVisible: {
-      type: Boolean
+      type: Boolean,
+      default: false
     },
     infoItem: {
       type: Array
@@ -52,7 +53,7 @@ export default {
     },
     dialogVisible (val) {
       if (val === true) {
-        this.staffVisible = true
+        this.staffInfoVisible = true
       }
     }
   },

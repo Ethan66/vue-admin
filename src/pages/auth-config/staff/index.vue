@@ -4,8 +4,9 @@
       <div class="tree-box">
         <h2>组织架构</h2>
         <el-tree
-          node-key="label" :data="treeData" :props="treeProps"
+          node-key="id" :data="treeData" :props="treeProps"
           default-expand-all
+          :expand-on-click-node="false"
           @node-click="handleNodeClick"></el-tree>
       </div>
     </div>
@@ -48,6 +49,7 @@
       :formItem="staffFormItem"
       :formData="staffFormData"
       :rules="staffFormRules"
+      :defaultCheckedKeys="defaultCheckedKeys"
     />
   </div>
 </template>
@@ -68,28 +70,29 @@ export default {
       staffDialogVisible: false,
       staffForm: {},
       staffFormRules: {
-        nikeName: [
+        userName: [
           { required: true, message: '请输入昵称', trigger: 'blur' }
         ],
-        name: [
+        realName: [
           { required: true, message: '请输入姓名', trigger: 'blur' }
         ],
-        phone: [
+        telephone: [
           { required: true, message: '请输入手机号', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请输入初始密码', trigger: 'blur' }
+        ],
+        departmentId: [
+          { required: true, message: '请选择部门', trigger: 'blur' }
+        ],
+        position: [
+          { required: true, message: '请输入职位', trigger: 'blur' }
+        ],
+        reportTo: [
+          { required: true, message: '请选择汇报对象', trigger: 'blur' }
         ]
       },
-      list: [
-        { id: 1, parentId: 0, name: '一级菜单A', rank: 1 },
-        { id: 2, parentId: 0, name: '一级菜单B', rank: 1 },
-        { id: 3, parentId: 0, name: '一级菜单C', rank: 1 },
-        { id: 4, parentId: 1, name: '二级菜单A-A', rank: 2 },
-        { id: 5, parentId: 1, name: '二级菜单A-B', rank: 2 },
-        { id: 6, parentId: 2, name: '二级菜单B-A', rank: 2 },
-        { id: 7, parentId: 4, name: '三级菜单A-A-A', rank: 3 }
-      ],
+      list: [],
       staffDialogBtn: [
         { label: '取 消', type: 'delete', clickfn: 'handleRefuse' },
         { label: '确 认', type: 'edit', color: 'primary', clickfn: 'handleSubmit' }
@@ -114,67 +117,12 @@ export default {
               key: 'departmentId',
               type: 'selectTree',
               defaultProps: {
-                children: 'childrenList',
-                label: 'menuName'
+                children: 'childIdList',
+                label: 'departmentName'
               },
-              defaultCheckedKeys: [],
-              dialogData: [{
-                menuId: 1,
-                menuName: '霖梓网络',
-                childrenList: [{
-                  menuId: '1-1',
-                  menuName: '百凌事业部',
-                  childrenList: [{
-                    menuId: '1-1-1',
-                    menuName: '前端'
-                  }, {
-                    menuId: '1-1-2',
-                    menuName: '后端'
-                  }]
-                }, {
-                  menuId: '1-2',
-                  menuName: '联通事业部',
-                  childrenList: [{
-                    menuId: '1-2-1',
-                    menuName: '前端'
-                  }, {
-                    menuId: '1-2-2',
-                    menuName: '后端'
-                  }, {
-                    menuId: '1-2-3',
-                    menuName: '测试'
-                  }]
-                }]
-              }, {
-                menuId: 2,
-                menuName: '霖扬网络',
-                childrenList: [{
-                  menuId: '2-1',
-                  menuName: 'in有',
-                  childrenList: [{
-                    menuId: '2-1-1',
-                    menuName: '前端'
-                  }, {
-                    menuId: '2-1-2',
-                    menuName: '后端'
-                  }, {
-                    menuId: '2-1-3',
-                    menuName: '运维'
-                  }, {
-                    menuId: '2-1-4',
-                    menuName: '运营'
-                  }]
-                }, {
-                  menuId: '2-2',
-                  menuName: '二级 2-2',
-                  childrenList: [{
-                    menuId: '2-2-1',
-                    menuName: '三级 2-2-1'
-                  }]
-                }]
-              }]
+              dialogData: []
             },
-            { label: '职位', key: 'reportToName', type: 'input' },
+            { label: '职位', key: 'position', type: 'input' },
             { label: '汇报对象',
               key: 'reportTo',
               type: 'select',
@@ -182,21 +130,22 @@ export default {
           ]
         }
       ],
+      defaultCheckedKeys: [],
       staffInfoItem: [
         {
           infoTitle: '孙华杰',
           infoList: [
             { label: '状态', key: 'status' },
             { label: '创建时间', key: 'gmtCreate' },
-            { label: '创建人', key: '禁止登录' },
-            { label: '上次登录时间', key: '禁止登录' }
+            { label: '创建人', key: 'createrName' },
+            { label: '上次登录时间', key: 'LastLogonTime' }
           ]
         }, {
           infoTitle: '账号信息',
           infoList: [
-            { label: '昵称', key: 'realName' },
-            { label: '姓名', key: 'userName' },
-            { label: '手机号', key: 'telphonen' },
+            { label: '昵称', key: 'userName' },
+            { label: '姓名', key: 'realName' },
+            { label: '手机号', key: 'telephone' },
             { label: '邮箱', key: 'mailbox' }
           ]
         }, {
@@ -214,65 +163,22 @@ export default {
         { label: '关闭', type: 'edit', color: 'primary', clickfn: 'handleStaffInfoDialogClose' }
       ],
       treeProps: {
-        children: 'children',
-        label: 'label'
+        children: 'childIdList',
+        label: 'departmentName'
       },
-      treeData: [
-        {
-          label: '一级 1',
-          children: [{
-            label: '二级 1-1',
-            children: [{
-              label: '三级 1-1-1'
-            }]
-          }]
-        }, {
-          label: '一级 2',
-          children: [{
-            label: '二级 2-1',
-            children: [{
-              label: '三级 2-1-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }]
-        }, {
-          label: '一级 3',
-          children: [{
-            label: '二级 3-1',
-            children: [{
-              label: '三级 3-1-1'
-            }]
-          }, {
-            label: '二级 3-2',
-            children: [{
-              label: '三级 3-2-1'
-            }]
-          }]
-        }
-      ]
+      treeData: [],
+      departmentId: '' // 点击部门树的id
     }
   },
   created () {
+    this.handleApiQueryDepartmentTree()
     this.handleGetTableData(apiListConsoleUser)
   },
-  computed: {
-    /* 转树形数据 */
-    optionData () {
-      let cloneData = JSON.parse(JSON.stringify(this.list)) // 对源数据深度克隆
-      return cloneData.filter(father => { // 循环所有项，并添加children属性
-        let branchArr = cloneData.filter(child => father.id === child.parentId) // 返回每一项的子级数组
-        father.children = branchArr.length > 0 ? branchArr : '' // 给父级添加一个children属性，并赋值
-        return father.parentId === 0 // 返回第一层
-      })
-    }
-  },
+  computed: {},
   methods: {
     handleNodeClick (data) {
-      console.log(data)
+      this.departmentId = data.id
+      this.handleGetTableData(apiListConsoleUser, { departmentId: data.id })
     },
     handleSendHead (val) {
       console.log(val)
@@ -297,6 +203,8 @@ export default {
     handleEditData (row) {
       this.handleApiQueryLowerLevelList()
       this.staffFormData = JSON.parse(JSON.stringify(row))
+      this.defaultCheckedKeys.push(this.staffFormData.departmentId)
+      this.staffFormData.password = '******'
       this.isEdit = 1
       this.staffDialogTitle = '编辑员工'
       this.staffDialogVisible = true
@@ -354,10 +262,6 @@ export default {
         this.handleApiResetConsoleUserPassword()
       })
     },
-    // 关闭员工信息弹框
-    handleStaffInfoClose () {
-      this.staffInfoVisible = false
-    },
     // staffdialog 取消按钮
     handleRefuse () {
       this.staffFormData = this.$options.data().staffFormData
@@ -374,6 +278,19 @@ export default {
     },
     handleStaffInfoDialogClose () {
       this.$refs.staffInfoDialog.staffInfoVisible = false
+    },
+    handleShowInfo (row) {
+      console.log(row)
+      this.staffInfoData = JSON.parse(JSON.stringify(row))
+      this.staffInfoVisible = true
+    },
+    optionData (list) {
+      let cloneData = JSON.parse(JSON.stringify(list)) // 对源数据深度克隆
+      return cloneData.filter(father => { // 循环所有项，并添加children属性
+        let branchArr = cloneData.filter(child => father.id === child.parentId) // 返回每一项的子级数组
+        father.childIdList = branchArr.length > 0 ? branchArr : [] // 给父级添加一个children属性，并赋值
+        return father.parentId === 1 // 返回第一层
+      })
     }
   },
   components: {

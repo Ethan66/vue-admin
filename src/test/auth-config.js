@@ -9,7 +9,7 @@ export const buttonTest = [
 ]
 
 export const staffTest = [
-  { label: '昵称', key: 'realName', hide: 0, canSet: 1, sort: 1, fix: 1 },
+  { label: '昵称', key: 'userName', hide: 0, canSet: 1, sort: 1, fix: 1 },
   { label: '姓名', key: 'realName', hide: 0, canSet: 1, sort: 1, fix: 0 },
   { label: '手机号', key: 'telephone', hide: 0, canSet: 1, sort: 2, fix: 0 },
   { label: '部门名称', key: 'departmentName', hide: 0, canSet: 1, sort: 3, fix: 0 },

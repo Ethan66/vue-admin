@@ -19,7 +19,7 @@ export const staff = {
     let configSearchItem = ['department_id', 'status']
     let configTableItem = {
       selection: 50,
-      realName: 80,
+      realName: { width: 100, clickFn: 'handleShowInfo', clsName: 'cm-btn-color' },
       telephone: 100,
       departmentName: 100,
       position: 100,

@@ -1,15 +1,16 @@
-import { apiCreateConsoleUser, apiQueryLowerLevelList, apiEditConsoleUser, apiListConsoleUser, apiQueryConsoleUserInfo, apiEditConsoleUserStatus, apiResetConsoleUserPassword } from '@/api/staff'
+import { apiCreateConsoleUser, apiQueryLowerLevelList, apiEditConsoleUser, apiListConsoleUser, apiQueryConsoleUserInfo, apiEditConsoleUserStatus, apiResetConsoleUserPassword, apiQueryDepartmentTree } from '@/api/staff'
 export const methods = {
   methods: {
     // 查询用户部门及下级部门列表和人员列表
     handleApiQueryLowerLevelList () {
       apiQueryLowerLevelList().then(res => {
         if (res.code === '208999') {
-          this.staffFormItem[0].formItem.map(item => {
-            item.dialogData = item.departmentTree
-          })
           this.staffFormItem[1].formItem.map(item => {
-            if (item.key === 'report') {
+            if (item.key === 'departmentId') {
+              let list = res.resultMap.departmentTree || []
+              item.dialogData = this.optionData(list)
+            }
+            if (item.key === 'reportTo') {
               item.options = res.resultMap.userlist || []
             }
           })
@@ -61,7 +62,10 @@ export const methods = {
     },
     // 查询系统用户列表
     hanldeApiListConsoleUser () {
-      apiListConsoleUser().then(res => {
+      let params = {
+        departmentId: this.departmentId
+      }
+      apiListConsoleUser(params).then(res => {
         if (res.code === '208999') {
 
         } else {
@@ -105,6 +109,21 @@ export const methods = {
       apiResetConsoleUserPassword().then(res => {
         if (res.code === '208999') {
 
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+    },
+    // 查询部门数
+    handleApiQueryDepartmentTree () {
+      let params = {
+        isWhole: true,
+        hasStop: true
+      }
+      apiQueryDepartmentTree(params).then(res => {
+        if (res.code === '208999') {
+          console.log(this.optionData(res.resultMap.data))
+          this.treeData = this.optionData(res.resultMap.data)
         } else {
           this.$message.error(res.message)
         }
