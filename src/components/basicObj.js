@@ -5,6 +5,7 @@ const searchInitObj = {
 }
 
 const tableInitObj = {
+  tybeArr: [], // 字段数组
   allData: [], // 请求接口获取的表格数据
   tableData: [], // 展示到页面的表格数据，比如allData一级菜单表示为1，展示到页面的时候需要将1变为中文一级菜单
   tableItem: [],

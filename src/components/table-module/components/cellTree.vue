@@ -10,7 +10,7 @@
         @click.prevent="handleToggle(scope.$index, scope.row)"
         :style="handleStyle(scope.row)"
       >
-        <i :class="iconClass(scope.row)"></i>{{scope.row.menuName}}
+        <i :class="iconClass(scope.row)"></i>{{scope.row[item.prop]}}
       </span>
     </template>
   </el-table-column>

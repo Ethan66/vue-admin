@@ -35,7 +35,7 @@
                       v-if="item.type==='textarea'">
             </el-input>
             <el-radio-group v-model="editData[item.key]" v-if="item.type==='radio'" :disabled="item.disabled || allRead" size="small">
-              <el-radio v-for="(child, k) in item.options" @change="handleChange(item.changeFn, editData[item.key])" :label="child.label" :key="k">{{child.label}}</el-radio>
+              <el-radio v-for="(child, k) in item.options" @change="handleChange(item.changeFn, editData[item.key])" :label="child.value" :key="k">{{child.label}}</el-radio>
             </el-radio-group>
             <el-date-picker type="datetime" :placeholder="item.placeholder || ''" style="width: 100%;"
                             format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss"
