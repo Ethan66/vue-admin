@@ -32,7 +32,7 @@
         <p class="text">提交完成</p>
         <p class="btn">
           <el-button>取消</el-button>
-          <el-button type="primary">继续添加</el-button>
+          <el-button type="primary" @click="handleContinueAdd">继续添加</el-button>
         </p>
       </div>
     </template>
@@ -60,14 +60,24 @@ export default {
     return {
       step: 0,
       form: { name: '' },
-      showDialog: false
+      showDialog: false,
+      handTableData: [{ pageCode: '', menuName: '', creater: '1', menuDesc: '1', editStatus: true, status: '1' }]
     }
   },
   watch: {
     showCreateTybe (val) {
       if (val) {
         this.showDialog = true
+        this.tableItem[0].show = true
+        this.tableItem[1].type = 'cell'
+        this.tableItem[5].show = true
+        this.tableItem[6] && this.tableItem.pop()
         if (this.type === 'handCreate') {
+          this.tableItem[0].show = false
+          this.tableItem[1].type = 'input'
+          this.tableItem[5].show = false
+          this.tableItem[6] = { label: '显示排序', prop: 'status', type: 'input' }
+          this.tableData = this.handTableData
           this.step++
         }
       }
@@ -101,7 +111,14 @@ export default {
       }
     },
     submitForm () {
-
+    },
+    handleContinueAdd () {
+      if (this.type === 'fastCreate') {
+        this.step = 0
+        this.form.name = ''
+      } else {
+        this.step = 1
+      }
     }
   }
 }

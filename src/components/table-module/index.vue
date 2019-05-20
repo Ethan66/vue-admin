@@ -17,7 +17,7 @@
     >
       <template v-for="(item, i) in tableItem">
         <el-table-column
-          v-if="item.type==='selection'"
+          v-if="item.type==='selection' && item.show !== false"
           :key="`selection${i}`"
           :width="item.width"
           :selectable="handleSelect"
@@ -62,7 +62,7 @@
         >
         </cell-tree>
         <table-btn
-          v-if="item.type==='btn'"
+          v-if="item.type==='btn' && item.show !== false"
           :key="`btn${i}`"
           :item="item"
           :i="i"
