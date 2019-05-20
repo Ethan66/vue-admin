@@ -58,7 +58,7 @@ export const organizationTest = [
 export const staffRoleTest = [
   { label: '姓名', key: 'real_name', hide: 0, canSet: 1, sort: 1, fix: 0 },
   { label: '手机号', key: 'telephone', hide: 0, canSet: 1, sort: 2, fix: 0 },
-  { label: '部门', key: 'department_type', hide: 0, canSet: 1, sort: 3, fix: 0 },
+  { label: '部门', key: 'department', hide: 0, canSet: 1, sort: 3, fix: 0 },
   { label: '职位', key: 'position', hide: 0, canSet: 4, sort: 5, fix: 0 },
   { label: '角色', key: 'role_name', hide: 0, canSet: 1, sort: 5, fix: 0 }
 ]

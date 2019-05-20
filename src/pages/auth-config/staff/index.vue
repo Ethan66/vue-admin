@@ -280,7 +280,6 @@ export default {
       this.$refs.staffInfoDialog.staffInfoVisible = false
     },
     handleShowInfo (row) {
-      console.log(row)
       this.staffInfoData = JSON.parse(JSON.stringify(row))
       this.staffInfoVisible = true
     },

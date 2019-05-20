@@ -4,11 +4,11 @@ export default {
       typeDialogTitle: '编辑类型',
       formData: {},
       typeDialogRules: {
-        name: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' }
+        roleName: [
+          { required: true, message: '请输入分类名称', trigger: 'blur' }
         ],
-        srot: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' }
+        sortNo: [
+          { required: true, message: '请输入显示排序', trigger: 'blur' }
         ]
       },
       typeDialogBtn: [

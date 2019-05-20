@@ -23,7 +23,7 @@
                 :label="optionItem.label" :value="optionItem.value"></el-option>
             </el-option-group>
           </el-select>
-          <span v-if="item.type === 'text'">{{item.content}}</span>
+          <span v-if="item.type === 'text'">{{formData[item.key]}}</span>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -85,11 +85,15 @@ export default {
           this.$parent[fn]()
         }
       } else if (type === 'edit') {
-        if (!fn) {
-          this.typeVisible = false
-        } else {
-          this.$parent[fn]()
-        }
+        this.$refs.form.validate((valid) => {
+          if (valid) {
+            if (!fn) {
+              this.typeVisible = false
+            } else {
+              this.$parent[fn]()
+            }
+          }
+        })
       }
     }
   }

@@ -77,6 +77,7 @@ export default {
     this.handleApiGetConsoleRoleById()
     this.handleGetTableData(apiPageQueryUserRole)
     this.handleApiGetAllRoleRequestTree()
+    this.handleApiQueryDepartmentTree()
   },
   computed: {
     optionData () {
@@ -101,6 +102,7 @@ export default {
         marketing: []
       },
       roleCount: 0,
+      treeData: [],
       staffDialogFormItem: [
         {
           label: '管理员角色',
@@ -202,12 +204,13 @@ export default {
     handleEditClass (item) {
       this.typeDialogTitle = '编辑类型'
       this.formItem = [
-        { label: '分类名称', key: 'name', type: 'input' },
-        { label: '显示排序', key: 'srot', type: 'input' },
-        { label: '创建人', type: 'text', content: '系统' },
-        { label: '创建时间', type: 'text', content: '2019/04/26 15:23' }
+        { label: '分类名称', key: 'roleName', type: 'input' },
+        { label: '显示排序', key: 'sortNo', type: 'input' },
+        { label: '创建人', type: 'text', key: 'creater' },
+        { label: '创建时间', type: 'text', key: 'gmtCreate' }
       ]
       this.isEdit = true
+      this.formData = JSON.parse(JSON.stringify(item))
       this.typeDialogVisible = true
     },
     handleAddClass (id) {

@@ -1,4 +1,5 @@
 import { apiCreateConsoleRole, apiGetConsoleRoleById, apiEditeConsoleRole, apiDelConsoleRole, apiGetAllRoleRequestTree, apiPageQueryUserRole } from '@/api/role'
+import { apiQueryDepartmentTree } from '@/api/staff'
 export default {
   methods: {
     handleApiGetConsoleRoleById () {
@@ -26,7 +27,10 @@ export default {
       })
     },
     handleApiEditeConsoleRole () {
-      let params = {}
+      let params = {
+        resourceType: this.isRole
+      }
+      Object.assign(params, this.formData)
       apiEditeConsoleRole(params).then(res => {
         if (res.code === '208999') {
 
@@ -59,6 +63,24 @@ export default {
         if (res.code === '208999') {
           this.classifyList = res.resultMap.list || []
           this.roleCount = res.resultMap.total || 0
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+    },
+    // 查询部门数
+    handleApiQueryDepartmentTree () {
+      let params = {
+        isWhole: true,
+        hasStop: true
+      }
+      apiQueryDepartmentTree(params).then(res => {
+        if (res.code === '208999') {
+          this.searchItem.map(item => {
+            if (item.key === 'department_type') {
+              item.treeOptions = this.$disposeTreeData(res.resultMap.data)
+            }
+          })
         } else {
           this.$message.error(res.message)
         }
