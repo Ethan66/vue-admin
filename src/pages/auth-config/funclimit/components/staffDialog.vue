@@ -10,7 +10,7 @@
         <el-form-item v-if="!isEdit" label="请选择员工" prop="name">
           <tree-select
             :data="treeList" :defaultProps="defaultProps"
-            multiple nodeKey="menuId" :checkedKeys="treeCheckedData"
+            multiple nodeKey="id" :checkedKeys="treeCheckedData"
             @popoverHide="popoverHide"></tree-select>
           <span class="selectTips">支持一个员工有多个角色</span>
         </el-form-item>
@@ -18,12 +18,12 @@
           角色配置<span>（请勾选需要的角色）</span>
         </div>
         <el-form-item
-          v-for="(item, index) in formItem" :key="index"
-          :label="item.label" :prop="item.key" :inline="true" label-width="100px">
-          <el-checkbox-group v-model="formData[item.key]">
+          v-for="(item, index) in formItem" :key="`it${index}`"
+          :label="item.roleName" :inline="true" label-width="100px">
+          <el-checkbox-group v-model="formData.roleIds">
             <el-checkbox
-              v-for="(option, index) in item.options" :key="index"
-              :label="option.label" :name="option.value"></el-checkbox>
+              v-for="option in item.childIdList" :key="`op${option.id}`"
+              :label="String(option.id)" :name="option.id">{{option.roleName}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
       </el-form>
@@ -74,8 +74,8 @@ export default {
     return {
       staffDialogVisible: false,
       defaultProps: {
-        children: 'childrenList',
-        label: 'menuName'
+        children: 'childIdList',
+        label: 'departmentName'
       }
     }
   },
@@ -108,6 +108,7 @@ export default {
       }
     },
     popoverHide (checkedIds, checkedData) {
+      this.formData.userIds = checkedIds.join(',')
     }
   },
   components: {

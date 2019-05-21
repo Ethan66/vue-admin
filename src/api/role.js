@@ -29,3 +29,12 @@ export const apiGetAllRoleRequestTree = (params) => {
 export const apiPageQueryUserRole = (params) => {
   return postRequest(base + '/pageQueryUserRole', params)
 }
+
+// 账号分配角色
+export const apiGrantUserRole = (params) => {
+  return postRequest(base + '/grantUserRole', params)
+}
+// 删除账号某个角色
+export const apiDelUserRole = (params) => {
+  return postRequest(base + '/delUserRole', params)
+}

@@ -9,18 +9,18 @@ export const staffRole = {
     return setBtnConfig(JSON.parse(JSON.stringify(initData)), ['edit', 'delete'])
   },
   created () {
-    let configSearchItem = ['real_name', {
+    let configSearchItem = ['realName', {
       department: { type: 'selectTree',
         treeOptions: []
       }
     }]
     let configTableItem = {
       selection: 50,
-      real_name: 40,
+      realName: 40,
       telephone: 60,
-      department: 60,
+      departmentName: 60,
       position: 60,
-      role_name: 60,
+      roleName: 60,
       btn: 120
     }
     let configDialogItem = [

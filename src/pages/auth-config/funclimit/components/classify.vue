@@ -1,8 +1,8 @@
 <template>
   <div class="classify">
-    <h3 ref="all" class="active" @click="handleRoleClick('all', '', $event)">全部用户({{total}})</h3>
+    <h3 ref="all" class="active" @click.stop="handleRoleClick('all', '', $event)">全部用户({{total}})</h3>
     <template v-for="item in classifyList">
-      <div class="title" :key=item.id @click="handleRoleClick(item, 'classify', $event)">
+      <div class="title" :key=item.id @click.stop="handleRoleClick(item, 'classify', $event)">
         {{item.roleName}}({{item.userCount}})
         <span class="showIcon">
           <i class="el-icon-edit-outline" @click.stop="handleClass(item, 'edit')"></i>
@@ -10,8 +10,8 @@
           <i class="el-icon-delete" @click.stop="handleClass(item, 'del')"></i>
         </span>
       </div>
-      <div class="role" @click="handleRoleClick(roleItem, 'role', $event)"
-        v-for="roleItem in item.children" :key="roleItem.id">
+      <div class="role" @click.stop="handleRoleClick(roleItem, 'role', $event)"
+        v-for="roleItem in item.childIdList" :key="roleItem.id">
         {{roleItem.roleName}}({{roleItem.userCount}})
         <span class="showIcon">
           <i class="el-icon-edit-outline" @click.stop="handleRole(roleItem, 'edit')"></i>

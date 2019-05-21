@@ -4,6 +4,9 @@ export default {
       typeDialogTitle: '编辑类型',
       formData: {},
       typeDialogRules: {
+        resourceParentId: [
+          { required: true, message: '请选择所属分类', trigger: 'blur' }
+        ],
         roleName: [
           { required: true, message: '请输入分类名称', trigger: 'blur' }
         ],
@@ -23,7 +26,7 @@ export default {
       ],
       typeDialogVisible: false,
       isEdit: false,
-      isRole: 0 // 0：角色，1：角色分类
+      isClassify: 0 // 0：角色，1：角色分类
     }
   }
 }

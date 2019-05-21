@@ -3,7 +3,7 @@
     <div class="box-left">
       <h2>角色分类</h2>
       <classify
-        :classifyList="optionData"
+        :classifyList="classifyList"
         :total="roleCount"
         @classify="handleClassify"
         @role="handleRole"
@@ -28,10 +28,6 @@
         @table-jump="handleJump">
         <div class="btn-content" slot="btn">
           <el-button @click="handleAddStaff">添加员工</el-button>
-        </div>
-        <div class="total-content" slot="total">
-          <b>统计数据</b>
-          <span>借款人数 517 人，借款本金 340,000.00 元，待还本金 140,000.00 元</span>
         </div>
       </table-module>
     </div>
@@ -72,22 +68,11 @@ import staffDialog from './components/staffDialog'
 import { apiPageQueryUserRole } from '@/api/role'
 
 export default {
-  mixins: [basicMethod, staffRole, dialogConfig, methods],
+  mixins: [methods, basicMethod, staffRole, dialogConfig],
   created () {
-    this.handleApiGetConsoleRoleById()
     this.handleGetTableData(apiPageQueryUserRole)
     this.handleApiGetAllRoleRequestTree()
     this.handleApiQueryDepartmentTree()
-  },
-  computed: {
-    optionData () {
-      let cloneData = JSON.parse(JSON.stringify(this.classifyList)) // 对源数据深度克隆
-      return cloneData.filter(father => { // 循环所有项，并添加children属性
-        let branchArr = cloneData.filter(child => father.id === child.resourceParentId) // 返回每一项的子级数组
-        father.children = branchArr.length > 0 ? branchArr : '' // 给父级添加一个children属性，并赋值
-        return father.resourceParentId === 0 // 返回第一层
-      })
-    }
   },
   data () {
     return {
@@ -98,8 +83,7 @@ export default {
       staffDialogVisible: false,
       staffDialogTitle: '添加员工',
       staffDialogFormData: {
-        admin: [],
-        marketing: []
+        roleIds: []
       },
       roleCount: 0,
       treeData: [],
@@ -124,79 +108,7 @@ export default {
         { label: '取 消', type: 'delete', clickfn: 'handleRefuse' },
         { label: '确 认', type: 'edit', color: 'primary', clickfn: 'handleSubmit' }
       ],
-      treeList: [{
-        menuId: 1,
-        menuName: '霖梓网络',
-        childrenList: [{
-          menuId: '1-1',
-          menuName: '百凌事业部',
-          childrenList: [{
-            menuId: '1-1-1',
-            menuName: '前端'
-          }, {
-            menuId: '1-1-2',
-            menuName: '后端'
-          }, {
-            menuId: '1-1-3',
-            menuName: '产品'
-          }, {
-            menuId: '1-1-4',
-            menuName: '运营'
-          }, {
-            menuId: '1-1-5',
-            menuName: '运维'
-          }]
-        }, {
-          menuId: '1-2',
-          menuName: '联通事业部',
-          childrenList: [{
-            menuId: '1-2-1',
-            menuName: '前端'
-          }, {
-            menuId: '1-2-2',
-            menuName: '后端'
-          }, {
-            menuId: '1-2-3',
-            menuName: '测试'
-          }, {
-            menuId: '1-2-4',
-            menuName: '产品'
-          }, {
-            menuId: '1-2-5',
-            menuName: '运营'
-          }, {
-            menuId: '1-2-6',
-            menuName: '运维'
-          }]
-        }]
-      }, {
-        menuId: 2,
-        menuName: '霖扬网络',
-        childrenList: [{
-          menuId: '2-1',
-          menuName: 'in有',
-          childrenList: [{
-            menuId: '2-1-1',
-            menuName: '前端'
-          }, {
-            menuId: '2-1-2',
-            menuName: '后端'
-          }, {
-            menuId: '2-1-3',
-            menuName: '运维'
-          }, {
-            menuId: '2-1-4',
-            menuName: '运营'
-          }]
-        }, {
-          menuId: '2-2',
-          menuName: '二级 2-2',
-          childrenList: [{
-            menuId: '2-2-1',
-            menuName: '三级 2-2-1'
-          }]
-        }]
-      }],
+      treeList: [],
       treeCheckedData: []
     }
   },
@@ -213,21 +125,21 @@ export default {
       this.formData = JSON.parse(JSON.stringify(item))
       this.typeDialogVisible = true
     },
-    handleAddClass (id) {
+    handleAddClass (row) {
       this.typeDialogTitle = '新建类型'
       this.formItem = [
-        { label: '分类名称', key: 'name', type: 'input' },
-        { label: '显示排序', key: 'srot', type: 'input' }
+        { label: '分类名称', key: 'roleName', type: 'input' },
+        { label: '显示排序', key: 'sortNo', type: 'input' }
       ]
       this.isEdit = false
       this.typeDialogVisible = true
     },
-    handleDelClass (id) {
+    handleDelClass (row) {
       this.$confirm('确认删除该分类吗？删除后该分类下所有角色将自动归到未分类角色中。', '温馨提醒', {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-        this.handleApiDelConsoleRole()
+        this.handleApiDelConsoleRole(row.id)
       })
     },
     /**
@@ -235,7 +147,7 @@ export default {
      * item: 当前项数据
      */
     handleClassify (type, item) {
-      this.isRole = 0
+      this.isClassify = 1
       if (type === 'add') {
         this.handleAddClass(item)
       } else if (type === 'del') {
@@ -244,57 +156,43 @@ export default {
         this.handleEditClass(item)
       }
     },
-    handleEditRole (id) {
+    handleEditRole (row) {
       this.typeDialogTitle = '编辑角色'
       this.formItem = [
-        { label: '所属分类', key: 'classfy', type: 'input' },
+        { label: '所属分类', key: 'resourceParentId', type: 'select', options: [] },
         { label: '角色名称', key: 'roleName', type: 'input' },
-        { label: '显示排序', key: 'srot', type: 'input' },
-        { label: '创建人', type: 'text', content: '2019/04/26 15:23' },
-        { label: '创建时间', type: 'text', content: '2019/04/26 15:23' }
+        { label: '显示排序', key: 'sortNo', type: 'input' },
+        { label: '创建人', type: 'text', key: 'creater' },
+        { label: '创建时间', type: 'text', key: 'gmtCreate' }
       ]
+      this.formData = JSON.parse(JSON.stringify(row))
+      this.handleGetClassify()
       this.typeDialogVisible = true
     },
-    handleAddRole (id) {
+    handleAddRole (row) {
       this.typeDialogTitle = '新建角色'
       this.formItem = [
         { label: '所属分类',
-          key: 'classfy',
+          key: 'resourceParentId',
           type: 'select',
-          options: [
-            { label: '分类1', value: 'a' },
-            { label: '分类2', value: 'b' }
-          ] },
+          options: [] },
         { label: '角色名称', key: 'roleName', type: 'input' },
-        { label: '显示排序', key: 'srot', type: 'input' },
+        { label: '显示排序', key: 'sortNo', type: 'input' },
         { label: '复制角色权限',
           key: 'roleLimit',
           type: 'selectDouble',
-          options: [
-            {
-              label: '热门尘世',
-              options: [{
-                label: '上海',
-                value: 'shanghai'
-              }]
-            }, {
-              label: '城市名',
-              options: [{
-                label: '成都',
-                value: 'chengdu'
-              }]
-            }
-          ] }
+          options: [] }
       ]
+      this.handleGetClassify()
+      this.handleApiGetAllRoleRequestTree()
       this.typeDialogVisible = true
     },
-    handleDelRole (id) {
+    handleDelRole (row) {
       this.$confirm('确认删除该角色？删除角色后，本角色下员工所具有的权限会受到影响。', '温馨提醒', {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-        this.handleApiDelConsoleRole()
-      }).catch(() => {
+        this.handleApiDelConsoleRole(row.id)
       })
     },
     /**
@@ -302,7 +200,7 @@ export default {
      * item: 当前项数据
      */
     handleRole (type, item) {
-      this.isRole = 1
+      this.isClassify = 0
       if (type === 'add') {
         this.handleAddRole(item)
       } else if (type === 'del') {
@@ -318,15 +216,16 @@ export default {
      */
     handleRoleClick (type, item) {
       if (type === 'role') {
-        this.isRole = 1
+        this.isClassify = 0
       } else if (type === 'all') {
-        this.isRole = ''
+        this.isClassify = ''
       } else {
-        this.isRole = 0
+        this.isClassify = 1
       }
-      this.handleGetTableData(apiPageQueryUserRole, { resourceType: this.isRole, roleId: item.id })
+      this.handleGetTableData(apiPageQueryUserRole, { resourceType: this.isClassify, roleId: item.id })
     },
     handleAddStaff () {
+      this.handleApiGetAllRoleRequestTree()
       this.staffDialogIsEdit = false
       this.staffDialogTitle = '添加员工'
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
@@ -336,12 +235,14 @@ export default {
     handleEditData (row) {
       this.staffDialogIsEdit = true
       this.staffDialogTitle = '编辑员工'
-      this.editData = JSON.parse(JSON.stringify(row))
+      this.staffDialogFormData = JSON.parse(JSON.stringify(row))
+      this.staffDialogFormData.roleIds = row.roleIds.split(',')
+      this.staffDialogFormData.userIds = row.id
       this.staffDialogVisible = true
     },
     // 点击表格删除按钮
     handleDeleteData (row) {
-      this.apiDeleteData(apiPageQueryUserRole, row.id, apiPageQueryUserRole)
+      this.handleApiDelUserRole(row.id, row.roleIds)
     },
     // 处理表格数据
     handleTableData (tableData) {
@@ -353,9 +254,11 @@ export default {
       console.log(val)
     },
     handleRefuse () {
+      this.staffDialogFormData = this.$options.data().staffDialogFormData
       this.$refs.staffDialog.staffDialogVisible = false
     },
     handleSubmit () {
+      this.handleApiGrantUserRole()
       this.$refs.staffDialog.staffDialogVisible = false
     },
     handleTypeDialogRefuse () {
@@ -363,11 +266,32 @@ export default {
     },
     handleTypeDialogSubmit () {
       if (this.isEdit) {
+        // 编辑角色或角色分类，根据isClassify判断
         this.handleApiEditeConsoleRole()
       } else {
+        // 添加角色或角色分类，根据isClassify判断
         this.handleApiCreateConsoleRole()
       }
       this.$refs.typeDialog.typeVisible = false
+    },
+    // 获取表格数据
+    handleGetTableData (api, val, currentPage = 1) {
+      this.getTableDataApi = api
+      this.tableLoading = true
+      let params = {
+        currentPage: currentPage, pageSize: this.tablePages.pageSize
+      }
+      Object.assign(params, val)
+      api(params).then(res => {
+        if (res.code === '208999') {
+          this.tablePages.current = currentPage
+          this.allData = res.resultMap.list
+          this.tablePages.total = res.resultMap.total
+          this.tableData = this.allData
+          this.handleTableData && this.handleTableData(this.tableData || [])
+          this.tableLoading = false
+        }
+      })
     }
   },
   components: {
