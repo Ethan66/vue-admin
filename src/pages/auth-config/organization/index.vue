@@ -24,12 +24,6 @@
       :dialogBtn="dialogBtn"
       :rules="rules"
     />
-    <dialog-detail
-      title="详情"
-      :showDetail.sync="showDetail"
-      :dialogItem="dialogItem"
-      :editData="editData"
-    />
   </div>
 </template>
 
@@ -37,18 +31,18 @@
 import { organization } from '@/createData/auth-config/mixins'
 import basicMethod from '@/config/mixins'
 import { menuRelation } from '@/config/utils'
-import { apiQueryDepartmentList, apiStopDepartment, apiEditDepartment, apiQueryParentSysMenu, apiCreateSysMenu, apiEditSysMenu, apiDeleteSysMenu, apiListSysButton, apiEditeSysButton, apiCreateSysButton, apiDeleteSysButton } from '@/api/authority'
+import { apiQueryDepartmentList, apiStopDepartment, apiEditDepartment, apiDelDepartment, apiAddDepartment, apiQueryDepartmentTree } from '@/api/authority'
 import { debuglog } from 'util';
 
 export default {
   mixins: [basicMethod, organization],
-  data () {
-    return {
-      showDetail: false
-    }
-  },
   created () {
     this.tablePages.pageSize = 10000
+    apiQueryDepartmentTree({ isWhole: true, hasStop: false }).then(res => {
+      if (res.code === '208999') {
+        
+      }
+    })
     this.handleGetTableData(apiQueryDepartmentList)
   },
   methods: {
@@ -56,7 +50,6 @@ export default {
     handleAdd () {
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
       this.isEdit = 0
-      this.apiGetParantMenu(1)
       this.dialogTitle = '新增部门'
       this.showDialogForm = true
     },
@@ -77,31 +70,23 @@ export default {
     },
     // 点击表格删除按钮
     handleDeleteData (row) {
-      this.apiDeleteData(apiDeleteSysMenu, row.id, apiQueryDepartmentList)
-    },
-    // 点击详情
-    handleShowDetailDialog (row) {
-      this.editData = JSON.parse(JSON.stringify(row))
-      this.showDetail = true
-    },
-    // 点击按钮管理按钮
-    handleBtnManage (row) {
-      this.nowBtnMenuId = row.id
-      this.apiGetButtonAuth(row.id)
+      this.apiDeleteData(apiDelDepartment, row.id, apiQueryDepartmentList)
     },
     // 点击对话框确认按钮
     handleSubmit () {
-      let edit = this.edit
+      let edit = this.editData
       this.$refs.dialog.showDialogForm1 = false
       let obj = {
-        department: edit.department,
         departmentName: edit.departmentName,
+        directorId: edit.directorId,
         departmentType: edit.departmentType,
         id: edit.id,
-        sortNo: edit.sortNo
+        sortNo: edit.sortNo,
+        parentId: edit.parentId,
+        departmentStatus: edit.departmentStatus
       }
       if (this.isEdit === 0) {
-        this.apiCreateData(apiCreateSysMenu, this.editData, apiQueryDepartmentList)
+        this.apiCreateData(apiAddDepartment, obj, apiQueryDepartmentList)
       } else {
         this.apiEditData(apiEditDepartment, obj, apiQueryDepartmentList)
       }
@@ -126,9 +111,11 @@ export default {
         if (item.key === 'departmentChType') {
           this.searchItem[1].label = item.label
           this.dialogItem[2].label = item.label
+          this.rules.departmentType[0].message = `请输入${item.label}`
         }
         if (item.key === 'departmentChStatus') {
           this.dialogItem[5].label = item.label
+          this.rules.departmentStatus[0].message = `请输入${item.label}`
         }
       })
       if (tableData.length === 0) {
@@ -159,40 +146,7 @@ export default {
             break
         }
       })
-      // this.searchItem[1].label = 
       this.tableData = menuRelation(tableData, 'id', 'parentId', 'departmentLevel', 'sortNo')
-    },
-    // 接口：获取菜单按钮
-    apiGetButtonAuth (buttonMenuId) {
-      apiListSysButton({ buttonMenuId }).then(res => {
-        if (res.code === '208999') {
-          this.dialogTableData = res.resultMap.page.list
-          this.dialogTableData.forEach(item => { item.editStatus = false })
-          this.showDialogBtnManage = true
-        }
-      })
-    },
-    // 搜索模块查询父菜单
-    handleGetParentMenu () {
-      if (this.searchValues.menuLevel === '0') {
-        this.searchItem[2].type = 'input'
-        this.searchValues.menuParentId = ''
-      } else {
-        this.apiGetParantMenu(this.searchValues.menuLevel)
-      }
-    },
-    // 获取父菜单
-    apiGetParantMenu (menuLevel) {
-      apiQueryParentSysMenu({
-        menuLevel: menuLevel
-      }).then(res => {
-        if (res.code === '208999') {
-          let arr = res.resultMap.data.map(item => {
-            return {label: item.menuName, value: item.id}
-          })
-          this.dialogItem[0].options = arr
-        }
-      })
     }
   }
 }

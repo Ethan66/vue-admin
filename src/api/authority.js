@@ -90,7 +90,22 @@ export const apiStopDepartment = (params) => {
   return postRequest(base + '/stopDepartment', params)
 }
 
+// 删除部门
+export const apiDelDepartment = (params) => {
+  return postRequest(base + '/delDepartment', params)
+}
+
 // 编辑部门
 export const apiEditDepartment = (params) => {
   return postRequest(base + '/editDepartment', params)
+}
+
+// 新增部门
+export const apiAddDepartment = (params) => {
+  return postRequest(base + '/addDepartment', params)
+}
+
+// 查询部门树
+export const apiQueryDepartmentTree = (params) => {
+  return postRequest(base + '/queryDepartmentTree', params)
 }

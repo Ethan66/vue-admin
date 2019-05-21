@@ -64,7 +64,7 @@ SetItem.prototype.setPlaceholder = function () {
   this.dataArrFilter.forEach(item => {
     let type1 = item.type
     !type1 && (item.placeholder = `请输入${item.label}`)
-    if (type1 === 'select' || type1 === 'selectAll') {
+    if (type1 === 'select' || type1 === 'selectAll' || type1 === 'radio') {
       item.placeholder = `请选择${item.label}`
       !item.options && (item.options = [])
     }

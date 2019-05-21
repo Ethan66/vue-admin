@@ -113,7 +113,7 @@ const organizationMoreList = [
   { name: '新建平级部门', clickFn: 'handleCreateDepartment' },
   { name: '新建下级部门', clickFn: 'handleCreateNextLevelDepartment' },
   { name: '停用', clickFn: 'handleStop' },
-  { name: '删除', clickFn: 'handleDelete' }
+  { name: '删除', clickFn: 'handleDeleteData' }
 ]
 
 export const organization = {
@@ -141,20 +141,23 @@ export const organization = {
       {
         departmentType: { type: 'select', options: [{ label: '集团', value: 0 }, { label: '公司', value: 1 }, { label: '事业部', value: 2 }, { label: '部门', value: 3 }] }
       }, 'sortNo', 'directorName',
-      { departmentStatus: { type: 'radio', options: [{ label: '正常', value: 1 }, { label: '停用', value: 0 }] } }
+      { departmentStatus: { type: 'radio', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }] } }
     ]
     this.searchItem = this.$setItem(organizationTest, configSearchItem, 'search')
     this.tableItem = this.$setItem(organizationTest, configTableItem, 'table')
-    this.dialogItem = this.$setItem(organizationTest, configDialogItem, 'dialog')
+    let dialogItem = this.dialogItem = this.$setItem(organizationTest, configDialogItem, 'dialog')
     this.rules = {
-      id: [
-        { required: true, message: '请输入菜单id', trigger: 'blur' }
+      departmentName: [
+        { required: true, message: dialogItem[1].placeholder, trigger: 'blur' }
       ],
-      menuName: [
-        { required: true, message: '请输入菜单名称', trigger: 'blur' }
+      departmentType: [
+        { required: true, message: '', trigger: 'change' }
       ],
-      menuLevel: [
-        { required: true, message: '请选择菜单类型', trigger: 'change' }
+      sortNo: [
+        { required: true, message: dialogItem[3].placeholder, trigger: 'blur' }
+      ],
+      departmentStatus: [
+        { required: true, message: '', trigger: 'change' }
       ]
     }
   }
