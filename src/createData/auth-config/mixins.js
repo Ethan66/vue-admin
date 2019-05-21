@@ -131,7 +131,7 @@ export const organization = {
       sortNo: 60,
       departmentName: { type: 'tree', width: 200 },
       directorName: 80,
-      departmentChStatus: { clsName: 'departmentChStatus', width: 80 },
+      departmentStatus: { clsName: 'departmentStatus', width: 80 },
       departmentType: 100,
       btn: 120
     }
@@ -140,7 +140,8 @@ export const organization = {
       'departmentName',
       {
         departmentType: { type: 'select', options: [{ label: '集团', value: 0 }, { label: '公司', value: 1 }, { label: '事业部', value: 2 }, { label: '部门', value: 3 }] }
-      }, 'sortNo', 'directorName',
+      },
+      'sortNo', 'directorName',
       { departmentStatus: { type: 'radio', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }] } }
     ]
     this.searchItem = this.$setItem(organizationTest, configSearchItem, 'search')
@@ -151,13 +152,13 @@ export const organization = {
         { required: true, message: dialogItem[1].placeholder, trigger: 'blur' }
       ],
       departmentType: [
-        { required: true, message: '', trigger: 'change' }
+        { required: true, message: dialogItem[2].placeholder, trigger: 'change' }
       ],
       sortNo: [
         { required: true, message: dialogItem[3].placeholder, trigger: 'blur' }
       ],
       departmentStatus: [
-        { required: true, message: '', trigger: 'change' }
+        { required: true, message: dialogItem[5].placeholder, trigger: 'change' }
       ]
     }
   }

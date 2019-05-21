@@ -56,6 +56,8 @@ export default {
     // 点击表格编辑按钮
     handleEditData (row) {
       this.editData = JSON.parse(JSON.stringify(row))
+      this.editData.departmentStatus = this.editData.departmentStatusStash
+      this.editData.departmentType = this.editData.departmentTypeStash
       this.isEdit = 1
       this.dialogTitle = '编辑部门'
       this.showDialogForm = true
@@ -107,42 +109,33 @@ export default {
     },
     // 处理表格数据
     handleTableData (tableData, index) {
-      this.tybeArr.forEach(item => {
-        if (item.key === 'departmentChType') {
-          this.searchItem[1].label = item.label
-          this.dialogItem[2].label = item.label
-          this.rules.departmentType[0].message = `请输入${item.label}`
-        }
-        if (item.key === 'departmentChStatus') {
-          this.dialogItem[5].label = item.label
-          this.rules.departmentStatus[0].message = `请输入${item.label}`
-        }
-      })
       if (tableData.length === 0) {
         this.tableData = []
         return
       }
       tableData.forEach(item => {
+        item.departmentStatusStash = item.departmentStatus
         switch (item.departmentStatus) {
           case 0:
-            item.departmentChStatus = '正常'
+            item.departmentStatus = '正常'
             break
           case 1:
-            item.departmentChStatus = '停用'
+            item.departmentStatus = '停用'
             break
         }
+        item.departmentTypeStash = item.departmentType
         switch (item.departmentType) {
           case 0:
-            item.departmentChType = '集团'
+            item.departmentType = '集团'
             break
           case 1:
-            item.departmentChType = '公司'
+            item.departmentType = '公司'
             break
           case 2:
-            item.departmentChType = '事业部'
+            item.departmentType = '事业部'
             break
           case 3:
-            item.departmentChType = '部门'
+            item.departmentType = '部门'
             break
         }
       })
