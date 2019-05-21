@@ -5,7 +5,6 @@ const searchInitObj = {
 }
 
 const tableInitObj = {
-  tybeArr: [], // 字段数组
   allData: [], // 请求接口获取的表格数据
   tableData: [], // 展示到页面的表格数据，比如allData一级菜单表示为1，展示到页面的时候需要将1变为中文一级菜单
   tableItem: [],
@@ -27,7 +26,8 @@ const dialogInitObj = {
   allRead: false, // 点击编辑时对话框里的全部数据都是只读，不能编辑
   confirmFn: '', // 消息提示确认按钮函数名称
   confirmContent: '', // 消息提示框文案
-  confrimDiaShow: false // 消息提示框是否显示
+  confrimDiaShow: false, // 消息提示框是否显示
+  rules: {} // 规则
 }
 
 const basicInitObj = Object.assign({}, searchInitObj, tableInitObj, dialogInitObj)

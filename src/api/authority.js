@@ -1,12 +1,6 @@
 import { postRequest } from '@/config/network'
 const base = '/bl/console/api'
 
-// 菜单管理
-// 获取所有菜单
-export const apiListConsoleMenu = (params) => {
-  return postRequest(base + '/listConsoleMenu', params)
-}
-
 // 编辑菜单
 export const apiEditSysMenu = (params) => {
   return postRequest(base + '/editeSysMenu', params)

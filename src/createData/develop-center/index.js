@@ -4,7 +4,7 @@ import { menuTest, pageManageTest, tybeManageTest, fastCreateTybeTest } from '@/
 const menuMoreList = [
   { name: '新建平级菜单', clickFn: 'handleCreateLevelMenu' },
   { name: '新建下级菜单', clickFn: 'handleCreateNextLevelMenu' },
-  { name: '删除', clickFn: 'handleDelete' },
+  { name: '删除', clickFn: 'handleDeleteData' },
   { name: '详情', clickFn: 'handleShowDetailDialog' }
 ]
 
@@ -15,35 +15,48 @@ export const menu = {
   created () {
     let configSearchItem = [
       'menuName',
-      { status: { type: 'select', options: [{ label: '正常', value: 1 }, { label: '失效', value: 2 }] } }
+      { status: { type: 'select', options: [{ label: '显示', value: 0 }, { label: '隐藏', value: 1 }] } }
     ]
     let configTableItem = {
-      selection: 50,
-      id: 80,
       menuName: { type: 'tree', width: 200 },
-      menuLevel: { clsName: 'menuLevel', width: 100 },
-      parentMenuName: 100,
+      menuType: 80,
+      menuLevel: 100,
       menuUrl: 200,
+      sortNo: 80,
+      code: 100,
+      status: { width: 80, clsName: 'menuStatus' },
+      remark: 100,
       btn: 120
     }
     let configDialogItem = [
-      { parentMenuName: { label: '上级菜单', type: 'select', options: [{ label: '一', value: 1 }, { label: '二', value: 2 }] } },
-      'menuName', 'menuLevel', 'menuCode', 'menuUrl', 'sort',
-      { status: { type: 'radio', options: [{ label: '正常', value: '1' }, { label: '停用', value: '0' }] } },
-      { menuDesc: { label: '描述', type: 'textarea', rows: 4 } }
+      { menuParentId: { label: '上级菜单', type: 'select', options: [{ label: '一', value: 1 }, { label: '二', value: 2 }] } },
+      'menuName',
+      { menuType: { type: 'select', options: [{ label: '目录', value: 0 }, { label: '菜单', value: 1 }, { label: '按钮', value: 2 }] } },
+      'code', 'menuUrl', 'sortNo',
+      { status: { type: 'radio', options: [{ label: '显示', value: 0 }, { label: '隐藏', value: 1 }] } },
+      { remark: { label: '描述', type: 'textarea', rows: 4 } }
     ]
     this.searchItem = this.$setItem(menuTest, configSearchItem, 'search')
     this.tableItem = this.$setItem(menuTest, configTableItem, 'table')
-    this.dialogItem = this.$setItem(menuTest, configDialogItem, 'dialog')
+    let dialogItem = this.dialogItem = this.$setItem(menuTest, configDialogItem, 'dialog')
     this.rules = {
-      id: [
-        { required: true, message: '请输入菜单id', trigger: 'blur' }
-      ],
       menuName: [
-        { required: true, message: '请输入菜单名称', trigger: 'blur' }
+        { required: true, message: dialogItem[1].placeholder, trigger: 'blur' }
       ],
-      menuLevel: [
-        { required: true, message: '请选择菜单类型', trigger: 'change' }
+      menuType: [
+        { required: true, message: dialogItem[2].placeholder, trigger: 'change' }
+      ],
+      code: [
+        { required: true, message: dialogItem[3].placeholder, trigger: 'blur' }
+      ],
+      menuUrl: [
+        { required: true, message: dialogItem[4].placeholder, trigger: 'blur' }
+      ],
+      sortNo: [
+        { required: true, message: dialogItem[5].placeholder, trigger: 'blur' }
+      ],
+      status: [
+        { required: true, message: dialogItem[6].placeholder, trigger: 'change' }
       ]
     }
   }
