@@ -11,7 +11,7 @@ export const errorLog = {
   created () {
     let configSearchItem = [
       'userName',
-      { loginStatus:
+      { opStatus:
         { type: 'select',
           options: [{ label: '成功', value: '0' }, { label: '失败', value: '1' }]
         }
@@ -19,12 +19,12 @@ export const errorLog = {
     ]
     let configTableItem = {
       userName: 80,
-      departmentName: 100,
+      opResult: 100,
       terminalType: 100,
-      operateSystem: 100,
-      loginIp: 100,
-      gmtModified: 80,
-      loginStatus: { clsName: 'loginStatus', width: 80 },
+      opType: 100,
+      id: 100,
+      opStatusDesc: 80,
+      opTypeDesc: { clsName: 'opTypeDesc', width: 80 },
       gmtCreate: 80
     }
     this.searchItem = this.$setItem(errorTableItem, configSearchItem, 'search')
