@@ -21,16 +21,8 @@ export const methods = {
     },
     // 新建员工
     handleApiCreateConsoleUser () {
-      let params = {
-        telephone: '', // 电话
-        password: '', // 初始密码
-        position: '', // 职位
-        reportTo: '', // 汇报对象id
-        departmentId: '', // 所属部门id
-        mailbox: '', // 邮箱
-        userName: '', // 用户名
-        realName: '' // 用户真实姓名
-      }
+      let params = {}
+      Object.assign(params, this.staffFormData)
       apiCreateConsoleUser(params).then(res => {
         if (res.code === '208999') {
 
@@ -41,16 +33,14 @@ export const methods = {
     },
     // 编辑员工
     handleApiEditConsoleUser () {
-      let params = {
-        id: '', // 账号id
-        telephone: '', // 电话
-        password: '', // 初始密码
-        position: '', // 职位
-        reportTo: '', // 汇报对象id
-        departmentId: '', // 所属部门id
-        mailbox: '', // 邮箱
-        userName: '', // 用户名
-        realName: '' // 用户真实姓名
+      let params = {}
+      Object.assign(params, this.staffFormData)
+      if (params.userType === '百凌管理平台用户') {
+        params.userType = 0
+      } else if (params.userType === '商户系统用户') {
+        params.userType = 1
+      } else {
+        params.userType = 2
       }
       apiEditConsoleUser(params).then(res => {
         if (res.code === '208999') {
@@ -89,16 +79,18 @@ export const methods = {
     /**
      * 编辑系统用户状态
      * @param {*} id 表格id
-     * @param {*} status 0:正常; 1:停用，2:禁止登陆',
+     * @param {*} status 0:正常；2:禁止登陆',
+     * @param {*} isDelete 0:启用 ； 1：停用
      */
-    handleApiEditConsoleUserStatus (id, status = 0) {
+    handleApiEditConsoleUserStatus (id, status, isDelete) {
       let params = {
         id: id,
-        status: status
+        status: status,
+        isDelete: Number(isDelete)
       }
       apiEditConsoleUserStatus(params).then(res => {
         if (res.code === '208999') {
-
+          this.$message.success(res.message)
         } else {
           this.$message.error(res.message)
         }

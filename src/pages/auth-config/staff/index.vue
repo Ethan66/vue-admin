@@ -186,16 +186,19 @@ export default {
     // 处理表格数据
     handleTableData (tableData) {
       tableData.forEach(item => {
-        item.isDelete = item.isDelete === '0' ? '有效' : '无效'
         item.userType = item.userType === '0' ? '百凌管理平台用户' : item.userType === '1' ? '商户系统用户' : '其他'
+        item.showBtn = []
         if (item.status === 0) {
-          item.showBtn = ['停 用', '禁止登录']
-        }
-        if (item.status === 1) {
-          item.showBtn = ['启 用', '允许登录']
+          item.showBtn.push('禁止登录')
         }
         if (item.status === 2) {
-          item.showBtn = ['允许登录']
+          item.showBtn.push('允许登录')
+        }
+        if (item.isDelete === '0') {
+          item.showBtn.push('停 用')
+        }
+        if (item.isDelete === '1') {
+          item.showBtn.push('启 用')
         }
       })
     },
@@ -205,6 +208,7 @@ export default {
       this.staffFormData = JSON.parse(JSON.stringify(row))
       this.defaultCheckedKeys.push(this.staffFormData.departmentId)
       this.staffFormData.password = '******'
+      this.staffFormData.reportTo = Number(this.staffFormData.reportTo)
       this.isEdit = 1
       this.staffDialogTitle = '编辑员工'
       this.staffDialogVisible = true
@@ -223,34 +227,35 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-        this.handleApiEditConsoleUserStatus(row.id, 1)
+        this.handleApiEditConsoleUserStatus(row.id, row.status, 1)
       })
     },
     // 启用账号
-    handleStart () {
+    handleStart (row) {
       this.$confirm('确定启用该员工账号吗？', '温馨提醒', {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-        this.handleApiEditConsoleUserStatus(0)
+        this.handleApiEditConsoleUserStatus(row.id, row.status, 0)
       })
     },
     // 禁止登录
     handleForbidLogin (row) {
+      console.log(row);
       this.$confirm('确定禁止该员工账号登录吗？', '温馨提醒', {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-        this.handleApiEditConsoleUserStatus(row.id, 2)
+        this.handleApiEditConsoleUserStatus(row.id, 2, row.isDelete)
       })
     },
     // 允许登录
-    handleAllowLogin () {
+    handleAllowLogin (row) {
       this.$confirm('确定允许该员工账号登录吗？', '温馨提醒', {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-        this.handleApiEditConsoleUserStatus(0)
+        this.handleApiEditConsoleUserStatus(row.id, 0, row.isDelete)
       })
     },
     // 重置密码
