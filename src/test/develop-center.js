@@ -9,13 +9,13 @@ export const menuTest = [
 ]
 
 export const pageManageTest = [
-  { label: '页面名称', key: 'menuName', hide: 0, canSet: 1, sort: 1, fix: 1 },
+  { label: '页面名称', key: 'pageName', hide: 0, canSet: 1, sort: 1, fix: 1 },
   { label: '页面编码', key: 'pageCode', hide: 0, canSet: 1, sort: 2, fix: 1 },
-  { label: '地址', key: 'menuUrl', hide: 0, canSet: 1, sort: 3, fix: 0 },
+  { label: '地址', key: 'pageUrl', hide: 0, canSet: 1, sort: 3, fix: 0 },
   { label: '关联菜单编码', key: 'menuCode', hide: 0, canSet: 1, sort: 4, fix: 0 },
   { label: '创建人', key: 'creater', hide: 0, canSet: 1, sort: 5, fix: 0 },
-  { label: '描述', key: 'menuDesc', hide: 0, canSet: 1, sort: 6, fix: 0 },
-  { label: '状态', key: 'status', hide: 0, canSet: 1, sort: 7, fix: 0 }
+  { label: '描述', key: 'remark', hide: 0, canSet: 1, sort: 6, fix: 0 },
+  { label: '状态', key: 'pageStatus', hide: 0, canSet: 1, sort: 7, fix: 0 }
 ]
 
 export const tybeManageTest = [

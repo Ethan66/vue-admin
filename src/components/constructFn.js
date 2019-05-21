@@ -26,7 +26,6 @@ SetItem.prototype.initTableConfig = function (config, hide, sort, fixed) {
 // 过滤对象(搜索和对话框)
 SetItem.prototype.filterField = function (config) {
   if (Array.isArray(config)) {
-    let configObj = this.configObj
     let dataArrFilter = this.dataArrFilter
     let addDataArr = []
     let sortArr = []
@@ -38,7 +37,7 @@ SetItem.prototype.filterField = function (config) {
         let key = Object.keys(item)[0]
         sortArr.push(key)
         if (dataArrFilter.find(child => child.key === key)) {
-          configObj[key] = item[key]
+          this.configObj[key] = item[key]
           return key
         } else {
           let obj = { label: '', key, canSet: 1, sort: i }
@@ -51,7 +50,7 @@ SetItem.prototype.filterField = function (config) {
     sortArr.forEach(item => {
       let obj = dataArrFilter.find(child => child.key === item)
       if (obj) {
-        obj.show = true
+        obj.show === undefined && (obj.show = true)
         this.dataArrFilter.push(obj)
       }
     })
@@ -64,7 +63,7 @@ SetItem.prototype.setPlaceholder = function () {
   this.dataArrFilter.forEach(item => {
     let type1 = item.type
     !type1 && (item.placeholder = `请输入${item.label}`)
-    if (type1 === 'select' || type1 === 'selectAll' || type1 === 'radio') {
+    if (type1 === 'select' || type1 === 'selectAll' || type1 === 'radio' || type1 === 'doc') {
       item.placeholder = `请选择${item.label}`
       !item.options && (item.options = [])
     }

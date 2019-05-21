@@ -121,10 +121,10 @@ export default {
       this.searchItem.forEach(item => {
         if (Array.isArray(item.key)) {
           item.key.forEach(item1 => {
-            this.$set(this.searchValues, item1, '')
+            this.$set(this.searchValues, item1, undefined)
           })
         } else {
-          this.$set(this.searchValues, [item.key], '')
+          this.$set(this.searchValues, [item.key], undefined)
         }
       })
     },
@@ -133,7 +133,7 @@ export default {
       this.initSearchValues()
       this.searchItem.forEach(item => {
         if (Array.isArray(item.key)) {
-          this.$set(this.dateObj, item.key.join(), ['', ''])
+          this.$set(this.dateObj, item.key.join(), [undefined, undefined])
         }
       })
     },

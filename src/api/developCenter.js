@@ -26,3 +26,19 @@ export const apiDeleteConsoleMenu = (params) => {
 export const apiQueryParentConsoleMenu = (params) => {
   return postRequest(base + '/queryParentConsoleMenu', params)
 }
+
+// 页面管理
+// 获取页面
+export const apiQueryPageList = (params) => {
+  return postRequest(base + '/queryPageList', params)
+}
+
+// 页面添加
+export const apiAddPage = (params) => {
+  return postRequest(base + '/addPage', params)
+}
+
+// 修改页面
+export const apiUpdatePage = (params) => {
+  return postRequest(base + '/updatePage', params)
+}

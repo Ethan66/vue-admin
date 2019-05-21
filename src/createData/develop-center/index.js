@@ -8,6 +8,7 @@ const menuMoreList = [
   { name: '详情', clickFn: 'handleShowDetailDialog' }
 ]
 
+// 菜单管理
 export const menu = {
   data () {
     return this.$setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), ['edit', { more: { list: menuMoreList } }])
@@ -62,50 +63,57 @@ export const menu = {
   }
 }
 
+// 页面管理
 export const pageManage = {
   data () {
     return this.$setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), ['edit'])
   },
   created () {
     let configSearchItem = [
-      'menuName',
-      { status: { type: 'select', options: [{ label: '正常', value: 1 }, { label: '失效', value: 2 }] } }
+      'pageName',
+      { pageStatus: { type: 'select', options: [{ label: '正常', value: 1 }, { label: '停用', value: 0 }] } }
     ]
     let configTableItem = {
-      menuName: { width: 100, clickFn: 'handleGoTybe', clsName: 'cm-btn-color' },
+      pageName: { width: 100, clickFn: 'handleGoTybe', clsName: 'cm-btn-color' },
       pageCode: 80,
       menuCode: 120,
       creater: 80,
-      status: 80,
-      parentMenuName: 100,
-      menuDesc: 80,
-      menuUrl: 200,
+      pageStatus: 80,
+      remark: 80,
+      pageUrl: 200,
       btn: 70
     }
     let configDialogItem = [
-      'menuName', 'menuCode', 'menuUrl',
-      { status: { type: 'radio', options: [{ label: '正常', value: '1' }, { label: '停用', value: '0' }] } },
-      { creater: { label: '创建人', type: 'docs' } },
-      { gmtCreate: { label: '创建时间', type: 'docs' } },
-      { menuDesc: { label: '描述', type: 'textarea', rows: 4 } }
+      'pageName', 'pageCode', 'pageUrl', 'menuCode',
+      { pageStatus: { type: 'radio', options: [{ label: '正常', value: 1 }, { label: '停用', value: 0 }] } },
+      { creater: { label: '创建人', type: 'docs', show: false } },
+      { gmtCreate: { label: '创建时间', type: 'docs', show: false } },
+      { remark: { label: '描述', type: 'textarea', rows: 4, show: false } }
     ]
     this.searchItem = this.$setItem(pageManageTest, configSearchItem, 'search')
     this.tableItem = this.$setItem(pageManageTest, configTableItem, 'table')
-    this.dialogItem = this.$setItem(pageManageTest, configDialogItem, 'dialog')
+    let dialogItem = this.dialogItem = this.$setItem(pageManageTest, configDialogItem, 'dialog')
     this.rules = {
-      id: [
-        { required: true, message: '请输入菜单id', trigger: 'blur' }
+      pageName: [
+        { required: true, message: dialogItem[0].placeholder, trigger: 'blur' }
       ],
-      menuName: [
-        { required: true, message: '请输入菜单名称', trigger: 'blur' }
+      pageCode: [
+        { required: true, message: dialogItem[1].placeholder, trigger: 'blur' }
       ],
-      menuLevel: [
-        { required: true, message: '请选择菜单类型', trigger: 'change' }
+      pageUrl: [
+        { required: true, message: dialogItem[2].placeholder, trigger: 'blur' }
+      ],
+      menuCode: [
+        { required: true, message: dialogItem[3].placeholder, trigger: 'blur' }
+      ],
+      pageStatus: [
+        { required: true, message: dialogItem[4].placeholder, trigger: 'change' }
       ]
     }
   }
 }
 
+// 字段管理
 export const tybeManage = {
   data () {
     return this.$setBtnConfig(JSON.parse(JSON.stringify(searchTableInitObj)), ['edit', 'cancel', 'delete'])
@@ -148,6 +156,7 @@ export const tybeManage = {
   }
 }
 
+// 快速创建字段
 export const fastCreateType = {
   data () {
     return this.$setBtnConfig(JSON.parse(JSON.stringify(tableInitObj)), ['edit', 'cancel', 'delete'])
