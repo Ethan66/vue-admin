@@ -1,14 +1,15 @@
 <template>
   <div class="staff-dialog">
-    <el-dialog :visible.sync="staffDialogVisible" width="520px">
+    <el-dialog :visible.sync="staffDialogVisible" :before-close="handleClose" width="520px">
       <div slot="title" class="dialog-title">
         <span>{{dialogTitle}}</span><i>角色配置,请勾选需要的角色</i>
       </div>
       <el-form
         :model="formData" :inline="true"
         label-position="left" ref="ruleForm" class="demo-ruleForm">
-        <el-form-item v-if="!isEdit" label="请选择员工" prop="name">
+        <el-form-item v-if="!isEdit" class="select-tree-item" label="请选择员工" prop="name">
           <tree-select
+            ref="treeSelect"
             :data="treeList" :defaultProps="defaultProps"
             multiple nodeKey="id" :checkedKeys="treeCheckedData"
             @popoverHide="popoverHide"></tree-select>
@@ -106,9 +107,15 @@ export default {
           this.$parent[fn]()
         }
       }
+      this.$refs.treeSelect.clearSelectedNodes()
     },
     popoverHide (checkedIds, checkedData) {
       this.formData.userIds = checkedIds.join(',')
+    },
+    handleClose () {
+      this.staffDialogVisible = false
+      this.$refs.treeSelect.clearSelectedNodes()
+      this.$parent.staffDialogFormData = this.$parent.$options.data().staffDialogFormData
     }
   },
   components: {
@@ -169,11 +176,14 @@ export default {
               }
             }
           }
-          .tree-select {
-            .el-select {
-              width: 358px !important;
-              .el-input__inner {
-                height: 35px !important;
+          .select-tree-item {
+            .el-form-item__content {
+              width: 100%;
+              .tree-select {
+                width: 100%;
+                .el-select {
+                  width: 100%;
+                }
               }
             }
           }

@@ -21,7 +21,7 @@
      */
 -->
 <template>
-  <div class="tree-select-box">
+  <div class="tree-select">
     <div class="mask" v-show="isShowSelect" @click="isShowSelect = !isShowSelect"></div>
     <el-popover placement="bottom-start" :width="style" trigger="manual"
                 v-model="isShowSelect" @hide="popoverHide">
@@ -279,7 +279,8 @@ export default {
 </script>
 
 <style lang="less">
-.tree-select-box {
+.tree-select {
+  z-index: 111;
   .mask{
       width: 100%;
       height: 100%;
@@ -301,14 +302,12 @@ export default {
         background: rgba(65,98,219,0.5);
         // background: #4162DB;
     }
-    .tree-select{
-      z-index: 111;
-    }
-  .el-popover{
+  
+}
+.el-popover{
     width: 300px;
     .el-checkbox{
       margin-bottom: 0px;
     }
   }
-}
 </style>
