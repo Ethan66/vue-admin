@@ -25,6 +25,12 @@
       :dialogBtn="dialogBtn"
       :rules="rules"
     />
+    <dialog-detail
+      title="详情"
+      :showDetail.sync="showDetail"
+      :dialogItem="dialogItem"
+      :editData="editData"
+    />
   </div>
 </template>
 
@@ -32,11 +38,15 @@
 import { menu } from '@/createData/develop-center'
 import basicMethod from '@/config/mixins'
 import { menuRelation } from '@/config/utils'
-import { apiQueryDepartmentList, apiStopDepartment, apiEditDepartment, apiDelDepartment, apiAddDepartment, apiQueryDepartmentTree } from '@/api/authority'
 import { apiListConsoleMenu, apiEditeConsoleMenu, apiCreateConsoleMenu, apiDeleteConsoleMenu, apiQueryParentConsoleMenu } from '@/api/developCenter'
 
 export default {
   mixins: [basicMethod, menu],
+  data () {
+    return {
+      showDetail: false
+    }
+  },
   created () {
     this.tablePages.pageSize = 10000
     apiQueryParentConsoleMenu({ menuLevel: 2 }).then(res => {
@@ -64,13 +74,10 @@ export default {
       this.dialogTitle = '编辑菜单'
       this.showDialogForm = true
     },
-    // 点击表格停用按钮
-    handleStop (row) {
-      apiStopDepartment({id: row.id}).then(res => {
-        if (res.code === '208999') {
-          this.$getSuccessMsg(this, res.message)
-        }
-      })
+    // 点击表格详情按钮
+    handleShowDetailDialog (row) {
+      this.showDetail = true
+      this.editData = row
     },
     // 点击表格删除按钮
     handleDeleteData (row) {
