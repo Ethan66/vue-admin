@@ -3,6 +3,7 @@
     <search-module
       :search-item="searchItem"
       :search-values="searchValues"
+      :search-default-obj="searchDefaultObj"
       @handleSearch="handleSearch"
     />
     <table-module
@@ -23,6 +24,8 @@
     <create-tybe
       :showCreateTybe.sync="showCreateTybe"
       :type="type"
+      :menuCode="menuCode"
+      :pageCode="pageCode"
       :dialogTitle="dialogTitle"
       />
   </div>
@@ -32,7 +35,7 @@
 import { tybeManage } from '@/createData/develop-center'
 import basicMethod from '@/config/mixins'
 import { menuRelation } from '@/config/utils'
-import { apiListSysMenu, apiQueryParentSysMenu, apiCreateSysMenu, apiEditSysMenu, apiDeleteSysMenu, apiListSysButton, apiEditeSysButton, apiCreateSysButton, apiDeleteSysButton } from '@/api/authority'
+import { apiPageFiledQueryList, apiUpdatePageField, apiDeletePageField, apiAddPageField, apiPageFieldRapidGeneration } from '@/api/developCenter'
 import createTybe from './createtybe'
 
 export default {
@@ -46,7 +49,11 @@ export default {
     }
   },
   created () {
-    this.handleGetTableData(apiListSysMenu)
+    const { menuCode, pageCode } = this.$route.query
+    this.searchDefaultObj = { menuCode, pageCode }
+    this.menuCode = menuCode
+    this.pageCode = pageCode
+    this.handleGetTableData(apiPageFiledQueryList, Object.assign({}, this.searchValues, this.searchDefaultObj))
   },
   methods: {
     // 点击快速生成按钮
@@ -65,8 +72,13 @@ export default {
     handleGoPage () {
       console.log(111)
     },
+    // 点击表格保存按钮
     handleEditData (row) {
-      console.log(row)
+      this.apiEditData(apiUpdatePageField, row, apiPageFiledQueryList)
+    },
+    // 点击表格删除按钮
+    handleDeleteData (row) {
+      this.apiDeleteData(apiDeletePageField, row.id, apiPageFiledQueryList)
     },
     // 处理表格数据
     handleTableData (tableData, index) {
@@ -75,32 +87,14 @@ export default {
         return
       }
       this.tableData = tableData.map(item => {
-        if (item.menuLevel === 0) {
-          item.menuLevel = '一级菜单'
-        } else if (item.menuLevel === 1) {
-          item.menuLevel = '二级菜单'
-          item.showBtn = ['编辑']
-        }
+        item.displayStatusStash = item.displayStatus
+        item.setStatusStash = item.setStatus
+        item.fixedStatusStash = item.fixedStatus
+        item.displayStatus = item.displayStatus ? '是' : '否'
+        item.setStatus = item.setStatus ? '是' : '否'
+        item.fixedStatus = item.fixedStatus ? '是' : '否'
         return item
       })
-    },
-    // 点击对话框确认按钮
-    handleSubmit () {
-      if (this.editData.menuParentId) {
-        if (this.editData.menuUrl === '') {
-          this.$message.error('二级菜单必须要填写uxrl')
-          return false
-        }
-      }
-      if (this.editData.menuUrl === '') {
-        this.editData.menuUrl = 'null'
-      }
-      this.$refs.dialog.showDialogForm1 = false
-      if (this.isEdit === 0) {
-        this.apiCreateData(apiCreateSysMenu, this.editData, apiListSysMenu)
-      } else {
-        this.apiEditData(apiEditSysMenu, this.editData, apiListSysMenu)
-      }
     }
   }
 }

@@ -42,3 +42,29 @@ export const apiAddPage = (params) => {
 export const apiUpdatePage = (params) => {
   return postRequest(base + '/updatePage', params)
 }
+
+// 字段管理
+// 查询字段
+export const apiPageFiledQueryList = (params) => {
+  return postRequest(base + '/pageFiledQueryList', params)
+}
+
+// 修改字段
+export const apiUpdatePageField = (params) => {
+  return postRequest(base + '/updatePageField', params)
+}
+
+// 删除字段
+export const apiDeletePageField = (params) => {
+  return postRequest(base + '/deletePageField', params)
+}
+
+// 添加单个字段
+export const apiAddPageField = (params) => {
+  return postRequest(base + '/addPageField', params)
+}
+
+// 添加单个字段
+export const apiPageFieldRapidGeneration = (params) => {
+  return postRequest(base + '/pageFieldRapidGeneration', params)
+}

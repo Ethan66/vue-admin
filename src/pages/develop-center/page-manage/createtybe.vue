@@ -40,7 +40,7 @@
       <el-button @click="showDialog = false">取 消</el-button>
       <el-button v-if="step===1 && type==='fastCreate'" type="primary" @click="step--">上一步</el-button>
       <el-button v-if="step===0" type="primary" @click="handleGoNext">下一步</el-button>
-      <el-button v-if="step===1" type="primary" @click="handleGoNext">提交</el-button>
+      <el-button v-if="step===1" type="primary" @click="handleSubmit">提交</el-button>
     </span>
   </el-dialog>
 </template>
@@ -48,20 +48,23 @@
 <script>
 import { fastCreateType } from '@/createData/develop-center'
 import basicMethod from '@/config/mixins'
-import { apiListSysMenu, apiQueryParentSysMenu, apiCreateSysMenu, apiEditSysMenu, apiDeleteSysMenu, apiListSysButton, apiEditeSysButton, apiCreateSysButton, apiDeleteSysButton } from '@/api/authority'
+import { apiPageFiledQueryList, apiAddPageField, apiPageFieldRapidGeneration } from '@/api/developCenter'
+
 
 export default {
   mixins: [basicMethod, fastCreateType],
   props: {
     type: String,
-    showCreateTybe: Boolean
+    showCreateTybe: Boolean,
+    pageCode: String,
+    menuCode: String
   },
   data () {
     return {
       step: 0,
       form: { name: '' },
       showDialog: false,
-      handTableData: [{ pageCode: '', menuName: '', creater: '1', menuDesc: '1', editStatus: true, status: '1' }]
+      handTableData: [{ fieldName: '', fieldValue: '', displayStatus: 1, setStatus: 1, fieldSort: 0, editStatus: true }]
     }
   },
   watch: {
@@ -76,8 +79,8 @@ export default {
           this.tableItem[0].show = false
           this.tableItem[1].type = 'input'
           this.tableItem[5].show = false
-          this.tableItem[6] = { label: '显示排序', prop: 'status', type: 'input' }
-          this.tableData = this.handTableData
+          this.tableItem[6] = { label: '显示排序', prop: 'fieldSort', type: 'input' }
+          this.tableData = JSON.parse(JSON.stringify(this.handTableData))
           this.step++
         }
       }
@@ -103,20 +106,34 @@ export default {
         this.$refs.form.validate((valid) => {
           if (valid) {
             this.step++
-            this.handleGetTableData(apiListSysMenu)
+            this.handleGetTableData(apiPageFiledQueryList, { menuCode: '', pageCode: '' })
           }
         })
       } else {
         this.step++
       }
     },
-    submitForm () {
+    handleSubmit () {
+      let pageCode = this.pageCode
+      let menuCode = this.menuCode
+      if (this.type === 'fastCreate') {
+      } else {
+        apiAddPageField(Object.assign({}, this.tableData[0], { pageCode, menuCode })).then(res => {
+          if (res.code === '208999') {
+            this.step++
+            this.$getSuccessMsg(this, res.message)
+          } else {
+            this.$message.error(res.message)
+          }
+        })
+      }
     },
     handleContinueAdd () {
       if (this.type === 'fastCreate') {
         this.step = 0
         this.form.name = ''
       } else {
+        this.tableData = JSON.parse(JSON.stringify(this.handTableData))
         this.step = 1
       }
     }
