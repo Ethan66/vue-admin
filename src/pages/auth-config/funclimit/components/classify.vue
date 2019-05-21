@@ -1,16 +1,17 @@
 <template>
   <div class="classify">
+    <h3 ref="all" class="active" @click.stop="handleRoleClick('all', '', $event)">全部用户({{total}})</h3>
     <template v-for="item in classifyList">
-      <div class="title" :key=item.id @click="handleRoleClick(item, 'classify')">
+      <div class="title" :key=item.id @click.stop="handleRoleClick(item, 'classify', $event)">
         {{item.roleName}}({{item.userCount}})
         <span class="showIcon">
-          <i class="el-icon-edit-outline" @click="handleClass(item, 'edit')"></i>
-          <i class="el-icon-circle-plus-outline" @click="handleClass(item, 'add')"></i>
-          <i class="el-icon-delete" @click="handleClass(item, 'del')"></i>
+          <i class="el-icon-edit-outline" @click.stop="handleClass(item, 'edit')"></i>
+          <i class="el-icon-circle-plus-outline" @click.stop="handleClass(item, 'add')"></i>
+          <i class="el-icon-delete" @click.stop="handleClass(item, 'del')"></i>
         </span>
       </div>
-      <div class="role" @click="handleRoleClick(item, 'role')"
-        v-for="roleItem in item.children" :key="roleItem.id">
+      <div class="role" @click.stop="handleRoleClick(roleItem, 'role', $event)"
+        v-for="roleItem in item.childIdList" :key="roleItem.id">
         {{roleItem.roleName}}({{roleItem.userCount}})
         <span class="showIcon">
           <i class="el-icon-edit-outline" @click.stop="handleRole(roleItem, 'edit')"></i>
@@ -27,6 +28,15 @@ export default {
   props: {
     classifyList: {
       type: Array
+    },
+    total: {
+      type: Number
+    }
+  },
+  data () {
+    return {
+      node: '',
+      oldNode: ''
     }
   },
   methods: {
@@ -36,7 +46,18 @@ export default {
     handleRole (item, type) {
       this.$emit('role', type, item)
     },
-    handleRoleClick (item, type) {
+    handleRoleClick (item, type, event) {
+      let el = event.target
+      // 为当前单击项增加active样式
+      if (!el.classList.contains('active')) {
+        if (this.oldNode !== el && typeof this.oldNode === 'object') {
+          this.oldNode.classList.remove('active')
+        } else if (this.oldNode === '') { // 第一次进入页面时特殊情况
+          this.$refs.all.classList.remove('active')
+        }
+        el.classList.add('active')
+        this.oldNode = event.target
+      }
       this.$emit('roleClick', type, item)
     }
   }
@@ -45,6 +66,13 @@ export default {
 
 <style lang="less">
   .classify {
+    h3 {
+      font-family: PingFangSC-Regular;
+      font-size: 12px;
+      line-height: 40px;
+      padding-left: 15px;
+      cursor: pointer;
+    }
     .title {
       font-family: PingFangSC-Regular;
       font-size: 12px;
@@ -67,6 +95,10 @@ export default {
         padding-left: 7px;
         color: #999;
       }
+    }
+    .active {
+      color: #4162DB;
+      background: rgba(65, 98, 219, .05);
     }
     .showIcon {
       display: none;

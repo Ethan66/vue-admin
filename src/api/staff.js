@@ -1,6 +1,7 @@
 import { postRequest } from '@/config/network'
 
 const base = '/bl/console/user'
+const base2 = '/bl/console/api'
 
 // 查询系统用户列表
 export const apiListConsoleUser = (params) => {
@@ -30,6 +31,10 @@ export const apiEditConsoleUserStatus = (params) => {
   return postRequest(base + '/editConsoleUserStatus', params)
 }
 // 重置系统用户密码
-export const apiEditConsoleUserPassword = (params) => {
-  return postRequest(base + '/editConsoleUserPassword', params)
+export const apiResetConsoleUserPassword = (params) => {
+  return postRequest(base + '/resetConsoleUserPassword', params)
+}
+// 重置系统用户密码
+export const apiQueryDepartmentTree = (params) => {
+  return postRequest(base2 + '/queryDepartmentTree', params)
 }

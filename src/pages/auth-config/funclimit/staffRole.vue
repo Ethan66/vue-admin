@@ -2,9 +2,9 @@
   <div class="staff-role">
     <div class="box-left">
       <h2>角色分类</h2>
-      <h3>全部用户(60)</h3>
       <classify
-        :classifyList="optionData"
+        :classifyList="classifyList"
+        :total="roleCount"
         @classify="handleClassify"
         @role="handleRole"
         @roleClick="handleRoleClick"
@@ -28,10 +28,6 @@
         @table-jump="handleJump">
         <div class="btn-content" slot="btn">
           <el-button @click="handleAddStaff">添加员工</el-button>
-        </div>
-        <div class="total-content" slot="total">
-          <b>统计数据</b>
-          <span>借款人数 517 人，借款本金 340,000.00 元，待还本金 140,000.00 元</span>
         </div>
       </table-module>
     </div>
@@ -63,125 +59,34 @@
 
 <script>
 import { staffRole } from './mixins'
+import methods from './methods'
 import dialogConfig from './dialogConfig.js'
 import basicMethod from '@/config/mixins'
 import typeDialog from './typeDialog'
 import classify from './components/classify'
 import staffDialog from './components/staffDialog'
-import { apiDeleteSysButton, apiEditeSysButton, apiListSysButton, apiCreateSysButton } from '@/api/authority'
+import { apiPageQueryUserRole } from '@/api/role'
 
 export default {
-  mixins: [basicMethod, staffRole, dialogConfig],
+  mixins: [methods, basicMethod, staffRole, dialogConfig],
   created () {
-    this.handleGetTableData(apiListSysButton)
-    this.classifyList = [
-      {
-        'check': false,
-        'creater': 0,
-        'gmtCreate': '2019-05-13 19:52:10',
-        'gmtModified': null,
-        'id': 1,
-        'isDelete': '0',
-        'modifier': 0,
-        'resourceParentId': 0,
-        'resourceType': 1,
-        'roleCode': 'RO001',
-        'roleName': '管理员角色',
-        'roleType': 1,
-        'sortNo': 1,
-        'userCount': 0
-      },
-      {
-        'check': false,
-        'creater': 0,
-        'gmtCreate': '2019-05-15 14:20:27',
-        'gmtModified': '2019-05-15 14:22:01',
-        'id': 11,
-        'isDelete': '0',
-        'modifier': 0,
-        'resourceParentId': 0,
-        'resourceType': 1,
-        'roleCode': 'RO002',
-        'roleName': '未分类角色',
-        'roleType': 0,
-        'sortNo': 2,
-        'userCount': 0
-      },
-      {
-        'check': false,
-        'creater': 40,
-        'gmtCreate': '2019-05-15 19:39:00',
-        'gmtModified': null,
-        'id': 13,
-        'isDelete': '0',
-        'modifier': 0,
-        'resourceParentId': 14,
-        'resourceType': 0,
-        'roleCode': 'RO20190515073900112dD',
-        'roleName': '测试角色1',
-        'roleType': 2,
-        'sortNo': 3,
-        'userCount': 0
-      },
-      {
-        'check': false,
-        'creater': 40,
-        'gmtCreate': '2019-05-15 19:42:46',
-        'gmtModified': '2019-05-15 19:48:15',
-        'id': 14,
-        'isDelete': '0',
-        'modifier': 40,
-        'resourceParentId': 0,
-        'resourceType': 1,
-        'roleCode': 'RO201905150742460721I',
-        'roleName': '测试角色2019',
-        'roleType': 2,
-        'sortNo': 4,
-        'userCount': 0
-      }
-    ]
-  },
-  computed: {
-    optionData () {
-      let cloneData = JSON.parse(JSON.stringify(this.classifyList)) // 对源数据深度克隆
-      return cloneData.filter(father => { // 循环所有项，并添加children属性
-        let branchArr = cloneData.filter(child => father.id === child.resourceParentId) // 返回每一项的子级数组
-        father.children = branchArr.length > 0 ? branchArr : '' // 给父级添加一个children属性，并赋值
-        return father.resourceParentId === 0 // 返回第一层
-      })
-    }
+    this.handleGetTableData(apiPageQueryUserRole)
+    this.handleApiGetAllRoleRequestTree()
+    this.handleApiQueryDepartmentTree()
   },
   data () {
     return {
       defaultSearchObj: { a: 1 },
       selectStaff: [],
-      classifyList: [
-        {
-          id: 1,
-          name: '管理员角色',
-          num: '2',
-          roleList: [
-            { id: 2, name: '超级管理员', num: '2' },
-            { id: 3, name: '管理员', num: '3' },
-            { id: 4, name: '菜鸡管理员', num: '1' }
-          ]
-        }, {
-          id: 6,
-          name: '运营角色',
-          num: '2',
-          roleList: [
-            { id: 7, name: '运营经理', num: '2' },
-            { id: 8, name: '用户运营', num: '3' }
-          ]
-        }
-      ],
+      classifyList: [],
       staffDialogIsEdit: false,
       staffDialogVisible: false,
       staffDialogTitle: '添加员工',
       staffDialogFormData: {
-        admin: [],
-        marketing: []
+        roleIds: []
       },
+      roleCount: 0,
+      treeData: [],
       staffDialogFormItem: [
         {
           label: '管理员角色',
@@ -203,79 +108,7 @@ export default {
         { label: '取 消', type: 'delete', clickfn: 'handleRefuse' },
         { label: '确 认', type: 'edit', color: 'primary', clickfn: 'handleSubmit' }
       ],
-      treeList: [{
-        menuId: 1,
-        menuName: '霖梓网络',
-        childrenList: [{
-          menuId: '1-1',
-          menuName: '百凌事业部',
-          childrenList: [{
-            menuId: '1-1-1',
-            menuName: '前端'
-          }, {
-            menuId: '1-1-2',
-            menuName: '后端'
-          }, {
-            menuId: '1-1-3',
-            menuName: '产品'
-          }, {
-            menuId: '1-1-4',
-            menuName: '运营'
-          }, {
-            menuId: '1-1-5',
-            menuName: '运维'
-          }]
-        }, {
-          menuId: '1-2',
-          menuName: '联通事业部',
-          childrenList: [{
-            menuId: '1-2-1',
-            menuName: '前端'
-          }, {
-            menuId: '1-2-2',
-            menuName: '后端'
-          }, {
-            menuId: '1-2-3',
-            menuName: '测试'
-          }, {
-            menuId: '1-2-4',
-            menuName: '产品'
-          }, {
-            menuId: '1-2-5',
-            menuName: '运营'
-          }, {
-            menuId: '1-2-6',
-            menuName: '运维'
-          }]
-        }]
-      }, {
-        menuId: 2,
-        menuName: '霖扬网络',
-        childrenList: [{
-          menuId: '2-1',
-          menuName: 'in有',
-          childrenList: [{
-            menuId: '2-1-1',
-            menuName: '前端'
-          }, {
-            menuId: '2-1-2',
-            menuName: '后端'
-          }, {
-            menuId: '2-1-3',
-            menuName: '运维'
-          }, {
-            menuId: '2-1-4',
-            menuName: '运营'
-          }]
-        }, {
-          menuId: '2-2',
-          menuName: '二级 2-2',
-          childrenList: [{
-            menuId: '2-2-1',
-            menuName: '三级 2-2-1'
-          }]
-        }]
-      }],
+      treeList: [],
       treeCheckedData: []
     }
   },
@@ -283,29 +116,30 @@ export default {
     handleEditClass (item) {
       this.typeDialogTitle = '编辑类型'
       this.formItem = [
-        { label: '分类名称', key: 'name', type: 'input' },
-        { label: '显示排序', key: 'srot', type: 'input' },
-        { label: '创建人', type: 'text', content: '系统' },
-        { label: '创建时间', type: 'text', content: '2019/04/26 15:23' }
+        { label: '分类名称', key: 'roleName', type: 'input' },
+        { label: '显示排序', key: 'sortNo', type: 'input' },
+        { label: '创建人', type: 'text', key: 'creater' },
+        { label: '创建时间', type: 'text', key: 'gmtCreate' }
       ]
       this.isEdit = true
+      this.formData = JSON.parse(JSON.stringify(item))
       this.typeDialogVisible = true
     },
-    handleAddClass (id) {
+    handleAddClass (row) {
       this.typeDialogTitle = '新建类型'
       this.formItem = [
-        { label: '分类名称', key: 'name', type: 'input' },
-        { label: '显示排序', key: 'srot', type: 'input' }
+        { label: '分类名称', key: 'roleName', type: 'input' },
+        { label: '显示排序', key: 'sortNo', type: 'input' }
       ]
       this.isEdit = false
       this.typeDialogVisible = true
     },
-    handleDelClass (id) {
+    handleDelClass (row) {
       this.$confirm('确认删除该分类吗？删除后该分类下所有角色将自动归到未分类角色中。', '温馨提醒', {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-        this.handleApiDelConsoleRole()
+        this.handleApiDelConsoleRole(row.id)
       })
     },
     /**
@@ -313,7 +147,7 @@ export default {
      * item: 当前项数据
      */
     handleClassify (type, item) {
-      this.isRole = 0
+      this.isClassify = 1
       if (type === 'add') {
         this.handleAddClass(item)
       } else if (type === 'del') {
@@ -322,57 +156,43 @@ export default {
         this.handleEditClass(item)
       }
     },
-    handleEditRole (id) {
+    handleEditRole (row) {
       this.typeDialogTitle = '编辑角色'
       this.formItem = [
-        { label: '所属分类', key: 'classfy', type: 'input' },
+        { label: '所属分类', key: 'resourceParentId', type: 'select', options: [] },
         { label: '角色名称', key: 'roleName', type: 'input' },
-        { label: '显示排序', key: 'srot', type: 'input' },
-        { label: '创建人', type: 'text', content: '2019/04/26 15:23' },
-        { label: '创建时间', type: 'text', content: '2019/04/26 15:23' }
+        { label: '显示排序', key: 'sortNo', type: 'input' },
+        { label: '创建人', type: 'text', key: 'creater' },
+        { label: '创建时间', type: 'text', key: 'gmtCreate' }
       ]
+      this.formData = JSON.parse(JSON.stringify(row))
+      this.handleGetClassify()
       this.typeDialogVisible = true
     },
-    handleAddRole (id) {
+    handleAddRole (row) {
       this.typeDialogTitle = '新建角色'
       this.formItem = [
         { label: '所属分类',
-          key: 'classfy',
+          key: 'resourceParentId',
           type: 'select',
-          options: [
-            { label: '分类1', value: 'a' },
-            { label: '分类2', value: 'b' }
-          ] },
+          options: [] },
         { label: '角色名称', key: 'roleName', type: 'input' },
-        { label: '显示排序', key: 'srot', type: 'input' },
+        { label: '显示排序', key: 'sortNo', type: 'input' },
         { label: '复制角色权限',
           key: 'roleLimit',
           type: 'selectDouble',
-          options: [
-            {
-              label: '热门尘世',
-              options: [{
-                label: '上海',
-                value: 'shanghai'
-              }]
-            }, {
-              label: '城市名',
-              options: [{
-                label: '成都',
-                value: 'chengdu'
-              }]
-            }
-          ] }
+          options: [] }
       ]
+      this.handleGetClassify()
+      this.handleApiGetAllRoleRequestTree()
       this.typeDialogVisible = true
     },
-    handleDelRole (id) {
+    handleDelRole (row) {
       this.$confirm('确认删除该角色？删除角色后，本角色下员工所具有的权限会受到影响。', '温馨提醒', {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-        this.handleApiDelConsoleRole()
-      }).catch(() => {
+        this.handleApiDelConsoleRole(row.id)
       })
     },
     /**
@@ -380,7 +200,7 @@ export default {
      * item: 当前项数据
      */
     handleRole (type, item) {
-      this.isRole = 1
+      this.isClassify = 0
       if (type === 'add') {
         this.handleAddRole(item)
       } else if (type === 'del') {
@@ -389,12 +209,23 @@ export default {
         this.handleEditRole(item)
       }
     },
-    // 单击角色，更新表格数据
+    /**
+     * 单击角色，更新表格数据
+     * type: role: 单击的角色； all: 单击的全部用户； 否则就是单击的分类
+     * item: 
+     */
     handleRoleClick (type, item) {
-      this.isRole = type === 'role' ? 1 : 0
-      this.handleApiPageQueryUserRole()
+      if (type === 'role') {
+        this.isClassify = 0
+      } else if (type === 'all') {
+        this.isClassify = ''
+      } else {
+        this.isClassify = 1
+      }
+      this.handleGetTableData(apiPageQueryUserRole, { resourceType: this.isClassify, roleId: item.id })
     },
     handleAddStaff () {
+      this.handleApiGetAllRoleRequestTree()
       this.staffDialogIsEdit = false
       this.staffDialogTitle = '添加员工'
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
@@ -404,12 +235,14 @@ export default {
     handleEditData (row) {
       this.staffDialogIsEdit = true
       this.staffDialogTitle = '编辑员工'
-      this.editData = JSON.parse(JSON.stringify(row))
+      this.staffDialogFormData = JSON.parse(JSON.stringify(row))
+      this.staffDialogFormData.roleIds = row.roleIds.split(',')
+      this.staffDialogFormData.userIds = row.id
       this.staffDialogVisible = true
     },
     // 点击表格删除按钮
     handleDeleteData (row) {
-      this.apiDeleteData(apiDeleteSysButton, row.id, apiListSysButton)
+      this.handleApiDelUserRole(row.id, row.roleIds)
     },
     // 处理表格数据
     handleTableData (tableData) {
@@ -421,9 +254,11 @@ export default {
       console.log(val)
     },
     handleRefuse () {
+      this.staffDialogFormData = this.$options.data().staffDialogFormData
       this.$refs.staffDialog.staffDialogVisible = false
     },
     handleSubmit () {
+      this.handleApiGrantUserRole()
       this.$refs.staffDialog.staffDialogVisible = false
     },
     handleTypeDialogRefuse () {
@@ -431,11 +266,32 @@ export default {
     },
     handleTypeDialogSubmit () {
       if (this.isEdit) {
+        // 编辑角色或角色分类，根据isClassify判断
         this.handleApiEditeConsoleRole()
       } else {
+        // 添加角色或角色分类，根据isClassify判断
         this.handleApiCreateConsoleRole()
       }
       this.$refs.typeDialog.typeVisible = false
+    },
+    // 获取表格数据
+    handleGetTableData (api, val, currentPage = 1) {
+      this.getTableDataApi = api
+      this.tableLoading = true
+      let params = {
+        currentPage: currentPage, pageSize: this.tablePages.pageSize
+      }
+      Object.assign(params, val)
+      api(params).then(res => {
+        if (res.code === '208999') {
+          this.tablePages.current = currentPage
+          this.allData = res.resultMap.list
+          this.tablePages.total = res.resultMap.total
+          this.tableData = this.allData
+          this.handleTableData && this.handleTableData(this.tableData || [])
+          this.tableLoading = false
+        }
+      })
     }
   },
   components: {
@@ -460,14 +316,6 @@ export default {
         color: #333333;
         line-height: 16px;
         padding: 20px 0 20px 15px;
-      }
-      h3 {
-        background: rgba(65, 98, 219, .05);
-        font-family: PingFangSC-Regular;
-        font-size: 12px;
-        color: #4162DB;
-        line-height: 40px;
-        padding-left: 15px;
       }
     }
     .box-right {

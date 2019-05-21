@@ -9,25 +9,24 @@ export const staffRole = {
     return setBtnConfig(JSON.parse(JSON.stringify(initData)), ['edit', 'delete'])
   },
   created () {
-    let configSearchItem = ['real_name', 'department_type']
+    let configSearchItem = ['realName', {
+      department: { type: 'selectTree',
+        treeOptions: []
+      }
+    }]
     let configTableItem = {
       selection: 50,
-      real_name: 40,
+      realName: 40,
       telephone: 60,
-      department_type: 60,
+      departmentName: 60,
       position: 60,
-      role_name: 60,
+      roleName: 60,
       btn: 120
     }
     let configDialogItem = [
       ['id', 'buttonMenuName'],
       {
-        buttonMenuName: { type: 'select',
-          options: [
-            { label: '成功', value: '1' },
-            { label: '失败', value: '2' }
-          ]
-        }
+        buttonMenuName: { type: 'select', options: [] }
       }
     ]
     this.searchItem = this.$setItem(staffRoleTest, configSearchItem, 'search')

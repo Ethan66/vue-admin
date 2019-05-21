@@ -10,6 +10,10 @@ export const apiCreateConsoleRole = (params) => {
 export const apiEditeConsoleRole = (params) => {
   return postRequest(base + '/editeConsoleRole', params)
 }
+// 获取角色或者角色分类信息
+export const apiGetConsoleRoleById = (params) => {
+  return postRequest(base + '/getConsoleRoleById', params)
+}
 
 // 删除角色或角色分类
 export const apiDelConsoleRole = (params) => {
@@ -24,4 +28,13 @@ export const apiGetAllRoleRequestTree = (params) => {
 // 按照角色或分类查询账号信息（表格数据）
 export const apiPageQueryUserRole = (params) => {
   return postRequest(base + '/pageQueryUserRole', params)
+}
+
+// 账号分配角色
+export const apiGrantUserRole = (params) => {
+  return postRequest(base + '/grantUserRole', params)
+}
+// 删除账号某个角色
+export const apiDelUserRole = (params) => {
+  return postRequest(base + '/delUserRole', params)
 }

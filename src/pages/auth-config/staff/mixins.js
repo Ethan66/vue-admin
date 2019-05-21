@@ -8,23 +8,24 @@ export const staff = {
   data () {
     return setBtnConfig(JSON.parse(JSON.stringify(initData)), [
       'edit',
-      { cancel: { name: '停 用', clickFn: 'handleStop' } },
-      { cancel: { name: '禁止登录', clickFn: 'handleForbidLogin' } },
-      { cancel: { name: '重置密码', clickFn: 'handleResetPassword' } }
+      { cancel: { name: '停 用', clickFn: 'handleStop', show: false } },
+      { cancel: { name: '启 用', clickFn: 'handleStart', show: false } },
+      { cancel: { name: '禁止登录', clickFn: 'handleForbidLogin', show: false } },
+      { cancel: { name: '允许登录', clickFn: 'handleAllowLogin', show: false } },
+      { cancel: { name: '重置密码', clickFn: 'handleResetPassword', show: true } }
     ])
   },
   created () {
     let configSearchItem = ['department_id', 'status']
     let configTableItem = {
       selection: 50,
-      user_name: 80,
-      real_name: 100,
+      realName: { width: 100, clickFn: 'handleShowInfo', clsName: 'cm-btn-color' },
       telephone: 100,
-      department_id: 100,
+      departmentName: 100,
       position: 100,
-      report_to: 80,
+      reportToName: 80,
       status: 80,
-      role_name: 80,
+      roleName: 80,
       btn: 260
     }
     this.searchItem = this.$setItem(staffTest, configSearchItem, 'search')

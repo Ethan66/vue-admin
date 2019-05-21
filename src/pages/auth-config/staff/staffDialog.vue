@@ -4,27 +4,27 @@
       :title="dialogTitle"
       :visible.sync="staffVisible" width="810px">
       <el-form
-        ref="form" :model="formData"
+        ref="staffForm" :model="formData"
         label-position="top" :rules="rules">
         <template v-for="(item, index) in formItem">
           <div class="form-title" :key="index">{{item.title}}</div>
-          <div class="form-template" :key="index">
+          <div class="form-template" :key="'t' + index">
             <div class="form-flex-box" v-for="(formItem, index) in item.formItem" :key="index">
               <el-form-item v-if="formItem.type === 'input'" :label="formItem.label" :prop="formItem.key">
                 <el-input v-model="formData[formItem.key]"></el-input>
               </el-form-item>
-              <el-form-item v-if="formItem.type === 'select'" :label="formItem.label">
+              <el-form-item v-if="formItem.type === 'select'" :label="formItem.label" :prop="formItem.key">
                 <el-select v-model="formData[formItem.key]" :placeholder="formItem.placeholder">
                   <el-option
                     v-for="(option, index) in formItem.options" :key="index"
-                    :label="option.label" :value="option.value"></el-option>
+                    :label="option.realName" :value="option.id"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item v-if="formItem.type === 'selectTree'" :label="formItem.label">
+              <el-form-item v-if="formItem.type === 'selectTree'" :label="formItem.label" :prop="formItem.key">
                 <tree-select
                   :data="formItem.dialogData"
                   :defaultProps="formItem.defaultProps"
-                  nodeKey="menuId" :checkedKeys="formItem.defaultCheckedKeys"
+                  nodeKey="id" :checkedKeys="defaultCheckedKeys"
                   @popoverHide="popoverHide"/>
               </el-form-item>
             </div>
@@ -63,6 +63,9 @@ export default {
     },
     rules: {
       type: Object
+    },
+    defaultCheckedKeys: {
+      type: Array
     }
   },
   data () {
@@ -86,19 +89,24 @@ export default {
     handleClick (type, fn) {
       if (type === 'delete') {
         if (!fn) {
-          this.typeVisible = false
+          this.staffVisible = false
         } else {
           this.$parent[fn]()
         }
       } else if (type === 'edit') {
-        if (!fn) {
-          this.typeVisible = false
-        } else {
-          this.$parent[fn]()
-        }
+        this.$refs.staffForm.validate((valid) => {
+          if (valid) {
+            if (!fn) {
+              this.staffVisible = false
+            } else {
+              this.$parent[fn]()
+            }
+          }
+        })
       }
     },
     popoverHide (checkedIds, checkedData) {
+      this.formData.departmentId = checkedIds
     }
   },
   components: {

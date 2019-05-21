@@ -24,6 +24,12 @@
             ><el-option
                 v-for="(pro, index) in item.options" :key="index" :label="pro.label" :value="pro.value"></el-option>
             </el-select>
+            <selectTree
+              v-if="item.type === 'selectTree'"
+              :props="props"
+              :options="item.treeOptions"
+              @getValue="getValue($event, item.key)"
+            />
           </el-form-item>
           <el-form-item v-if="item.type === 'date'" :label="item.label" :key="i">
             <template v-if="item.key.length === 2">
@@ -50,6 +56,7 @@
 </template>
 
 <script>
+import selectTree from '../select-tree/select-tree'
 export default {
   name: 'searchModule',
   props: {
@@ -73,7 +80,13 @@ export default {
     return {
       dateObj: {}, // 存储选择的日期范围
       defaultShowNumber: 6, // 默认展示的搜索条数
-      showAll: false
+      showAll: false,
+      props: {// 配置项（必选）
+        value: 'id',
+        label: 'departmentName',
+        children: 'childIdList'
+        // disabled:true
+      }
     }
   },
   computed: {
@@ -100,6 +113,9 @@ export default {
     this.initSearchValues()
   },
   methods: {
+    getValue (value, key) {
+      this.searchValues[key] = value
+    },
     // 初始化searchValues
     initSearchValues () {
       this.searchItem.forEach(item => {
@@ -153,6 +169,9 @@ export default {
       console.log(this.searchValues)
       this.$emit('handleSearch', this.searchValues)
     }
+  },
+  components: {
+    selectTree
   }
 }
 </script>

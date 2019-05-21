@@ -6,7 +6,9 @@
         :accordion="accordion"
         :data="options"
         :props="props"
+        :expand-on-click-node="false"
         :node-key="props.value"
+        default-expand-all
         :default-expanded-keys="defaultExpandedKey"
         @node-click="handleNodeClick">
       </el-tree>
