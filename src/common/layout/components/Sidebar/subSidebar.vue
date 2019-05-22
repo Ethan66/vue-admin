@@ -12,7 +12,7 @@
     </template>
 
     <!--二级菜单-->
-    <el-submenu v-else :index="item.menuCode">
+    <el-submenu v-else :index="item.code">
       <template slot="title">
         <template>
           <i :class="item.menuIcon || ''" class="iconfont" />{{ item.menuName }}

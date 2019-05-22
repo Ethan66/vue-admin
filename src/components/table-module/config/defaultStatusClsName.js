@@ -1,5 +1,5 @@
 export default {
-  departmentChStatus: {
+  departmentStatus: {
     '正常': 'colorBlue',
     '停用': 'colorRed'
   },

@@ -58,6 +58,7 @@
           :key="`tree${i}`"
           :item="item"
           :tableData="tableData"
+          :tableTreeOpenNum="tableTreeOpenNum"
           @handAddTableData="handAddTableData"
         >
         </cell-tree>
@@ -132,6 +133,8 @@ export default {
       type: Array,
       required: true
     },
+    // 表格树保存打开状态
+    tableTreeOpenNum: Object,
     // 初始化表头映射关系
     tableItem: {
       type: Array,

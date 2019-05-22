@@ -13,7 +13,7 @@
                       @change="handleChange(item.changeFn, editData[item.key])"
                       :disabled="item.disabled || allRead"
             >
-              <el-option v-for="(child, k) in item.options" :label="child.label" :value="child.value" :key="k"></el-option>
+              <el-option v-for="(child, k) in item.options" :label="child.label" :value="child.value" :disabled="child.disabled" :key="k"></el-option>
             </el-select>
             <el-input
                       v-model="editData[item.key]"
@@ -49,9 +49,11 @@
             <tree-select
               v-if="item.type === 'selectTree'"
               ref="selectTree"
+              clearable
               :data="item.dialogData"
               :defaultProps="item.defaultProps"
               nodeKey="id" :checkedKeys="selectTreeCheckedValue"
+              @change="handleClearSelectTree"
               @popoverHide="popoverHide"/>
           </el-form-item>
         </el-col>
@@ -182,9 +184,13 @@ export default {
         }
       })
     },
+    handleClearSelectTree () {
+      this.$emit('handleClearSelectTree')
+    },
     // 拿到选择树的值
     popoverHide (checkedIds, checkedData) {
       this.editData[this.selectTreekey] = checkedIds
+      this.$emit('handleSelectTreeValue', checkedData)
     },
     // 点击按钮事件
     handleFn (type, clickFn = '') {

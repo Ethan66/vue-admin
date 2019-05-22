@@ -21,7 +21,8 @@ export default {
   name: 'cell-tree',
   props: {
     item: Object,
-    tableData: Array
+    tableData: Array,
+    tableTreeOpenNum: Object
   },
   methods: {
     // 树状样式箭头clsName
@@ -48,7 +49,7 @@ export default {
       } else { // 展开
         tableData = tableData.splice(0, index + 1).concat(tableData.slice(row.list.length))
       }
-      tableData[index].expand = !tableData[index].expand
+      this.tableTreeOpenNum[row.id] = tableData[index].expand = !tableData[index].expand
       this.$emit('handAddTableData', tableData)
     },
   }
