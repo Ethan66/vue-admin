@@ -68,6 +68,7 @@
           :i="i"
           :tableBtn="tableBtn"
           :isInlineEdit="isInlineEdit"
+          :inlineEditBtnClick="inlineEditBtnClick"
           :tableItem="tableItem"
           :rowOrignData="rowOrignData"
           @handleInlineEditTableData="handleInlineEditTableData"
@@ -140,6 +141,7 @@ export default {
     maxHeight: String,
     // 是否为行内编辑
     isInlineEdit: Boolean,
+    inlineEditBtnClick: String,
     // 默认总高度为菜单高度
     totalHeightClsName: {
       type: String,
