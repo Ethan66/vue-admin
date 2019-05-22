@@ -18,12 +18,14 @@
     <dialog-module
       ref="dialog"
       doubleColumn
-      :dialogTitle="dialogTitle"
+      :dialog-title="dialogTitle"
       :showDialogForm.sync="showDialogForm"
-      :editData="editData"
-      :dialogItem="dialogItem"
-      :dialogBtn="dialogBtn"
+      :edit-data="editData"
+      :dialog-item="dialogItem"
+      :dialog-btn="dialogBtn"
       :rules="rules"
+      :select-tree-checked-value="selectTreeCheckedValue"
+      selectTreekey="menuParentId"
     />
     <dialog-detail
       title="详情"
@@ -44,22 +46,35 @@ export default {
   mixins: [basicMethod, menu],
   data () {
     return {
-      showDetail: false
+      showDetail: false,
+      allParentMenu: [],
+      selectTreeCheckedValue: []
+    }
+  },
+  watch: {
+    showDialogForm (val) {
+      if (!val) {
+        this.dialogItem[0].type = 'selectTree'
+        this.dialogItem[0].disabled = false
+        this.dialogItem[2].disabled = false
+      }
     }
   },
   created () {
     this.tablePages.pageSize = 10000
-    apiQueryParentConsoleMenu({ menuLevel: 2 }).then(res => {
-      if (res.code === '208999') {
-        
-      }
-    })
     this.handleGetTableData(apiListConsoleMenu)
   },
   methods: {
+    // 获取所有父菜单树
+    handleGetAllParentTree () {
+      this.selectTreeCheckedValue = []
+      let filterArr = JSON.parse(JSON.stringify(this.allData.filter(item => item.menuLevel !== 3)))
+      this.allParentMenu = this.dialogItem[0].dialogData = menuRelation(filterArr, 'id', 'menuParentId', 'menuLevel', 'sortNo')
+    },
     // 点击新增按钮
     handleAdd () {
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
+      this.handleGetAllParentTree()
       this.isEdit = 0
       this.dialogTitle = '新增菜单'
       this.showDialogForm = true
@@ -70,8 +85,42 @@ export default {
       this.editData.status = this.editData.statusStash
       this.editData.menuType = this.editData.menuTypeStash
       this.editData.menuLevel = this.editData.menuLevel[0]
+      this.handleGetAllParentTree()
+      this.selectTreeCheckedValue = [this.editData.menuParentId]
       this.isEdit = 1
       this.dialogTitle = '编辑菜单'
+      this.showDialogForm = true
+    },
+    // 新建平级菜单
+    handleCreateLevelMenu (row) {
+      this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
+      this.dialogItem[0].type = 'input'
+      this.dialogItem[0].disabled = true
+      this.dialogItem[2].disabled = true
+      this.editData.menuParentIdStash = row.menuParentId
+      let obj = this.allData.find(item => item.id === row.menuParentId)
+      obj && (this.editData.menuParentId = obj.menuName)
+      this.editData.menuType = row.menuTypeStash
+      this.editData.menuLevel = Number(row.menuLevel[0])
+      this.isEdit = 0
+      this.dialogTitle = '新建菜单'
+      this.showDialogForm = true
+    },
+    // 新建下级菜单
+    handleCreateNextLevelMenu (row) {
+      if (Number(row.menuTypeStash) === 2) {
+        this.$message.error('三级不能创建下级菜单')
+      }
+      this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
+      this.dialogItem[0].type = 'input'
+      this.dialogItem[0].disabled = true
+      this.dialogItem[2].disabled = true
+      this.editData.menuParentIdStash = row.id
+      this.editData.menuParentId = row.menuName
+      this.editData.menuType = Number(row.menuTypeStash) + 1
+      this.editData.menuLevel = Number(row.menuLevel[0])
+      this.isEdit = 0
+      this.dialogTitle = '新建菜单'
       this.showDialogForm = true
     },
     // 点击表格详情按钮
@@ -87,9 +136,13 @@ export default {
     handleSubmit () {
       this.$refs.dialog.showDialogForm1 = false
       if (this.isEdit === 0) {
+        if (this.editData.menuParentIdStash) {
+          this.editData.menuParentId = this.editData.menuParentIdStash
+        }
         this.editData.menuLevel = this.editData.menuType + 1
         this.apiCreateData(apiCreateConsoleMenu, this.editData, apiListConsoleMenu)
       } else {
+        this.editData.menuLevel = this.editData.menuType + 1
         this.apiEditData(apiEditeConsoleMenu, this.editData, apiListConsoleMenu)
       }
     },
@@ -124,7 +177,15 @@ export default {
             break
         }
       })
-      this.tableData = menuRelation(tableData, 'id', 'menuParentId', 'menuLevel1', 'sortNo')
+      this.tableData = menuRelation(tableData, 'id', 'menuParentId', 'menuLevelStash', 'sortNo')
+    },
+    // 获取上级菜单
+    handleGetParentMenu (menuLevel) {
+      apiQueryParentConsoleMenu({ menuLevel }).then(res => {
+        if (res.code === '208999') {
+          
+        }
+      })
     }
   }
 }

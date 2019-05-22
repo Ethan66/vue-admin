@@ -24,12 +24,14 @@ export const tybeManageTest = [
   { label: '在此之前固定列', key: 'fixedStatus', hide: 0, canSet: 1, sort: 6, fix: 0 },
   { label: '是否允许用户设置', key: 'setStatus', hide: 0, canSet: 1, sort: 4, fix: 0 },
   { label: '是否隐藏', key: 'displayStatus', hide: 0, canSet: 1, sort: 3, fix: 0 },
+  { label: '是否必填', key: 'fieldRequired', hide: 0, canSet: 1, sort: 4, fix: 0 },
   { label: '显示排序', key: 'fieldSort', hide: 0, canSet: 1, sort: 5, fix: 0 }
 ]
 
 export const fastCreateTybeTest = [
   { label: '字段', key: 'fieldName', hide: 0, canSet: 1, sort: 1, fix: 1 },
   { label: '字段名称', key: 'fieldValue', hide: 0, canSet: 1, sort: 2, fix: 1 },
+  { label: '是否必填', key: 'fieldRequired', hide: 0, canSet: 1, sort: 4, fix: 0 },
   { label: '是否允许用户设置', key: 'setStatus', hide: 0, canSet: 1, sort: 4, fix: 0 },
   { label: '是否隐藏', key: 'displayStatus', hide: 0, canSet: 1, sort: 3, fix: 0 }
 ]

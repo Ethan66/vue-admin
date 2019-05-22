@@ -30,7 +30,14 @@ export const menu = {
       btn: 120
     }
     let configDialogItem = [
-      { menuParentId: { label: '上级菜单', type: 'select', options: [{ label: '一', value: 1 }, { label: '二', value: 2 }] } },
+      {
+        menuParentId: {
+          label: '上级菜单',
+          type: 'selectTree',
+          defaultProps: { children: 'list', label: 'menuName' },
+          dialogData: []
+        }
+      },
       'menuName',
       { menuType: { type: 'select', options: [{ label: '目录', value: 0 }, { label: '菜单', value: 1 }, { label: '按钮', value: 2 }] } },
       'code', 'menuUrl', 'sortNo',
@@ -124,6 +131,7 @@ export const tybeManage = {
       fieldName: { clsName: 'cm-btn-color', width: 80 },
       fieldValue: { width: 100, type: 'input', canEdit: 1 },
       displayStatus: { width: 120, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
+      fieldRequired: { width: 100, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
       setStatus: { width: 80, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
       fieldSort: { width: 100, type: 'input', canEdit: 1 },
       fixedStatus: { width: 80, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
