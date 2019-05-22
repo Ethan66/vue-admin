@@ -24,7 +24,7 @@ export default {
           this.tablePages.current = currentPage
           this.allData = res.resultMap.page.list
           this.tablePages.total = res.resultMap.page.total
-          this.tableData = this.allData
+          this.tableData = JSON.parse(JSON.stringify(this.allData))
           this.handleTableData && this.handleTableData(this.tableData || [])
           this.tableLoading = false
         }
