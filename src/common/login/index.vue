@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { apiUserLogin, apiGetSmsCode, apiGetButtonsByUserId, apiGetIp, apiCheckIp } from '@/api/login'
+import { apiUserLogin, apiGetSmsCode, apiGetIp, apiCheckIp } from '@/api/login'
 import MD5 from 'js-md5'
 import rules from './rules'
 export default {
@@ -156,24 +156,16 @@ export default {
           params.operatingSystem = this.systemObj.system
           params.terminal = this.systemObj.browser
           apiUserLogin(params).then(res => {
-            this.$router.push('/main/log/error-log/index')
             if (res.code === '208999') {
               res.resultMap.data && delete res.resultMap.data.errorNum
               sessionStorage.setItem('userInfo', JSON.stringify(res.resultMap.data))
-              this.$router.push('/main/log/error-log/index')
-              // this.$router.push('/')
+              this.$router.push('/')
             } else {
               if (!this.handleSpeciaCode(res.code)) {
                 this.$message.error(res.message)
               }
               throw new Error()
             }
-          }).then(res => {
-            apiGetButtonsByUserId({}).then(res => {
-              if (res.code === '208999') {
-                sessionStorage.setItem('btnList', JSON.stringify(res.resultMap.buttonList))
-              }
-            })
           }).catch (e => {
             this.isLoading = false
           })
