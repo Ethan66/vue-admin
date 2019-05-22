@@ -7,6 +7,7 @@ export default {
         resourceType: this.isClassify // 资源类型 0:角色，1:角色分类
       }
       Object.assign(params, this.formData)
+      params.cloneRoleIds = params.cloneRoleIds.join(',')
       apiCreateConsoleRole(params).then(res => {
         if (res.code === '208999') {
 
@@ -54,9 +55,8 @@ export default {
           this.staffDialogFormItem = this.classifyList
           this.roleCount = res.resultMap.total || 0
           this.formItem.map(item => {
-            if (item.key === 'roleLimit') {
+            if (item.key === 'cloneRoleIds') {
               item.options = this.classifyList
-              console.log(item.options);
             }
           })
         } else {

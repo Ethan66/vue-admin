@@ -97,10 +97,13 @@ export const methods = {
       })
     },
     // 重置系统用户密码
-    handleApiResetConsoleUserPassword () {
-      apiResetConsoleUserPassword().then(res => {
+    handleApiResetConsoleUserPassword (id) {
+      let params = {
+        id: id
+      }
+      apiResetConsoleUserPassword(params).then(res => {
         if (res.code === '208999') {
-
+          this.$message.success(res.message)
         } else {
           this.$message.error(res.message)
         }

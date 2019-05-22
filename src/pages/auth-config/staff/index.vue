@@ -138,7 +138,7 @@ export default {
             { label: '状态', key: 'status' },
             { label: '创建时间', key: 'gmtCreate' },
             { label: '创建人', key: 'createrName' },
-            { label: '上次登录时间', key: 'LastLogonTime' }
+            { label: '上次登录时间', key: 'lastLogonTime' }
           ]
         }, {
           infoTitle: '账号信息',
@@ -259,12 +259,12 @@ export default {
       })
     },
     // 重置密码
-    handleResetPassword () {
+    handleResetPassword (row) {
       this.$confirm('确定重置该员工账号密码吗？新密码将以短信发送。', '温馨提醒', {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-        this.handleApiResetConsoleUserPassword()
+        this.handleApiResetConsoleUserPassword(row.id)
       })
     },
     // staffdialog 取消按钮

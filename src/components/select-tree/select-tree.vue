@@ -2,6 +2,7 @@
   <el-select :value="valueTitle" :clearable="clearable" @clear="clearHandle">
     <el-option :value="valueTitle" :label="valueTitle" class="options">
       <el-tree id="tree-option"
+        class="tree-box"
         ref="selectTree"
         :accordion="accordion"
         :data="options"
@@ -115,7 +116,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   .el-scrollbar .el-scrollbar__view .el-select-dropdown__item{
     height: auto;
     max-height: 274px;

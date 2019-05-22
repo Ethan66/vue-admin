@@ -16,12 +16,15 @@
           <el-select
             v-if="item.type === 'selectDouble'"
             v-model="formData[item.key]"
+            multiple
             :placeholder="item.placeholder">
             <el-option-group
               v-for="(optionItem, index) in item.options"
+              v-if="optionItem.childIdList && optionItem.childIdList.length > 0"
               :key="index"
               :disabled="optionItem.roleType === 1"
-              :label="optionItem.roleName">
+              :label="optionItem.roleName"
+            >
               <el-option
                 v-for="childItem in optionItem.childIdList" :key="childItem.id"
                 :label="childItem.roleName" :value="childItem.id"></el-option>

@@ -185,7 +185,7 @@ export default {
         { label: '角色名称', key: 'roleName', type: 'input' },
         { label: '显示排序', key: 'sortNo', type: 'input' },
         { label: '复制角色权限',
-          key: 'roleLimit',
+          key: 'cloneRoleIds',
           type: 'selectDouble',
           options: [] }
       ]
