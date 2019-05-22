@@ -3,6 +3,7 @@
     <div class="box-left">
       <h2>角色分类</h2>
       <classify
+        ref="classify"
         :classifyList="classifyList"
         :total="roleCount"
         @classify="handleClassify"
@@ -113,6 +114,11 @@ export default {
     }
   },
   methods: {
+    // 点击搜索按钮
+    handleSearch (val) {
+      this.handleGetTableData(this.getTableDataApi, val)
+      this.$refs.classify.handleReStatus()
+    },
     handleEditClass (item) {
       this.typeDialogTitle = '编辑类型'
       this.formItem = [

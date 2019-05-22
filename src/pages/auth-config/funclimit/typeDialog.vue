@@ -13,10 +13,14 @@
               v-for="(optionItem, index) in item.options" :key="index"
               :label="optionItem.roleName" :value="optionItem.id"></el-option>
           </el-select>
-          <el-select v-if="item.type === 'selectDouble'" v-model="formData[item.key]" :placeholder="item.placeholder">
+          <el-select
+            v-if="item.type === 'selectDouble'"
+            v-model="formData[item.key]"
+            :placeholder="item.placeholder">
             <el-option-group
               v-for="(optionItem, index) in item.options"
               :key="index"
+              :disabled="optionItem.roleType === 1"
               :label="optionItem.roleName">
               <el-option
                 v-for="childItem in optionItem.childIdList" :key="childItem.id"
