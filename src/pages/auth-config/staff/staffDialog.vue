@@ -1,6 +1,9 @@
 <template>
   <div class="staff-dialog">
     <el-dialog
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      :show-close="false"
       :title="dialogTitle"
       :visible.sync="staffVisible" width="810px">
       <el-form
@@ -22,6 +25,7 @@
               </el-form-item>
               <el-form-item v-if="formItem.type === 'selectTree'" :label="formItem.label" :prop="formItem.key">
                 <tree-select
+                  ref="treeSelect"
                   :data="formItem.dialogData"
                   :defaultProps="formItem.defaultProps"
                   nodeKey="id" :checkedKeys="defaultCheckedKeys"
@@ -103,6 +107,9 @@ export default {
             }
           }
         })
+      }
+      if (this.$refs.treeSelect) {
+        this.$refs.treeSelect[0].clearSelectedNode()
       }
     },
     popoverHide (checkedIds, checkedData) {

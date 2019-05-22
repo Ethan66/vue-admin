@@ -15,6 +15,7 @@ export const staffTest = [
   { label: '部门名称', key: 'departmentName', hide: 0, canSet: 1, sort: 3, fix: 0 },
   { label: '职位', key: 'position', hide: 0, canSet: 4, sort: 5, fix: 0 },
   { label: '汇报对象', key: 'reportToName', hide: 0, canSet: 1, sort: 5, fix: 0 },
+  { label: '状态', key: 'statusMsg', hide: 0, canSet: 1, sort: 5, fix: 0 },
   { label: '状态',
     type: 'select',
     options: [
@@ -23,7 +24,7 @@ export const staffTest = [
       { label: '禁止登录', value: 2 }
     ],
     key: 'status',
-    hide: 0,
+    hide: 1,
     canSet: 1,
     sort: 5,
     fix: 0 },

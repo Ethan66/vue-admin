@@ -25,6 +25,7 @@
                 v-for="(pro, index) in item.options" :key="index" :label="pro.label" :value="pro.value"></el-option>
             </el-select>
             <selectTree
+              ref="selectTree"
               v-if="item.type === 'selectTree'"
               :props="props"
               :options="item.treeOptions"
@@ -131,6 +132,7 @@ export default {
     // 清空搜索数据
     handleClear () {
       this.initSearchValues()
+      this.$refs.selectTree[0].clearHandle()
       this.searchItem.forEach(item => {
         if (Array.isArray(item.key)) {
           this.$set(this.dateObj, item.key.join(), [undefined, undefined])
