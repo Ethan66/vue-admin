@@ -155,7 +155,9 @@ export default {
       var item = checkedKeys[0]
       this.$refs.tree.setCurrentKey(item)
       var node = this.$refs.tree.getNode(item)
-      this.setSelectOption(node)
+      if (node) {
+        this.setSelectOption(node)
+      }
     },
     // 多选，勾选上传进来的节点
     checkSelectedNodes (checkedKeys) {
@@ -302,7 +304,7 @@ export default {
         background: rgba(65,98,219,0.5);
         // background: #4162DB;
     }
-  
+
 }
 .el-popover{
     width: 300px;

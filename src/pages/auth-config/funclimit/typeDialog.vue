@@ -102,6 +102,12 @@ export default {
           }
         })
       }
+    },
+    handleCheck (key, el) {
+      if (key === 'sortNo') {
+        console.log(this.formData[key].replace(/[^0-9]/g, ''))
+        this.$set(this.formData, key, this.formData[key].replace(/[^0-9]/g, ''))
+      }
     }
   }
 }

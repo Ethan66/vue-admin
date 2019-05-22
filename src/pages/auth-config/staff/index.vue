@@ -49,7 +49,7 @@
       :formItem="staffFormItem"
       :formData="staffFormData"
       :rules="staffFormRules"
-      :defaultCheckedKeys="defaultCheckedKeys"
+      :defaultCheckedKeys.sync="defaultCheckedKeys"
     />
   </div>
 </template>
@@ -64,6 +64,14 @@ import { apiListConsoleUser } from '@/api/staff'
 export default {
   mixins: [basicMethod, staff, methods],
   data () {
+    const checkEmail = (rule, value, callback) => {
+      const reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+      if (!reg.test(value)) {
+        callback(new Error('邮箱格式不正确'))
+      } else {
+        callback()
+      }
+    }
     return {
       defaultSearchObj: { a: 1 },
       staffInfoVisible: false,
@@ -71,13 +79,16 @@ export default {
       staffForm: {},
       staffFormRules: {
         userName: [
-          { required: true, message: '请输入昵称', trigger: 'blur' }
+          { required: true, message: '请输入昵称', trigger: 'blur' },
+          { max: 20, message: '最多输入20个字符', trigger: 'blur' }
         ],
         realName: [
-          { required: true, message: '请输入姓名', trigger: 'blur' }
+          { required: true, message: '请输入姓名', trigger: 'blur' },
+          { max: 20, message: '最多输入20个字符', trigger: 'blur' }
         ],
         telephone: [
-          { required: true, message: '请输入手机号', trigger: 'blur' }
+          { required: true, message: '请输入手机号', trigger: 'blur' },
+          { min: 11, max: 11, message: '请输入正确的手机号', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请输入初始密码', trigger: 'blur' }
@@ -85,8 +96,12 @@ export default {
         departmentId: [
           { required: true, message: '请选择部门', trigger: 'blur' }
         ],
+        mailbox: [
+          { validator: checkEmail, trigger: 'blur' }
+        ],
         position: [
-          { required: true, message: '请输入职位', trigger: 'blur' }
+          { required: true, message: '请输入职位', trigger: 'blur' },
+          { max: 20, message: '最多输入20个字符', trigger: 'blur' }
         ],
         reportTo: [
           { required: true, message: '请选择汇报对象', trigger: 'blur' }
@@ -206,7 +221,8 @@ export default {
     handleEditData (row) {
       this.handleApiQueryLowerLevelList()
       this.staffFormData = JSON.parse(JSON.stringify(row))
-      this.defaultCheckedKeys.push(this.staffFormData.departmentId)
+      console.log(this.staffFormData.departmentId)
+      this.defaultCheckedKeys = [this.staffFormData.departmentId]
       this.staffFormData.password = '******'
       this.staffFormData.reportTo = Number(this.staffFormData.reportTo)
       this.isEdit = 1
@@ -241,7 +257,7 @@ export default {
     },
     // 禁止登录
     handleForbidLogin (row) {
-      console.log(row);
+      console.log(row)
       this.$confirm('确定禁止该员工账号登录吗？', '温馨提醒', {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
