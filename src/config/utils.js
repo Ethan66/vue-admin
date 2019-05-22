@@ -23,7 +23,6 @@ export const format = (now, fmt = 'yyyy-MM-dd hh:mm:ss') => {
 
 // 菜单父子级关联
 export const menuRelation = (data, id, pId, level, sort) => {
-  debugger
   if (!data.length) return data
   let template = {}
   data.forEach(item => {

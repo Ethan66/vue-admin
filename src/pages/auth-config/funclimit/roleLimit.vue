@@ -2,12 +2,11 @@
   <div class="role-limit">
     <div class="box-left">
       <h2>角色分类</h2>
-      <h3>全部用户(60)</h3>
       <classify
-        :classifyList="optionData"
-        @classify="handleClassify"
-        @role="handleRole"
-        @roleClick="handleRoleClick"
+        :classifyList="classifyList"
+        @classify="handleClickClassifyIcon"
+        @role="handleClickRoleIcon"
+        @roleClick="handleClickRole"
       />
     </div>
     <div class="box-right">
@@ -16,26 +15,26 @@
           <h3>{{ item.menu.menuName }}</h3>
           <div class="object list">
             <p class="title">对象级</p>
-            <el-checkbox-group v-model="result[item.menu.menuId].objectIds" :key="`object${i}`">
+            <el-checkbox-group v-model="resultChecked[item.menu.menuId].objectPermission" :key="`object${i}`">
               <el-checkbox label="1">查看列表</el-checkbox>
               <el-checkbox label="2">查看详情</el-checkbox>
             </el-checkbox-group>
           </div>
           <div class="operation list">
             <div class="title">操作级</div>
-            <el-checkbox-group v-model="result[item.menu.menuId].buttonIds" :key="`operation${i}`">
+            <el-checkbox-group v-model="resultChecked[item.menu.menuId].buttonIds" :key="`operation${i}`">
               <el-checkbox :label="child.btnId" v-for="(child, i) in item.operation" :key="i">{{ child.btnName }}</el-checkbox>
             </el-checkbox-group>
           </div>
           <div class="tybe list">
             <div class="title">字段级</div>
-            <p class="cm-btn-color" @click="handleSetTybe(item.tybe, item.menu.menuId)">设置字段权限</p>
+            <p class="cm-btn-color" @click="handleSetTybe(item.menu.menuId)">设置字段权限</p>
           </div>
         </div>
       </div>
       <div class="footer">
         <el-button>取消</el-button>
-        <el-button type="primary">保存</el-button>
+        <el-button type="primary" @click="handleSaveRoleResource">保存</el-button>
       </div>
     </div>
     <el-dialog title="设置字段权限" :visible.sync="showTybeDialog">
@@ -45,18 +44,18 @@
           <div class="top">
             <p class="title">全选</p>
             <el-radio-group v-model="allSet" @change="handleSetAll">
-              <el-radio label="1">读写</el-radio>
-              <el-radio label="2">只读</el-radio>
-              <el-radio label="3">不可见</el-radio>
+              <el-radio label="100">读写</el-radio>
+              <el-radio label="010">只读</el-radio>
+              <el-radio label="001">不可见</el-radio>
             </el-radio-group>
           </div>
           <el-form :model="tybeValueObj" :rules="rules" ref="form" label-width="110px" label-position="left">
             <template v-for="(item, index) in nowTybeList">
-              <el-form-item :label="item.tybeName" :prop="item.tybeId" :key="index">
-                <el-radio-group v-model="tybeValueObj[item.tybeId]">
-                  <el-radio label="1">读写</el-radio>
-                  <el-radio label="2">只读</el-radio>
-                  <el-radio label="3">不可见</el-radio>
+              <el-form-item :label="item.fieldName" :prop="item.idStr" :key="index">
+                <el-radio-group v-model="tybeValueObj[item.id]">
+                  <el-radio label="100">读写</el-radio>
+                  <el-radio label="010">只读</el-radio>
+                  <el-radio label="001">不可见</el-radio>
                 </el-radio-group>
               </el-form-item>
             </template>
@@ -68,20 +67,47 @@
         </div>
       </div>
     </el-dialog>
+    <!-- 添加编辑角色分类弹框 -->
+    <typeDialog
+      ref="typeDialog"
+      :dialogVisible.sync="typeDialogVisible"
+      :formItem.sync="formItem"
+      :formData="formData"
+      :rules="typeDialogRules"
+      :dialogTitle="typeDialogTitle"
+      :dialogBtn="typeDialogBtn"
+    />
   </div>
 </template>
 
 <script>
 import classify from '@/pages/auth-config/funclimit/components/classify'
+import methods from './methods'
+import dialogConfig from './dialogConfig'
+import typeDialog from './typeDialog'
+import { apiGetAllPermissionResource, apiSetRolePermissionResource, apiGetRolePermissionFields, apiSetRolePermissionFields } from '@/api/role'
+
+const initFormItem = [
+  { label: '分类名称', key: 'roleName', type: 'input' },
+  { label: '显示排序', key: 'sortNo', type: 'input' },
+  { label: '创建人', type: 'text', key: 'creater' },
+  { label: '创建时间', type: 'text', key: 'gmtCreate' }
+]
+
+const initRoleFormItem = [
+  { label: '所属分类', key: 'resourceParentId', type: 'select', options: [] },
+  { label: '角色名称', key: 'roleName', type: 'input' },
+  { label: '显示排序', key: 'sortNo', type: 'input' }
+]
 
 export default {
-  components: { classify },
-  created () {
-    this.handleInitResultObj(this.menuList)
-  },
+  components: { classify, typeDialog },
+  mixins: [methods, dialogConfig],
   data () {
     return {
-      result: {}, // 传给后端的结果
+      classifyList: [], // 角色数据
+      menuList: [], // 菜单列表
+      resultChecked: {}, // 传给后端的结果
       showTybeDialog: false,
       allSet: '', // 字段全选设置
       nowTybeList: [], // 选中的字段列表
@@ -93,90 +119,12 @@ export default {
         permissionList: [
           { menuId: '', objectIdList: [], buttonIdList: [] }
         ]
-      },
-      menuList: [
-        {
-          menu: { menuName: '人员管理', menuId: '1' },
-          operation: [{ btnName: '停用', btnId: '1' }, { btnName: '启用', btnId: '2' }, { btnName: '重置密码', btnId: '3' }],
-          tybe: [{ tybeName: '姓名', type: '', tybeId: 'name', default: 1 }, { tybeName: '手机号', type: '', tybeId: 'phone', default: 1 }, { tybeName: '邮箱', type: '', tybeId: 'address', default: 0 }]
-        },
-        {
-          menu: { menuName: '组织架构管理', menuId: '2' },
-          operation: [{ btnName: '更多', btnId: '5' }, { btnName: '编辑', btnId: '6' }],
-          tybe: [{ tybeName: '姓名', type: '1', tybeId: 'name', default: 1 }, { tybeName: '手机号', type: '2', tybeId: 'phone', default: 1 }, { tybeName: '邮箱', type: '1', tybeId: 'address', default: 0 }]
-        }
-      ],
-      classifyList: [
-      {
-        'check': false,
-        'creater': 0,
-        'gmtCreate': '2019-05-13 19:52:10',
-        'gmtModified': null,
-        'id': 1,
-        'isDelete': '0',
-        'modifier': 0,
-        'resourceParentId': 0,
-        'resourceType': 1,
-        'roleCode': 'RO001',
-        'roleName': '管理员角色',
-        'roleType': 1,
-        'sortNo': 1,
-        'userCount': 0
-      },
-      {
-        'check': false,
-        'creater': 0,
-        'gmtCreate': '2019-05-15 14:20:27',
-        'gmtModified': '2019-05-15 14:22:01',
-        'id': 11,
-        'isDelete': '0',
-        'modifier': 0,
-        'resourceParentId': 0,
-        'resourceType': 1,
-        'roleCode': 'RO002',
-        'roleName': '未分类角色',
-        'roleType': 0,
-        'sortNo': 2,
-        'userCount': 0
-      },
-      {
-        'check': false,
-        'creater': 40,
-        'gmtCreate': '2019-05-15 19:39:00',
-        'gmtModified': null,
-        'id': 13,
-        'isDelete': '0',
-        'modifier': 0,
-        'resourceParentId': 14,
-        'resourceType': 0,
-        'roleCode': 'RO20190515073900112dD',
-        'roleName': '测试角色1',
-        'roleType': 2,
-        'sortNo': 3,
-        'userCount': 0
-      },
-      {
-        'check': false,
-        'creater': 40,
-        'gmtCreate': '2019-05-15 19:42:46',
-        'gmtModified': '2019-05-15 19:48:15',
-        'id': 14,
-        'isDelete': '0',
-        'modifier': 40,
-        'resourceParentId': 0,
-        'resourceType': 1,
-        'roleCode': 'RO201905150742460721I',
-        'roleName': '测试角色2019',
-        'roleType': 2,
-        'sortNo': 4,
-        'userCount': 0
       }
-    ]
     }
   },
   watch: {
     menuList (val) {
-      this.handleInitResultObj(val)
+      this.handleInitResultChecked(val)
     },
     showTybeDialog (val) {
       if (!val) {
@@ -186,36 +134,178 @@ export default {
       }
     }
   },
-   computed: {
-    optionData () {
-      let cloneData = JSON.parse(JSON.stringify(this.classifyList)) // 对源数据深度克隆
-      return cloneData.filter(father => { // 循环所有项，并添加children属性
-        let branchArr = cloneData.filter(child => father.id === child.resourceParentId) // 返回每一项的子级数组
-        father.children = branchArr.length > 0 ? branchArr : '' // 给父级添加一个children属性，并赋值
-        return father.resourceParentId === 0 // 返回第一层
-      })
-    }
+  created () {
+    this.handleApiGetAllRoleRequestTree()
   },
   methods: {
+    // 点击角色分类图标
+    handleClickClassifyIcon (type, item) {
+      this.isClassify = 1
+      if (type === 'add') {
+        this.handleAddClass(item)
+      } else if (type === 'del') {
+        this.handleDelClass(item)
+      } else if (type === 'edit') {
+        this.handleEditClass(item)
+      }
+    },
+    // 点击角色图标
+    handleClickRoleIcon (type, item) {
+      this.isClassify = 0
+      if (type === 'add') {
+        this.handleAddRole(item)
+      } else if (type === 'del') {
+        this.handleDelRole(item)
+      } else if (type === 'edit') {
+        this.handleEditRole(item)
+      }
+    },
+    // 编辑角色分类
+    handleEditClass (item) {
+      this.typeDialogTitle = '编辑类型'
+      this.formItem = initFormItem
+      this.isEdit = true
+      this.formData = JSON.parse(JSON.stringify(item))
+      this.typeDialogVisible = true
+    },
+    // 新增角色分类
+    handleAddClass (row) {
+      this.typeDialogTitle = '新建类型'
+      this.formItem = initFormItem.slice(0, 2)
+      this.isEdit = false
+      this.typeDialogVisible = true
+    },
+    // 删除角色分类
+    handleDelClass (row) {
+      this.$confirm('确认删除该分类吗？删除后该分类下所有角色将自动归到未分类角色中。', '温馨提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      }).then(() => {
+        this.handleApiDelConsoleRole(row.id)
+      })
+    },
+    // 编辑角色
+    handleEditRole (row) {
+      this.typeDialogTitle = '编辑角色'
+      this.isEdit = true
+      this.formItem = initRoleFormItem.concat([
+        { label: '创建人', type: 'text', key: 'creater' },
+        { label: '创建时间', type: 'text', key: 'gmtCreate' }
+      ])
+      this.formData = JSON.parse(JSON.stringify(row))
+      this.handleGetClassify()
+      this.typeDialogVisible = true
+    },
+    // 新增角色
+    handleAddRole (row) {
+      this.typeDialogTitle = '新建角色'
+      this.isEdit = false
+      this.formItem = initRoleFormItem.concat([
+        { label: '复制角色权限', key: 'roleLimit', type: 'selectDouble', options: [] }
+      ])
+      this.handleGetClassify()
+      this.handleApiGetAllRoleRequestTree()
+      this.typeDialogVisible = true
+    },
+    // 删除角色
+    handleDelRole (row) {
+      this.$confirm('确认删除该角色？删除角色后，本角色下员工所具有的权限会受到影响。', '温馨提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      }).then(() => {
+        this.handleApiDelConsoleRole(row.id)
+      })
+    },
+    // 选中角色
+    handleClickRole (type, item) {
+      if (type === 'classify') {
+        this.isClassify = 0
+      } else if (type === 'all') {
+        this.isClassify = ''
+      } else {
+        this.isClassify = 1
+      }
+      this.roleId = item.id
+      this.handleGetRoleResource(item.id)
+    },
+    // 编辑角色对话框取消按钮
+    handleTypeDialogRefuse () {
+      this.$refs.typeDialog.typeVisible = false
+    },
+    // 编辑角色对话框确定按钮
+    handleTypeDialogSubmit () {
+      if (this.isEdit) {
+        this.handleApiEditeConsoleRole()
+      } else {
+        this.handleApiCreateConsoleRole()
+      }
+      this.$refs.typeDialog.typeVisible = false
+    },
+    // 获取角色所有资源
+    handleGetRoleResource (roleId) {
+      apiGetAllPermissionResource({ roleId }).then(res => {
+        if (res.code === '208999') {
+          this.menuList = res.resultMap.data.list.map(item => {
+            let obj = {}
+            obj.menu = { menuName: item.menuName, menuId: item.menuId }
+            obj.operation = item.buttonPermissionList.map(child => {
+              return {
+                btnName: child.buttonName,
+                btnId: child.buttonId,
+                check: child.check
+              }
+            })
+            obj.objectPermission = item.objectPermission
+            return obj
+          })
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+    },
     // 结构结果对象
-    handleInitResultObj (val) {
-      if (val.length) {
-        val.forEach((item) => {
-          this.$set(this.result, [item.menu.menuId], { objectIds: [], buttonIds: [], tybeList: [] })
+    handleInitResultChecked (menuList) {
+      if (menuList.length) {
+        menuList.forEach((item) => {
+          let obj = { objectPermission: [], buttonIds: [] }
+          if (item.objectPermission) {
+            if (item.objectPermission === '11') {
+              obj.objectPermission.push('1', '2')
+            } else if (item.objectPermission === '10') {
+              obj.objectPermission.push('2')
+            } else if (item.objectPermission === '01') {
+              obj.objectPermission.push('1')
+            }
+          }
+          item.operation && item.operation.forEach(btn => {
+            btn.check && obj.buttonIds.push(btn.btnId)
+          })
+          this.$set(this.resultChecked, [item.menu.menuId], obj)
         })
       }
     },
     // 点击设置字段权限按钮
-    handleSetTybe (tybeList, menuId) {
-      this.nowTybeList = tybeList
-      this.nowMenuId = menuId
-      tybeList.forEach(item => {
-        this.$set(this.tybeValueObj, item.tybeId, item.type)
-        if (item.default) {
-          this.$set(this.rules, item.tybeId, [{ required: true, validator: this.validateFn,  message: `请选择${item.tybeName}` }])
+    handleSetTybe (menuId) {
+      apiGetRolePermissionFields({ roleId: this.roleId, menuId }).then(res => {
+        if (res.code === '208999') {
+          let tybeList = []
+          tybeList = res.resultMap.data.fieldPermissionList
+          this.nowTybeList = tybeList
+          this.nowMenuId = menuId
+          tybeList.forEach(item => {
+            let value = '000'
+            item.authority && (value = item.authority)
+            item.idStr = String(item.id)
+            this.$set(this.tybeValueObj, item.id, value)
+            if (item.fieldRequired) {
+              this.$set(this.rules, item.id, [{ required: true, validator: this.validateFn,  message: `请选择${item.tybeName}` }])
+            }
+          })
+          this.showTybeDialog = true
+        } else {
+          this.$message.error(res.message)
         }
       })
-      this.showTybeDialog = true
     },
     // 全选字段改变时
     handleSetAll () {
@@ -235,31 +325,55 @@ export default {
     handleSaveTybe () {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          this.result[this.nowMenuId].tybeList = this.tybeValueObj
-          this.showTybeDialog = false
-        } else {
-          console.log('error submit!!')
-          return false
+          let permissionFiledList = Object.keys(this.tybeValueObj).map(key => {
+            return {
+              id: key,
+              authority: this.tybeValueObj[key]
+            }
+          })
+          apiSetRolePermissionFields({
+            menuId: this.nowMenuId,
+            roleId: this.roleId,
+            permissionFiledList
+          }).then(res => {
+            if (res.code === '208999') {
+              this.showTybeDialog = false
+              this.$getSuccessMsg(this, res.message)
+            } else {
+              this.$message.error(res.message)
+            }
+          })
         }
       })
     },
-    /**
-     * type: 点击icon的类型
-     * item: 当前项数据
-     */
-    handleClassify (type, item) {
-      console.log(type, item)
-    },
-    /**
-     * type: 点击icon的类型
-     * item: 当前项数据
-     */
-    handleRole (type, item) {
-      console.log(type, item)
-    },
-    // 单击角色，更新表格数据
-    handleRoleClick (type, item) {
-      console.log(type, item)
+    // 保存角色权限
+    handleSaveRoleResource () {
+      let permissionList = Object.keys(this.resultChecked).map(menuId => {
+        let objectPermission = ''
+        let objectStr = this.resultChecked[menuId].objectPermission.join('')
+        if (objectStr === '1') {
+          objectPermission = '01'
+        } else if (objectStr === '2') {
+          objectPermission = '10'
+        } else if (objectStr === '12' || objectStr === '21') {
+          objectPermission = '11'
+        }
+        return {
+          menuId,
+          objectPermission,
+          buttonIdList: this.resultChecked[menuId].buttonIds
+        }
+      })
+      apiSetRolePermissionResource({
+        roleId: this.roleId,
+        permissionList
+      }).then(res => {
+        if (res.code === '208999') {
+          this.$getSuccessMsg(this, res.message)
+        } else {
+          this.$message.error(res.message)
+        }
+      })
     }
   }
 }

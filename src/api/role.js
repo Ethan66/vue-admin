@@ -38,3 +38,24 @@ export const apiGrantUserRole = (params) => {
 export const apiDelUserRole = (params) => {
   return postRequest(base + '/delUserRole', params)
 }
+
+// 角色权限
+// 获取角色所有资源权限
+export const apiGetAllPermissionResource = (params) => {
+  return postRequest(base + '/getAllPermissionResource', params)
+}
+
+// 设置角色权限
+export const apiSetRolePermissionResource = (params) => {
+  return postRequest(base + '/setRolePermissionResource', params)
+}
+
+// 获取角色字段
+export const apiGetRolePermissionFields = (params) => {
+  return postRequest(base + '/getRolePermissionFields', params)
+}
+
+// 设置角色字段
+export const apiSetRolePermissionFields = (params) => {
+  return postRequest(base + '/setRolePermissionFields', params)
+}
