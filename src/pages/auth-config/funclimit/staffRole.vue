@@ -3,6 +3,7 @@
     <div class="box-left">
       <h2>角色分类</h2>
       <classify
+        ref="classify"
         :classifyList="classifyList"
         :total="roleCount"
         @classify="handleClassify"
@@ -113,6 +114,11 @@ export default {
     }
   },
   methods: {
+    // 点击搜索按钮
+    handleSearch (val) {
+      this.handleGetTableData(this.getTableDataApi, val)
+      this.$refs.classify.handleReStatus()
+    },
     handleEditClass (item) {
       this.typeDialogTitle = '编辑类型'
       this.formItem = [
@@ -179,7 +185,7 @@ export default {
         { label: '角色名称', key: 'roleName', type: 'input' },
         { label: '显示排序', key: 'sortNo', type: 'input' },
         { label: '复制角色权限',
-          key: 'roleLimit',
+          key: 'cloneRoleIds',
           type: 'selectDouble',
           options: [] }
       ]

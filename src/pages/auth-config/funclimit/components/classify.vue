@@ -1,18 +1,33 @@
 <template>
   <div class="classify">
-    <h3 ref="all" class="active" @click.stop="handleRoleClick('all', '', $event)">全部用户({{total}})</h3>
+    <h3 ref="all" class="active">
+      <div
+        @click.stop="handleRoleClick('all', '', $event)"
+      >全部用户({{total}})</div>
+    </h3>
     <template v-for="item in classifyList">
-      <div class="title" :key=item.id @click.stop="handleRoleClick(item, 'classify', $event)">
-        {{item.roleName}}({{item.userCount}})
+      <div class="title" :key="`t${item.id}`">
+        <div class="content" @click.stop="handleRoleClick(item, 'classify', $event)">
+          {{item.roleName}}({{item.userCount}})
+        </div>
         <span class="showIcon">
-          <i class="el-icon-edit-outline" @click.stop="handleClass(item, 'edit')"></i>
-          <i class="el-icon-circle-plus-outline" @click.stop="handleClass(item, 'add')"></i>
-          <i class="el-icon-delete" @click.stop="handleClass(item, 'del')"></i>
+          <i
+            v-if="item.roleType === 2"
+            class="el-icon-edit-outline"
+            @click.stop="handleClass(item, 'edit')"></i>
+          <i
+            class="el-icon-circle-plus-outline"
+            @click.stop="handleClass(item, 'add')"></i>
+          <i v-if="item.roleType === 2" class="el-icon-delete" @click.stop="handleClass(item, 'del')"></i>
         </span>
       </div>
-      <div class="role" @click.stop="handleRoleClick(roleItem, 'role', $event)"
+      <div class="role"
         v-for="roleItem in item.childIdList" :key="roleItem.id">
-        {{roleItem.roleName}}({{roleItem.userCount}})
+        <div
+          class="content"
+          @click.stop="handleRoleClick(roleItem, 'role', $event)">
+          {{roleItem.roleName}}({{roleItem.userCount}})
+        </div>
         <span class="showIcon">
           <i class="el-icon-edit-outline" @click.stop="handleRole(roleItem, 'edit')"></i>
           <i class="el-icon-circle-plus-outline" @click.stop="handleRole(roleItem, 'add')"></i>
@@ -47,7 +62,7 @@ export default {
       this.$emit('role', type, item)
     },
     handleRoleClick (item, type, event) {
-      let el = event.target
+      let el = event.target.parentNode
       // 为当前单击项增加active样式
       if (!el.classList.contains('active')) {
         if (this.oldNode !== el && typeof this.oldNode === 'object') {
@@ -56,9 +71,16 @@ export default {
           this.$refs.all.classList.remove('active')
         }
         el.classList.add('active')
-        this.oldNode = event.target
+        this.oldNode = event.target.parentNode
       }
       this.$emit('roleClick', type, item)
+    },
+    handleReStatus () {
+      if (typeof this.oldNode === 'object') {
+        this.oldNode.classList.remove('active')
+      }
+      this.oldNode = ''
+      this.$refs.all.classList.add('active')
     }
   }
 }
@@ -79,9 +101,13 @@ export default {
       color: #999999;
       line-height: 40px;
       padding-left: 15px;
-      cursor: pointer;
+      .content {
+        display: inline-block;
+        cursor: pointer;
+      }
       i {
         padding-left: 7px;
+        cursor: pointer;
       }
     }
     .role {
@@ -90,10 +116,14 @@ export default {
       color: #333333;
       line-height: 40px;
       padding-left: 40px;
-      cursor: pointer;
+      .content {
+        display: inline-block;
+        cursor: pointer;
+      }
       i {
         padding-left: 7px;
         color: #999;
+        cursor: pointer;
       }
     }
     .active {

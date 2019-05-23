@@ -8,7 +8,8 @@ export default {
           { required: true, message: '请选择所属分类', trigger: 'blur' }
         ],
         roleName: [
-          { required: true, message: '请输入分类名称', trigger: 'blur' }
+          { required: true, message: '请输入分类名称', trigger: 'blur' },
+          { max: 20, message: '最多输入20个字符', trigger: 'blur' }
         ],
         sortNo: [
           { required: true, message: '请输入显示排序', trigger: 'blur' }

@@ -1,14 +1,15 @@
 <template>
   <div class="staff-dialog">
-    <el-dialog :visible.sync="staffDialogVisible" width="520px">
+    <el-dialog :visible.sync="staffDialogVisible" :before-close="handleClose" width="520px">
       <div slot="title" class="dialog-title">
-        <span>{{dialogTitle}}</span><i>角色配置,请勾选需要的角色</i>
+        <span>{{dialogTitle}}</span><i v-if="isEdit">角色配置,请勾选需要的角色</i>
       </div>
       <el-form
         :model="formData" :inline="true"
         label-position="left" ref="ruleForm" class="demo-ruleForm">
-        <el-form-item v-if="!isEdit" label="请选择员工" prop="name">
+        <el-form-item v-if="!isEdit" class="select-tree-item" label="请选择员工" prop="name">
           <tree-select
+            ref="treeSelect"
             :data="treeList" :defaultProps="defaultProps"
             multiple nodeKey="id" :checkedKeys="treeCheckedData"
             @popoverHide="popoverHide"></tree-select>
@@ -19,11 +20,11 @@
         </div>
         <el-form-item
           v-for="(item, index) in formItem" :key="`it${index}`"
-          :label="item.roleName" :inline="true" label-width="100px">
+          :label="item.roleName" :inline="true" label-width="100px" v-if="item.childIdList && item.childIdList.length > 0">
           <el-checkbox-group v-model="formData.roleIds">
             <el-checkbox
               v-for="option in item.childIdList" :key="`op${option.id}`"
-              :label="String(option.id)" :name="option.id">{{option.roleName}}</el-checkbox>
+              :label="String(option.id)" :name="String(option.id)">{{option.roleName}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
       </el-form>
@@ -106,9 +107,19 @@ export default {
           this.$parent[fn]()
         }
       }
+      if (!this.isEdit) {
+        this.$refs.treeSelect.clearSelectedNodes()
+      }
     },
     popoverHide (checkedIds, checkedData) {
       this.formData.userIds = checkedIds.join(',')
+    },
+    handleClose () {
+      this.staffDialogVisible = false
+      if (!this.isEdit) {
+        this.$refs.treeSelect.clearSelectedNodes()
+      }
+      this.$parent.staffDialogFormData = this.$parent.$options.data().staffDialogFormData
     }
   },
   components: {
@@ -169,11 +180,14 @@ export default {
               }
             }
           }
-          .tree-select {
-            .el-select {
-              width: 358px !important;
-              .el-input__inner {
-                height: 35px !important;
+          .select-tree-item {
+            .el-form-item__content {
+              width: 100%;
+              .tree-select {
+                width: 100%;
+                .el-select {
+                  width: 100%;
+                }
               }
             }
           }

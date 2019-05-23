@@ -11,10 +11,8 @@ axios.interceptors.request.use(config => {
   if (!ContentTypeArr.includes(config.headers['Content-Type'])) {
     if (config.method === 'post') {
       config.data = Object.assign({}, headParams, config.data, handleGetMenuCode())
-      // config.data = Object.assign({}, headParams, config.data)
     } else {
       config.params = Object.assign({}, headParams, config.params, handleGetMenuCode())
-      // config.params = Object.assign({}, headParams, config.params)
     }
   }
   return config

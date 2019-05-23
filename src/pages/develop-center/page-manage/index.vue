@@ -33,7 +33,6 @@
 <script>
 import { pageManage } from '@/createData/develop-center'
 import basicMethod from '@/config/mixins'
-import { apiQueryParentSysMenu, apiCreateSysMenu, apiEditSysMenu, apiDeleteSysMenu, apiListSysButton, apiEditeSysButton, apiCreateSysButton, apiDeleteSysButton } from '@/api/authority'
 import { apiQueryPageList, apiAddPage, apiUpdatePage } from '@/api/developCenter'
 
 export default {
@@ -54,9 +53,10 @@ export default {
     // 页面名称字段点击事件
     handleGoTybe (row) {
       this.$router.push({
-        path: '/main/develop-center/page-manage/tybemanage',
+        path: '/develop-center/page-manage/tybemanage',
         query: {
-          id: row.id
+          menuCode: row.menuCode,
+          pageCode: row.pageCode
         }
       })
     },

@@ -24,7 +24,7 @@ export default {
           this.tablePages.current = currentPage
           this.allData = res.resultMap.page.list
           this.tablePages.total = res.resultMap.page.total
-          this.tableData = this.allData
+          this.tableData = JSON.parse(JSON.stringify(this.allData))
           this.handleTableData && this.handleTableData(this.tableData || [])
           this.tableLoading = false
         }
@@ -36,7 +36,7 @@ export default {
     },
     // 接口：创建表格数据
     apiCreateData (createDataApi, obj, getTableDataApi) {
-      createDataApi(obj).then(res => {
+      return createDataApi(obj).then(res => {
         if (res.code === '208999') {
           this.$getSuccessMsg(this, res.message)
           getTableDataApi && this.handleGetTableData(getTableDataApi)
@@ -47,7 +47,7 @@ export default {
     },
     // 接口：编辑表格数据
     apiEditData (editDataApi, obj, getTableDataApi) {
-      editDataApi(obj).then(res => {
+      return editDataApi(obj).then(res => {
         if (res.code === '208999') {
           this.$getSuccessMsg(this, res.message)
           getTableDataApi && this.handleGetTableData(getTableDataApi)
@@ -58,7 +58,7 @@ export default {
     },
     // 接口：删除表格数据
     apiDeleteData (deleteDataApi, id, getTableDataApi) {
-      deleteDataApi({ id: id }).then(res => {
+      return deleteDataApi({ id: id }).then(res => {
         if (res.code === '208999') {
           this.$getSuccessMsg(this, '删除成功')
           getTableDataApi && this.handleGetTableData(getTableDataApi)
@@ -66,6 +66,10 @@ export default {
           this.$message.error(res.message)
         }
       })
+    },
+    // 自动打开表格树
+    handleOpenTableTree (tableData) {
+
     }
   }
 }

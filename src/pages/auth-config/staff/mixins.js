@@ -24,7 +24,7 @@ export const staff = {
       departmentName: 100,
       position: 100,
       reportToName: 80,
-      status: 80,
+      statusMsg: 100,
       roleName: 80,
       btn: 260
     }

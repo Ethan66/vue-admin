@@ -141,7 +141,14 @@ export const organization = {
       btn: 120
     }
     let configDialogItem = [
-      { parentMenuName: { label: '上级部门', type: 'select', options: [{ label: '一', value: 1 }, { label: '二', value: 2 }] } },
+      {
+        parentId: {
+          label: '上级部门',
+          type: 'selectTree',
+          defaultProps: { children: 'list', label: 'departmentName' },
+          dialogData: []
+        }
+      },
       'departmentName',
       {
         departmentType: { type: 'select', options: [{ label: '集团', value: 0 }, { label: '公司', value: 1 }, { label: '事业部', value: 2 }, { label: '部门', value: 3 }] }

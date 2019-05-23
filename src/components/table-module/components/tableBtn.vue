@@ -67,6 +67,7 @@ export default {
     i: Number,
     tableBtn: Array,
     isInlineEdit: Boolean,
+    inlineEditBtnClick: String,
     tableItem: Array,
     rowOrignData: Array,
     isMore: Boolean
@@ -116,6 +117,7 @@ export default {
       } else if (this.isInlineEdit) { // 行内编辑
         if (btnName === '编辑' && !row.editBtnName) { // 点击编辑按钮
           this.rowOrignData[index] = JSON.parse(JSON.stringify(row))
+          this.inlineEditBtnClick && this.parent[this.inlineEditBtnClick](row)
           row.editStatus = true
           row.editBtnName = '保存'
           row.editBtnColor = 'success'

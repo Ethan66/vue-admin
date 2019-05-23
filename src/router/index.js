@@ -6,7 +6,7 @@ import Layout from '@/common/layout/Layout'
 
 import globalRoutes from './globalRoutes'
 import configRoutes from './configRoutes'
-import { apiGetUserMenu } from '@/api/login'
+import { apiGetUserPermissionResource } from '@/api/login'
 import { menuRelation } from '@/config/utils'
 
 Vue.use(Router)
@@ -38,12 +38,16 @@ router.beforeEach((to, from, next) => {
     !toPath ? next() : next({ path: toPath })
   } else { // 否则访问路由接口
     // 后台请求菜单列表
-    apiGetUserMenu({}).then(res => {
+    let { department: departmentId } = JSON.parse(sessionStorage.getItem('userInfo'))
+    apiGetUserPermissionResource({ departmentId }).then(res => {
       if (res.code === '208999') {
-        const data = res.resultMap
-        data.menuList = menuRelation(data.menuList, 'id', 'menuParentId', 'sort')
-        handleAddMenuRoutes(data.menuList, configRoutes)
-        sessionStorage.setItem('menuList', JSON.stringify(data.menuList || '[]'))
+        const list = res.resultMap.data.list
+        let menuList = list.filter(item => item.menuLevel !== 3)
+        const btnList = list.filter(item => item.menuLevel === 3).map(item => ({ btnCode: item.code, btnName: item.menuName }))
+        sessionStorage.setItem('btnList', JSON.stringify(btnList || []))
+        menuList = menuRelation(menuList, 'id', 'menuParentId', 'menuLevel', 'sortNo')
+        handleAddMenuRoutes(menuList, configRoutes)
+        sessionStorage.setItem('menuList', JSON.stringify(menuList || '[]'))
         router.options.isAddDynamicMenuRoutes = true
         !toPath ? next({ ...to, replace: true }) : next({ path: toPath })
       } else {

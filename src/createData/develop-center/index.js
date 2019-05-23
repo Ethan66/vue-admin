@@ -30,7 +30,14 @@ export const menu = {
       btn: 120
     }
     let configDialogItem = [
-      { menuParentId: { label: '上级菜单', type: 'select', options: [{ label: '一', value: 1 }, { label: '二', value: 2 }] } },
+      {
+        menuParentId: {
+          label: '上级菜单',
+          type: 'selectTree',
+          defaultProps: { children: 'list', label: 'menuName' },
+          dialogData: []
+        }
+      },
       'menuName',
       { menuType: { type: 'select', options: [{ label: '目录', value: 0 }, { label: '菜单', value: 1 }, { label: '按钮', value: 2 }] } },
       'code', 'menuUrl', 'sortNo',
@@ -119,40 +126,19 @@ export const tybeManage = {
     return this.$setBtnConfig(JSON.parse(JSON.stringify(searchTableInitObj)), ['edit', 'cancel', 'delete'])
   },
   created () {
-    let configSearchItem = [
-      'menuName',
-      { status: { type: 'select', options: [{ label: '正常', value: 1 }, { label: '失效', value: 2 }] } }
-    ]
+    let configSearchItem = ['fieldName', 'fieldValue']
     let configTableItem = {
-      menuName: { width: 100, clickFn: 'handleGoPage', clsName: 'cm-btn-color', type: 'input', canEdit: 1 },
-      pageCode: 80,
-      creater: { width: 120, type: 'select', canEdit: 1, options: [{ label: '是', value: '1' }, { label: '否', value: '0' }] },
-      status: { width: 80, type: 'select', canEdit: 1, options: [{ label: '是', value: '1' }, { label: '否', value: '0' }] },
-      parentMenuName: { width: 100, type: 'select', canEdit: 1, options: [{ label: '是', value: '1' }, { label: '否', value: '0' }] },
-      menuDesc: { width: 80, type: 'select', canEdit: 1, options: [{ label: '是', value: '1' }, { label: '否', value: '0' }] },
-      menuUrl: { width: 200, type: 'select', canEdit: 1, options: [{ label: '是', value: '1' }, { label: '否', value: '0' }] },
+      fieldName: { clsName: 'cm-btn-color', width: 80 },
+      fieldValue: { width: 100, type: 'input', canEdit: 1 },
+      displayStatus: { width: 120, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
+      fieldRequired: { width: 100, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
+      setStatus: { width: 80, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
+      fieldSort: { width: 100, type: 'input', canEdit: 1 },
+      fixedStatus: { width: 80, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
       btn: 160
     }
-    let configDialogItem = [
-      { parentMenuName: { label: '上级菜单', type: 'select', options: [{ label: '一', value: 1 }, { label: '二', value: 2 }] } },
-      'menuName', 'menuLevel', 'menuCode', 'menuUrl', 'sort',
-      { status: { type: 'radio', options: [{ label: '正常', value: '1' }, { label: '停用', value: '0' }] } },
-      { menuDesc: { label: '描述', type: 'textarea', rows: 4 } }
-    ]
     this.searchItem = this.$setItem(tybeManageTest, configSearchItem, 'search')
     this.tableItem = this.$setItem(tybeManageTest, configTableItem, 'table')
-    this.dialogItem = this.$setItem(tybeManageTest, configDialogItem, 'dialog')
-    this.rules = {
-      id: [
-        { required: true, message: '请输入菜单id', trigger: 'blur' }
-      ],
-      menuName: [
-        { required: true, message: '请输入菜单名称', trigger: 'blur' }
-      ],
-      menuLevel: [
-        { required: true, message: '请选择菜单类型', trigger: 'change' }
-      ]
-    }
   }
 }
 
@@ -164,10 +150,10 @@ export const fastCreateType = {
   created () {
     let configTableItem = {
       selection: 50,
-      menuName: { width: 100, clickFn: 'handleGoPage', clsName: 'cm-btn-color', type: 'input', canEdit: 1 },
-      pageCode: 80,
-      creater: { width: 120, type: 'select', canEdit: 1, options: [{ label: '是', value: '1' }, { label: '否', value: '0' }] },
-      menuDesc: { width: 80, type: 'select', canEdit: 1, options: [{ label: '是', value: '1' }, { label: '否', value: '0' }] },
+      fieldName: { width: 100, clickFn: 'handleGoPage', clsName: 'cm-btn-color', type: 'input', canEdit: 1 },
+      fieldValue: { width: 80, type: 'input', canEdit: 1 },
+      displayStatus: { width: 120, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
+      setStatus: { width: 100, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
       btn: 160
     }
     this.tableItem = this.$setItem(fastCreateTybeTest, configTableItem, 'table')

@@ -13,7 +13,7 @@
                       @change="handleChange(item.changeFn, editData[item.key])"
                       :disabled="item.disabled || allRead"
             >
-              <el-option v-for="(child, k) in item.options" :label="child.label" :value="child.value" :key="k"></el-option>
+              <el-option v-for="(child, k) in item.options" :label="child.label" :value="child.value" :disabled="child.disabled" :key="k"></el-option>
             </el-select>
             <el-input
                       v-model="editData[item.key]"
@@ -46,6 +46,15 @@
             </el-date-picker>
             <my-switch v-model="editData[item.key]" v-if="item.type==='switch'">
             </my-switch>
+            <tree-select
+              v-if="item.type === 'selectTree'"
+              ref="selectTree"
+              clearable
+              :data="item.dialogData"
+              :defaultProps="item.defaultProps"
+              nodeKey="id" :checkedKeys="selectTreeCheckedValue"
+              @change="handleClearSelectTree"
+              @popoverHide="popoverHide"/>
           </el-form-item>
         </el-col>
       </el-row>
@@ -64,10 +73,11 @@
 
 <script>
 import mySwitch from '@/components/modules/switch'
+import treeSelect from '@/components/tree-select'
 import { setTimeout } from 'timers';
 export default {
   name: 'dialogModule',
-  components: { mySwitch },
+  components: { mySwitch, treeSelect },
   props: {
     dialogTitle: {
       type: String,
@@ -90,13 +100,21 @@ export default {
     doubleColumn: Boolean,
     showDialogForm: Boolean,
     dialogBtn: Array,
-    allRead: Boolean
+    allRead: Boolean,
+    selectTreeCheckedValue: Array,
+    selectTreekey: String
   },
   data () {
     return {
       chineseTybe: 0,
       showDialogForm1: false,
-      oldEditData: null
+      oldEditData: null,
+      selectTreeProps: {// 配置项（必选）
+        value: 'id',
+        label: 'departmentName',
+        children: 'childIdList'
+        // disabled:true
+      }
     }
   },
   watch: {
@@ -112,6 +130,10 @@ export default {
         this.$nextTick(() => {
           this.$refs.editData.resetFields()
         })
+        let selectTree = this.$refs.selectTree
+        if (selectTree && selectTree.length > 0) {
+          this.$refs.selectTree[0].clearSelectedNode()
+        }
         this.$emit('update:showDialogForm', false)
       }
     }
@@ -161,6 +183,14 @@ export default {
           }
         }
       })
+    },
+    handleClearSelectTree () {
+      this.$emit('handleClearSelectTree')
+    },
+    // 拿到选择树的值
+    popoverHide (checkedIds, checkedData) {
+      this.editData[this.selectTreekey] = checkedIds
+      this.$emit('handleSelectTreeValue', checkedData)
     },
     // 点击按钮事件
     handleFn (type, clickFn = '') {
