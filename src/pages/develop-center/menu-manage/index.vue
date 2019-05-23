@@ -8,11 +8,15 @@
     <table-module
       ref="table"
       :table-data.sync="tableData"
+      :table-tree-open-num.sync="tableTreeOpenNum"
       :table-item="tableItem"
       :table-btn="tableBtn">
       <div class="btn-content" slot="btn">
         <el-button @click="handleAdd">新增菜单</el-button>
         <el-button @click="$router.push({ path: '/main/develop-center/menu-manage/newpage' })">跳转页面</el-button>
+        <el-button @click="handleBatchCreate('catalogue')">批量新建目录</el-button>
+        <el-button @click="handleBatchCreate('menu')">批量新建菜单</el-button>
+        <el-button @click="handleBatchCreate('btn')">批量新建按钮</el-button>
       </div>
     </table-module>
     <dialog-module
@@ -26,6 +30,8 @@
       :rules="rules"
       :select-tree-checked-value="selectTreeCheckedValue"
       selectTreekey="menuParentId"
+      @handleSelectTreeValue="handleSelectTreeValue"
+      @handleClearSelectTree="handleClearSelectTree"
     />
     <dialog-detail
       title="详情"
@@ -40,7 +46,8 @@
 import { menu } from '@/createData/develop-center'
 import basicMethod from '@/config/mixins'
 import { menuRelation } from '@/config/utils'
-import { apiListConsoleMenu, apiEditeConsoleMenu, apiCreateConsoleMenu, apiDeleteConsoleMenu, apiQueryParentConsoleMenu } from '@/api/developCenter'
+import batchConfig from '@/configureData/menu'
+import { apiListConsoleMenu, apiEditeConsoleMenu, apiCreateConsoleMenu, apiDeleteConsoleMenu } from '@/api/developCenter'
 
 export default {
   mixins: [basicMethod, menu],
@@ -74,6 +81,7 @@ export default {
     // 点击新增按钮
     handleAdd () {
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
+      this.handleClearSelectTree()
       this.handleGetAllParentTree()
       this.isEdit = 0
       this.dialogTitle = '新增菜单'
@@ -82,11 +90,12 @@ export default {
     // 点击表格编辑按钮
     handleEditData (row) {
       this.editData = JSON.parse(JSON.stringify(row))
+      this.handleClearSelectTree()
+      this.handleGetAllParentTree()
+      this.selectTreeCheckedValue = [this.editData.menuParentId]
       this.editData.status = this.editData.statusStash
       this.editData.menuType = this.editData.menuTypeStash
       this.editData.menuLevel = this.editData.menuLevel[0]
-      this.handleGetAllParentTree()
-      this.selectTreeCheckedValue = [this.editData.menuParentId]
       this.isEdit = 1
       this.dialogTitle = '编辑菜单'
       this.showDialogForm = true
@@ -110,6 +119,7 @@ export default {
     handleCreateNextLevelMenu (row) {
       if (Number(row.menuTypeStash) === 2) {
         this.$message.error('三级不能创建下级菜单')
+        return false
       }
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
       this.dialogItem[0].type = 'input'
@@ -122,6 +132,28 @@ export default {
       this.isEdit = 0
       this.dialogTitle = '新建菜单'
       this.showDialogForm = true
+    },
+    // 选择菜单树的值后
+    handleSelectTreeValue (row) {
+      if (!row) return false
+      this.editData.menuType = Number(row.menuType) + 1
+      let list = this.dialogItem[2].options.map(item => {
+        if (item.value <= row.menuType) {
+          item.disabled = true
+        } else {
+          item.disabled = false
+        }
+        return item
+      })
+      this.$set(this.dialogItem[2], 'options', list)
+    },
+    // 清空菜单树的值
+    handleClearSelectTree () {
+      let list = this.dialogItem[2].options.map(item => {
+        item.disabled = false
+        return item
+      })
+      this.$set(this.dialogItem[2], 'options', list)
     },
     // 点击表格详情按钮
     handleShowDetailDialog (row) {
@@ -179,13 +211,35 @@ export default {
       })
       this.tableData = menuRelation(tableData, 'id', 'menuParentId', 'menuLevelStash', 'sortNo')
     },
-    // 获取上级菜单
-    handleGetParentMenu (menuLevel) {
-      apiQueryParentConsoleMenu({ menuLevel }).then(res => {
-        if (res.code === '208999') {
-          
-        }
-      })
+    // 批量新建
+    handleBatchCreate (type) {
+      const typeObj = { catalogue: 0, menu: 1, btn: 2 }
+      let data = batchConfig[type]
+      if (type === 'catalogue') {
+        data.forEach(item => {
+          item.status = 0
+          item.menuType = typeObj[type]
+          item.menuLevel = typeObj[type] + 1
+          this.apiCreateData(apiCreateConsoleMenu, item)
+        })
+      } else {
+        let menuParentList = {}
+        data.forEach(item => {
+          if (!menuParentList[item.menuParentName]) {
+            menuParentList[item.menuParentName] = ''
+          }
+        })
+        Object.keys(menuParentList).forEach(name => {
+          menuParentList[name] = this.allData.find(item => item.menuName === name).id
+        })
+        data.forEach(item => {
+          item.menuParentId = menuParentList[item.menuParentName]
+          item.status = 0
+          item.menuType = typeObj[type]
+          item.menuLevel = typeObj[type] + 1
+          this.apiCreateData(apiCreateConsoleMenu, item)
+        })
+      }
     }
   }
 }
