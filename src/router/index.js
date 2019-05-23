@@ -45,7 +45,7 @@ router.beforeEach((to, from, next) => {
         let menuList = list.filter(item => item.menuLevel !== 3)
         const btnList = list.filter(item => item.menuLevel === 3).map(item => ({ btnCode: item.code, btnName: item.menuName }))
         sessionStorage.setItem('btnList', JSON.stringify(btnList || []))
-        menuList = menuRelation(menuList, 'id', 'menuParentId', 'menuLevel', 'sort')
+        menuList = menuRelation(menuList, 'id', 'menuParentId', 'menuLevel', 'sortNo')
         handleAddMenuRoutes(menuList, configRoutes)
         sessionStorage.setItem('menuList', JSON.stringify(menuList || '[]'))
         router.options.isAddDynamicMenuRoutes = true
