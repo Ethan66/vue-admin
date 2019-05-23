@@ -42,8 +42,8 @@ export const ipControl = {
   },
   created () {
     let configSearchItem = [
-      'id',
-      { buttonMenuName:
+      'addressIp',
+      { isDelete:
         { type: 'select',
           options: [{ label: '成功', value: '1' }, { label: '失败', value: '2' }]
         }
@@ -51,27 +51,32 @@ export const ipControl = {
     ]
     let configTableItem = {
       selection: 50,
-      id: 80,
-      buttonName: 100,
-      buttonMenuName: { clsName: 'buttonMenuName', width: 100 },
-      buttonCode: 100,
-      gmtCreate: 200,
-      gmtModified: 80,
-      isDelete: 80,
+      addressIp: 80,
+      modifier: 100,
+      isDelete: { clsName: 'isDelete', width: 100 },
+      remark: 100,
+      gmtCreate: 160,
       btn: 120
     }
-    let configDialogItem = ['id', 'buttonCode', 'gmtCreate']
+    let configDialogItem = [
+      'addressIp',
+      { isDelete:
+        { type: 'radio',
+          options: [{ label: '成功', value: '1' }, { label: '失败', value: '2' }]
+        }
+      }
+    ]
     this.searchItem = this.$setItem(ipTableItem, configSearchItem, 'search')
     this.tableItem = this.$setItem(ipTableItem, configTableItem, 'table')
     this.dialogItem = this.$setItem(ipTableItem, configDialogItem, 'dialog')
     this.rules = {
-      id: [
+      addressIp: [
         { required: true, message: '请输入IP地址', trigger: 'blur' }
       ],
-      buttonCode: [
+      isDelete: [
         { required: true, message: '请选择状态', trigger: 'change' }
       ],
-      gmtCreate: [
+      remark: [
         { required: true, message: '请输入描述内容', trigger: 'change' }
       ]
     }
@@ -136,7 +141,14 @@ export const organization = {
       btn: 120
     }
     let configDialogItem = [
-      { parentMenuName: { label: '上级部门', type: 'select', options: [{ label: '一', value: 1 }, { label: '二', value: 2 }] } },
+      {
+        parentId: {
+          label: '上级部门',
+          type: 'selectTree',
+          defaultProps: { children: 'list', label: 'departmentName' },
+          dialogData: []
+        }
+      },
       'departmentName',
       {
         departmentType: { type: 'select', options: [{ label: '集团', value: 0 }, { label: '公司', value: 1 }, { label: '事业部', value: 2 }, { label: '部门', value: 3 }] }

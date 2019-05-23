@@ -426,6 +426,7 @@ export default {
       flex: 1;
       max-width: calc(100% - 210px);
       height: calc(100vh - 144px);
+      overflow: scroll;
       background: #fff;
       p.cm-btn-color{
         margin: 0;

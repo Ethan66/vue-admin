@@ -5,6 +5,7 @@
       :search-item="searchItem"
       :search-values="searchValues"
       :search-default-obj="defaultSearchObj"
+      :searchDefaultObj="searchDefaultObj"
       @handleSearch="handleSearch"
     />
     <table-module
@@ -38,12 +39,12 @@
 <script>
 import { ipControl } from '@/createData/auth-config/mixins'
 import basicMethod from '@/config/mixins'
-import { apiDeleteSysButton, apiEditeSysButton, apiListSysButton, apiCreateSysButton } from '@/api/authority'
+import { apiListSysIpWhite, apiEditIpWhite, apiAddIpWhite } from '@/api/visitControl'
 
 export default {
   mixins: [basicMethod, ipControl],
   created () {
-    this.handleGetTableData(apiListSysButton)
+    this.handleGetTableData(apiListSysIpWhite)
   },
   data () {
     return {
@@ -56,9 +57,9 @@ export default {
     handleAdd () {
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
       this.dialogItem = [
-        { key: 'id', type: 'input', maxlength: '12', label: 'IP地址'},
-        { key: 'buttonCode', label: '状态', type: 'radio', options: [{ label: '成功', key: '1' }, { label: '失败', key: '2' }] },
-        { key: 'gmtCreate', label: '描述', type: 'textarea', maxlength: '100', placeholder: '100字以内' }
+        { key: 'addressIp', type: 'input', maxlength: '12', label: 'IP地址', show: true},
+        { key: 'isDelete', label: '状态', type: 'radio', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }], show: true},
+        { key: 'remark', label: '描述', type: 'textarea', maxlength: '100', placeholder: '100字以内', show: true}
       ]
       this.isEdit = 0
       this.dialogTitle = '添加IP'
@@ -68,10 +69,10 @@ export default {
     handleEditData (row) {
       this.editData = JSON.parse(JSON.stringify(row))
       this.dialogItem = [
-        { key: 'id', type: 'docs', label: 'IP地址'},
-        { key: 'gmtCreate', label: '描述', type: 'textarea', maxlength: '100', placeholder: '100字以内' },
-        { key: 'gmtCreate', label: '创建人', type: 'docs'},
-        { key: 'gmtCreate', label: '创建时间', type: 'docs'}
+        { key: 'addressIp', type: 'docs', label: 'IP地址', show: true},
+        { key: 'remark', label: '描述', type: 'textarea', maxlength: '100', placeholder: '100字以内', show: true },
+        { key: 'modifier', label: '创建人', type: 'docs', show: true},
+        { key: 'gmtCreate', label: '创建时间', type: 'docs', show: true}
       ]
       this.isEdit = 1
       this.dialogTitle = '编辑IP'
@@ -121,9 +122,9 @@ export default {
     handleSubmit () {
       this.$refs.dialog.showDialogForm1 = false
       if (this.isEdit === 0) {
-        this.apiCreateData(apiCreateSysButton, this.editData, apiListSysButton)
+        this.apiCreateData(apiAddIpWhite, this.editData, apiListSysIpWhite)
       } else {
-        this.apiEditData(apiEditeSysButton, this.editData, apiListSysButton)
+        this.apiEditData(apiEditIpWhite, this.editData, apiListSysIpWhite)
       }
     },
     handleSendHead (val) {
@@ -132,7 +133,10 @@ export default {
     // 处理表格数据
     handleTableData (tableData) {
       tableData.forEach(item => {
-        item.isDelete = item.isDelete === '0' ? this.tableBtn[1].show = false : this.tableBtn[2].show = false
+        console.log(item)
+        debugger
+        item.isDelete = item.isDelete === '0' ? item.showBtn[1].show = false : item.showBtn[2].show = false
+        item.isDelete = item.isDelete === '0' ? '正常' : '停用'
       })
     }
   }
