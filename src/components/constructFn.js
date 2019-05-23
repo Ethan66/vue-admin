@@ -40,7 +40,7 @@ SetItem.prototype.filterField = function (config) {
           this.configObj[key] = item[key]
           return key
         } else {
-          let obj = { label: '', key, canSet: 1, sort: i }
+          let obj = { label: '', key, setStatus: 1, fieldSort: i }
           addDataArr.push(Object.assign({}, obj, item[key]))
         }
       }

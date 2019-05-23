@@ -72,15 +72,15 @@ export const setItem = (arr, type = 'search') => {
 export const setItem = (dataArr, config, type) => {
   let data = new SetItem(dataArr, type)
   if (type === 'table') {
-    data.initTableConfig(config, 'hide', 'sort', 'fix')
-    data.deleteKey('canSet')
+    data.initTableConfig(config, 'displayStatus', 'fieldSort', 'fix')
+    data.deleteKey('setStatus')
   } else {
     data.filterField(config)
     data.setPlaceholder()
     if (type === 'search') {
-      data.deleteKey('canSet', 'sort', 'fix', 'disabled', 'hide')
+      data.deleteKey('setStatus', 'fieldSort', 'fix', 'disabled', 'displayStatus')
     } else if (type === 'dialog') {
-      data.deleteKey('sort', 'fix', 'disabled', 'hide')
+      data.deleteKey('fieldSort', 'fix', 'disabled', 'displayStatus')
     }
   }
   data.setKey()

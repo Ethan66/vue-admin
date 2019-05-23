@@ -129,8 +129,8 @@ export const tybeManage = {
     let configSearchItem = ['fieldName', 'fieldValue']
     let configTableItem = {
       selection: 50,
-      fieldName: { clsName: 'cm-btn-color', width: 80 },
-      fieldValue: { width: 90, type: 'input', canEdit: 1 },
+      fieldValue: { clsName: 'cm-btn-color', width: 80 },
+      fieldName: { width: 90, type: 'input', canEdit: 1 },
       displayStatus: { width: 90, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
       fieldRequired: { width: 100, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
       setStatus: { width: 140, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
@@ -151,8 +151,8 @@ export const fastCreateType = {
   created () {
     let configTableItem = {
       selection: 50,
-      fieldName: { width: 100, clickFn: 'handleGoPage', clsName: 'cm-btn-color', type: 'input', canEdit: 1 },
-      fieldValue: { width: 80, type: 'input', canEdit: 1 },
+      fieldValue: { width: 80, clickFn: 'handleGoPage', clsName: 'cm-btn-color', type: 'input', canEdit: 1 },
+      fieldName: { width: 100, type: 'input', canEdit: 1 },
       fieldRequired: { width: 80, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
       displayStatus: { width: 80, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
       setStatus: { width: 120, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
