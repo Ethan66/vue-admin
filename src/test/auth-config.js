@@ -31,18 +31,18 @@ export const staffTest = [
 ]
 
 export const ipTableItem = [
-  { label: 'IP地址', key: 'id', hide: 0, canSet: 1, sort: 1, fix: 1 },
-  { label: '创建人', key: 'buttonName', hide: 0, canSet: 1, sort: 2, fix: 0 },
-  { label: '状态', key: 'buttonMenuName', hide: 0, canSet: 1, sort: 3, fix: 0 },
-  { label: '描述', key: 'buttonCode', hide: 0, canSet: 4, sort: 5, fix: 0 },
+  { label: 'IP地址', key: 'addressIp', hide: 0, canSet: 1, sort: 1, fix: 1 },
+  { label: '创建人', key: 'modifier', hide: 0, canSet: 1, sort: 2, fix: 0 },
+  { label: '状态', key: 'isDelete', hide: 0, canSet: 1, sort: 3, fix: 0 },
+  { label: '描述', key: 'remark', hide: 0, canSet: 4, sort: 5, fix: 0 },
   { label: '创建时间', key: 'gmtCreate', hide: 0, canSet: 1, sort: 5, fix: 0 }
 ]
 
 export const accountTableItem = [
-  { label: 'IP地址', key: 'id', hide: 0, canSet: 1, sort: 1, fix: 1 },
-  { label: '创建人', key: 'buttonName', hide: 0, canSet: 1, sort: 2, fix: 0 },
-  { label: '状态', key: 'buttonMenuName', hide: 0, canSet: 1, sort: 3, fix: 0 },
-  { label: '描述', key: 'buttonCode', hide: 0, canSet: 4, sort: 5, fix: 0 },
+  { label: 'IP地址', key: 'addressIp', hide: 0, canSet: 1, sort: 1, fix: 1 },
+  { label: '创建人', key: 'modifier', hide: 0, canSet: 1, sort: 2, fix: 0 },
+  { label: '状态', key: 'isDelete', hide: 0, canSet: 1, sort: 3, fix: 0 },
+  { label: '描述', key: 'remark', hide: 0, canSet: 4, sort: 5, fix: 0 },
   { label: '创建时间', key: 'gmtCreate', hide: 0, canSet: 1, sort: 5, fix: 0 }
 ]
 

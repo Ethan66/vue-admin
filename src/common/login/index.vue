@@ -156,11 +156,12 @@ export default {
           params.operatingSystem = this.systemObj.system
           params.terminal = this.systemObj.browser
           apiUserLogin(params).then(res => {
-            this.$router.push('/main/log/error-log/index')
+            this.$router.push('/auth-config/organization/index')
+            debugger
             if (res.code === '208999') {
               res.resultMap.data && delete res.resultMap.data.errorNum
               sessionStorage.setItem('userInfo', JSON.stringify(res.resultMap.data))
-              this.$router.push('/main/log/error-log/index')
+              this.$router.push('/main/log/login-log/index')
               // this.$router.push('/')
             } else {
               if (!this.handleSpeciaCode(res.code)) {
