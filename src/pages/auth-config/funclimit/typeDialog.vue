@@ -74,6 +74,7 @@ export default {
   watch: {
     typeVisible (val) {
       if (val === false) {
+        this.$refs['form'].resetFields()
         this.$emit('update:dialogVisible', false)
       }
     },

@@ -221,7 +221,6 @@ export default {
     handleEditData (row) {
       this.handleApiQueryLowerLevelList()
       this.staffFormData = JSON.parse(JSON.stringify(row))
-      console.log(this.staffFormData.departmentId)
       this.defaultCheckedKeys = [this.staffFormData.departmentId]
       this.staffFormData.password = '******'
       this.staffFormData.reportTo = Number(this.staffFormData.reportTo)

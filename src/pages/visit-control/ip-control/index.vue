@@ -30,7 +30,8 @@
       :dialogBtn="dialogBtn"
       :rules="rules"
     />
-    <dialog-confirm :confirmContent="confirmContent" :showDialogForm.sync="confrimDiaShow" :confirmFn="confirmFn"/>
+    <dialog-confirm
+      :confirmContent="confirmContent" :showDialogForm.sync="confrimDiaShow" :confirmFn="confirmFn"/>
   </div>
 </template>
 

@@ -25,7 +25,7 @@ export const methods = {
       Object.assign(params, this.staffFormData)
       apiCreateConsoleUser(params).then(res => {
         if (res.code === '208999') {
-
+          this.handleGetTableData(apiListConsoleUser)
         } else {
           this.$message.error(res.message)
         }
@@ -44,7 +44,7 @@ export const methods = {
       }
       apiEditConsoleUser(params).then(res => {
         if (res.code === '208999') {
-
+          this.handleGetTableData(apiListConsoleUser)
         } else {
           this.$message.error(res.message)
         }
@@ -91,6 +91,7 @@ export const methods = {
       apiEditConsoleUserStatus(params).then(res => {
         if (res.code === '208999') {
           this.$message.success(res.message)
+          this.handleGetTableData(apiListConsoleUser)
         } else {
           this.$message.error(res.message)
         }

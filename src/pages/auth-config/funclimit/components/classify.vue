@@ -106,7 +106,7 @@ export default {
         cursor: pointer;
       }
       i {
-        padding-left: 7px;
+        margin-left: 7px;
         cursor: pointer;
       }
     }
@@ -132,6 +132,9 @@ export default {
     }
     .showIcon {
       display: none;
+      i:hover {
+        color: #4162DB;
+      }
     }
     .title:hover .showIcon{
       display: inline-block;

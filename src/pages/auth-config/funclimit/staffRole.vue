@@ -55,6 +55,8 @@
       :dialogTitle="typeDialogTitle"
       :dialogBtn="typeDialogBtn"
     />
+    <dialog-confirm
+      :confirmContent="confirmContent" :showDialogForm.sync="confrimDiaShow" :confirmFn="confirmFn"/>
   </div>
 </template>
 
@@ -72,8 +74,12 @@ export default {
   mixins: [methods, basicMethod, staffRole, dialogConfig],
   created () {
     this.handleGetTableData(apiPageQueryUserRole)
+    // 获取角色分类树
     this.handleApiGetAllRoleRequestTree()
+    // 获取部门树
     this.handleApiQueryDepartmentTree()
+    // 查询系统用户列表
+    this.handleApiListConsoleUser()
   },
   data () {
     return {
@@ -110,7 +116,19 @@ export default {
         { label: '确 认', type: 'edit', color: 'primary', clickfn: 'handleSubmit' }
       ],
       treeList: [],
-      treeCheckedData: []
+      treeCheckedData: [],
+      globleItem: [
+        { label: '所属分类', key: 'resourceParentId', type: 'select', options: [] },
+        { label: '分类名称', key: 'roleName', type: 'input' },
+        { label: '显示排序', key: 'sortNo', type: 'input' },
+        { label: '创建人', key: 'creater', type: 'text' },
+        { label: '创建时间', key: 'gmtCreate', type: 'text' },
+        { label: '复制角色权限', key: 'cloneRoleIds', type: 'selectDouble', options: [] }
+      ],
+      confirmContent: '',
+      confrimDiaShow: false,
+      confirmFn: '',
+      delId: ''
     }
   },
   methods: {
@@ -119,34 +137,15 @@ export default {
       this.handleGetTableData(this.getTableDataApi, val)
       this.$refs.classify.handleReStatus()
     },
-    handleEditClass (item) {
-      this.typeDialogTitle = '编辑类型'
-      this.formItem = [
-        { label: '分类名称', key: 'roleName', type: 'input' },
-        { label: '显示排序', key: 'sortNo', type: 'input' },
-        { label: '创建人', type: 'text', key: 'creater' },
-        { label: '创建时间', type: 'text', key: 'gmtCreate' }
-      ]
-      this.isEdit = true
-      this.formData = JSON.parse(JSON.stringify(item))
-      this.typeDialogVisible = true
+    handleEditClass (row) {
+      this.handleInitTypeDialog('编辑类型', ['roleName', 'sortNo', 'creater', 'gmtCreate'], true, row)
     },
     handleAddClass (row) {
-      this.typeDialogTitle = '新建类型'
-      this.formItem = [
-        { label: '分类名称', key: 'roleName', type: 'input' },
-        { label: '显示排序', key: 'sortNo', type: 'input' }
-      ]
-      this.isEdit = false
-      this.typeDialogVisible = true
+      this.handleInitTypeDialog('新建类型', ['roleName', 'sortNo'], false)
     },
     handleDelClass (row) {
-      this.$confirm('确认删除该分类吗？删除后该分类下所有角色将自动归到未分类角色中。', '温馨提醒', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消'
-      }).then(() => {
-        this.handleApiDelConsoleRole(row.id)
-      })
+      this.delId = row.id
+      this.handleConfirmInfo('确认删除该分类吗？删除后该分类下所有角色将自动归到未分类角色中。', 'handleApiDelConsoleRole')
     },
     /**
      * type: 点击icon的类型
@@ -163,43 +162,17 @@ export default {
       }
     },
     handleEditRole (row) {
-      this.typeDialogTitle = '编辑角色'
-      this.formItem = [
-        { label: '所属分类', key: 'resourceParentId', type: 'select', options: [] },
-        { label: '角色名称', key: 'roleName', type: 'input' },
-        { label: '显示排序', key: 'sortNo', type: 'input' },
-        { label: '创建人', type: 'text', key: 'creater' },
-        { label: '创建时间', type: 'text', key: 'gmtCreate' }
-      ]
-      this.formData = JSON.parse(JSON.stringify(row))
+      this.handleInitTypeDialog('编辑角色', ['resourceParentId', 'roleName', 'sortNo', 'creater', 'gmtCreate'], true, row)
       this.handleGetClassify()
-      this.typeDialogVisible = true
     },
     handleAddRole (row) {
-      this.typeDialogTitle = '新建角色'
-      this.formItem = [
-        { label: '所属分类',
-          key: 'resourceParentId',
-          type: 'select',
-          options: [] },
-        { label: '角色名称', key: 'roleName', type: 'input' },
-        { label: '显示排序', key: 'sortNo', type: 'input' },
-        { label: '复制角色权限',
-          key: 'cloneRoleIds',
-          type: 'selectDouble',
-          options: [] }
-      ]
+      this.handleInitTypeDialog('新建角色', ['resourceParentId', 'roleName', 'sortNo', 'cloneRoleIds'], false)
       this.handleGetClassify()
       this.handleApiGetAllRoleRequestTree()
-      this.typeDialogVisible = true
     },
     handleDelRole (row) {
-      this.$confirm('确认删除该角色？删除角色后，本角色下员工所具有的权限会受到影响。', '温馨提醒', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消'
-      }).then(() => {
-        this.handleApiDelConsoleRole(row.id)
-      })
+      this.delId = row.id
+      this.handleConfirmInfo('确认删除该角色？删除角色后，本角色下员工所具有的权限会受到影响。', 'handleApiDelConsoleRole')
     },
     /**
      * type: 点击icon的类型
@@ -218,7 +191,7 @@ export default {
     /**
      * 单击角色，更新表格数据
      * type: role: 单击的角色； all: 单击的全部用户； 否则就是单击的分类
-     * item: 
+     * item:
      */
     handleRoleClick (type, item) {
       if (type === 'role') {
@@ -260,15 +233,14 @@ export default {
       console.log(val)
     },
     handleRefuse () {
-      this.staffDialogFormData = this.$options.data().staffDialogFormData
-      this.$refs.staffDialog.staffDialogVisible = false
+      this.resetFormData('staffDialogFormData')
+      this.handleDialogClose('staffDialog', 'staffDialogVisible')
     },
     handleSubmit () {
       this.handleApiGrantUserRole()
-      this.$refs.staffDialog.staffDialogVisible = false
     },
     handleTypeDialogRefuse () {
-      this.$refs.typeDialog.typeVisible = false
+      this.handleDialogClose('typeDialog', 'typeVisible')
     },
     handleTypeDialogSubmit () {
       if (this.isEdit) {
@@ -278,7 +250,6 @@ export default {
         // 添加角色或角色分类，根据isClassify判断
         this.handleApiCreateConsoleRole()
       }
-      this.$refs.typeDialog.typeVisible = false
     },
     // 获取表格数据
     handleGetTableData (api, val, currentPage = 1) {
@@ -291,14 +262,24 @@ export default {
       api(params).then(res => {
         if (res.code === '208999') {
           this.tablePages.current = currentPage
-          this.allData = res.resultMap.list
-          this.tablePages.total = res.resultMap.total
+          if (res.resultMap) {
+            this.allData = res.resultMap.list
+            this.tablePages.total = res.resultMap.total
+          } else {
+            this.allData = []
+            this.tablePages.total = 0
+          }
           this.tableData = this.allData
           this.handleTableData && this.handleTableData(this.tableData || [])
           this.tableLoading = false
         }
       })
-    }
+    },
+    handleConfirmInfo (txt, fnName) {
+      this.confirmContent = txt
+      this.confirmFn = fnName
+      this.confrimDiaShow = true
+    },
   },
   components: {
     staffDialog,
