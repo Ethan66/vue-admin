@@ -18,9 +18,12 @@
       <table-module
         ref="table"
         isInlineEdit
+        needSwitch
+        inlineEditBtnClick="inlineEditBtnClick"
         :table-data.sync="tableData"
         :table-item="tableItem"
         :table-btn="tableBtn"
+        @inlineSwitchTableData="inlineSwitchTableData"
         maxHeight="200"
       />
     </template>
@@ -48,7 +51,7 @@
 <script>
 import { fastCreateType } from '@/createData/develop-center'
 import basicMethod from '@/config/mixins'
-import { apiPageFiledQueryList, apiAddPageField, apiPageFieldRapidGeneration } from '@/api/developCenter'
+import { apiPageFiledQueryList, apiAddPageField, apiPageFieldRapidGeneration, apiAddBatchPageField } from '@/api/developCenter'
 
 
 export default {
@@ -64,7 +67,7 @@ export default {
       step: 0,
       form: { name: '' },
       showDialog: false,
-      handTableData: [{ fieldName: '', fieldValue: '', displayStatus: 1, setStatus: 1, fieldSort: 0, editStatus: true }]
+      handTableData: [{ fieldName: '', fieldValue: '', fieldRequired: 1, displayStatus: 0, setStatus: 1, fieldSort: 0, editStatus: true }]
     }
   },
   watch: {
@@ -74,7 +77,7 @@ export default {
         this.tableItem[0].show = true
         this.tableItem[1].type = 'cell'
         this.tableItem[5].show = true
-        this.tableItem[6] && this.tableItem.pop()
+        // this.tableItem[6] && this.tableItem.pop()
         if (this.type === 'handCreate') {
           this.tableItem[0].show = false
           this.tableItem[1].type = 'input'
@@ -106,17 +109,44 @@ export default {
         this.$refs.form.validate((valid) => {
           if (valid) {
             this.step++
-            this.handleGetTableData(apiPageFiledQueryList, { menuCode: '', pageCode: '' })
+            this.handleGetTableData(apiPageFieldRapidGeneration, { tableName: this.form.name })
           }
         })
       } else {
         this.step++
       }
     },
+    inlineEditBtnClick (row) {
+      item.displayStatus = item.displayStatusStash
+      item.setStatus = item.setStatusStash
+      item.fieldRequired = item.fieldRequiredStash
+    },
+    inlineSwitchTableData (index, row) {
+      row.displayStatus = row.displayStatus ? '是' : '否'
+      row.setStatus = row.setStatus ? '是' : '否'
+      row.fieldRequired = row.fieldRequired ? '是' : '否'
+      this.$set(this.tableData, index, row)
+    },
     handleSubmit () {
       let pageCode = this.pageCode
       let menuCode = this.menuCode
       if (this.type === 'fastCreate') {
+        const list = JSON.parse(JSON.stringify(this.tableData)).map(item => {
+          item.displayStatus = item.displayStatus === '是' ? 1 : 0
+          item.setStatus = item.setStatus === '是' ? 1 : 0
+          item.fieldRequired = item.fieldRequired === '是' ? 1 : 0
+          item.menuCode = menuCode
+          item.pageCode = pageCode
+          return item
+        })
+        apiAddBatchPageField({ list }).then(res => {
+          if (res.code === '208999') {
+            this.step++
+            this.$getSuccessMsg(this, res.message)
+          } else {
+            this.$message.error(res.message)
+          }
+        })
       } else {
         apiAddPageField(Object.assign({}, this.tableData[0], { pageCode, menuCode })).then(res => {
           if (res.code === '208999') {
@@ -136,6 +166,38 @@ export default {
         this.tableData = JSON.parse(JSON.stringify(this.handTableData))
         this.step = 1
       }
+    },
+    // 获取表格数据
+    handleGetTableData (api, val, currentPage = 1) {
+      this.getTableDataApi = api
+      this.tableLoading = true
+      let params = {}
+      Object.assign(params, val)
+      api(params).then(res => {
+        if (res.code === '208999') {
+          this.tablePages.current = currentPage
+          this.allData = res.resultMap.pageFields.list
+          this.tableData = JSON.parse(JSON.stringify(this.allData))
+          this.handleTableData && this.handleTableData(this.tableData || [])
+          this.tableLoading = false
+        }
+      })
+    },
+    // 表格数据处理
+    handleTableData (tableData, index) {
+      if (tableData.length === 0) {
+        this.tableData = []
+        return
+      }
+      tableData.forEach(item => {
+        item.displayStatusStash = item.displayStatus
+        item.setStatusStash = item.setStatus
+        item.fieldRequiredStash = item.fieldRequired
+        item.displayStatus = item.displayStatus ? '是' : '否'
+        item.setStatus = item.setStatus ? '是' : '否'
+        item.fieldRequired = item.fieldRequired ? '是' : '否'
+        return item
+      })
     }
   }
 }

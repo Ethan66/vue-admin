@@ -128,13 +128,14 @@ export const tybeManage = {
   created () {
     let configSearchItem = ['fieldName', 'fieldValue']
     let configTableItem = {
+      selection: 50,
       fieldName: { clsName: 'cm-btn-color', width: 80 },
-      fieldValue: { width: 100, type: 'input', canEdit: 1 },
-      displayStatus: { width: 120, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
+      fieldValue: { width: 90, type: 'input', canEdit: 1 },
+      displayStatus: { width: 90, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
       fieldRequired: { width: 100, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
-      setStatus: { width: 80, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
-      fieldSort: { width: 100, type: 'input', canEdit: 1 },
-      fixedStatus: { width: 80, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
+      setStatus: { width: 140, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
+      fieldSort: { width: 90, type: 'input', canEdit: 1 },
+      fixedStatus: { width: 140, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
       btn: 160
     }
     this.searchItem = this.$setItem(tybeManageTest, configSearchItem, 'search')
@@ -145,15 +146,16 @@ export const tybeManage = {
 // 快速创建字段
 export const fastCreateType = {
   data () {
-    return this.$setBtnConfig(JSON.parse(JSON.stringify(tableInitObj)), ['edit', 'cancel', 'delete'])
+    return this.$setBtnConfig(JSON.parse(JSON.stringify(tableInitObj)), [{ edit: { noClickFn: true } }, 'cancel', { delete: { noClickFn: true } }])
   },
   created () {
     let configTableItem = {
       selection: 50,
       fieldName: { width: 100, clickFn: 'handleGoPage', clsName: 'cm-btn-color', type: 'input', canEdit: 1 },
       fieldValue: { width: 80, type: 'input', canEdit: 1 },
-      displayStatus: { width: 120, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
-      setStatus: { width: 100, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
+      fieldRequired: { width: 80, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
+      displayStatus: { width: 80, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
+      setStatus: { width: 120, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
       btn: 160
     }
     this.tableItem = this.$setItem(fastCreateTybeTest, configTableItem, 'table')

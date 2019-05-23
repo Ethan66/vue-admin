@@ -68,3 +68,8 @@ export const apiAddPageField = (params) => {
 export const apiPageFieldRapidGeneration = (params) => {
   return postRequest(base + '/pageFieldRapidGeneration', params)
 }
+
+// 快速添加字段
+export const apiAddBatchPageField = (params) => {
+  return postRequest(base + '/addBatchPageField', params)
+}
