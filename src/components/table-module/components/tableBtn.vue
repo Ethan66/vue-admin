@@ -19,7 +19,7 @@
                 class="btnCls"
                 :key="i+index"
                 :disabled="btn.disabled || (scope.row.disabledBtn && scope.row.disabledBtn.includes(btn.name))"
-                @click="handleBtnClick(btn.clickFn, scope.row, scope.$index, btn.name)"
+                @click="handleBtnClick(btn.clickFn, scope.row, scope.$index, btn.name, btn.noClickFn)"
               >{{ btn.name }}</p>
             </template>
 
@@ -29,7 +29,7 @@
                 class="btnCls"
                 :key="i+index"
                 :disabled="btn.disabled || (scope.row.disabledBtn && scope.row.disabledBtn.includes(btn.name))"
-                @click="handleBtnClick(btn.clickFn, scope.row, scope.$index, btn.name)"
+                @click="handleBtnClick(btn.clickFn, scope.row, scope.$index, btn.name, btn.noClickFn)"
               >{{ handleSetInlineShowName(btn, scope.row) }}</p>
             </template>
           </template>
@@ -87,7 +87,7 @@ export default {
       return btn.name === '编辑' && row.editBtnName ? row.editBtnName : btn.name
     },
     // 点击按钮触发
-    handleBtnClick (fn, row, index, btnName) {
+    handleBtnClick (fn, row, index, btnName, noClickFn) {
       // 判断父组件
       if (this.firstInit) {
         let i = 0
@@ -101,6 +101,10 @@ export default {
         this.firstInit = false
       }
       if ((!this.isInlineEdit && !fn) || (this.isInlineEdit && !fn && btnName !== '取消')) return
+      if (this.isInlineEdit && btnName === '删除' && noClickFn) {
+        this.$emit('handleInlineEditTableData', index, row, 'delete')
+        return false
+      }
       if (btnName === '删除') {
         this.$alert('是否确认删除', '提示', {
           confirmButtonText: '确定',
@@ -131,6 +135,7 @@ export default {
           row.editBtnName = undefined
           row.editBtnColor = undefined
           this.$emit('handleInlineEditTableData', index, row)
+          if (noClickFn) return false
           this.parent[fn](row)
         } else if (btnName === '取消') { // 点击取消
           if (!row.editStatus) return
