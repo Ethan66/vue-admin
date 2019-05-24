@@ -81,7 +81,6 @@ export default {
               item.options = this.classifyList
             }
           })
-          console.log('formItem', this.formItem);
         } else {
           this.$message.error(res.message)
         }
@@ -229,8 +228,6 @@ export default {
     resetFormData (formData) {
       try {
         this[formData] = this.$options.data()[formData]
-        console.log(this.$options.data()[formData]);
-        console.log(this[formData]);
       } catch (error) {
         console.log('resetFormData' + error)
       }
