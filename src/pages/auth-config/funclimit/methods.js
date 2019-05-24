@@ -8,7 +8,9 @@ export default {
         resourceType: this.isClassify // 资源类型 0:角色，1:角色分类
       }
       Object.assign(params, this.formData)
-      params.cloneRoleIds = params.cloneRoleIds.join(',')
+      if (Array.isArray(params.cloneRoleIds)) {
+        params.cloneRoleIds = params.cloneRoleIds.join(',')
+      }
       apiCreateConsoleRole(params).then(res => {
         if (res.code === '208999') {
           this.$message.success(res.message)
