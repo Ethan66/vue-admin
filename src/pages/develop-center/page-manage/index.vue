@@ -16,6 +16,9 @@
       <div class="btn-content" slot="btn">
         <el-button @click="handleAdd">新建页面</el-button>
         <el-button @click="$router.push({ path: '/main/develop-center/menu-manage/newpage' })">跳转页面</el-button>
+        <el-button @click="handleGetMenuList">获取全部menuList</el-button>
+        <el-button @click="handleBatchCreate('page')">批量新建页面</el-button>
+        <el-button @click="handleBatchCreate('tybe')">批量新建字段</el-button>
       </div>
     </table-module>
     <dialog-module
@@ -33,10 +36,17 @@
 <script>
 import { pageManage } from '@/createData/develop-center'
 import basicMethod from '@/config/mixins'
-import { apiQueryPageList, apiAddPage, apiUpdatePage } from '@/api/developCenter'
+import configTybe from '@/configureData/pageKey'
+import { apiQueryPageList, apiAddPage, apiUpdatePage, apiListConsoleMenu, apiAddBatchPageField } from '@/api/developCenter'
 
 export default {
   mixins: [basicMethod, pageManage],
+  data () {
+    return {
+      batchMenuList: [],
+      batchPageList: []
+    }
+  },
   created () {
     this.handleGetTableData(apiQueryPageList)
   },
@@ -96,6 +106,78 @@ export default {
             break
         }
       })
+    },
+    // 获取所有menuCode
+    handleGetMenuList () {
+      apiListConsoleMenu({ currentPage: 1, pageSize: 10000 }).then(res => {
+        if (res.code === '208999') {
+          this.batchMenuList = res.resultMap.page.list.map(item => ({ menuName: item.menuName, code: item.code }))
+          this.$getSuccessMsg(this, res.message)
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+    },
+    // 批量新建
+    handleBatchCreate (type) {
+      if (type === 'page') {
+        if (this.batchMenuList.length === 0) {
+          this.$message.error('请先点击获取menuList')
+          return
+        }
+        let error = false
+        const list = configTybe[type].map(item => {
+          let obj = this.batchMenuList.find(menu => menu.menuName === item.menuName)
+          if (obj) {
+            item.menuCode = obj.code
+            if (!item.pageName) {
+              item.pageName = item.menuName
+            }
+            delete item.menuName
+          } else {
+            error = true
+          }
+          return item
+        })
+        if (error) {
+          this.$message.error('没有此菜单，请先新建')
+          return
+        }
+        this.batchError = false
+        this.batchPageList= list
+        sessionStorage.setItem('batchPageList', JSON.stringify(this.batchPageList))
+        list.forEach(item => {
+          apiAddPage(item).then(res => {
+            if (res.code === '208999') {
+              this.$getSuccessMsg(this, res.message)
+            } else {
+              this.$message.error(res.message)
+            }
+          })
+        })
+      }
+      if (type === 'tybe') {
+        const batchPageList = JSON.parse(sessionStorage.getItem('batchPageList'))
+        if (!batchPageList) {
+          this.$message.error('你还没有新建页面，不能新建字段')
+          return
+        }
+        const list = configTybe[type].map(item => {
+          let obj = batchPageList.find(child => child.pageCode === item.pageCode)
+          if (obj.constructor === Object) {
+            item.menuCode = obj.menuCode
+          }
+          return item
+        })
+        apiAddBatchPageField({ list }).then(res => {
+          if (res.code === '208999') {
+            this.$getSuccessMsg(this, res.message)
+          } else {
+            this.$message.error(res.message)
+          }
+        })
+        sessionStorage.removeItem('batchPageList')
+      }
     }
   }
 }
