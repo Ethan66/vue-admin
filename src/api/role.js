@@ -59,3 +59,8 @@ export const apiGetRolePermissionFields = (params) => {
 export const apiSetRolePermissionFields = (params) => {
   return postRequest(base + '/setRolePermissionFields', params)
 }
+
+// 查询部门列表
+export const apiQueryDepartmentList = (params) => {
+  return postRequest(base + '/queryDepartmentList', params)
+}

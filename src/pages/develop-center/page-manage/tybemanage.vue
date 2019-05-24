@@ -9,6 +9,7 @@
     <table-module
       ref="table"
       isInlineEdit
+      inlineEditBtnClick="inlineEditBtnClick"
       :table-data.sync="tableData"
       :table-item="tableItem"
       :table-btn="tableBtn"
@@ -18,6 +19,7 @@
       <div class="btn-content" slot="btn">
         <el-button @click="handleFastCreate">快速生成</el-button>
         <el-button @click="handleHandAdd">手动添加</el-button>
+        <el-button @click="handleDelete">删除</el-button>
         <el-button @click="$router.push({ path: '/main/develop-center/menu-manage/newpage' })">返回列表</el-button>
       </div>
     </table-module>
@@ -72,13 +74,39 @@ export default {
     handleGoPage () {
       console.log(111)
     },
+    // 点击表格编辑按钮
+    inlineEditBtnClick (row) {
+      row.displayStatus = row.displayStatusStash
+      row.setStatus = row.setStatusStash
+      row.fixedStatus = row.fixedStatusStash
+      row.fieldRequired = row.fieldRequiredStash
+    },
     // 点击表格保存按钮
     handleEditData (row) {
       this.apiEditData(apiUpdatePageField, row, apiPageFiledQueryList)
     },
     // 点击表格删除按钮
-    handleDeleteData (row) {
-      this.apiDeleteData(apiDeletePageField, row.id, apiPageFiledQueryList)
+    handleDeleteData (rows) {
+      let ids = []
+      if (rows.constructor === Object) {
+        ids.push(rows.id)
+      } else {
+        ids = rows.map(item => {
+          return item.id
+        })
+      }
+      apiDeletePageField({ ids }).then(res => {
+        if (res.code === '208999') {
+          this.$getSuccessMsg(this, '删除成功')
+          this.handleGetTableData(apiPageFiledQueryList, Object.assign({}, this.searchValues, this.searchDefaultObj))
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+    },
+    // 点击删除按钮
+    handleDelete () {
+      this.handleDeleteData(this.chooseDataArr)
     },
     // 处理表格数据
     handleTableData (tableData, index) {
@@ -90,9 +118,11 @@ export default {
         item.displayStatusStash = item.displayStatus
         item.setStatusStash = item.setStatus
         item.fixedStatusStash = item.fixedStatus
+        item.fieldRequiredStash = item.fieldRequired
         item.displayStatus = item.displayStatus ? '是' : '否'
         item.setStatus = item.setStatus ? '是' : '否'
         item.fixedStatus = item.fixedStatus ? '是' : '否'
+        item.fieldRequired = item.fieldRequired ? '是' : '否'
         return item
       })
     }

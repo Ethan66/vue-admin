@@ -293,7 +293,7 @@ export default {
       left: 0;
     }
     .common-tree{
-      overflow: auto;
+      overflow: scroll;
     }
     .common-tree::-webkit-scrollbar {/*滚动条整体样式*/
         width: 7px;     /*高宽分别对应横竖滚动条的尺寸*/
@@ -305,6 +305,10 @@ export default {
         // background: #4162DB;
     }
 
+}
+.el-tree.common-tree{
+  overflow: auto;
+  padding-top: 5px;
 }
 .el-popover{
     width: 300px;

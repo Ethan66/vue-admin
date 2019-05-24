@@ -8,7 +8,7 @@ export const apiGetCode = (params) => {
 
 // 获取IP
 export const apiGetIp = (params) => {
-  return getRequest('http://myip.ipip.net', params)
+  return getRequest('//myip.ipip.net', params)
 }
 
 // 检查IP

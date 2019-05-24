@@ -144,7 +144,10 @@ export default {
     maxHeight: String,
     // 是否为行内编辑
     isInlineEdit: Boolean,
+    // 编辑按钮前触发事件
     inlineEditBtnClick: String,
+    // 修改完点击保存是否需要转为中文
+    needSwitch: Boolean,
     // 默认总高度为菜单高度
     totalHeightClsName: {
       type: String,
@@ -269,8 +272,13 @@ export default {
       }
     },
     // 行内编辑点击编辑按钮时修改tableData
-    handleInlineEditTableData (index, row) {
+    handleInlineEditTableData (index, row, delete1) {
       this.$set(this.tableData, index, row)
+      this.needSwitch && this.$emit('inlineSwitchTableData', index, row)
+      if (delete1 === 'delete') {
+        this.tableData.splice(index, 1)
+        this.$set(this, 'tableData', this.tableData )
+      }
     },
     // 树表格修改tableData
     handAddTableData (tableData) {

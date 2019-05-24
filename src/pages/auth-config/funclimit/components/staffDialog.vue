@@ -12,7 +12,8 @@
             ref="treeSelect"
             :data="treeList" :defaultProps="defaultProps"
             multiple nodeKey="id" :checkedKeys="treeCheckedData"
-            @popoverHide="popoverHide"></tree-select>
+            @popoverHide="popoverHide"
+            @change="popoverHide"></tree-select>
           <span class="selectTips">支持一个员工有多个角色</span>
         </el-form-item>
         <div v-if="!isEdit" class="roleConfigTips">
@@ -112,7 +113,16 @@ export default {
       }
     },
     popoverHide (checkedIds, checkedData) {
-      this.formData.userIds = checkedIds.join(',')
+      let list = checkedIds.filter(item => {
+        if (typeof item === 'string' && item.includes('a')) {
+          return item
+        }
+      })
+      this.$refs.treeSelect.selectedData = list
+      list = list.map(item => {
+        return item.replace(/a/g, '')
+      })
+      this.formData.userIds = list.join(',')
     },
     handleClose () {
       this.staffDialogVisible = false
