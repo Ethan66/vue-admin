@@ -1,4 +1,5 @@
 import { apiCreateConsoleUser, apiQueryLowerLevelList, apiEditConsoleUser, apiListConsoleUser, apiQueryConsoleUserInfo, apiEditConsoleUserStatus, apiResetConsoleUserPassword, apiQueryDepartmentTree } from '@/api/staff'
+import MD5 from 'js-md5'
 export const methods = {
   methods: {
     // 查询用户部门及下级部门列表和人员列表
@@ -23,6 +24,7 @@ export const methods = {
     handleApiCreateConsoleUser () {
       let params = {}
       Object.assign(params, this.staffFormData)
+      params.password = MD5(params.password)
       apiCreateConsoleUser(params).then(res => {
         if (res.code === '208999') {
           this.handleGetTableData(apiListConsoleUser)

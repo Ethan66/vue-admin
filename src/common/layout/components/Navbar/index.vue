@@ -91,7 +91,7 @@ export default {
     }
   },
   created () {
-    this.userName = JSON.parse(sessionStorage.getItem('userInfo')).consoleName
+    this.userName = JSON.parse(localStorage.getItem('userInfo')).consoleName
     if (!this.mainActivedTab.name) {
       this.mainActivedTab = JSON.parse(sessionStorage.getItem('mainActivedTab')) || {}
       this.mainTabs = this.mainActivedTab.name ? [].concat(this.mainActivedTab) : []
@@ -144,7 +144,7 @@ export default {
     handleApiUserLoginOut () {
       apiUserLoginOut().then((res) => {
         if (res.code === '208999') {
-          sessionStorage.removeItem('userInfo')
+          localStorage.removeItem('userInfo')
           this.$router.push({ path: '/login' })
         }
       })

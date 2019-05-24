@@ -1,14 +1,31 @@
-import { apiCreateConsoleRole, apiEditeConsoleRole, apiDelConsoleRole, apiGetAllRoleRequestTree, apiPageQueryUserRole, apiGrantUserRole, apiDelUserRole, apiQueryDepartmentList } from '@/api/role'
+import { apiCreateConsoleRole, apiEditeConsoleRole, apiDelConsoleRole, apiGetAllRoleRequestTree, apiPageQueryUserRole, apiGrantUserRole, apiDelUserRole, apiQueryDepartmentList, apiGetConsoleRoleById } from '@/api/role'
 import { apiQueryDepartmentTree, apiListConsoleUser } from '@/api/staff'
 
 export default {
   methods: {
+    handleApiGetConsoleRoleById (id) {
+      let params = {
+        id: id
+      }
+      apiGetConsoleRoleById(params).then(res => {
+        if (res.code === '208999') {
+          let data = res.resultMap.data
+          if (typeof data === 'object') {
+            this.formData = JSON.parse(JSON.stringify(data))
+          }
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+    },
     handleApiCreateConsoleRole () {
       let params = {
         resourceType: this.isClassify // 资源类型 0:角色，1:角色分类
       }
       Object.assign(params, this.formData)
-      params.cloneRoleIds = params.cloneRoleIds.join(',')
+      if (Array.isArray(params.cloneRoleIds)) {
+        params.cloneRoleIds = params.cloneRoleIds.join(',')
+      }
       apiCreateConsoleRole(params).then(res => {
         if (res.code === '208999') {
           this.$message.success(res.message)
@@ -64,6 +81,7 @@ export default {
               item.options = this.classifyList
             }
           })
+          console.log('formItem', this.formItem);
         } else {
           this.$message.error(res.message)
         }
@@ -126,15 +144,6 @@ export default {
             if (res.code === '208999') {
               treeList = res.resultMap.data
               this.treeList = this.$disposeTreeData(treeList.concat(list))
-              console.log(this.treeList);
-              // this.treeList.map(item => {
-              //   console.log(item.id);
-              //   if (item.childIdList.length > 0) {
-              //     item.childIdList.map(item2 => {
-              //       console.log(item2.id);
-              //     })
-              //   }
-              // })
             } else {
               this.$message.error(res.message)
             }
@@ -220,6 +229,8 @@ export default {
     resetFormData (formData) {
       try {
         this[formData] = this.$options.data()[formData]
+        console.log(this.$options.data()[formData]);
+        console.log(this[formData]);
       } catch (error) {
         console.log('resetFormData' + error)
       }
@@ -242,14 +253,11 @@ export default {
      * @param {Boolean} visible 是否显示弹框
      * @param {Object} row 需要反显的数据
      */
-    handleInitTypeDialog (title, keys, isEdit, row) {
+    handleInitTypeDialog (title, keys, isEdit) {
       this.typeDialogTitle = title
       this.resetFormData('formData')
       if (Array.isArray(keys)) {
         this.formItem = this.filterFormItem(this.globleItem, keys)
-      }
-      if (typeof row === 'object') {
-        this.formData = JSON.parse(JSON.stringify(row))
       }
       this.isEdit = isEdit
       this.typeDialogVisible = true
