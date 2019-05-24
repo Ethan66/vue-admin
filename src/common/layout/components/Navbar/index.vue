@@ -144,7 +144,7 @@ export default {
     handleApiUserLoginOut () {
       apiUserLoginOut().then((res) => {
         if (res.code === '208999') {
-          sessionStorage.removeItem('userInfo')
+          localStorage.removeItem('userInfo')
           this.$router.push({ path: '/login' })
         }
       })

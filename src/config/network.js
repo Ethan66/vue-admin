@@ -67,12 +67,12 @@ function handleSpecialError (response) {
   const res = response.data
   // 用户没登录
   if (res.code === '-208999' && res.message === 'sessionId参数不能为空') {
-    sessionStorage.removeItem('userInfo')
+    localStorage.removeItem('userInfo')
     router.push({ path: '/login' })
     return true
   }
   // 用户登录过期或登录失效
-  if (res.code === '208100' || res.code === '208207') {
+  if (res.code === '211100') {
     MessageBox.confirm(
       '你已被登出，可以取消继续留在该页面，或者重新登录',
       '确定登出',
@@ -84,7 +84,7 @@ function handleSpecialError (response) {
     ).then(() => {
       apiUserLoginOut().then((res) => {
         if (res.code === '208999') {
-          sessionStorage.removeItem('userInfo')
+          localStorage.removeItem('userInfo')
           router.push({ path: '/login' })
         }
       })
