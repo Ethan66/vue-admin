@@ -10,10 +10,10 @@ export const tableItemList = [
 ]
 
 export const errorTableItem = [
-  { label: '姓名', key: 'realName', hide: 0, canSet: 1, sort: 1, fix: 1 },
-  { label: '操作类型', key: 'opTypeDesc', hide: 0, canSet: 4, sort: 5, fix: 0 },
-  { label: 'IP', key: 'id', hide: 0, canSet: 1, sort: 5, fix: 0 },
-  { label: '状态', key: 'opStatusDesc', hide: 0, canSet: 1, sort: 5, fix: 0 },
-  { label: '操作信息', key: 'opResult', hide: 0, canSet: 1, sort: 5, fix: 0 },
-  { label: '登录时间', key: 'gmtCreate', hide: 0, canSet: 1, sort: 5, fix: 0 }
+  { label: '姓名', key: 'realName', displayStatus: 0, setStatus: 1, fieldSort: 3, fix: 0 },
+  { label: '操作类型', key: 'opTypeDesc', displayStatus: 0, setStatus: 4, fieldSort: 5, fix: 0 },
+  { label: 'IP', key: 'id', displayStatus: 0, setStatus: 1, fieldSort: 5, fix: 0 },
+  { label: '状态', key: 'opStatusDesc', displayStatus: 0, setStatus: 1, fieldSort: 5, fix: 0 },
+  { label: '操作信息', key: 'opResult', displayStatus: 0, setStatus: 1, fieldSort: 5, fix: 0 },
+  { label: '登录时间', key: 'gmtCreate', displayStatus: 0, setStatus: 1, fieldSort: 5, fix: 0 }
 ]

@@ -16,8 +16,8 @@
       <div class="btn-content" slot="btn">
         <span v-if="chooseDataArr.length > 0">已选择 <i>{{ chooseDataArr.length }}</i> 条</span>
         <el-button @click="handleAdd" v-if="chooseDataArr.length < 1">添加IP</el-button>
-        <el-button @click="handleBatchOpen" v-if="chooseDataArr.length > 0 && selectFlag">启 用</el-button>
-        <el-button @click="handleBatchStop" v-if="chooseDataArr.length > 0 && !selectFlag">停 用</el-button>
+        <el-button @click="handleBatchOpen" v-if="chooseDataArr.length > 0">启 用</el-button>
+        <el-button @click="handleBatchStop" v-if="chooseDataArr.length > 0">停 用</el-button>
       </div>
     </table-module>
     <dialog-module
@@ -47,22 +47,6 @@ export default {
   data () {
     return {
       selectFlag: false
-    }
-  },
-  watch: {
-    chooseDataArr (val) {
-      if (this.chooseDataArr[0].isDelete === '0') {
-        this.selectFlag = false
-      } else {
-        this.selectFlag = true
-      }
-      console.log(this.chooseDataArr)
-      if (selectFlag) {
-
-      }
-      if (!selectFlag) {
-
-      }
     }
   },
   methods: {
@@ -108,9 +92,11 @@ export default {
     },
     // 批量启用确认按钮
     handleBatchOpenFirm () {
-      console.log(this.chooseDataArr)
-      this.saveTableData.isDelete = 0
-      this.apiEditData(apiEditIpWhiteStatus, this.saveTableData, apiListSysIpWhite)
+      let open = []
+      this.chooseDataArr.forEach((item) => {
+        open.push(item.id)
+      })
+      this.apiEditData(apiEditIpWhiteStatus, {ids: open, isDelete: 0}, apiListSysIpWhite)
     },
     // 点击批量停止按钮
     handleBatchStop () {
@@ -118,8 +104,11 @@ export default {
     },
     // 批量停止确认按钮
     handleBatchStopFirm () {
-      this.saveTableData.isDelete = 1
-      this.apiEditData(apiEditIpWhiteStatus, this.saveTableData, apiListSysIpWhite)
+      let open = []
+      this.chooseDataArr.forEach((item) => {
+        open.push(item.id)
+      })
+      this.apiEditData(apiEditIpWhiteStatus, {ids: open, isDelete: 1}, apiListSysIpWhite)
     },
     // 表格停用按钮
     handleStop (val) {
