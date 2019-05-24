@@ -1,6 +1,8 @@
 import { basicInitObj } from '@/components/basicObj'
 import { setBtnConfig } from '@/components/methods'
-import { buttonTest, ipTableItem, accountTableItem, organizationTest } from '@/test/auth-config'
+import { buttonTest, ipTableItem, accountTableItem } from '@/test/auth-config'
+
+const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
 
 const initData = Object.assign({}, basicInitObj)
 
@@ -128,7 +130,6 @@ export const organization = {
     return this.$setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), ['edit', { more: { list: organizationMoreList } }])
   },
   created () {
-    this.tybeArr = organizationTest
     let configSearchItem = [
       'departmentName',
       { departmentStatus: { type: 'select', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }] } }
@@ -158,9 +159,9 @@ export const organization = {
       'sortNo', 'directorName',
       { departmentStatus: { type: 'radio', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }] } }
     ]
-    this.searchItem = this.$setItem(organizationTest, configSearchItem, 'search')
-    this.tableItem = this.$setItem(organizationTest, configTableItem, 'table')
-    let dialogItem = this.dialogItem = this.$setItem(organizationTest, configDialogItem, 'dialog')
+    this.searchItem = this.$setItem(tybeObj['organization-manage1'], configSearchItem, 'search')
+    this.tableItem = this.$setItem(tybeObj['organization-manage1'], configTableItem, 'table')
+    let dialogItem = this.dialogItem = this.$setItem(tybeObj['organization-manage1'], configDialogItem, 'dialog')
     this.rules = {
       departmentName: [
         { required: true, message: dialogItem[1].placeholder, trigger: 'blur' }
@@ -172,7 +173,7 @@ export const organization = {
         { required: true, message: dialogItem[3].placeholder, trigger: 'blur' }
       ],
       departmentStatus: [
-        { required: true, message: dialogItem[5].placeholder, trigger: 'change' }
+        { required: true, message: dialogItem[4].placeholder, trigger: 'change' }
       ]
     }
   }

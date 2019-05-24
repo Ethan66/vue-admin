@@ -18,6 +18,7 @@
         <el-button @click="$router.push({ path: '/main/develop-center/menu-manage/newpage' })">跳转页面</el-button>
         <el-button @click="handleGetMenuList">获取全部menuList</el-button>
         <el-button @click="handleBatchCreate('page')">批量新建页面</el-button>
+        <el-button @click="handleGetPageList">获取所有页面</el-button>
         <el-button @click="handleBatchCreate('tybe')">批量新建字段</el-button>
       </div>
     </table-module>
@@ -118,6 +119,17 @@ export default {
         }
       })
     },
+    // 获取所有pageCode
+    handleGetPageList () {
+      apiQueryPageList({ currentPage: 1, pageSize: 10000 }).then(res => {
+        if (res.code === '208999') {
+          this.batchPageList = res.resultMap.page.list.map(item => ({ pageCode: item.pageCode, menuCode: item.menuCode }))
+          this.$getSuccessMsg(this, res.message)
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+    },
     // 批量新建
     handleBatchCreate (type) {
       if (type === 'page') {
@@ -144,8 +156,6 @@ export default {
           return
         }
         this.batchError = false
-        this.batchPageList= list
-        sessionStorage.setItem('batchPageList', JSON.stringify(this.batchPageList))
         list.forEach(item => {
           apiAddPage(item).then(res => {
             if (res.code === '208999') {
@@ -157,13 +167,9 @@ export default {
         })
       }
       if (type === 'tybe') {
-        const batchPageList = JSON.parse(sessionStorage.getItem('batchPageList'))
-        if (!batchPageList) {
-          this.$message.error('你还没有新建页面，不能新建字段')
-          return
-        }
-        const list = configTybe[type].map(item => {
-          let obj = batchPageList.find(child => child.pageCode === item.pageCode)
+        const list = configTybe[type].map((item, i) => {
+          item.fieldSort = i + 1
+          let obj = this.batchPageList.find(child => child.pageCode === item.pageCode)
           if (obj.constructor === Object) {
             item.menuCode = obj.menuCode
           }
@@ -176,7 +182,6 @@ export default {
             this.$message.error(res.message)
           }
         })
-        sessionStorage.removeItem('batchPageList')
       }
     }
   }

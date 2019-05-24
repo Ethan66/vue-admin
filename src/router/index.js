@@ -6,7 +6,7 @@ import Layout from '@/common/layout/Layout'
 
 import globalRoutes from './globalRoutes'
 import configRoutes from './configRoutes'
-import { apiGetUserPermissionResource } from '@/api/login'
+import { apiGetUserPermissionResource, apiGetUserAllPermissionFields } from '@/api/login'
 import { menuRelation } from '@/config/utils'
 
 Vue.use(Router)
@@ -43,13 +43,29 @@ router.beforeEach((to, from, next) => {
       if (res.code === '208999') {
         const list = res.resultMap.data.list
         let menuList = list.filter(item => item.menuLevel !== 3)
-        const btnList = list.filter(item => item.menuLevel === 3).map(item => ({ btnCode: item.code, btnName: item.menuName }))
-        sessionStorage.setItem('btnList', JSON.stringify(btnList || []))
-        menuList = menuRelation(menuList, 'id', 'menuParentId', 'menuLevel', 'sortNo')
-        handleAddMenuRoutes(menuList, configRoutes)
-        sessionStorage.setItem('menuList', JSON.stringify(menuList || '[]'))
-        router.options.isAddDynamicMenuRoutes = true
-        !toPath ? next({ ...to, replace: true }) : next({ path: toPath })
+        let menuIdList = menuList.map(item => item.id)
+        apiGetUserAllPermissionFields({ menuIdList }).then(res => {
+          if (res.code === '208999') {
+            let tybeObj = {}
+            res.resultMap.data.fieldPermissionList.forEach(item => {
+              item.label = item.fieldName
+              item.key = item.fieldValue
+              if (!tybeObj[item.pageCode]) {
+                tybeObj[item.pageCode] = [item]
+              } else {
+                tybeObj[item.pageCode].push(item)
+              }
+            })
+            sessionStorage.setItem('tybeObj', JSON.stringify(tybeObj))
+            const btnList = list.filter(item => item.menuLevel === 3).map(item => ({ btnCode: item.code, btnName: item.menuName }))
+            sessionStorage.setItem('btnList', JSON.stringify(btnList || []))
+            menuList = menuRelation(menuList, 'id', 'menuParentId', 'menuLevel', 'sortNo')
+            handleAddMenuRoutes(menuList, configRoutes)
+            sessionStorage.setItem('menuList', JSON.stringify(menuList || '[]'))
+            router.options.isAddDynamicMenuRoutes = true
+            !toPath ? next({ ...to, replace: true }) : next({ path: toPath })
+          }
+        })
       } else {
         sessionStorage.setItem('menuList', '[]')
         !toPath ? next() : next({ path: toPath })

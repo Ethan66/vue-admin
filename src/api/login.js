@@ -35,3 +35,8 @@ export const apiUserLoginOut = (reqParams) => {
 export const apiGetUserPermissionResource = (reqParams) => {
   return postRequest(base + '/getUserPermissionResource', reqParams)
 }
+
+// 获取所有页面权限字段
+export const apiGetUserAllPermissionFields = (reqParams) => {
+  return postRequest(base + '/getUserAllPermissionFields', reqParams)
+}

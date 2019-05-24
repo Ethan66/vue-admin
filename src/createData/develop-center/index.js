@@ -1,5 +1,6 @@
 import { basicInitObj, searchTableInitObj, tableInitObj } from '@/components/basicObj'
-import { menuTest, pageManageTest, tybeManageTest, fastCreateTybeTest } from '@/test/develop-center'
+
+const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
 
 const menuMoreList = [
   { name: '新建平级菜单', clickFn: 'handleCreateLevelMenu' },
@@ -44,9 +45,9 @@ export const menu = {
       { status: { type: 'radio', options: [{ label: '显示', value: 0 }, { label: '隐藏', value: 1 }] } },
       { remark: { label: '描述', type: 'textarea', rows: 4 } }
     ]
-    this.searchItem = this.$setItem(menuTest, configSearchItem, 'search')
-    this.tableItem = this.$setItem(menuTest, configTableItem, 'table')
-    let dialogItem = this.dialogItem = this.$setItem(menuTest, configDialogItem, 'dialog')
+    this.searchItem = this.$setItem(tybeObj['menu-manage1'], configSearchItem, 'search')
+    this.tableItem = this.$setItem(tybeObj['menu-manage1'], configTableItem, 'table')
+    let dialogItem = this.dialogItem = this.$setItem(tybeObj['menu-manage1'], configDialogItem, 'dialog')
     this.rules = {
       menuName: [
         { required: true, message: dialogItem[1].placeholder, trigger: 'blur' }
@@ -97,9 +98,9 @@ export const pageManage = {
       { gmtCreate: { label: '创建时间', type: 'docs', show: false } },
       { remark: { label: '描述', type: 'textarea', rows: 4, show: false } }
     ]
-    this.searchItem = this.$setItem(pageManageTest, configSearchItem, 'search')
-    this.tableItem = this.$setItem(pageManageTest, configTableItem, 'table')
-    let dialogItem = this.dialogItem = this.$setItem(pageManageTest, configDialogItem, 'dialog')
+    this.searchItem = this.$setItem(tybeObj['page-manage1'], configSearchItem, 'search')
+    this.tableItem = this.$setItem(tybeObj['page-manage1'], configTableItem, 'table')
+    let dialogItem = this.dialogItem = this.$setItem(tybeObj['page-manage1'], configDialogItem, 'dialog')
     this.rules = {
       pageName: [
         { required: true, message: dialogItem[0].placeholder, trigger: 'blur' }
@@ -138,8 +139,8 @@ export const tybeManage = {
       fixedStatus: { width: 140, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
       btn: 160
     }
-    this.searchItem = this.$setItem(tybeManageTest, configSearchItem, 'search')
-    this.tableItem = this.$setItem(tybeManageTest, configTableItem, 'table')
+    this.searchItem = this.$setItem(tybeObj['tybe-manage1'], configSearchItem, 'search')
+    this.tableItem = this.$setItem(tybeObj['tybe-manage1'], configTableItem, 'table')
   }
 }
 
@@ -158,7 +159,7 @@ export const fastCreateType = {
       setStatus: { width: 120, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
       btn: 160
     }
-    this.tableItem = this.$setItem(fastCreateTybeTest, configTableItem, 'table')
+    this.tableItem = this.$setItem(tybeObj['tybe-manage2'], configTableItem, 'table')
     this.rules = {
       id: [
         { required: true, message: '请输入菜单id', trigger: 'blur' }
