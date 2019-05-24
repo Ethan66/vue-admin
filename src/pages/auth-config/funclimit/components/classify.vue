@@ -29,9 +29,9 @@
           {{roleItem.roleName}}({{roleItem.userCount}})
         </div>
         <span class="showIcon">
-          <i class="el-icon-edit-outline" @click.stop="handleRole(roleItem, 'edit')"></i>
+          <i v-if="roleItem.roleType === 2" class="el-icon-edit-outline" @click.stop="handleRole(roleItem, 'edit')"></i>
           <i class="el-icon-circle-plus-outline" @click.stop="handleRole(roleItem, 'add')"></i>
-          <i class="el-icon-delete" @click.stop="handleRole(roleItem, 'del')"></i>
+          <i v-if="roleItem.roleType === 2" class="el-icon-delete" @click.stop="handleRole(roleItem, 'del')"></i>
         </span>
       </div>
     </template>
