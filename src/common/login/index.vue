@@ -171,7 +171,7 @@ export default {
           apiUserLogin(params).then(res => {
             if (res.code === '208999') {
               res.resultMap.data && delete res.resultMap.data.errorNum
-              sessionStorage.setItem('userInfo', JSON.stringify(res.resultMap.data))
+              localStorage.setItem('userInfo', JSON.stringify(res.resultMap.data))
               this.$router.push('/')
             } else {
               if (!this.handleSpeciaCode(res.code)) {
