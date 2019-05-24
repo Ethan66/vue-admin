@@ -143,15 +143,6 @@ export default {
             if (res.code === '208999') {
               treeList = res.resultMap.data
               this.treeList = this.$disposeTreeData(treeList.concat(list))
-              console.log(this.treeList);
-              // this.treeList.map(item => {
-              //   console.log(item.id);
-              //   if (item.childIdList.length > 0) {
-              //     item.childIdList.map(item2 => {
-              //       console.log(item2.id);
-              //     })
-              //   }
-              // })
             } else {
               this.$message.error(res.message)
             }

@@ -49,7 +49,7 @@
     <typeDialog
       ref="typeDialog"
       :dialogVisible.sync="typeDialogVisible"
-      :formItem.sync="formItem"
+      :formItem="formItem"
       :formData="formData"
       :rules="typeDialogRules"
       :dialogTitle="typeDialogTitle"
@@ -140,9 +140,19 @@ export default {
     handleEditClass (row) {
       this.handleApiGetConsoleRoleById(row.id)
       this.handleInitTypeDialog('编辑类型', ['roleName', 'sortNo', 'createrName', 'gmtCreate'], true)
+      this.formItem.map(item => {
+        if (item.key === 'roleName') {
+          item.label = '分类名称'
+        }
+      })
     },
     handleAddClass (row) {
       this.handleInitTypeDialog('新建类型', ['roleName', 'sortNo'], false)
+      this.formItem.map(item => {
+        if (item.key === 'roleName') {
+          item.label = '分类名称'
+        }
+      })
     },
     handleDelClass (row) {
       this.delId = row.id
@@ -165,10 +175,20 @@ export default {
     handleEditRole (row) {
       this.handleApiGetConsoleRoleById(row.id)
       this.handleInitTypeDialog('编辑角色', ['resourceParentId', 'roleName', 'sortNo', 'createrName', 'gmtCreate'], true)
+      this.formItem.map(item => {
+        if (item.key === 'roleName') {
+          item.label = '角色名称'
+        }
+      })
       this.handleGetClassify()
     },
     handleAddRole (row) {
       this.handleInitTypeDialog('新建角色', ['resourceParentId', 'roleName', 'sortNo', 'cloneRoleIds'], false)
+      this.formItem.map(item => {
+        if (item.key === 'roleName') {
+          item.label = '角色名称'
+        }
+      })
       this.handleGetClassify()
       this.handleApiGetAllRoleRequestTree()
     },

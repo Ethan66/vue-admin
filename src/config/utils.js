@@ -79,6 +79,12 @@ export const getSuccessMsg = (that, text, type = 'success', title = '成功') =>
 // 处理树形结构数据
 export const disposeTreeData = (list, parentId = 'parentId', returnId = 1) => {
   let cloneData = JSON.parse(JSON.stringify(list)) // 对源数据深度克隆
+  function compare (key) {
+    return function (a, b) {
+      return (a[key] - b[key])
+    }
+  }
+  cloneData.sort(compare('sortNo'))
   return cloneData.filter(father => { // 循环所有项，并添加children属性
     let branchArr = cloneData.filter(child => { // 返回每一项的子级数组
       return father.id === child[parentId]

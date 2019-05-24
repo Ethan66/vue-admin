@@ -9,16 +9,18 @@ export const errorLog = {
     return setBtnConfig(JSON.parse(JSON.stringify(initData)))
   },
   created () {
+    console.log(this.tableItem)
     let configSearchItem = [
-      'userName',
+      'realName',
       { opStatus:
         { type: 'select',
+          label: '状态',
           options: [{ label: '成功', value: '0' }, { label: '失败', value: '1' }]
         }
       }
     ]
     let configTableItem = {
-      userName: 80,
+      realName: 80,
       opTypeDesc: 100,
       id: 100,
       opStatusDesc: { clsName: 'opStatusDesc', width: 80 },
@@ -26,6 +28,7 @@ export const errorLog = {
       gmtCreate: 80
     }
     this.searchItem = this.$setItem(errorTableItem, configSearchItem, 'search')
+
     this.tableItem = this.$setItem(errorTableItem, configTableItem, 'table')
   }
 }

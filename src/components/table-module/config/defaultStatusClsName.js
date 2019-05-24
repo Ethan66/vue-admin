@@ -20,7 +20,7 @@ export default {
     '操作失败': 'colorRed'
   },
   isDeleteMsg: {
-    '成功': 'colorBlue',
+    '正常': 'colorBlue',
     '失败': 'colorRed'
   }
 }
