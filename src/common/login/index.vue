@@ -75,7 +75,8 @@ export default {
       loginForm: { user: '', password: '', verificationCode: '' },
       ipIsTrue: false,
       nowErrorCode: '',
-      isLoading: false
+      isLoading: false,
+      ipAddress: ''
     }
   },
   created () {
@@ -109,9 +110,20 @@ export default {
         arr && (systemObj.browser = arr[0])
       }
       apiGetIp().then(res => {
-        res && (this.ip = res.match(/[\d.]+/g).join())
+        console.log(res)
+        if (res) {
+          let city = res.match(/(?!当前).[\u4e00-\u9fa5]\s/g)
+          let ip = res.match(/[\d.]+/g).join()
+          this.ip = ip
+          city[0] = ''
+          city[city.length - 1] = ''
+          try {
+            city = city.join('')
+            this.ipAddress = `${ip} ${city}`
+          } catch (error) { console.log('ipAddress' + error) }
+        }
       }).then(() => {
-        apiCheckIp({ loginIp: this.ip, operatingSystem: systemObj.system, terminal: systemObj.browser }).then(res => {
+        apiCheckIp({ loginIp: this.ip, ipAddress: this.ipAddress, operatingSystem: systemObj.system, terminal: systemObj.browser }).then(res => {
           if (res.code === '208999') {
             this.ipIsTrue = res.resultMap.data
           }
