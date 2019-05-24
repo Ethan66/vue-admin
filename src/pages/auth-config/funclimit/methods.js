@@ -81,6 +81,7 @@ export default {
               item.options = this.classifyList
             }
           })
+          console.log('formItem', this.formItem);
         } else {
           this.$message.error(res.message)
         }
@@ -143,15 +144,6 @@ export default {
             if (res.code === '208999') {
               treeList = res.resultMap.data
               this.treeList = this.$disposeTreeData(treeList.concat(list))
-              console.log(this.treeList);
-              // this.treeList.map(item => {
-              //   console.log(item.id);
-              //   if (item.childIdList.length > 0) {
-              //     item.childIdList.map(item2 => {
-              //       console.log(item2.id);
-              //     })
-              //   }
-              // })
             } else {
               this.$message.error(res.message)
             }
@@ -237,6 +229,8 @@ export default {
     resetFormData (formData) {
       try {
         this[formData] = this.$options.data()[formData]
+        console.log(this.$options.data()[formData]);
+        console.log(this[formData]);
       } catch (error) {
         console.log('resetFormData' + error)
       }

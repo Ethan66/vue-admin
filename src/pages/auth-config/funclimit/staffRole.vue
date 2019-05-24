@@ -49,7 +49,7 @@
     <typeDialog
       ref="typeDialog"
       :dialogVisible.sync="typeDialogVisible"
-      :formItem.sync="formItem"
+      :formItem="formItem"
       :formData="formData"
       :rules="typeDialogRules"
       :dialogTitle="typeDialogTitle"

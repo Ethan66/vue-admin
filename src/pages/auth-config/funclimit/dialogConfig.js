@@ -2,7 +2,9 @@ export default {
   data () {
     return {
       typeDialogTitle: '编辑类型',
-      formData: {},
+      formData: {
+        cloneRoleIds: []
+      },
       typeDialogRules: {
         resourceParentId: [
           { required: true, message: '请选择所属分类', trigger: 'blur' }
