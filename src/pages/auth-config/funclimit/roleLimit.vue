@@ -5,6 +5,7 @@
       <classify
         :classifyList="classifyList"
         @classify="handleClickClassifyIcon"
+        :total="roleCount"
         @role="handleClickRoleIcon"
         @roleClick="handleClickRole"
       />
@@ -114,6 +115,7 @@ export default {
       nowMenuId: '', // 选中字段的时候当前的menuId
       tybeValueObj: {}, // 保存字段选项的对象
       rules: {}, // 规则
+      roleCount: 0,
       temp: {
         roleId: '1',
         permissionList: [
@@ -298,7 +300,7 @@ export default {
             item.idStr = String(item.id)
             this.$set(this.tybeValueObj, item.id, value)
             if (item.fieldRequired) {
-              this.$set(this.rules, item.id, [{ required: true, validator: this.validateFn,  message: `请选择${item.tybeName}` }])
+              this.$set(this.rules, item.id, [{ required: true, validator: this.validateFn, message: `请选择${item.tybeName}` }])
             }
           })
           this.showTybeDialog = true
@@ -309,7 +311,7 @@ export default {
     },
     // 全选字段改变时
     handleSetAll () {
-       for(let key in this.tybeValueObj) {
+      for (let key in this.tybeValueObj) {
         this.tybeValueObj[key] = this.allSet
       }
     },

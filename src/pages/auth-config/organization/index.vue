@@ -37,7 +37,6 @@ import { organization } from '@/createData/auth-config/mixins'
 import basicMethod from '@/config/mixins'
 import { menuRelation } from '@/config/utils'
 import { apiQueryDepartmentList, apiStopDepartment, apiEditDepartment, apiDelDepartment, apiAddDepartment, apiQueryDepartmentTree } from '@/api/authority'
-import { debuglog } from 'util';
 
 export default {
   mixins: [basicMethod, organization],
@@ -128,7 +127,7 @@ export default {
     },
     // 点击表格停用按钮
     handleStop (row) {
-      apiStopDepartment({id: row.id}).then(res => {
+      apiStopDepartment({ id: row.id }).then(res => {
         if (res.code === '208999') {
           this.$getSuccessMsg(this, res.message)
         }
