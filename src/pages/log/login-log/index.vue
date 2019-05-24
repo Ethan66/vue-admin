@@ -4,7 +4,6 @@
       class="searchContent"
       :search-item="searchItem"
       :search-values="searchValues"
-      :search-default-obj="defaultSearchObj"
       @handleSearch="handleSearch"
     />
     <table-module
@@ -29,9 +28,7 @@ export default {
     this.handleGetTableData(apiListPageLoginLog)
   },
   data () {
-    return {
-      defaultSearchObj: { a: 1 }
-    }
+    return {}
   },
   methods: {
     handleSendHead (val) {

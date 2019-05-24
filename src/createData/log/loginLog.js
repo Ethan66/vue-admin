@@ -22,7 +22,7 @@ export const loginLog = {
       buttonName: 100,
       terminalType: 100,
       operateSystem: 100,
-      loginIp: 200,
+      loginIp: 100,
       gmtModified: 80,
       loginStatus: { clsName: 'loginStatus', width: 80 },
       gmtCreate: 80
