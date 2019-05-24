@@ -93,7 +93,11 @@ export const account = {
   },
   created () {
     let configSearchItem = [
-      'userRealName',
+      { userName:
+        {
+          label: '姓名'
+        }
+      },
       { isDelete:
         { type: 'select',
           label: '状态',

@@ -37,7 +37,7 @@ export default {
     // 处理表格数据
     handleTableData (tableData) {
       tableData.forEach(item => {
-        item.loginStatus = item.loginStatus === '0' ? '成功' : '失败'
+        item.loginStatus = item.loginStatus === 0 ? '成功' : '失败'
       })
     }
   }

@@ -17,13 +17,21 @@
       <div class="btn-content" slot="btn">
         <span v-if="chooseDataArr.length > 0">已选择 <i>{{ chooseDataArr.length }}</i> 条</span>
         <el-button @click="handleAdd" v-if="chooseDataArr.length < 1">添加授权</el-button>
-        <el-button @click="handleInvalid" v-if="chooseDataArr.length > 0">失 效</el-button>
+        <el-button @click="handleInvalidPl" v-if="chooseDataArr.length > 0">失 效</el-button>
       </div>
     </table-module>
     <el-dialog title="添加授权" :visible.sync="showDialogForm1" class="dialogModule" :close-on-click-modal="false">
       <el-form :model="dialogAccountForm" :rules="diaRules" ref="dialogAccountForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="授权时间" prop="resource">
-          <el-radio-group v-model="dialogAccountForm.resource">
+        <el-form-item label="请选择员工" prop="region">
+          <tree-select
+            ref="treeSelect"
+            :data="treeList" :defaultProps="defaultProps"
+            multiple nodeKey="id" :checkedKeys="treeCheckedData"
+            @popoverHide="popoverHide"
+            @change="popoverHide"></tree-select>
+        </el-form-item>
+        <el-form-item label="授权时间" prop="grandType">
+          <el-radio-group v-model="dialogAccountForm.grandType">
             <div class="radio-wap">
               <el-radio class="radioDis" label="0">时间段</el-radio>
               <el-date-picker
@@ -41,8 +49,8 @@
             <el-radio label="1">永久授权</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="描述" prop="desc">
-          <el-input class="text-input" type="textarea" maxlength="100" placeholder="100字以内" v-model="dialogAccountForm.desc"></el-input>
+        <el-form-item label="描述" prop="remark">
+          <el-input class="text-input" type="textarea" maxlength="100" placeholder="100字以内" v-model="dialogAccountForm.remark"></el-input>
         </el-form-item>
       </el-form>
     <div slot="footer" class="dialog-footer">
@@ -60,11 +68,15 @@ import { account } from '@/createData/auth-config/mixins'
 import basicMethod from '@/config/mixins'
 import { apiPageConsoleUserWhite, apiAddConsoleUserWhite, apiEditConsoleUserWhiteStatus } from '@/api/visitControl'
 import { debuglog } from 'util';
+import treeSelect from '@/components/tree-select'
+import { apiQueryDepartmentTree, apiListConsoleUser } from '@/api/staff'
 
 export default {
   mixins: [basicMethod, account],
+  components: { treeSelect },
   created () {
     this.handleGetTableData(apiPageConsoleUserWhite)
+    this.handleApiListConsoleUser()
   },
   data () {
     return {
@@ -76,35 +88,79 @@ export default {
       dialogAccountForm: {
           region: [],
           date: '',
-          resource: '0',
-          desc: ''
+          grandType: '0',
+          remark: ''
         },
          diaRules: {
           region: [
-            { required: true, message: '请选择员工', trigger: 'blur' }
-          ],
-          resource: [
             { required: true, message: '请选择授权时间', trigger: 'change' }
           ],
-          desc: [
+          grandType: [
+            { required: true, message: '请选择授权时间', trigger: 'change' }
+          ],
+          remark: [
             { required: true, message: '请填写描述内容', trigger: 'blur' }
           ]
         },
       showDialogForm1: false,
-      checkArr: []
-    }
-  },
-  watch: {
-    dialogAccountForm: {
-      handler (newValue,oldValue) {
-        if (newValue.region.length > 0) {
-          this.$refs['dialogAccountForm'].clearValidate();
-        }
+      checkArr: [],
+      defaultProps: {
+        children: 'childIdList',
+        label: 'departmentName'
       },
-      deep:true,
+      treeList: [],
+      treeCheckedData: [],
+      consoleUserIds: [],
+      saveDataId: '' 
     }
   },
   methods: {
+    // 查询系统用户列表
+    handleApiListConsoleUser () {
+      let list = []
+      let treeList = []
+      let params = {
+        isWhole: true,
+        hasStop: true
+      }
+      apiListConsoleUser({
+        pageSize: 0,
+        currentPage: 0
+      }).then(res => {
+        if (res.code === '208999') {
+          list = res.resultMap.page.list
+          list.map(item => {
+            item.parentId = item.departmentId
+            item.departmentName = item.realName
+            item.id = 'a' + item.id
+          })
+          apiQueryDepartmentTree(params).then(res => {
+            if (res.code === '208999') {
+              treeList = res.resultMap.data
+              this.treeList = this.$disposeTreeData(treeList.concat(list))
+            } else {
+              this.$message.error(res.message)
+            }
+          })
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+    },
+    // 员工选择
+    popoverHide (checkedIds, checkedData) {
+      let list = checkedIds.filter(item => {
+        if (typeof item === 'string' && item.includes('a')) {
+          return item
+        }
+      })
+      this.$refs.treeSelect.selectedData = list
+      list = list.map(item => {
+        return item.replace(/a/g, '')
+      })
+      this.consoleUserIds = list
+      this.dialogAccountForm.region = list
+    },
     // 确认消息
     handleConfirmInfo (fnName, txt) {
       this.confirmFn = fnName
@@ -116,15 +172,24 @@ export default {
       this.showDialogForm1 = true
     },
     // 批量表格失效按钮
-    handleInvalid () {
+    handleInvalidPl () {
       this.chooseDataArr.forEach((item) => {
         this.checkArr.push(item.id)
       })
+      this.handleConfirmInfo('handleBatchFirmPl', '此操作不可逆，是否确认操作?')
+    },
+    // 表格失效按钮
+    handleInvalid (row) {
+      this.saveDataId = row.id
       this.handleConfirmInfo('handleBatchFirm', '此操作不可逆，是否确认操作?')
     },
     // 批量表格失效确认按钮
+    handleBatchFirmPl () {
+      this.apiEditData(apiEditConsoleUserWhiteStatus, {ids: this.checkArr, isDelete: 1}, apiPageConsoleUserWhite)
+    },
+    // 表格失效确认按钮
     handleBatchFirm () {
-      this.apiEditData(apiEditConsoleUserWhiteStatus, {ids: this.checkArr, isDelete: 0}, apiPageConsoleUserWhite)
+      this.apiEditData(apiEditConsoleUserWhiteStatus, {ids: [this.saveDataId], isDelete: 1}, apiPageConsoleUserWhite)
     },
     handleSelectChange (row) {
       if (row.isDelete === '1') {
@@ -139,13 +204,26 @@ export default {
         if (valid) {
           let startTime = this.dialogAccountForm.date[0]
           let endTime = this.dialogAccountForm.date[1]
-          if (!startTime) {
+          if (!startTime && this.dialogAccountForm.grandType === '0') {
             this.$message({type: 'error', message: '请选择时间'})
             return false
           } else {
             this.editData.grandBegin = startTime
             this.editData.grandEnd = endTime
-            this.apiCreateData(apiAddConsoleUserWhite, this.editData, apiPageConsoleUserWhite)
+            this.editData.remark = this.dialogAccountForm.remark
+            this.editData.grandType = this.dialogAccountForm.grandType
+            this.editData.consoleUserIds = this.consoleUserIds
+            apiAddConsoleUserWhite(this.editData).then(res => {
+              if (res.code === '208999') {
+                this.$message.success('添加成功')
+                this.handleGetTableData(apiPageConsoleUserWhite)
+                this.dialogAccountForm = {}
+                this.consoleUserIds = []
+                this.showDialogForm1 = false
+              } else {
+                this.$message.error(res.message)
+              }
+            })
           }
         } else {
           return false;
