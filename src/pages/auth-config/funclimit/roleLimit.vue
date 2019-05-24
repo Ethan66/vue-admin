@@ -78,6 +78,8 @@
       :dialogTitle="typeDialogTitle"
       :dialogBtn="typeDialogBtn"
     />
+    <dialog-confirm
+      :confirmContent="confirmContent" :showDialogForm.sync="confrimDiaShow" :confirmFn="confirmFn"/>
   </div>
 </template>
 
@@ -121,7 +123,11 @@ export default {
         permissionList: [
           { menuId: '', objectIdList: [], buttonIdList: [] }
         ]
-      }
+      },
+      confirmContent: '',
+      confrimDiaShow: false,
+      confirmFn: '',
+      delId: ''
     }
   },
   watch: {
@@ -177,14 +183,9 @@ export default {
       this.isEdit = false
       this.typeDialogVisible = true
     },
-    // 删除角色分类
     handleDelClass (row) {
-      this.$confirm('确认删除该分类吗？删除后该分类下所有角色将自动归到未分类角色中。', '温馨提醒', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消'
-      }).then(() => {
-        this.handleApiDelConsoleRole(row.id)
-      })
+      this.delId = row.id
+      this.handleConfirmInfo('确认删除该分类吗？删除后该分类下所有角色将自动归到未分类角色中。', 'handleApiDelConsoleRole')
     },
     // 编辑角色
     handleEditRole (row) {
@@ -203,7 +204,7 @@ export default {
       this.typeDialogTitle = '新建角色'
       this.isEdit = false
       this.formItem = initRoleFormItem.concat([
-        { label: '复制角色权限', key: 'roleLimit', type: 'selectDouble', options: [] }
+        { label: '复制角色权限', key: 'cloneRoleIds', type: 'selectDouble', options: [] }
       ])
       this.handleGetClassify()
       this.handleApiGetAllRoleRequestTree()
@@ -211,12 +212,8 @@ export default {
     },
     // 删除角色
     handleDelRole (row) {
-      this.$confirm('确认删除该角色？删除角色后，本角色下员工所具有的权限会受到影响。', '温馨提醒', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消'
-      }).then(() => {
-        this.handleApiDelConsoleRole(row.id)
-      })
+      this.delId = row.id
+      this.handleConfirmInfo('确认删除该角色？删除角色后，本角色下员工所具有的权限会受到影响。', 'handleApiDelConsoleRole')
     },
     // 选中角色
     handleClickRole (type, item) {
@@ -376,7 +373,12 @@ export default {
           this.$message.error(res.message)
         }
       })
-    }
+    },
+    handleConfirmInfo (txt, fnName) {
+      this.confirmContent = txt
+      this.confirmFn = fnName
+      this.confrimDiaShow = true
+    },
   }
 }
 </script>

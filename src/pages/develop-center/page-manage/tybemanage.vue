@@ -17,9 +17,9 @@
       @table-jump="handleJump"
       >
       <div class="btn-content" slot="btn">
-        <el-button @click="handleFastCreate">快速生成</el-button>
-        <el-button @click="handleHandAdd">手动添加</el-button>
-        <el-button @click="handleDelete">删除</el-button>
+        <el-button @click="handleFastCreate" v-if="$showBtn('tybe-fast-create')">{{ $getBtnName('tybe-fast-create') }}</el-button>
+        <el-button @click="handleHandAdd" v-if="$showBtn('tybe-hand-create')">{{ $getBtnName('tybe-hand-create') }}</el-button>
+        <el-button @click="handleDelete" v-if="$showBtn('tybe-hand-delete')">{{ $getBtnName('tybe-hand-delete') }}</el-button>
         <el-button @click="$router.push({ path: '/main/develop-center/menu-manage/newpage' })">返回列表</el-button>
       </div>
     </table-module>

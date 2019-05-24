@@ -72,7 +72,7 @@ function handleSpecialError (response) {
     return true
   }
   // 用户登录过期或登录失效
-  if (res.code === '211100') {
+  if (res.code === '211100' || res.code === '211207') {
     MessageBox.confirm(
       '你已被登出，可以取消继续留在该页面，或者重新登录',
       '确定登出',

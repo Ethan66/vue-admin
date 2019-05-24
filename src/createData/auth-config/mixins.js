@@ -1,6 +1,7 @@
 import { basicInitObj } from '@/components/basicObj'
 import { setBtnConfig } from '@/components/methods'
 import { buttonTest, ipTableItem, accountTableItem } from '@/test/auth-config'
+import { showBtn, getBtnName } from '@/components/methods'
 
 const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
 
@@ -119,15 +120,15 @@ export const account = {
 
 // 组织架构
 const organizationMoreList = [
-  { name: '新建平级部门', clickFn: 'handleCreateDepartment' },
-  { name: '新建下级部门', clickFn: 'handleCreateNextLevelDepartment' },
-  { name: '停用', clickFn: 'handleStop' },
-  { name: '删除', clickFn: 'handleDeleteData' }
+  { name: getBtnName('organization-add-same-level'), clickFn: 'handleCreateDepartment', show: showBtn('organization-add-same-level') },
+  { name: getBtnName('organization-add-next-level'), clickFn: 'handleCreateNextLevelDepartment', show: showBtn('organization-add-next-level') },
+  { name: getBtnName('organization-stop'), clickFn: 'handleStop', show: showBtn('organization-stop') },
+  { name: getBtnName('organization-delete'), clickFn: 'handleDeleteData', show: showBtn('organization-delete') }
 ]
 
 export const organization = {
   data () {
-    return this.$setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), ['edit', { more: { list: organizationMoreList } }])
+    return this.$setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), [{ edit: { code: 'organization-edit' } }, { more: { list: organizationMoreList, code: 'organization-more' } }])
   },
   created () {
     let configSearchItem = [

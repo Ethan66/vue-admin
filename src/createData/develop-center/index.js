@@ -1,18 +1,19 @@
 import { basicInitObj, searchTableInitObj, tableInitObj } from '@/components/basicObj'
+import { showBtn, getBtnName } from '@/components/methods'
 
 const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
 
 const menuMoreList = [
-  { name: '新建平级菜单', clickFn: 'handleCreateLevelMenu' },
-  { name: '新建下级菜单', clickFn: 'handleCreateNextLevelMenu' },
-  { name: '删除', clickFn: 'handleDeleteData' },
-  { name: '详情', clickFn: 'handleShowDetailDialog' }
+  { name: getBtnName('menu-add-same-level'), clickFn: 'handleCreateLevelMenu', show: showBtn('menu-add-same-level1') },
+  { name: getBtnName('menu-add-next-level'), clickFn: 'handleCreateNextLevelMenu', show: showBtn('menu-add-next-level') },
+  { name: getBtnName('menu-delete'), clickFn: 'handleDeleteData', show: showBtn('menu-delete') },
+  { name: getBtnName('menu-detail'), clickFn: 'handleShowDetailDialog', show: showBtn('menu-detail') }
 ]
 
 // 菜单管理
 export const menu = {
   data () {
-    return this.$setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), ['edit', { more: { list: menuMoreList } }])
+    return this.$setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), [{ edit: { code: 'menu-edit-menu' } }, { more: { list: menuMoreList, code: 'menu-more' } }])
   },
   created () {
     let configSearchItem = [
@@ -74,7 +75,7 @@ export const menu = {
 // 页面管理
 export const pageManage = {
   data () {
-    return this.$setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), ['edit'])
+    return this.$setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), [{ edit: { code: 'page-edit' } }])
   },
   created () {
     let configSearchItem = [
@@ -124,7 +125,7 @@ export const pageManage = {
 // 字段管理
 export const tybeManage = {
   data () {
-    return this.$setBtnConfig(JSON.parse(JSON.stringify(searchTableInitObj)), ['edit', 'cancel', 'delete'])
+    return this.$setBtnConfig(JSON.parse(JSON.stringify(searchTableInitObj)), [{ edit: { code: 'tybe-edit' } }, { cancel: { code: 'tybe-cancel' } }, { delete: { code: 'tybe-delete' } }])
   },
   created () {
     let configSearchItem = ['fieldName', 'fieldValue']

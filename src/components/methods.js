@@ -6,15 +6,15 @@ let btnList = JSON.parse(sessionStorage.getItem('btnList'))
 // 展示按钮
 export const showBtn = (buttonCode) => {
   btnList = JSON.parse(sessionStorage.getItem('btnList'))
-  return btnList.some(item => item.buttonCode === buttonCode)
+  return btnList.some(item => item.btnCode === buttonCode)
 }
 
 // 获取按钮名称
 export const getBtnName = (buttonCode) => {
   let result = ''
   btnList.forEach(item => {
-    if (buttonCode === item.buttonCode) {
-      result = item.buttonName
+    if (buttonCode === item.btnCode) {
+      result = item.btnName
     }
   })
   return result
@@ -55,6 +55,10 @@ export const setBtnConfig = (obj, tableBtnKeys = ['edit', 'delete'], dialogBtnKe
             console.error('数组里的对象的value值必须为对象')
           }
           let config = Object.assign({}, objBtn[arr[0]], arr[1])
+          if (config.code) {
+            config.show = showBtn(config.code)
+            config.name = getBtnName(config.code)
+          }
           obj[btnType].push(config)
         } else {
           console.error('数组里的数据必须是字符串或对象')

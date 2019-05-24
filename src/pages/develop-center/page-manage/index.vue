@@ -16,10 +16,10 @@
       <div class="btn-content" slot="btn">
         <el-button @click="handleAdd">新建页面</el-button>
         <el-button @click="$router.push({ path: '/main/develop-center/menu-manage/newpage' })">跳转页面</el-button>
-        <el-button @click="handleGetMenuList">获取全部menuList</el-button>
-        <el-button @click="handleBatchCreate('page')">批量新建页面</el-button>
-        <el-button @click="handleGetPageList">获取所有页面</el-button>
-        <el-button @click="handleBatchCreate('tybe')">批量新建字段</el-button>
+        <el-button @click="handleGetMenuList" v-if="$showBtn('page-get-menu')">{{ $getBtnName('page-get-menu') }}</el-button>
+        <el-button @click="handleBatchCreate('page')" v-if="$showBtn('page-add-page-all')">{{ $getBtnName('page-add-page-all') }}</el-button>
+        <el-button @click="handleGetPageList" v-if="$showBtn('page-get-page-all')">{{ $getBtnName('page-get-page-all') }}</el-button>
+        <el-button @click="handleBatchCreate('tybe')" v-if="$showBtn('page-add-tybe-all')">{{ $getBtnName('page-add-tybe-all') }}</el-button>
       </div>
     </table-module>
     <dialog-module

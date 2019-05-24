@@ -1,18 +1,18 @@
 const config = {
   'version_3.0.0': {
     page: [
-      { menuName: '菜单管理', pageCode: 'menu-manage1', pageName: '', pageUrl: '/default-url', pageStatus: 1 },
-      { menuName: '页面管理', pageCode: 'page-manage1', pageName: '', pageUrl: '/default-url', pageStatus: 1 },
-      { menuName: '页面管理', pageCode: 'tybe-manage1', pageName: '字段管理', pageUrl: '/default-url', pageStatus: 1 },
-      { menuName: '页面管理', pageCode: 'tybe-manage2', pageName: '快速生成字段', pageUrl: '/default-url', pageStatus: 1 },
-      { menuName: '功能权限管理', pageCode: 'function-limit1', pageName: '', pageUrl: '/default-url', pageStatus: 1 },
-      { menuName: '访问控制', pageCode: 'visit-manage1', pageName: '', pageUrl: '/default-url', pageStatus: 1 },
-      { menuName: '访问控制', pageCode: 'visit-manage1', pageName: 'IP控制', pageUrl: '/default-url', pageStatus: 1 },
-      { menuName: '访问控制', pageCode: 'visit-manage1', pageName: '账户控制', pageUrl: '/default-url', pageStatus: 1 },
-      { menuName: '员工管理', pageCode: 'staff-manage1', pageName: '', pageUrl: '/default-url', pageStatus: 1 },
-      { menuName: '组织架构', pageCode: 'organization-manage1', pageName: '', pageUrl: '/default-url', pageStatus: 1 },
-      { menuName: '登录日志', pageCode: 'log-login1', pageName: '', pageUrl: '/default-url', pageStatus: 1 },
-      { menuName: '异常日志', pageCode: 'error-log1', pageName: '', pageUrl: '/default-url', pageStatus: 1 }
+      { menuName: '菜单管理', pageCode: 'menu-manage1', pageName: '', pageUrl: '/default-url', pageStatus: 0 },
+      { menuName: '页面管理', pageCode: 'page-manage1', pageName: '', pageUrl: '/default-url', pageStatus: 0 },
+      { menuName: '页面管理', pageCode: 'tybe-manage1', pageName: '字段管理', pageUrl: '/default-url', pageStatus: 0 },
+      { menuName: '页面管理', pageCode: 'tybe-manage2', pageName: '快速生成字段', pageUrl: '/default-url', pageStatus: 0 },
+      { menuName: '功能权限管理', pageCode: 'function-limit1', pageName: '', pageUrl: '/default-url', pageStatus: 0 },
+      { menuName: '访问控制', pageCode: 'visit-manage1', pageName: '', pageUrl: '/default-url', pageStatus: 0 },
+      { menuName: '访问控制', pageCode: 'visit-manage1', pageName: 'IP控制', pageUrl: '/default-url', pageStatus: 0 },
+      { menuName: '访问控制', pageCode: 'visit-manage1', pageName: '账户控制', pageUrl: '/default-url', pageStatus: 0 },
+      { menuName: '员工管理', pageCode: 'staff-manage1', pageName: '', pageUrl: '/default-url', pageStatus: 0 },
+      { menuName: '组织架构', pageCode: 'organization-manage1', pageName: '', pageUrl: '/default-url', pageStatus: 0 },
+      { menuName: '登录日志', pageCode: 'log-login1', pageName: '', pageUrl: '/default-url', pageStatus: 0 },
+      { menuName: '异常日志', pageCode: 'error-log1', pageName: '', pageUrl: '/default-url', pageStatus: 0 }
     ],
     'tybe': [
       // 菜单管理
@@ -49,7 +49,7 @@ const config = {
       { pageCode: 'organization-manage1', fieldName: '部门名称', fieldValue: 'departmentName', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
       { pageCode: 'organization-manage1', fieldName: '人数', fieldValue: 'departmentCount', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
       { pageCode: 'organization-manage1', fieldName: '类型', fieldValue: 'departmentType', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
-      { pageCode: 'organization-manage1', fieldName: '显示排序', fieldValue: 'fieldSortNo', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
+      { pageCode: 'organization-manage1', fieldName: '显示排序', fieldValue: 'sortNo', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
       { pageCode: 'organization-manage1', fieldName: '负责人', fieldValue: 'directorName', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
       { pageCode: 'organization-manage1', fieldName: '状态', fieldValue: 'departmentStatus', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
       // 登陆日志
@@ -82,6 +82,21 @@ const config = {
       { pageCode: 'visit-manage1', fieldName: '状态', fieldValue: 'isDeleteName', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
       { pageCode: 'visit-manage1', fieldName: '描述', fieldValue: 'remark', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
       { pageCode: 'visit-manage1', fieldName: '创建时间', fieldValue: 'gmtCreate', fieldRequired: 1, displayStatus: 0, setStatus: 0 }
+    ]
+  },
+  'version_2.0.0': {
+    page: [
+      { menuName: '批量菜单10-1', pageCode: 'page-test10', pageName: '', pageUrl: '/default-url', pageStatus: 1 },
+      { menuName: '批量菜单11-1', pageCode: 'page-test11', pageName: '', pageUrl: '/default-url', pageStatus: 1 },
+      { menuName: '批量菜单11-1', pageCode: 'page-test12', pageName: '批量菜单11-1-1', pageUrl: '/default-url', pageStatus: 1 },
+    ],
+    tybe: [
+      { pageCode: 'page-test10', fieldName: '名字1', fieldValue: 'name1', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
+      { pageCode: 'page-test10', fieldName: '名字2', fieldValue: 'name2', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
+      { pageCode: 'page-test11', fieldName: '名字3', fieldValue: 'name4', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
+      { pageCode: 'page-test11', fieldName: '名字4', fieldValue: 'name5', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
+      { pageCode: 'page-test12', fieldName: '名字5', fieldValue: 'name5', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
+      { pageCode: 'page-test12', fieldName: '名字6', fieldValue: 'name6', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
     ]
   }
 }

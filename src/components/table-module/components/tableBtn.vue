@@ -8,7 +8,7 @@
     :fixed="item.fixed || 'right'"
   >
   <template slot-scope="scope">
-      <template v-for="(btn, index) in tableBtn">
+      <template v-for="(btn, index) in tableBtn1">
         <template
           v-if="handleShowBtn(btn, scope.row)"
         >
@@ -76,6 +76,17 @@ export default {
     return {
       firstInit: true,
       parent: ''
+    }
+  },
+  computed: {
+    tableBtn1 () {
+      let btn = JSON.parse(JSON.stringify(this.tableBtn))
+      btn.forEach(item => {
+        if (item.list) {
+          item.list = item.list.filter(child => child.show !== false)
+        }
+      })
+      return btn
     }
   },
   methods: {

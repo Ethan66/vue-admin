@@ -37,14 +37,24 @@ const config = {
       // { menuName: '获取所有页面', menuParentName: '页面管理', code: 'page-get-page-all', menuUrl: '/pilianganniu1-1', sortNo: 1 },
       // { menuName: '批量新建字段', menuParentName: '页面管理', code: 'page-add-tybe-all', menuUrl: '/pilianganniu1-1', sortNo: 1 },
       // { menuName: '编辑', menuParentName: '页面管理', code: 'page-edit', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      // 字段管理
+      // { menuName: '快速生成', menuParentName: '页面管理', code: 'tybe-fast-create', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      // { menuName: '手动添加', menuParentName: '页面管理', code: 'tybe-hand-create', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      // { menuName: '删除', menuParentName: '页面管理', code: 'tybe-hand-delete', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      // { menuName: '返回列表', menuParentName: '页面管理', code: 'tybe-go-back', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      // { menuName: '编辑', menuParentName: '页面管理', code: 'tybe-edit', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      // { menuName: '取消', menuParentName: '页面管理', code: 'tybe-cancel', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      // { menuName: '删除', menuParentName: '页面管理', code: 'tybe-delete', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+
       // // 组织架构
       // { menuName: '新增部门', menuParentName: '组织架构', code: 'organization-add', menuUrl: '/pilianganniu1-1', sortNo: 1 },
       // { menuName: '编辑', menuParentName: '组织架构', code: 'organization-edit', menuUrl: '/pilianganniu1-1', sortNo: 1 },
       // { menuName: '更多', menuParentName: '组织架构', code: 'organization-more', menuUrl: '/pilianganniu1-1', sortNo: 1 },
-      { menuName: '新建平级部门', menuParentName: '组织架构', code: 'organization-add-same-level', menuUrl: '/pilianganniu1-1', sortNo: 1 },
-      { menuName: '新建下级部门', menuParentName: '组织架构', code: 'organization-add-next-level', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      // { menuName: '新建平级部门', menuParentName: '组织架构', code: 'organization-add-same-level', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      // { menuName: '新建下级部门', menuParentName: '组织架构', code: 'organization-add-next-level', menuUrl: '/pilianganniu1-1', sortNo: 1 },
       // { menuName: '停用', menuParentName: '组织架构', code: 'organization-stop', menuUrl: '/pilianganniu1-1', sortNo: 1 },
       // { menuName: '删除', menuParentName: '组织架构', code: 'organization-delete', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      
     ]
   }
 }
