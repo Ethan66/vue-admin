@@ -8,7 +8,7 @@ export const apiGetCode = (params) => {
 
 // 获取IP
 export const apiGetIp = (params) => {
-  return getRequest('http://myip.ipip.net', params)
+  return getRequest('//myip.ipip.net', params)
 }
 
 // 检查IP
@@ -34,4 +34,9 @@ export const apiUserLoginOut = (reqParams) => {
 // 获取菜单按钮权限
 export const apiGetUserPermissionResource = (reqParams) => {
   return postRequest(base + '/getUserPermissionResource', reqParams)
+}
+
+// 获取所有页面权限字段
+export const apiGetUserAllPermissionFields = (reqParams) => {
+  return postRequest(base + '/getUserAllPermissionFields', reqParams)
 }

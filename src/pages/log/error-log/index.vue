@@ -4,7 +4,6 @@
       class="searchContent"
       :search-item="searchItem"
       :search-values="searchValues"
-      :search-default-obj="defaultSearchObj"
       @handleSearch="handleSearch"
     />
     <table-module
@@ -29,9 +28,7 @@ export default {
     this.handleGetTableData(apiListPageLoginErrorLog)
   },
   data () {
-    return {
-      defaultSearchObj: { a: 1 }
-    }
+    return {}
   },
   methods: {
     handleSendHead (val) {
@@ -40,7 +37,7 @@ export default {
     // 处理表格数据
     handleTableData (tableData) {
       tableData.forEach(item => {
-        item.loginStatus = item.loginStatus === 1 ? '失败' : '成功'
+        // item.loginStatus = item.loginStatus === 1 ? '失败' : '成功'
       })
     }
   }

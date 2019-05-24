@@ -65,12 +65,13 @@ export const apiDeleteSysRole = (params) => {
 
 // 登陆日志
 export const apiListPageLoginLog = (params) => {
-  return postRequest(base + '/listPageLoginLog', params)
+  return postRequest('/bl/console/user/listPageLoginLog', params)
+
 }
 
 // 登陆异常日志
 export const apiListPageLoginErrorLog = (params) => {
-  return postRequest('/bl/console/api/queryConsoleLogList', params)
+  return postRequest(base + '/queryConsoleLogList', params)
 }
 
 // 组织架构

@@ -1,6 +1,8 @@
 import { basicInitObj } from '@/components/basicObj'
 import { setBtnConfig } from '@/components/methods'
-import { buttonTest, ipTableItem, accountTableItem, organizationTest } from '@/test/auth-config'
+import { buttonTest, ipTableItem, accountTableItem } from '@/test/auth-config'
+
+const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
 
 const initData = Object.assign({}, basicInitObj)
 
@@ -38,22 +40,23 @@ export const button = {
 // IP控制
 export const ipControl = {
   data () {
-    return setBtnConfig(JSON.parse(JSON.stringify(initData)), ['edit', { cancel: { name: '启 用', clickFn: 'handleOpen' } }, { cancel: { name: '停 用', clickFn: 'handleStop' } }])
+    return setBtnConfig(JSON.parse(JSON.stringify(initData)), ['edit', { cancel: { name: '启 用', clickFn: 'handleOpen', show: false } }, { cancel: { name: '停 用', clickFn: 'handleStop', show: false } }])
   },
   created () {
     let configSearchItem = [
       'addressIp',
       { isDelete:
         { type: 'select',
-          options: [{ label: '成功', value: '1' }, { label: '失败', value: '2' }]
+          label: '状态',
+          options: [{ label: '有效', value: '0' }, { label: '失效', value: '1' }]
         }
       }
     ]
     let configTableItem = {
       selection: 50,
       addressIp: 80,
-      modifier: 100,
-      isDelete: { clsName: 'isDelete', width: 100 },
+      creater: 80,
+      isDelete: { clsName: 'isDelete', width: 80 },
       remark: 100,
       gmtCreate: 160,
       btn: 120
@@ -86,26 +89,27 @@ export const ipControl = {
 // 账户控制
 export const account = {
   data () {
-    return setBtnConfig(JSON.parse(JSON.stringify(initData)), [{ cancel: { name: '失 效', clickFn: 'handleInvalid' } }])
+    return setBtnConfig(JSON.parse(JSON.stringify(initData)), [{ cancel: { name: '失 效', clickFn: 'handleInvalid', show: false } }])
   },
   created () {
     let configSearchItem = [
-      'id',
-      { buttonMenuName:
+      'userRealName',
+      { isDelete:
         { type: 'select',
-          options: [{ label: '成功', value: '1' }, { label: '失败', value: '2' }]
+          label: '状态',
+          options: [{ label: '有效', value: '0' }, { label: '失效', value: '1' }]
         }
       }
     ]
     let configTableItem = {
-      selection: 80,
-      id: 80,
-      buttonName: 200,
-      buttonMenuName: 100,
-      buttonCode: 100,
-      gmtCreate: 200,
-      gmtModified: 80,
-      isDelete: 80,
+      selection: 50,
+      userRealName: 60,
+      departmentName: 80,
+      createrName: 80,
+      gmtModified: 120,
+      remark: 100,
+      isDeleteMsg: { clsName: 'isDeleteMsg', width: 80 },
+      gmtCreate: 160,
       btn: 70
     }
     this.searchItem = this.$setItem(accountTableItem, configSearchItem, 'search')
@@ -126,7 +130,6 @@ export const organization = {
     return this.$setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), ['edit', { more: { list: organizationMoreList } }])
   },
   created () {
-    this.tybeArr = organizationTest
     let configSearchItem = [
       'departmentName',
       { departmentStatus: { type: 'select', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }] } }
@@ -156,9 +159,9 @@ export const organization = {
       'sortNo', 'directorName',
       { departmentStatus: { type: 'radio', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }] } }
     ]
-    this.searchItem = this.$setItem(organizationTest, configSearchItem, 'search')
-    this.tableItem = this.$setItem(organizationTest, configTableItem, 'table')
-    let dialogItem = this.dialogItem = this.$setItem(organizationTest, configDialogItem, 'dialog')
+    this.searchItem = this.$setItem(tybeObj['organization-manage1'], configSearchItem, 'search')
+    this.tableItem = this.$setItem(tybeObj['organization-manage1'], configTableItem, 'table')
+    let dialogItem = this.dialogItem = this.$setItem(tybeObj['organization-manage1'], configDialogItem, 'dialog')
     this.rules = {
       departmentName: [
         { required: true, message: dialogItem[1].placeholder, trigger: 'blur' }
@@ -170,7 +173,7 @@ export const organization = {
         { required: true, message: dialogItem[3].placeholder, trigger: 'blur' }
       ],
       departmentStatus: [
-        { required: true, message: dialogItem[5].placeholder, trigger: 'change' }
+        { required: true, message: dialogItem[4].placeholder, trigger: 'change' }
       ]
     }
   }

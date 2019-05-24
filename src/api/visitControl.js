@@ -17,6 +17,11 @@ export const apiAddIpWhite = (params) => {
   return postRequest(base + '/addIpWhite', params)
 }
 
+// 新增ip授权列表
+export const apiEditIpWhiteStatus = (params) => {
+  return postRequest(base + '/editIpWhiteStatus', params)
+}
+
 // 新增/修改账户授权
 export const apiAddConsoleUserWhite = (params) => {
   return postRequest(base + '/addConsoleUserWhite', params)

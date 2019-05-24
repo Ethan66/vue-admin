@@ -4,7 +4,6 @@
       class="searchContent"
       :search-item="searchItem"
       :search-values="searchValues"
-      :search-default-obj="defaultSearchObj"
       @handleSearch="handleSearch"
     />
     <table-module
@@ -22,13 +21,6 @@
     </table-module>
     <el-dialog title="添加授权" :visible.sync="showDialogForm1" class="dialogModule" :close-on-click-modal="false">
       <el-form :model="dialogAccountForm" :rules="diaRules" ref="dialogAccountForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="请选择员工" ref="region" prop="region">
-          <tree-select :data="dialogData"
-                 :selectedData="dialogAccountForm.region"
-                 :defaultProps="defaultProps" multiple
-                 :nodeKey="nodeKey" :checkedKeys="defaultCheckedKeys"
-                 @popoverHide="popoverHide"></tree-select>
-        </el-form-item>
         <el-form-item label="授权时间" prop="resource">
           <el-radio-group v-model="dialogAccountForm.resource">
             <div class="radio-wap">
@@ -63,97 +55,16 @@
 <script>
 import { account } from '@/createData/auth-config/mixins'
 import basicMethod from '@/config/mixins'
-import treeSelect from '@/components/tree-select'
-import { apiDeleteSysButton, apiEditeSysButton, apiListSysButton, apiCreateSysButton } from '@/api/authority'
-import { truncate } from 'fs';
+import { apiPageConsoleUserWhite, apiAddConsoleUserWhite } from '@/api/visitControl'
+import { debuglog } from 'util';
 
 export default {
   mixins: [basicMethod, account],
-  components: { treeSelect },
   created () {
-    this.handleGetTableData(apiListSysButton)
+    this.handleGetTableData(apiPageConsoleUserWhite)
   },
   data () {
     return {
-      dialogData: [{
-          menuId: 1,
-          menuName: '霖梓网络',
-          childrenList: [{
-            menuId: '1-1',
-            menuName: '百凌事业部',
-            childrenList: [{
-              menuId: '1-1-1',
-              menuName: '前端'
-            },{
-              menuId: '1-1-2',
-              menuName: '后端'
-            },{
-              menuId: '1-1-3',
-              menuName: '产品'
-            },{
-              menuId: '1-1-4',
-              menuName: '运营'
-            },{
-              menuId: '1-1-5',
-              menuName: '运维'
-            }]
-          },{
-            menuId: '1-2',
-            menuName: '联通事业部',
-            childrenList: [{
-              menuId: '1-2-1',
-              menuName: '前端'
-            },{
-              menuId: '1-2-2',
-              menuName: '后端'
-            },{
-              menuId: '1-2-3',
-              menuName: '测试'
-            },{
-              menuId: '1-2-4',
-              menuName: '产品'
-            },{
-              menuId: '1-2-5',
-              menuName: '运营'
-            },{
-              menuId: '1-2-6',
-              menuName: '运维'
-            }]
-          }]
-        }, {
-          menuId: 2,
-          menuName: '霖扬网络',
-          childrenList: [{
-            menuId: '2-1',
-            menuName: 'in有',
-            childrenList: [{
-              menuId: '2-1-1',
-              menuName: '前端'
-            },{
-              menuId: '2-1-2',
-              menuName: '后端'
-            },{
-              menuId: '2-1-3',
-              menuName: '运维'
-            },{
-              menuId: '2-1-4',
-              menuName: '运营'
-            }]
-          }, {
-            menuId: '2-2',
-            menuName: '二级 2-2',
-            childrenList: [{
-              menuId: '2-2-1',
-              menuName: '三级 2-2-1'
-            }]
-          }]
-        }],
-      defaultProps: {
-        children: 'childrenList',
-        label: 'menuName'
-      },
-      nodeKey: 'menuId',
-      defaultCheckedKeys: ["1-1-1", "1-1-2"],
       pickerOptions0: {
         disabledDate (time) {
           return time.getTime() <= Date.now() - 8.64e7
@@ -176,8 +87,7 @@ export default {
             { required: true, message: '请填写描述内容', trigger: 'blur' }
           ]
         },
-      showDialogForm1: false,
-      defaultSearchObj: { a: 1 }
+      showDialogForm1: false
     }
   },
   watch: {
@@ -191,14 +101,6 @@ export default {
     }
   },
   methods: {
-    popoverHide (checkedIds, checkedData) {
-      this.dialogAccountForm.region = checkedIds
-      console.log(checkedIds);
-      console.log(checkedData);
-    },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      },
     // 点击新增按钮
     handleAdd () {
       this.showDialogForm1 = true
@@ -210,19 +112,21 @@ export default {
     // 点击对话框确认按钮
     handleSubmit (formName) {
       this.$refs[formName].validate((valid) => {
-          if (valid) {
-            let startTime = this.dialogAccountForm.date[0]
-            let endTime = this.dialogAccountForm.date[1]
-            if (!startTime) {
-              this.$message({type: 'error', message: '请选择时间'})
-              return false
-            } else {
-              console.log(this.dialogAccountForm)
-            }
+        if (valid) {
+          let startTime = this.dialogAccountForm.date[0]
+          let endTime = this.dialogAccountForm.date[1]
+          if (!startTime) {
+            this.$message({type: 'error', message: '请选择时间'})
+            return false
           } else {
-            return false;
+            this.editData.grandBegin = startTime
+            this.editData.grandEnd = endTime
+            this.apiCreateData(apiAddConsoleUserWhite, this.editData, apiPageConsoleUserWhite)
           }
-        })
+        } else {
+          return false;
+        }
+      })
     },
     handleCancel () {
       this.showDialogForm1 = false
@@ -233,7 +137,10 @@ export default {
     // 处理表格数据
     handleTableData (tableData) {
       tableData.forEach(item => {
-        item.isDelete = item.isDelete === '0' ? '有效' : '无效'
+        item.showBtn = []
+        if (item.isDelete === '0') {
+          item.showBtn.push('失 效')
+        }
       })
     }
   }

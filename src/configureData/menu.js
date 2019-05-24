@@ -29,7 +29,7 @@ const config = {
       { menuName: '组织架构', menuParentName: '权限管理', code: 'organization', menuUrl: '/auth-config/organization/index', sortNo: 1 },
       { menuName: '员工管理', menuParentName: '权限管理', code: 'staff-manage', menuUrl: '/auth-config/staff/index', sortNo: 2 },
       { menuName: '功能权限管理', menuParentName: '权限管理', code: 'config-manage', menuUrl: '/auth-config/funclimit/index', sortNo: 3 },
-      { menuName: '访问控制', menuParentName: '权限管理', code: 'visit-config', menuUrl: '/auth-config/visit-control/ip-control', sortNo: 4 },
+      { menuName: '访问控制', menuParentName: '权限管理', code: 'visit-config', menuUrl: '/auth-config/visit-control/ip-control/index', sortNo: 4 },
       // 开发中心
       { menuName: '菜单管理', menuParentName: '开发中心', code: 'menu-manage', menuUrl: '/develop-center/menu-manage/index', sortNo: 1 },
       { menuName: '页面管理', menuParentName: '开发中心', code: 'page-manage', menuUrl: '/develop-center/page-manage/index', sortNo: 2 },

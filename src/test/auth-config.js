@@ -32,19 +32,21 @@ export const staffTest = [
 ]
 
 export const ipTableItem = [
-  { label: 'IP地址', key: 'addressIp', displayStatus: 0, setStatus: 1, fieldSort: 1, fix: 1 },
-  { label: '创建人', key: 'modifier', displayStatus: 0, setStatus: 1, fieldSort: 2, fix: 0 },
-  { label: '状态', key: 'isDelete', displayStatus: 0, setStatus: 1, fieldSort: 3, fix: 0 },
-  { label: '描述', key: 'remark', displayStatus: 0, setStatus: 4, fieldSort: 5, fix: 0 },
-  { label: '创建时间', key: 'gmtCreate', displayStatus: 0, setStatus: 1, fieldSort: 5, fix: 0 }
+  { label: 'IP地址', key: 'addressIp', hide: 0, canSet: 1, sort: 1, fix: 1 },
+  { label: '创建人', key: 'creater', hide: 0, canSet: 1, sort: 2, fix: 0 },
+  { label: '状态', key: 'isDeleteName', hide: 0, canSet: 1, sort: 3, fix: 0 },
+  { label: '描述', key: 'remark', hide: 0, canSet: 4, sort: 5, fix: 0 },
+  { label: '创建时间', key: 'gmtCreate', hide: 0, canSet: 1, sort: 5, fix: 0 }
 ]
 
 export const accountTableItem = [
-  { label: 'IP地址', key: 'addressIp', displayStatus: 0, setStatus: 1, fieldSort: 1, fix: 1 },
-  { label: '创建人', key: 'modifier', displayStatus: 0, setStatus: 1, fieldSort: 2, fix: 0 },
-  { label: '状态', key: 'isDelete', displayStatus: 0, setStatus: 1, fieldSort: 3, fix: 0 },
-  { label: '描述', key: 'remark', displayStatus: 0, setStatus: 4, fieldSort: 5, fix: 0 },
-  { label: '创建时间', key: 'gmtCreate', displayStatus: 0, setStatus: 1, fieldSort: 5, fix: 0 }
+  { label: '姓名', key: 'userRealName', hide: 0, canSet: 1, sort: 1, fix: 1 },
+  { label: '部门', key: 'departmentName', hide: 0, canSet: 1, sort: 2, fix: 0 },
+  { label: '创建人', key: 'createrName', hide: 0, canSet: 1, sort: 3, fix: 0 },
+  { label: '授权时间', key: 'gmtModified', hide: 0, canSet: 4, sort: 5, fix: 0 },
+  { label: '描述', key: 'remark', hide: 0, canSet: 1, sort: 5, fix: 0 },
+  { label: '状态', key: 'isDeleteMsg', hide: 0, canSet: 4, sort: 5, fix: 0 },
+  { label: '创建时间', key: 'gmtCreate', hide: 0, canSet: 1, sort: 5, fix: 0 }
 ]
 
 export const organizationTest = [
