@@ -22,11 +22,15 @@ export const apiEditIpWhiteStatus = (params) => {
   return postRequest(base + '/editIpWhiteStatus', params)
 }
 
-// 新增/修改账户授权
+// 新增账户授权
 export const apiAddConsoleUserWhite = (params) => {
   return postRequest(base + '/addConsoleUserWhite', params)
 }
 
+// 修改账户授权
+export const apiEditConsoleUserWhiteStatus = (params) => {
+  return postRequest(base + '/editConsoleUserWhiteStatus', params)
+}
 // 账户授权列表
 export const apiPageConsoleUserWhite = (params) => {
   return postRequest(base + '/pageConsoleUserWhite', params)

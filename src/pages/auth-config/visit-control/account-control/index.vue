@@ -11,6 +11,7 @@
       :table-item="tableItem"
       :table-btn="tableBtn"
       :table-pages="tablePages"
+      :selectableFn="handleSelectChange"
       @handleSendHead="handleSendHead"
       @table-jump="handleJump">
       <div class="btn-content" slot="btn">
@@ -49,13 +50,15 @@
       <el-button type="primary" @click="handleSubmit('dialogAccountForm')">确定</el-button>
     </div>
   </el-dialog>
+    <dialog-confirm
+      :confirmContent="confirmContent" :showDialogForm.sync="confrimDiaShow" :confirmFn="confirmFn"/>
   </div>
 </template>
 
 <script>
 import { account } from '@/createData/auth-config/mixins'
 import basicMethod from '@/config/mixins'
-import { apiPageConsoleUserWhite, apiAddConsoleUserWhite } from '@/api/visitControl'
+import { apiPageConsoleUserWhite, apiAddConsoleUserWhite, apiEditConsoleUserWhiteStatus } from '@/api/visitControl'
 import { debuglog } from 'util';
 
 export default {
@@ -87,7 +90,8 @@ export default {
             { required: true, message: '请填写描述内容', trigger: 'blur' }
           ]
         },
-      showDialogForm1: false
+      showDialogForm1: false,
+      checkArr: []
     }
   },
   watch: {
@@ -101,13 +105,33 @@ export default {
     }
   },
   methods: {
+    // 确认消息
+    handleConfirmInfo (fnName, txt) {
+      this.confirmFn = fnName
+      this.confirmContent = txt
+      this.confrimDiaShow = true
+    },
     // 点击新增按钮
     handleAdd () {
       this.showDialogForm1 = true
     },
-    // 点击表格失效按钮
+    // 批量表格失效按钮
     handleInvalid () {
-      console.log('失效')
+      this.chooseDataArr.forEach((item) => {
+        this.checkArr.push(item.id)
+      })
+      this.handleConfirmInfo('handleBatchFirm', '此操作不可逆，是否确认操作?')
+    },
+    // 批量表格失效确认按钮
+    handleBatchFirm () {
+      this.apiEditData(apiEditConsoleUserWhiteStatus, {ids: this.checkArr, isDelete: 0}, apiPageConsoleUserWhite)
+    },
+    handleSelectChange (row) {
+      if (row.isDelete === '1') {
+        return false
+      } else {
+        return true
+      }
     },
     // 点击对话框确认按钮
     handleSubmit (formName) {
