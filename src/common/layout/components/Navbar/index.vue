@@ -15,12 +15,25 @@
         <i class="iconfont ad-user"></i> {{ userName }}<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item class="width100">修改密码</el-dropdown-item>
+        <el-dropdown-item class="width100">
+          <span @click="changePassword">修改密码</span>
+        </el-dropdown-item>
         <el-dropdown-item>
           <span @click="logout" class="width100">退出</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
+    <dialog-confirm
+      :confirmContent="confirmContent" :showDialogForm.sync="confrimDiaShow" :confirmFn="confirmFn"/>
+    <dialog-module
+      ref="dialog"
+      dialogTitle="修改密码"
+      :showDialogForm.sync="showDialogForm"
+      :editData="formData"
+      :dialogItem="formItem"
+      :dialogBtn="dialogBtn"
+      :rules="rules"
+    />
   </div>
 </template>
 
@@ -30,7 +43,32 @@ import { apiUserLoginOut } from '@/api/login'
 export default {
   data () {
     return {
-      userName: ''
+      userName: '',
+      confirmContent: '',
+      confirmFn: '',
+      confrimDiaShow: false,
+      showDialogForm: false,
+      formData: {},
+      formItem: [
+        { password: { label: '原密码', type: 'input' } },
+        { newPassword: { label: '新密码', type: 'input' } },
+        { checkNewPassword: { label: '确认密码', type: 'input' } },
+      ],
+      dialogBtn: [
+        { name: '取消', show: true, disabled: false },
+        { name: '确认', show: true, disabled: false, clickFn: '' }
+      ],
+      rules: {
+        password: [
+          { required: true, message: '请输入原密码', trigger: 'blur' }
+        ],
+        newPassword: [
+          { required: true, message: '请输入新密码', trigger: 'blur' }
+        ],
+        checkNewPassword: [
+          { required: true, message: '请输入确认密码', trigger: 'blur' }
+        ]
+      }
     }
   },
   watch: {
@@ -97,19 +135,25 @@ export default {
         }
       }
     },
+    changePassword () {
+      this.showDialogForm = true
+    },
     logout () {
-      this.$confirm(`确定退出?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        apiUserLoginOut().then((res) => {
-          if (res.code === '208999') {
-            sessionStorage.removeItem('userInfo')
-            this.$router.push({ path: '/login' })
-          }
-        })
-      }).catch(() => {})
+      this.handleConfirmInfo('handleApiUserLoginOut', '确定退出?')
+    },
+    handleApiUserLoginOut () {
+      apiUserLoginOut().then((res) => {
+        if (res.code === '208999') {
+          sessionStorage.removeItem('userInfo')
+          this.$router.push({ path: '/login' })
+        }
+      })
+    },
+    // 确认消息
+    handleConfirmInfo (fnName, txt) {
+      this.confirmFn = fnName
+      this.confirmContent = txt
+      this.confrimDiaShow = true
     }
   }
 }

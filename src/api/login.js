@@ -1,6 +1,6 @@
 import { getRequest, postRequest } from '@/config/network'
 const base = '/bl/console/api'
-
+const baseuser = '/bl/console/user'
 // 获取验证码
 export const apiGetCode = (params) => {
   return postRequest('/bl/console/user/getVerificationCode', params)
@@ -28,7 +28,7 @@ export const apiGetSmsCode = (reqParams) => {
 
 // 登出
 export const apiUserLoginOut = (reqParams) => {
-  return postRequest(base + '/userLoginOut', reqParams)
+  return postRequest(baseuser + '/userLoginOut', reqParams)
 }
 
 // 获取菜单按钮权限
