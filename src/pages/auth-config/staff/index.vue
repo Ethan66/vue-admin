@@ -308,7 +308,7 @@ export default {
       return cloneData.filter(father => { // 循环所有项，并添加children属性
         let branchArr = cloneData.filter(child => father.id === child.parentId) // 返回每一项的子级数组
         father.childIdList = branchArr.length > 0 ? branchArr : [] // 给父级添加一个children属性，并赋值
-        return father.parentId === 1 // 返回第一层
+        return father.parentId === 0 // 返回第一层
       })
     }
   },

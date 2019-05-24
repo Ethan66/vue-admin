@@ -123,7 +123,7 @@ export default {
           } catch (error) { console.log('ipAddress' + error) }
         }
       }).then(() => {
-        apiCheckIp({ loginIp: this.ip, ipAddress: this.ipAddress, operatingSystem: systemObj.system, terminal: systemObj.browser }).then(res => {
+        apiCheckIp({ loginIp: this.ip, operatingSystem: systemObj.system, terminal: systemObj.browser }).then(res => {
           if (res.code === '208999') {
             this.ipIsTrue = res.resultMap.data
           }
@@ -165,6 +165,7 @@ export default {
           let params = Object.assign({}, this.loginForm)
           params.password = MD5(params.password)
           params.loginIp = this.ip
+          params.ipAdress = this.ipAddress, 
           params.operatingSystem = this.systemObj.system
           params.terminal = this.systemObj.browser
           apiUserLogin(params).then(res => {
