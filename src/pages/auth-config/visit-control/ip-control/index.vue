@@ -16,8 +16,8 @@
       <div class="btn-content" slot="btn">
         <span v-if="chooseDataArr.length > 0">已选择 <i>{{ chooseDataArr.length }}</i> 条</span>
         <el-button @click="handleAdd" v-if="chooseDataArr.length < 1">添加IP</el-button>
-        <el-button @click="handleBatchOpen" v-if="chooseDataArr.length > 0">启 用</el-button>
-        <el-button @click="handleBatchStop" v-if="chooseDataArr.length > 0">停 用</el-button>
+        <el-button @click="handleBatchOpen" v-if="chooseDataArr.length > 0 && selectFlag">启 用</el-button>
+        <el-button @click="handleBatchStop" v-if="chooseDataArr.length > 0 && !selectFlag">停 用</el-button>
       </div>
     </table-module>
     <dialog-module
@@ -45,7 +45,25 @@ export default {
     this.handleGetTableData(apiListSysIpWhite)
   },
   data () {
-    return {}
+    return {
+      selectFlag: false
+    }
+  },
+  watch: {
+    chooseDataArr (val) {
+      if (this.chooseDataArr[0].isDelete === '0') {
+        this.selectFlag = false
+      } else {
+        this.selectFlag = true
+      }
+      console.log(this.chooseDataArr)
+      if (selectFlag) {
+
+      }
+      if (!selectFlag) {
+
+      }
+    }
   },
   methods: {
     // 点击新增按钮
