@@ -1,6 +1,25 @@
 import { tableBtn, dialogBtn } from './table-module/config/defaultBtnData'
 import { SetItem } from './constructFn'
 
+let btnList = JSON.parse(sessionStorage.getItem('btnList'))
+
+// 展示按钮
+export const showBtn = (buttonCode) => {
+  btnList = JSON.parse(sessionStorage.getItem('btnList'))
+  return btnList.some(item => item.buttonCode === buttonCode)
+}
+
+// 获取按钮名称
+export const getBtnName = (buttonCode) => {
+  let result = ''
+  btnList.forEach(item => {
+    if (buttonCode === item.buttonCode) {
+      result = item.buttonName
+    }
+  })
+  return result
+}
+
 // 初始化编辑数据
 export const initEditData = (dialogItem) => {
   try {

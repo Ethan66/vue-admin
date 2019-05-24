@@ -91,7 +91,7 @@ export default {
     }
   },
   created () {
-    this.userName = JSON.parse(sessionStorage.getItem('userInfo')).consoleName
+    this.userName = JSON.parse(localStorage.getItem('userInfo')).consoleName
     if (!this.mainActivedTab.name) {
       this.mainActivedTab = JSON.parse(sessionStorage.getItem('mainActivedTab')) || {}
       this.mainTabs = this.mainActivedTab.name ? [].concat(this.mainActivedTab) : []
