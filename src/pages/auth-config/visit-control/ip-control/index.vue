@@ -4,8 +4,6 @@
       class="searchContent"
       :search-item="searchItem"
       :search-values="searchValues"
-      :search-default-obj="defaultSearchObj"
-      :searchDefaultObj="searchDefaultObj"
       @handleSearch="handleSearch"
     />
     <table-module
@@ -39,7 +37,7 @@
 <script>
 import { ipControl } from '@/createData/auth-config/mixins'
 import basicMethod from '@/config/mixins'
-import { apiListSysIpWhite, apiEditIpWhite, apiAddIpWhite } from '@/api/visitControl'
+import { apiListSysIpWhite, apiEditIpWhite, apiAddIpWhite, apiEditIpWhiteStatus } from '@/api/visitControl'
 
 export default {
   mixins: [basicMethod, ipControl],
@@ -47,10 +45,7 @@ export default {
     this.handleGetTableData(apiListSysIpWhite)
   },
   data () {
-    return {
-      defaultSearchObj: { a: 1 },
-      saveTableData: {}
-    }
+    return {}
   },
   methods: {
     // 点击新增按钮
@@ -87,43 +82,48 @@ export default {
     // 点击表格启用
     handleOpen (row) {
       this.saveTableData = row
-      this.handleConfirmInfo('handleOpenConfirm', '此操作不可逆，是否确认操作此操作不可逆，是否确认操作此操作不可逆，是否确认操作?')
+      this.handleConfirmInfo('handleOpenConfirm', '此操作不可逆，是否确认操作?')
     },
     // 点击批量启用按钮
     handleBatchOpen () {
-      this.handleConfirmInfo('handleBatchOpenFirm', '此操作不可逆，是否确认操作此操作不可逆，是否确认操作此操作不可逆，是否确认操作?')
+      this.handleConfirmInfo('handleBatchOpenFirm', '此操作不可逆，是否确认操作?')
     },
     // 批量启用确认按钮
     handleBatchOpenFirm () {
       console.log(this.chooseDataArr)
+      this.saveTableData.isDelete = 0
+      this.apiEditData(apiEditIpWhiteStatus, this.saveTableData, apiListSysIpWhite)
     },
     // 点击批量停止按钮
     handleBatchStop () {
-      this.handleConfirmInfo('handleBatchStopFirm', '此操作不可逆，是否确认操作此操作不可逆，是否确认操作此操作不可逆，是否确认操作?')
+      this.handleConfirmInfo('handleBatchStopFirm', '此操作不可逆，是否确认操作?')
     },
     // 批量停止确认按钮
     handleBatchStopFirm () {
-      console.log(this.chooseDataArr)
+      this.saveTableData.isDelete = 1
+      this.apiEditData(apiEditIpWhiteStatus, this.saveTableData, apiListSysIpWhite)
     },
     // 表格停用按钮
     handleStop (val) {
       this.saveTableData = val
-      this.handleConfirmInfo('handleStopConfirm', '此操作不可逆，是否确认操作此操作不可逆，是否确认操作此操作不可逆，是否确认操作?')
+      this.handleConfirmInfo('handleStopConfirm', '此操作不可逆，是否确认操作?')
     },
     // 启用弹窗确认按钮
     handleOpenConfirm () {
-      console.log(this.saveTableData, '启用')
+      this.saveTableData.isDelete = 0
+      this.apiEditData(apiEditIpWhite, this.saveTableData, apiListSysIpWhite)
     },
-    // 停用按钮
+    // 停用按钮确认
     handleStopConfirm () {
-      console.log(this.saveTableData, '停用')
+      this.saveTableData.isDelete = 1
+      this.apiEditData(apiEditIpWhite, this.saveTableData, apiListSysIpWhite)
     },
     // 点击对话框确认按钮
     handleSubmit () {
       this.$refs.dialog.showDialogForm1 = false
       if (this.isEdit === 0) {
         this.apiCreateData(apiAddIpWhite, this.editData, apiListSysIpWhite)
-      } else {
+      } else {  
         this.apiEditData(apiEditIpWhite, this.editData, apiListSysIpWhite)
       }
     },
@@ -133,10 +133,13 @@ export default {
     // 处理表格数据
     handleTableData (tableData) {
       tableData.forEach(item => {
-        console.log(item)
-        debugger
-        item.isDelete = item.isDelete === '0' ? item.showBtn[1].show = false : item.showBtn[2].show = false
-        item.isDelete = item.isDelete === '0' ? '正常' : '停用'
+        item.showBtn = []
+        if (item.isDelete === '0') {
+          item.showBtn.push('停 用')
+        }
+        if (item.isDelete === '1') {
+          item.showBtn.push('启 用')
+        }
       })
     }
   }

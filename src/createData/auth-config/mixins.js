@@ -38,22 +38,23 @@ export const button = {
 // IP控制
 export const ipControl = {
   data () {
-    return setBtnConfig(JSON.parse(JSON.stringify(initData)), ['edit', { cancel: { name: '启 用', clickFn: 'handleOpen' } }, { cancel: { name: '停 用', clickFn: 'handleStop' } }])
+    return setBtnConfig(JSON.parse(JSON.stringify(initData)), ['edit', { cancel: { name: '启 用', clickFn: 'handleOpen', show: false } }, { cancel: { name: '停 用', clickFn: 'handleStop', show: false } }])
   },
   created () {
     let configSearchItem = [
       'addressIp',
       { isDelete:
         { type: 'select',
-          options: [{ label: '成功', value: '1' }, { label: '失败', value: '2' }]
+          label: '状态',
+          options: [{ label: '有效', value: '0' }, { label: '失效', value: '1' }]
         }
       }
     ]
     let configTableItem = {
       selection: 50,
       addressIp: 80,
-      modifier: 100,
-      isDelete: { clsName: 'isDelete', width: 100 },
+      creater: 80,
+      isDelete: { clsName: 'isDelete', width: 80 },
       remark: 100,
       gmtCreate: 160,
       btn: 120
@@ -86,26 +87,27 @@ export const ipControl = {
 // 账户控制
 export const account = {
   data () {
-    return setBtnConfig(JSON.parse(JSON.stringify(initData)), [{ cancel: { name: '失 效', clickFn: 'handleInvalid' } }])
+    return setBtnConfig(JSON.parse(JSON.stringify(initData)), [{ cancel: { name: '失 效', clickFn: 'handleInvalid', show: false } }])
   },
   created () {
     let configSearchItem = [
-      'id',
-      { buttonMenuName:
+      'userRealName',
+      { isDelete:
         { type: 'select',
-          options: [{ label: '成功', value: '1' }, { label: '失败', value: '2' }]
+          label: '状态',
+          options: [{ label: '有效', value: '0' }, { label: '失效', value: '1' }]
         }
       }
     ]
     let configTableItem = {
-      selection: 80,
-      id: 80,
-      buttonName: 200,
-      buttonMenuName: 100,
-      buttonCode: 100,
-      gmtCreate: 200,
-      gmtModified: 80,
-      isDelete: 80,
+      selection: 50,
+      userRealName: 60,
+      departmentName: 80,
+      createrName: 80,
+      gmtModified: 120,
+      remark: 100,
+      isDeleteMsg: { clsName: 'isDeleteMsg', width: 80 },
+      gmtCreate: 160,
       btn: 70
     }
     this.searchItem = this.$setItem(accountTableItem, configSearchItem, 'search')
