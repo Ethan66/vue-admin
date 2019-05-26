@@ -27,6 +27,8 @@ export default {
           this.tableData = JSON.parse(JSON.stringify(this.allData))
           this.handleTableData && this.handleTableData(this.tableData || [])
           this.tableLoading = false
+        } else {
+          this.$message.error(res.message)
         }
       })
     },
@@ -39,7 +41,7 @@ export default {
       return createDataApi(obj).then(res => {
         if (res.code === '208999') {
           this.$getSuccessMsg(this, res.message)
-          getTableDataApi && this.handleGetTableData(getTableDataApi)
+          getTableDataApi && this.handleGetTableData(getTableDataApi, this.searchValues, this.tablePages.current)
         } else {
           this.$message.error(res.message)
         }
@@ -50,7 +52,7 @@ export default {
       return editDataApi(obj).then(res => {
         if (res.code === '208999') {
           this.$getSuccessMsg(this, res.message)
-          getTableDataApi && this.handleGetTableData(getTableDataApi)
+          getTableDataApi && this.handleGetTableData(getTableDataApi, this.searchValues, this.tablePages.current)
         } else {
           this.$message.error(res.message)
         }
@@ -61,7 +63,7 @@ export default {
       return deleteDataApi({ id: id }).then(res => {
         if (res.code === '208999') {
           this.$getSuccessMsg(this, '删除成功')
-          getTableDataApi && this.handleGetTableData(getTableDataApi)
+          getTableDataApi && this.handleGetTableData(getTableDataApi, this.searchValues, this.tablePages.current)
         } else {
           this.$message.error(res.message)
         }
