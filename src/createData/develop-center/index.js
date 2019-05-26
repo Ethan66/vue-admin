@@ -86,8 +86,8 @@ export const pageManage = {
       pageName: { width: 100, clickFn: 'handleGoTybe', clsName: 'cm-btn-color' },
       pageCode: 80,
       menuCode: 120,
-      creater: 80,
-      pageStatus: 80,
+      userName: 80,
+      pageStatus: { width: 80, clsName: 'pageStatus' },
       remark: 80,
       pageUrl: 200,
       btn: 70
@@ -95,7 +95,7 @@ export const pageManage = {
     let configDialogItem = [
       'pageName', 'pageCode', 'pageUrl', 'menuCode',
       { pageStatus: { type: 'radio', options: [{ label: '正常', value: 1 }, { label: '停用', value: 0 }] } },
-      { creater: { label: '创建人', type: 'docs', show: false } },
+      { userName: { label: '创建人', type: 'docs', show: false } },
       { gmtCreate: { label: '创建时间', type: 'docs', show: false } },
       { remark: { label: '描述', type: 'textarea', rows: 4, show: false } }
     ]

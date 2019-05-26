@@ -54,6 +54,7 @@ export default {
     // 点击新增按钮
     handleAdd () {
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
+      this.editData.departmentStatus = 0
       this.selectTreeCheckedValue = []
       this.handleClearSelectTree()
       this.isEdit = 0
@@ -129,6 +130,9 @@ export default {
       apiStopDepartment({ id: row.id }).then(res => {
         if (res.code === '208999') {
           this.$getSuccessMsg(this, res.message)
+          this.handleGetTableData(apiQueryDepartmentList, this.searchValues)
+        } else {
+          this.$message.error(res.message)
         }
       })
     },
@@ -173,6 +177,8 @@ export default {
           this.tableData = this.allData
           this.handleTableData && this.handleTableData(this.tableData || [])
           this.tableLoading = false
+        } else {
+          this.$message.error(res.message)
         }
       })
     },

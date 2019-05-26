@@ -57,6 +57,7 @@ export default {
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
       this.dialogItem[5].show = false
       this.dialogItem[6].show = false
+      this.dialogItem[7].show = true
       this.isEdit = 0
       this.dialogTitle = '新增页面'
       this.showDialogForm = true
@@ -77,6 +78,7 @@ export default {
       this.editData.pageStatus = this.editData.pageStatusStash
       this.dialogItem[5].show = true
       this.dialogItem[6].show = true
+       this.dialogItem[7].show = false
       this.isEdit = 1
       this.dialogTitle = '编辑页面'
       this.showDialogForm = true
