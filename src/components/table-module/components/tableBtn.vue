@@ -67,7 +67,7 @@ export default {
     i: Number,
     tableBtn: Array,
     isInlineEdit: Boolean,
-    inlineEditBtnClick: String,
+    inlineLabelToValue: Object,
     tableItem: Array,
     rowOrignData: Array,
     isMore: Boolean
@@ -100,7 +100,7 @@ export default {
     // 点击按钮触发
     handleBtnClick (fn, row, index, btnName, noClickFn) {
       // 判断父组件
-      if (this.firstInit) {
+      if (this.firstInit && fn) {
         let i = 0
         let parent = this.$parent
         while (!parent[fn]) {
@@ -132,7 +132,9 @@ export default {
       } else if (this.isInlineEdit) { // 行内编辑
         if (btnName === '编辑' && !row.editBtnName) { // 点击编辑按钮
           this.rowOrignData[index] = JSON.parse(JSON.stringify(row))
-          this.inlineEditBtnClick && this.parent[this.inlineEditBtnClick](row)
+          if (this.inlineLabelToValue) {
+            this.handleLabelToValue(row, 'edit')
+          }
           row.editStatus = true
           row.editBtnName = '保存'
           row.editBtnColor = 'success'
@@ -145,9 +147,13 @@ export default {
           row.editStatus = false
           row.editBtnName = undefined
           row.editBtnColor = undefined
+          let sendRowData = JSON.parse(JSON.stringify(row))
+          if (this.inlineLabelToValue) {
+            this.handleLabelToValue(row, 'save')
+          }
           this.$emit('handleInlineEditTableData', index, row)
           if (noClickFn) return false
-          this.parent[fn](row)
+          this.parent[fn](sendRowData)
         } else if (btnName === '取消') { // 点击取消
           if (!row.editStatus) return
           row.editStatus = false
@@ -173,6 +179,17 @@ export default {
     // 更多按钮下拉选择生成command
     handleCreateCommand (operato, row, index) {
       return { operato, row, index }
+    },
+    handleLabelToValue (row, type) {
+      Object.keys(this.inlineLabelToValue).forEach(key => {
+        this.inlineLabelToValue[key].forEach(item => {
+          if (type === 'edit') {
+            if (item.label === row[key]) row[key] = item.value
+          } else if (type === 'save') {
+            if (item.value === row[key]) row[key] = item.label
+          }
+        })
+      })
     }
   }
 }
