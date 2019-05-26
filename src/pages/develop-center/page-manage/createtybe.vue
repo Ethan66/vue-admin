@@ -18,12 +18,10 @@
       <table-module
         ref="table"
         isInlineEdit
-        needSwitch
-        inlineEditBtnClick="inlineEditBtnClick"
+        :inlineLabelToValue="inlineLabelToValue"
         :table-data.sync="tableData"
         :table-item="tableItem"
         :table-btn="tableBtn"
-        @inlineSwitchTableData="inlineSwitchTableData"
         maxHeight="200"
       />
     </template>
@@ -67,7 +65,12 @@ export default {
       step: 0,
       form: { name: '' },
       showDialog: false,
-      handTableData: [{ fieldName: '', fieldValue: '', fieldRequired: 1, displayStatus: 0, setStatus: 1, fieldSort: 0, editStatus: true }]
+      handTableData: [{ fieldName: '', fieldValue: '', fieldRequired: 1, displayStatus: 0, setStatus: 1, fieldSort: 0, editStatus: true }],
+      inlineLabelToValue: {
+        displayStatus: [],
+        setStatus: [],
+        fieldRequired: []
+      }
     }
   },
   watch: {
@@ -97,6 +100,9 @@ export default {
     },
   },
   created () {
+    Object.keys(this.inlineLabelToValue).forEach(key => {
+      this.inlineLabelToValue[key] = [{ label: '否', value: 0 }, { label: '是', value: 1 }]
+    })
     this.rules = {
       name: [
         { required: true, message: '请输入表名', trigger: 'blur' }
@@ -115,17 +121,6 @@ export default {
       } else {
         this.step++
       }
-    },
-    inlineEditBtnClick (row) {
-      item.displayStatus = item.displayStatusStash
-      item.setStatus = item.setStatusStash
-      item.fieldRequired = item.fieldRequiredStash
-    },
-    inlineSwitchTableData (index, row) {
-      row.displayStatus = row.displayStatus ? '是' : '否'
-      row.setStatus = row.setStatus ? '是' : '否'
-      row.fieldRequired = row.fieldRequired ? '是' : '否'
-      this.$set(this.tableData, index, row)
     },
     handleSubmit () {
       let pageCode = this.pageCode
@@ -190,9 +185,6 @@ export default {
         return
       }
       tableData.forEach(item => {
-        item.displayStatusStash = item.displayStatus
-        item.setStatusStash = item.setStatus
-        item.fieldRequiredStash = item.fieldRequired
         item.displayStatus = item.displayStatus ? '是' : '否'
         item.setStatus = item.setStatus ? '是' : '否'
         item.fieldRequired = item.fieldRequired ? '是' : '否'

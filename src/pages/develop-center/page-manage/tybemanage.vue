@@ -9,7 +9,7 @@
     <table-module
       ref="table"
       isInlineEdit
-      inlineEditBtnClick="inlineEditBtnClick"
+      :inlineLabelToValue="inlineLabelToValue"
       :table-data.sync="tableData"
       :table-item="tableItem"
       :table-btn="tableBtn"
@@ -47,10 +47,26 @@ export default {
     return {
       showCreateTybe: false,
       type: 'handCreate',
-      dialogTitle: ''
+      dialogTitle: '',
+      inlineLabelToValue: {
+        displayStatus: [],
+        setStatus: [],
+        fixedStatus: [],
+        fieldRequired: []
+      }
+    }
+  },
+  watch: {
+    showCreateTybe (val) {
+      if (!val) {
+        this.handleGetTableData(apiPageFiledQueryList, this.searchValues)
+      }
     }
   },
   created () {
+    Object.keys(this.inlineLabelToValue).forEach(key => {
+      this.inlineLabelToValue[key] = [{ label: '否', value: 0 }, { label: '是', value: 1 }]
+    })
     const { menuCode, pageCode } = this.$route.query
     this.searchDefaultObj = { menuCode, pageCode }
     this.menuCode = menuCode
@@ -73,13 +89,6 @@ export default {
     // 页面名称字段点击事件
     handleGoPage () {
       console.log(111)
-    },
-    // 点击表格编辑按钮
-    inlineEditBtnClick (row) {
-      row.displayStatus = row.displayStatusStash
-      row.setStatus = row.setStatusStash
-      row.fixedStatus = row.fixedStatusStash
-      row.fieldRequired = row.fieldRequiredStash
     },
     // 点击表格保存按钮
     handleEditData (row) {
@@ -115,10 +124,6 @@ export default {
         return
       }
       this.tableData = tableData.map(item => {
-        item.displayStatusStash = item.displayStatus
-        item.setStatusStash = item.setStatus
-        item.fixedStatusStash = item.fixedStatus
-        item.fieldRequiredStash = item.fieldRequired
         item.displayStatus = item.displayStatus ? '是' : '否'
         item.setStatus = item.setStatus ? '是' : '否'
         item.fixedStatus = item.fixedStatus ? '是' : '否'
