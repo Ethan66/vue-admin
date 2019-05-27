@@ -200,7 +200,7 @@ export default {
       if (!value.trim()) {
         return callback(new Error(this.dialogItem[1].placeholder))
       }
-      if (value.length > 2) {
+      if (value.length > 20) {
         return callback(new Error('输入内容不能超过20字'))
       }
       callback()
