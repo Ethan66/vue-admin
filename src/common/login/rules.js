@@ -4,10 +4,10 @@ export default {
       errorCodeObj: {
         '211206': { type: 'verificationCode', msg: '短信验证码不正确' },
         '211200': { type: 'user', msg: '账号不存在' },
-        '211202': { type: 'user', connect: 'password', msg: '账号或密码不正确，操作5次后将被锁定' }
-        // '211202': { type: 'user', msg: '该账号已被禁止登录，请联系管理员' },
-        // '211202': { type: 'user', msg: '该账号未被授权外网访问，请联系管理员' },
-        // '211202': { type: 'user', msg: '该账号已被停用，请联系管理员' }
+        '211202': { type: 'user', connect: 'password', msg: '账号或密码不正确，操作5次后将被锁定' },
+        '211211': { type: 'user', msg: '该账号已被禁止登录，请联系管理员' },
+        '211308': { type: 'user', msg: '该账号未被授权外网访问，请联系管理员' },
+        '211201': { type: 'user', msg: '该账号已被停用，请联系管理员' }
       },
       rules: {
         user: [{ required: true, trigger: 'blur', validator: this.validateUser }],
