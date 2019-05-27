@@ -186,7 +186,34 @@ export default {
           }
         })
       }
-    }
+    },
+    validatePageName (rule, value, callback) {
+      if (!value.trim()) {
+        return callback(new Error(this.dialogItem[0].placeholder))
+      }
+      if (value.length > 20) {
+        return callback(new Error('输入内容不能超过20字'))
+      }
+      callback()
+    },
+    validatePageCode (rule, value, callback) {
+      if (!value.trim()) {
+        return callback(new Error(this.dialogItem[1].placeholder))
+      }
+      if (value.length > 2) {
+        return callback(new Error('输入内容不能超过20字'))
+      }
+      callback()
+    },
+    validatePageUrl (rule, value, callback) {
+      if (!value.trim()) {
+        return callback(new Error(this.dialogItem[2].placeholder))
+      }
+      if (value.length > 100) {
+        return callback(new Error('输入内容不能超过100字'))
+      }
+      callback()
+    },
   }
 }
 </script>

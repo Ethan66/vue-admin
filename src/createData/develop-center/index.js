@@ -105,13 +105,13 @@ export const pageManage = {
     let dialogItem = this.dialogItem = this.$setItem(tybeObj['page-manage1'], configDialogItem, 'dialog')
     this.rules = {
       pageName: [
-        { required: true, message: dialogItem[0].placeholder, trigger: 'blur' }
+        { required: true, trigger: 'blur', validator: this.validatePageName }
       ],
       pageCode: [
-        { required: true, message: dialogItem[1].placeholder, trigger: 'blur' }
+        { required: true, trigger: 'blur', validator: this.validatePageCode }
       ],
       pageUrl: [
-        { required: true, message: dialogItem[2].placeholder, trigger: 'blur' }
+        { required: true, trigger: 'blur', validator: this.validatePageUrl }
       ],
       menuCode: [
         { required: true, message: dialogItem[3].placeholder, trigger: 'blur' }
