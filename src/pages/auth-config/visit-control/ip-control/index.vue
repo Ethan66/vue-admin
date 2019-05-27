@@ -69,7 +69,7 @@ export default {
       this.dialogItem = [
         { key: 'addressIp', type: 'docs', label: 'IP地址', show: true},
         { key: 'remark', label: '描述', type: 'textarea', maxlength: '100', placeholder: '100字以内', show: true },
-        { key: 'modifier', label: '创建人', type: 'docs', show: true},
+        { key: 'creater', label: '创建人', type: 'docs', show: true},
         { key: 'gmtCreate', label: '创建时间', type: 'docs', show: true}
       ]
       this.isEdit = 1
