@@ -21,6 +21,7 @@ export const errorLog = {
     ]
     let configTableItem = {
       realName: 80,
+      menuCode: 70,
       opTypeDesc: 100,
       id: 100,
       opStatusDesc: { clsName: 'opStatusDesc', width: 80 },

@@ -54,7 +54,17 @@ const config = {
       // { menuName: '新建下级部门', menuParentName: '组织架构', code: 'organization-add-next-level', menuUrl: '/pilianganniu1-1', sortNo: 1 },
       // { menuName: '停用', menuParentName: '组织架构', code: 'organization-stop', menuUrl: '/pilianganniu1-1', sortNo: 1 },
       // { menuName: '删除', menuParentName: '组织架构', code: 'organization-delete', menuUrl: '/pilianganniu1-1', sortNo: 1 },
-      
+         
+      // ip授权
+      { menuName: '启 用', menuParentName: '访问控制', code: 'visit-ip-open', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      { menuName: '启 用', menuParentName: '访问控制', code: 'visit-ip-open-batch', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      { menuName: '停 用', menuParentName: '访问控制', code: 'visit-ip-stop', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      { menuName: '停 用', menuParentName: '访问控制', code: 'visit-ip-stop-batch', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      { menuName: '添加IP', menuParentName: '访问控制', code: 'visit-ip-add-ip', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      // 账号授权
+      { menuName: '失 效', menuParentName: '访问控制', code: 'visit-c-stop', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      { menuName: '失 效', menuParentName: '访问控制', code: 'visit-c-stop-batch', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      { menuName: '添加授权', menuParentName: '访问控制', code: 'visit-c-add', menuUrl: '/pilianganniu1-1', sortNo: 1 }
     ]
   }
 }
