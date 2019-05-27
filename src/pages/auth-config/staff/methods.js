@@ -9,7 +9,7 @@ export const methods = {
           this.staffFormItem[1].formItem.map(item => {
             if (item.key === 'departmentId') {
               let list = res.resultMap.departmentTree || []
-              item.dialogData = this.optionData(list)
+              item.dialogData = this.$disposeTreeData(list)
             }
             if (item.key === 'reportTo') {
               item.options = res.resultMap.userlist || []
@@ -120,8 +120,7 @@ export const methods = {
       }
       apiQueryDepartmentTree(params).then(res => {
         if (res.code === '208999') {
-          console.log(this.optionData(res.resultMap.data))
-          this.treeData = this.optionData(res.resultMap.data)
+          this.treeData = this.$disposeTreeData(res.resultMap.data)
         } else {
           this.$message.error(res.message)
         }
