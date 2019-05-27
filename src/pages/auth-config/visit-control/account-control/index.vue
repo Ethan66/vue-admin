@@ -218,9 +218,8 @@ export default {
               if (res.code === '208999') {
                 this.$message.success('添加成功')
                 this.handleGetTableData(apiPageConsoleUserWhite)
-                this.dialogAccountForm = this.$data.dialogAccountForm
-                this.consoleUserIds = []
                 this.showDialogForm1 = false
+                this.$refs[formName].resetFields()
                 this.$refs.treeSelect.clearSelectedNodes()
               } else {
                 this.$message.error(res.message)
