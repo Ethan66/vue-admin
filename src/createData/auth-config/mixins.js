@@ -178,7 +178,7 @@ export const organization = {
         { required: true, message: dialogItem[3].placeholder, trigger: 'blur' }
       ],
       departmentStatus: [
-        { required: true, message: dialogItem[4].placeholder, trigger: 'change' }
+        { required: true, message: dialogItem[5].placeholder, trigger: 'change' }
       ]
     }
   }
