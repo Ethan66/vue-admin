@@ -40,3 +40,17 @@ export const apiGetUserPermissionResource = (reqParams) => {
 export const apiGetUserAllPermissionFields = (reqParams) => {
   return postRequest(base + '/getUserAllPermissionFields', reqParams)
 }
+
+// 忘记密码获取验证码
+export const apiUserForgetVerificationCode = (reqParams) => {
+  return postRequest(baseuser + '/userForgetVerificationCode', reqParams)
+}
+
+// 非登录状态下修改密码
+export const apiUserForgetPassword = (reqParams) => {
+  return postRequest(baseuser + '/userForgetPassword', reqParams)
+}
+// 登录状态下修改密码
+export const apiUserModifyPassword = (reqParams) => {
+  return postRequest(baseuser + '/userModifyPassword', reqParams)
+}

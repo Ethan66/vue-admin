@@ -13,6 +13,12 @@ export default {
         user: [{ required: true, trigger: 'blur', validator: this.validateUser }],
         password: [{ required: true, trigger: 'blur', validator: this.validatePassword }],
         verificationCode: [{ required: true, trigger: 'blur', validator: this.validateCode }]
+      },
+      passwordrules: {
+        user: [{ required: true, trigger: 'blur', message: '请输入用户名' }],
+        password: [{ required: true, trigger: 'blur', message: '请输入新密码' }],
+        telephone: [{ required: true, trigger: 'blur', message: '请输入手机号' }],
+        verificationCode: [{ required: true, trigger: 'blur', validator: this.validateCode }]
       }
     }
   },

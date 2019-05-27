@@ -1,65 +1,107 @@
 <template>
   <div class="bl-login">
-    <el-form
-      ref="login"
-      :model="loginForm"
-      :rules="rules"
-    >
-      <h3>百凌管理系统</h3>
-      <el-form-item prop="user">
-        <el-input
-          autofocus
-          v-model="loginForm.user"
-          placeholder="账号"
-          @blur="handleBlur('user')"
-        />
-      </el-form-item>
+    <!-- 登录 -->
+    <template v-if="isLogin">
+      <el-form
+        ref="login"
+        :model="loginForm"
+        :rules="rules">
+        <h3>百凌管理系统</h3>
+        <el-form-item prop="user">
+          <el-input
+            autofocus
+            v-model="loginForm.user"
+            placeholder="账号"
+            @blur="handleBlur('user')"
+          />
+        </el-form-item>
 
-      <el-form-item prop="password">
-        <el-input
-          type="password"
-          v-model="loginForm.password"
-          placeholder="密码"
-          @blur="handleBlur('password')"
-        />
-      </el-form-item>
+        <el-form-item prop="password">
+          <el-input
+            type="password"
+            v-model="loginForm.password"
+            placeholder="密码"
+            @blur="handleBlur('password')"
+          />
+        </el-form-item>
 
-      <el-form-item
-        v-if="!ipIsTrue"
-        prop="verificationCode"
-        class="codeWrap"
-      >
-        <el-input
-          v-model="loginForm.verificationCode"
-          placeholder="短信验证码"
-           @blur="handleBlur('verificationCode')"
-        />
-        <span
-          class="sendCode cm-color"
-          v-if="!hasSendCode"
-          @click="handleGetCode"
-        >获取验证码</span>
-        <span
-          class="sendCode"
-          v-else
-        >重新发送({{time}}S)</span>
-      </el-form-item>
+        <el-form-item
+          v-if="!ipIsTrue"
+          prop="verificationCode"
+          class="codeWrap"
+        >
+          <el-input
+            v-model="loginForm.verificationCode"
+            placeholder="短信验证码"
+            @blur="handleBlur('verificationCode')"
+          />
+          <span
+            class="sendCode cm-color"
+            v-if="!hasSendCode"
+            @click="handleGetCode('login')"
+          >获取验证码</span>
+          <span
+            class="sendCode"
+            v-else
+          >重新发送({{time}}S)</span>
+        </el-form-item>
 
-      <el-form-item class="noMargin">
-        <el-button
-          :loading="isLoading"
-          class="cm-bg-color"
-          type="primary"
-          @click.native.prevent="submitForm('login')"
-        >登 录</el-button>
-      </el-form-item>
-      <p class="forgetPwd cm-hover-color">忘记密码？</p>
-    </el-form>
+        <el-form-item class="noMargin">
+          <el-button
+            :loading="isLoading"
+            class="cm-bg-color"
+            type="primary"
+            @click.native.prevent="submitForm('login')"
+          >登 录</el-button>
+        </el-form-item>
+        <p class="forgetPwd cm-hover-color" @click="handlePassword">忘记密码？</p>
+      </el-form>
+    </template>
+
+    <!-- 忘記密碼 -->
+    <template v-else>
+      <el-form
+        ref="password"
+        :model="passwordForm" :rules="passwordrules">
+        <h3>百凌管理系统</h3>
+        <el-form-item prop="user">
+          <el-input autofocus v-model="passwordForm.user"
+            placeholder="账号" @blur="handleBlur('user')" />
+        </el-form-item>
+
+        <el-form-item prop="telephone">
+          <el-input v-model="passwordForm.telephone"
+            placeholder="手机号" @blur="handleBlur('telephone')" />
+        </el-form-item>
+
+        <el-form-item prop="password">
+          <el-input type="password" v-model="passwordForm.password"
+            placeholder="新密码" @blur="handleBlur('password')"/>
+        </el-form-item>
+
+        <el-form-item prop="verificationCode" class="codeWrap">
+          <el-input
+            v-model="passwordForm.verificationCode" placeholder="短信验证码"
+            @blur="handleBlur('verificationCode')" />
+          <span class="sendCode cm-color"
+            v-if="!passwordHasSendCode" @click="handlePasswordGetCode('password')">获取验证码</span>
+          <span class="sendCode" v-else>重新发送({{passwordtime}}S)</span>
+        </el-form-item>
+
+        <el-form-item class="noMargin">
+          <el-button
+            :loading="isLoading" class="cm-bg-color"
+            type="primary" @click.native.prevent="submitForm('password')"
+          >确 认</el-button>
+        </el-form-item>
+        <p class="forgetPwd cm-hover-color" @click="handleLogin">去登录？</p>
+      </el-form>
+    </template>
   </div>
 </template>
 
 <script>
-import { apiUserLogin, apiGetSmsCode, apiGetIp, apiCheckIp } from '@/api/login'
+import { apiUserLogin, apiGetSmsCode, apiGetIp, apiCheckIp, apiUserForgetVerificationCode, apiUserForgetPassword } from '@/api/login'
 import MD5 from 'js-md5'
 import rules from './rules'
 export default {
@@ -67,16 +109,20 @@ export default {
   data () {
     return {
       hasSendCode: false,
+      passwordHasSendCode: false,
       time: 0,
+      passwordtime: 0,
       systemObj: {
         system: '',
         browser: 'IE'
       },
       loginForm: { user: '', password: '', verificationCode: '' },
+      passwordForm: { user: '', password: '', telephone: '', verificationCode: '' },
       ipIsTrue: false,
       nowErrorCode: '',
       isLoading: false,
-      ipAddress: ''
+      ipAddress: '',
+      isLogin: true
     }
   },
   created () {
@@ -143,7 +189,6 @@ export default {
             this.hasSendCode = true
             this.timer = setInterval(() => {
               if (this.time === 0) {
-                clearInterval(this.timer)
                 this.hasSendCode = false
               }
               this.time--
@@ -156,43 +201,109 @@ export default {
         })
       }
     },
+    // 忘记密码获取验证码
+    handlePasswordGetCode () {
+      let { user, telephone } = this.passwordForm
+      this.$refs['password'].validateField(['user', 'telephone'])
+      if (user.trim() && telephone.trim()) {
+        this.handleApiUserForgetVerificationCode(user, telephone)
+      }
+    },
+    handleApiUserForgetVerificationCode (user, telephone) {
+      let params = {
+        user: user,
+        loginIp: this.ip,
+        telephone: telephone
+      }
+      apiUserForgetVerificationCode(params).then(res => {
+        if (res.code === '208999') {
+          this.passwordtime = 60
+          this.passwordHasSendCode = true
+          this.timer = setInterval(() => {
+            if (this.passwordtime === 0) {
+              clearInterval(this.timer)
+              this.passwordHasSendCode = false
+            }
+            this.passwordtime--
+          }, 1000)
+        } else {
+          if (!this.handleSpeciaCode(res.code, 'password')) {
+            this.$message.error(res.message)
+          }
+        }
+      })
+    },
     // 提交
     submitForm (form) {
       this.$refs[form].validate((valid) => {
         if (valid) {
-          this.isLoading = true
-          this.nowErrorCode = ''
-          let params = Object.assign({}, this.loginForm)
-          params.password = MD5(params.password)
-          params.loginIp = this.ip
-          params.ipAdress = this.ipAddress, 
-          params.operatingSystem = this.systemObj.system
-          params.terminal = this.systemObj.browser
-          apiUserLogin(params).then(res => {
-            if (res.code === '208999') {
-              res.resultMap.data && delete res.resultMap.data.errorNum
-              localStorage.setItem('userInfo', JSON.stringify(res.resultMap.data))
-              this.$router.push('/')
-            } else {
-              if (!this.handleSpeciaCode(res.code)) {
-                this.$message.error(res.message)
+          if (form === 'login') {
+            this.isLoading = true
+            this.nowErrorCode = ''
+            let params = Object.assign({}, this.loginForm)
+            params.password = MD5(params.password)
+            params.loginIp = this.ip
+            params.ipAdress = this.ipAddress,
+            params.operatingSystem = this.systemObj.system
+            params.terminal = this.systemObj.browser
+            apiUserLogin(params).then(res => {
+              if (res.code === '208999') {
+                res.resultMap.data && delete res.resultMap.data.errorNum
+                localStorage.setItem('userInfo', JSON.stringify(res.resultMap.data))
+                this.$router.push('/')
+              } else {
+                if (!this.handleSpeciaCode(res.code)) {
+                  this.$message.error(res.message)
+                }
+                throw new Error()
               }
-              throw new Error()
+            }).catch(e => {
+              this.isLoading = false
+            })
+          } else {
+            this.isLoading = true
+            this.nowErrorCode = ''
+            let params = {
+              user: this.passwordForm.user,
+              newPassword: MD5(this.passwordForm.password),
+              loginIp: this.ip,
+              telephone: this.passwordForm.telephone,
+              verificationCode: this.passwordForm.verificationCode
             }
-          }).catch (e => {
-            this.isLoading = false
-          })
+            apiUserForgetPassword(params).then(res => {
+              if (res.code === '208999') {
+                this.isLoading = false
+                this.$message.success('重置密码成功')
+                this.isLogin = true
+              } else {
+                if (!this.handleSpeciaCode(res.code)) {
+                  this.$message.error(res.message)
+                }
+                throw new Error()
+              }
+            }).catch(e => {
+              this.isLoading = false
+            })
+          }
         }
       })
     },
     // 特殊code码进行提示
-    handleSpeciaCode (code) {
+    handleSpeciaCode (code, form = 'login') {
       if (Object.keys(this.errorCodeObj).includes(code)) {
         this.nowErrorCode = code
-        this.$refs['login'].validateField([this.errorCodeObj[code].type])
+        this.$refs[form].validateField([this.errorCodeObj[code].type])
         return true
       }
       return false
+    },
+    handlePassword () {
+      this.isLogin = false
+      this.$refs['login'].resetFields()
+    },
+    handleLogin () {
+      this.isLogin = true
+      this.$refs['password'].resetFields()
     }
   }
 }

@@ -29,8 +29,8 @@
       ref="dialog"
       dialogTitle="修改密码"
       :showDialogForm.sync="showDialogForm"
-      :editData="formData"
-      :dialogItem="formItem"
+      :editData="editData"
+      :dialogItem="dialogItem"
       :dialogBtn="dialogBtn"
       :rules="rules"
     />
@@ -38,7 +38,8 @@
 </template>
 
 <script>
-import { apiUserLoginOut } from '@/api/login'
+import { apiUserLoginOut, apiUserModifyPassword } from '@/api/login'
+import MD5 from 'js-md5'
 
 export default {
   data () {
@@ -48,15 +49,15 @@ export default {
       confirmFn: '',
       confrimDiaShow: false,
       showDialogForm: false,
-      formData: {},
-      formItem: [
-        { password: { label: '原密码', type: 'input' } },
-        { newPassword: { label: '新密码', type: 'input' } },
-        { checkNewPassword: { label: '确认密码', type: 'input' } },
+      editData: {},
+      dialogItem: [
+        { key: 'password', label: '原密码', type: 'input', show: true },
+        { key: 'newPassword', label: '新密码', type: 'input', show: true },
+        { key: 'checkNewPassword', label: '确认密码', type: 'input', show: true }
       ],
       dialogBtn: [
-        { name: '取消', show: true, disabled: false },
-        { name: '确认', show: true, disabled: false, clickFn: '' }
+        { name: '取消', type: 'delete', show: true, disabled: false, clickFn: 'btnCancel' },
+        { name: '确认', type: 'edit', show: true, color: 'primary', disabled: false, clickFn: 'handleChangePassword' }
       ],
       rules: {
         password: [
@@ -154,6 +155,27 @@ export default {
       this.confirmFn = fnName
       this.confirmContent = txt
       this.confrimDiaShow = true
+    },
+    btnCancel () {
+      this.$refs.dialog.showDialogForm1 = false
+    },
+    handleChangePassword () {
+      if (this.editData.newPassword !== this.editData.checkNewPassword) {
+        this.$message.error('二次密码不一致')
+        return
+      }
+      let params = {
+        password: MD5(this.editData.password),
+        newPassword: MD5(this.editData.newPassword)
+      }
+      apiUserModifyPassword(params).then(res => {
+        if (res.code === '208999') {
+          localStorage.removeItem('userInfo')
+          this.$router.push({ path: '/login' })
+        } else {
+          this.$message.error(res.message)
+        }
+      })
     }
   }
 }
