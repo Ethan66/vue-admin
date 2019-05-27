@@ -101,7 +101,6 @@ function handleSpecialError (response) {
 }
 
 let handleGetMenuCode = () => {
-  // let mainActivedTab = JSON.parse((sessionStorage.getItem('mainActivedTab'))) || {}
-  // return { pmenuCode: mainActivedTab.code }
-  return { pmenuCode: '0' }
+  let mainActivedTab = JSON.parse((sessionStorage.getItem('mainActivedTab'))) || {}
+  return { pmenuCode: mainActivedTab.code, serviceId: 210 }
 }
