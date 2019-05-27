@@ -16,8 +16,8 @@
       <div class="btn-content" slot="btn">
         <span v-if="chooseDataArr.length > 0">已选择 <i>{{ chooseDataArr.length }}</i> 条</span>
         <el-button @click="handleAdd" v-if="chooseDataArr.length < 1">添加IP</el-button>
-        <el-button @click="handleBatchOpen" v-if="chooseDataArr.length > 0">启 用</el-button>
-        <el-button @click="handleBatchStop" v-if="chooseDataArr.length > 0">停 用</el-button>
+        <el-button @click="handleBatchOpen" v-if="chooseDataArr.length > 0 && $showBtn('visit-ip-open-batch')">{{$getBtnName('visit-ip-open-batch')}}</el-button>
+        <el-button @click="handleBatchStop" v-if="chooseDataArr.length > 0 && $showBtn('visit-ip-stop-batch')">{{$getBtnName('visit-ip-stop-batch')}}</el-button>
       </div>
     </table-module>
     <dialog-module
