@@ -197,10 +197,10 @@ export default {
           item.showBtn.push('允许登录')
         }
         if (item.isDelete === '0') {
-          item.showBtn.push('停 用')
+          item.showBtn.push('停用')
         }
         if (item.isDelete === '1') {
-          item.showBtn.push('启 用')
+          item.showBtn.push('启用')
         }
       })
     },

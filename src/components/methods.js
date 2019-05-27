@@ -56,7 +56,9 @@ export const setBtnConfig = (obj, tableBtnKeys = ['edit', 'delete'], dialogBtnKe
           }
           let config = Object.assign({}, objBtn[arr[0]], arr[1])
           if (config.code) {
-            config.show = showBtn(config.code)
+            if (config.show === undefined) {
+              config.show = showBtn(config.code)
+            }
             config.name = getBtnName(config.code)
           }
           obj[btnType].push(config)
