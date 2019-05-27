@@ -95,7 +95,8 @@ export default {
           { validator: checkTel, message: '请输入正确的手机号', trigger: ['blur', 'change'] }
         ],
         password: [
-          { required: true, message: '请输入初始密码', trigger: 'blur' }
+          { required: true, message: '请输入初始密码', trigger: 'blur' },
+          { min: 6, max: 20, message: '请输入6-20位数字+字母的密码', trigger: 'blur' }
         ],
         departmentId: [
           { required: true, message: '请选择部门', trigger: 'blur' }
@@ -111,7 +112,9 @@ export default {
         { label: '确 认', type: 'edit', color: 'primary', clickfn: 'handleSubmit' }
       ],
       staffDialogTitle: '添加员工',
-      staffFormData: {},
+      staffFormData: {
+        departmentId: ''
+      },
       staffFormItem: [
         {
           title: '账号信息',
@@ -120,7 +123,7 @@ export default {
             { label: '姓名', key: 'realName', type: 'input' },
             { label: '手机号', key: 'telephone', type: 'input' },
             { label: '邮箱', key: 'mailbox', type: 'input' },
-            { label: '初始密码', key: 'password', type: 'input' }
+            { label: '初始密码', key: 'password', type: 'input', disabled: false }
           ]
         }, {
           title: '职位信息',
@@ -187,7 +190,12 @@ export default {
     this.handleApiQueryDepartmentTree()
     this.handleGetTableData(apiListConsoleUser)
   },
-  computed: {},
+  watch: {
+    'staffFormData.departmentId': function (val, oldVal) {
+      console.log(val)
+      this.handleGetReportTo(val)
+    }
+  },
   methods: {
     handleNodeClick (data) {
       this.departmentId = data.id
@@ -217,10 +225,15 @@ export default {
     },
     // 点击表格编辑按钮
     handleEditData (row) {
-      this.handleApiQueryLowerLevelList()
       this.staffFormData = JSON.parse(JSON.stringify(row))
+      this.handleApiQueryLowerLevelList()
       this.defaultCheckedKeys = [this.staffFormData.departmentId]
       this.staffFormData.password = '******'
+      this.staffFormItem[0].formItem.map(item => {
+        if (item.key === 'password') {
+          item.disabled = true
+        }
+      })
       this.staffFormData.reportTo = Number(this.staffFormData.reportTo)
       this.isEdit = 1
       this.staffDialogTitle = '编辑员工'
@@ -229,9 +242,10 @@ export default {
     // 点击新增按钮
     handleAdd () {
       this.staffFormData = this.$options.data().staffFormData
-      this.isEdit = 0
+      this.staffFormItem = this.$options.data().staffFormItem
+      this.handleApiQueryLowerLevelList() // 获取部门列表
       this.staffDialogTitle = '添加员工'
-      this.handleApiQueryLowerLevelList()
+      this.isEdit = 0
       this.staffDialogVisible = true
     },
     // 停用账号

@@ -14,7 +14,7 @@
           <div class="form-template" :key="'t' + index">
             <div class="form-flex-box" v-for="(formItem, index) in item.formItem" :key="index">
               <el-form-item v-if="formItem.type === 'input'" :label="formItem.label" :prop="formItem.key">
-                <el-input v-model="formData[formItem.key]"></el-input>
+                <el-input :disabled="formItem.disabled" v-model="formData[formItem.key]"></el-input>
               </el-form-item>
               <el-form-item v-if="formItem.type === 'select'" :label="formItem.label" :prop="formItem.key">
                 <el-select v-model="formData[formItem.key]" :placeholder="formItem.placeholder">
