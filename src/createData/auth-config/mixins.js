@@ -160,7 +160,8 @@ export const organization = {
       {
         departmentType: { type: 'select', options: [{ label: '集团', value: 0 }, { label: '公司', value: 1 }, { label: '事业部', value: 2 }, { label: '部门', value: 3 }] }
       },
-      'sortNo', 'directorName',
+      { sortNo: { type: 'number' } },
+      'directorName',
       { departmentStatus: { type: 'radio', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }] } }
     ]
     this.searchItem = this.$setItem(tybeObj['organization-manage1'], configSearchItem, 'search')
