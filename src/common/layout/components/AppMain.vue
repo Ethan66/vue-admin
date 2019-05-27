@@ -58,5 +58,11 @@ export default {
   .transition-group{
     margin-top: 15px;
   }
+  .catalog{
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 70px);
+    padding-bottom: 15px;
+  }
 }
 </style>
