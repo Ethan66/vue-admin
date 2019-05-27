@@ -97,6 +97,32 @@ function handleSpecialError (response) {
     })
     return true
   }
+  if (res.code === '211201') {
+    MessageBox.confirm(
+      '该账号已被停用',
+      '已被停用',
+      {
+        confirmButtonText: '确认',
+        type: 'warning'
+      }
+    )
+    localStorage.removeItem('userInfo')
+    router.push({ path: '/login' })
+    return true
+  }
+  if (res.code === '211211') {
+    MessageBox.confirm(
+      '该账号已被禁止登录',
+      '已被禁止登录',
+      {
+        confirmButtonText: '确认',
+        type: 'warning'
+      }
+    )
+    localStorage.removeItem('userInfo')
+    router.push({ path: '/login' })
+    return true
+  }
   return false
 }
 
