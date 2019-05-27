@@ -3,6 +3,10 @@ export default {
     '正常': 'colorBlue',
     '停用': 'colorRed'
   },
+  pageStatus: {
+    '正常': 'colorBlue',
+    '停用': 'colorRed'
+  },
   menuStatus: {
     '显示': 'colorBlue',
     '隐藏': 'colorRed'

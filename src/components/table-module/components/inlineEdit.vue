@@ -38,7 +38,9 @@ export default {
     }
   },
   mounted () {
-    this.handleInitInputWidth(this.$el)
+    this.$nextTick(() => {
+      this.handleInitInputWidth(this.$el)
+    })
   },
   methods: {
     // 初始化计算input宽度
@@ -47,7 +49,7 @@ export default {
       let length = input.value.length
       let width = this.type === 'input' ? this.inputWidth : this.selectWidth
       if (length === 0) {
-        input.style.width = `${width[0]}px`
+        input.style.width = '100%'
       } else {
         input.style.width = `${width[length - 1]}px`
       }

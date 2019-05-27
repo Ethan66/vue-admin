@@ -1,7 +1,6 @@
 import { basicInitObj } from '@/components/basicObj'
-import { setBtnConfig } from '@/components/methods'
 import { buttonTest, ipTableItem, accountTableItem } from '@/test/auth-config'
-import { showBtn, getBtnName } from '@/components/methods'
+import { showBtn, getBtnName, setBtnConfig } from '@/components/methods'
 
 const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
 

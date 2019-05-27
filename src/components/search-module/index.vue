@@ -128,6 +128,8 @@ export default {
           this.$set(this.searchValues, [item.key], undefined)
         }
       })
+      Object.prototype.toString.call(this.searchDefaultObj) === '[object Object]' &&
+        Object.assign(this.searchValues, this.searchDefaultObj)
     },
     // 清空搜索数据
     handleClear () {
@@ -166,8 +168,9 @@ export default {
           this.dateObj[key][i] && (this.searchValues[item] = this.$format(this.dateObj[key][i]))
         })
       }
-      Object.prototype.toString.call(this.searchDefaultObj) === '[object Object]' &&
-        Object.assign(this.searchValues, this.searchDefaultObj)
+      Object.keys(this.searchValues).forEach(key => {
+        this.searchValues[key] === '' && (this.searchValues[key] = undefined)
+      })
       console.log(this.searchValues)
       this.$emit('handleSearch', this.searchValues)
     }

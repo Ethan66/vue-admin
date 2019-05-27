@@ -28,7 +28,7 @@ const config = {
       { pageCode: 'page-manage1', fieldName: '页面编码', fieldValue: 'pageCode', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
       { pageCode: 'page-manage1', fieldName: '地址', fieldValue: 'pageUrl', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
       { pageCode: 'page-manage1', fieldName: '关联菜单编码', fieldValue: 'menuCode', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
-      { pageCode: 'page-manage1', fieldName: '创建人', fieldValue: 'creater', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
+      { pageCode: 'page-manage1', fieldName: '创建人', fieldValue: 'userName', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
       { pageCode: 'page-manage1', fieldName: '描述', fieldValue: 'remark', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
       { pageCode: 'page-manage1', fieldName: '状态', fieldValue: 'pageStatus', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
       // 字段管理
