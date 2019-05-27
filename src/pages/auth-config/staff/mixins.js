@@ -8,8 +8,8 @@ export const staff = {
   data () {
     return setBtnConfig(JSON.parse(JSON.stringify(initData)), [
       { edit: { code: 'staff-admin-edit' } },
-      { cancel: { name: '停 用', clickFn: 'handleStop', show: false, code: 'staff-admin-stop' } },
-      { cancel: { name: '启 用', clickFn: 'handleStart', show: false, code: 'staff-admin-open' } },
+      { cancel: { name: '停用', clickFn: 'handleStop', show: false, code: 'staff-admin-stop' } },
+      { cancel: { name: '启用', clickFn: 'handleStart', show: false, code: 'staff-admin-open' } },
       { cancel: { name: '禁止登录', clickFn: 'handleForbidLogin', show: false, code: 'staff-admin-nologin' } },
       { cancel: { name: '允许登录', clickFn: 'handleAllowLogin', show: false, code: 'staff-admin-login' } },
       { cancel: { name: '重置密码', clickFn: 'handleResetPassword', show: true, code: 'staff-admin-reset' } }
