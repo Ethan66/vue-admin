@@ -285,6 +285,10 @@ export default {
     },
     // 点击设置字段权限按钮
     handleSetTybe (menuId) {
+      if (this.resultChecked[menuId].objectPermission.length === 0 || !this.resultChecked[menuId].objectPermission.includes('1')) {
+        this.$message.error('请选择查看列表再操作')
+        return false
+      }
       apiGetRolePermissionFields({ roleId: this.roleId, menuId }).then(res => {
         if (res.code === '208999') {
           let tybeList = []
@@ -427,17 +431,44 @@ export default {
       }
     }
     .box-right {
+      padding: 15px 0;
       flex: 1;
       max-width: calc(100% - 210px);
       height: calc(100vh - 144px);
-      overflow: scroll;
+      overflow-y: scroll;
       background: #fff;
+      &::-webkit-scrollbar {/*滚动条整体样式*/
+          width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
+          height: 4px;
+      }
+      &::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+          border-radius: 2px;
+          background: rgba(0,0,0,0.5);
+      }
+      &::-webkit-scrollbar-track {/*滚动条里面轨道*/
+          border-radius: 0;
+          background: transparent;
+      }
+      .el-checkbox-group{
+        margin-left: -30px;
+      }
+      .el-checkbox{
+        margin-left: 30px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
       p.cm-btn-color{
         margin: 0;
         font-size: 14px;
+        cursor: pointer;
       }
       .menuList{
         padding: 0 10px 20px 20px;
+        .menu:first-child{
+          h3{
+            padding-top: 0;
+          }
+        }
         h3{
           padding: 15px 0;
           margin-bottom: 24px;
@@ -451,8 +482,9 @@ export default {
           align-items: center;
           margin-bottom: 30px;
           .title{
+            min-width: 42px;
             margin: 0;
-            padding-right: 50px;
+            margin-right: 50px;
             font-size: 14px;
           }
         }
