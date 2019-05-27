@@ -51,6 +51,7 @@ export default {
     apiCreateData (createDataApi, obj, getTableDataApi) {
       return createDataApi(obj).then(res => {
         if (res.code === '208999') {
+          this.$refs.dialog.showDialogForm1 = false
           this.$getSuccessMsg(this, res.message)
           getTableDataApi && this.handleGetTableData(getTableDataApi, this.searchValues, this.tablePages.current)
         } else {
@@ -62,6 +63,7 @@ export default {
     apiEditData (editDataApi, obj, getTableDataApi) {
       return editDataApi(obj).then(res => {
         if (res.code === '208999') {
+          this.$refs.dialog.showDialogForm1 = false
           this.$getSuccessMsg(this, res.message)
           getTableDataApi && this.handleGetTableData(getTableDataApi, this.searchValues, this.tablePages.current)
         } else {

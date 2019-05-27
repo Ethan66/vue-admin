@@ -108,6 +108,7 @@ export default {
           }
         })
       }
+      this.$refs.staffForm.resetFields()
       if (this.$refs.treeSelect) {
         this.$refs.treeSelect[0].clearSelectedNode()
       }

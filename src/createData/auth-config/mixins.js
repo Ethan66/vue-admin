@@ -110,7 +110,7 @@ export const account = {
       userRealName: 60,
       departmentName: 80,
       createrName: 80,
-      gmtModified: 120,
+      grandBegin: 120,
       remark: 100,
       isDeleteMsg: { clsName: 'isDeleteMsg', width: 80 },
       gmtCreate: 160,

@@ -69,7 +69,7 @@ export default {
       this.dialogItem = [
         { key: 'addressIp', type: 'docs', label: 'IP地址', show: true},
         { key: 'remark', label: '描述', type: 'textarea', maxlength: '100', placeholder: '100字以内', show: true },
-        { key: 'modifier', label: '创建人', type: 'docs', show: true},
+        { key: 'creater', label: '创建人', type: 'docs', show: true},
         { key: 'gmtCreate', label: '创建时间', type: 'docs', show: true}
       ]
       this.isEdit = 1
@@ -85,11 +85,11 @@ export default {
     // 点击表格启用
     handleOpen (row) {
       this.saveTableData = row
-      this.handleConfirmInfo('handleOpenConfirm', '此操作不可逆，是否确认操作?')
+      this.handleConfirmInfo('handleOpenConfirm', '确认启用对该IP的授权吗？启用后可以通过该IP地址访问管理后台。')
     },
     // 点击批量启用按钮
     handleBatchOpen () {
-      this.handleConfirmInfo('handleBatchOpenFirm', '此操作不可逆，是否确认操作?')
+      this.handleConfirmInfo('handleBatchOpenFirm', '确认启用对该IP的授权吗？启用后可以通过该IP地址访问管理后台。')
     },
     // 批量启用确认按钮
     handleBatchOpenFirm () {
@@ -101,7 +101,7 @@ export default {
     },
     // 点击批量停止按钮
     handleBatchStop () {
-      this.handleConfirmInfo('handleBatchStopFirm', '此操作不可逆，是否确认操作?')
+      this.handleConfirmInfo('handleBatchStopFirm', '确认停止对该IP的授权吗？停用后无法通过该IP地址访问管理后台。')
     },
     // 批量停止确认按钮
     handleBatchStopFirm () {
@@ -114,7 +114,7 @@ export default {
     // 表格停用按钮
     handleStop (val) {
       this.saveTableData = val
-      this.handleConfirmInfo('handleStopConfirm', '此操作不可逆，是否确认操作?')
+      this.handleConfirmInfo('handleStopConfirm', '确认停止对该IP的授权吗？停用后无法通过该IP地址访问管理后台。')
     },
     // 启用弹窗确认按钮
     handleOpenConfirm () {
@@ -128,7 +128,6 @@ export default {
     },
     // 点击对话框确认按钮
     handleSubmit () {
-      this.$refs.dialog.showDialogForm1 = false
       if (this.isEdit === 0) {
         this.apiCreateData(apiAddIpWhite, this.editData, apiListSysIpWhite)
       } else {  

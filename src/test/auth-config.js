@@ -33,7 +33,7 @@ export const staffTest = [
 
 export const ipTableItem = [
   { label: 'IP地址', key: 'addressIp', displayStatus: 0, setStatus: 1, fieldSort: 2, fix: 1 },
-  { label: '创建人', key: 'addressIp', displayStatus: 0, setStatus: 1, fieldSort: 3, fix: 0 },
+  { label: '创建人', key: 'creater', displayStatus: 0, setStatus: 1, fieldSort: 3, fix: 0 },
   { label: '状态', key: 'isDeleteName', displayStatus: 0, setStatus: 1, fieldSort: 3, fix: 0 },
   { label: '描述', key: 'remark', displayStatus: 0, setStatus: 1, fieldSort: 3, fix: 0 },
   { label: '创建时间', key: 'gmtCreate', displayStatus: 0, setStatus: 1, fieldSort: 3, fix: 0 }
@@ -43,7 +43,7 @@ export const accountTableItem = [
   { label: '姓名', key: 'userRealName', displayStatus: 0, setStatus: 1, fieldSort: 2, fix: 1 },
   { label: '部门', key: 'departmentName', displayStatus: 0, setStatus: 1, fieldSort: 3, fix: 0 },
   { label: '创建人', key: 'createrName', displayStatus: 0, setStatus: 1, fieldSort: 3, fix: 0 },
-  { label: '授权时间', key: 'gmtModified', displayStatus: 0, setStatus: 1, fieldSort: 3, fix: 0 },
+  { label: '授权时间', key: 'grandBegin', displayStatus: 0, setStatus: 1, fieldSort: 3, fix: 0 },
   { label: '描述', key: 'remark', displayStatus: 0, setStatus: 1, fieldSort: 3, fix: 0 },
   { label: '状态', key: 'isDeleteMsg', displayStatus: 0, setStatus: 1, fieldSort: 3, fix: 0 },
   { label: '创建时间', key: 'gmtCreate', displayStatus: 0, setStatus: 1, fieldSort: 3, fix: 0 }
