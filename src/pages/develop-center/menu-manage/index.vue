@@ -50,6 +50,7 @@ import batchConfig from '@/configureData/menu'
 import { apiListConsoleMenu, apiEditeConsoleMenu, apiCreateConsoleMenu, apiDeleteConsoleMenu } from '@/api/developCenter'
 
 export default {
+  name: 'menu-manage',
   mixins: [basicMethod, menu],
   data () {
     return {

@@ -111,14 +111,23 @@ export default {
     }
   },
   created () {
-    this.initSearchValues()
+    this.initSearchValues('start')
   },
   methods: {
     getValue (value, key) {
       this.searchValues[key] = value
     },
     // 初始化searchValues
-    initSearchValues () {
+    initSearchValues (type) {
+      if (type === 'start') {
+        let temp = sessionStorage.getItem(this.$parent.$options.name.split('-').join(''))
+        if (temp) {
+          Object.keys(temp).forEach(key => {
+            this.$set(this.searchValues, key, temp[key])
+          })
+        }
+        return
+      }
       this.searchItem.forEach(item => {
         if (Array.isArray(item.key)) {
           item.key.forEach(item1 => {
@@ -133,7 +142,7 @@ export default {
     },
     // 清空搜索数据
     handleClear () {
-      this.initSearchValues()
+      this.initSearchValues('end')
       this.$refs.selectTree[0].clearHandle()
       this.searchItem.forEach(item => {
         if (Array.isArray(item.key)) {

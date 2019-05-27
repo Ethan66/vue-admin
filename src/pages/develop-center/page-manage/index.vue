@@ -41,6 +41,7 @@ import configTybe from '@/configureData/pageKey'
 import { apiQueryPageList, apiAddPage, apiUpdatePage, apiListConsoleMenu, apiAddBatchPageField } from '@/api/developCenter'
 
 export default {
+  name: 'page-manage',
   mixins: [basicMethod, pageManage],
   data () {
     return {
