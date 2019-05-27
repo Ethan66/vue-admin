@@ -128,6 +128,9 @@ export default {
         }
         return
       }
+      if (type === 'end') {
+        sessionStorage.removeItem(this.$parent.$options.name.split('-').join(''))
+      }
       this.searchItem.forEach(item => {
         if (Array.isArray(item.key)) {
           item.key.forEach(item1 => {
@@ -143,7 +146,7 @@ export default {
     // 清空搜索数据
     handleClear () {
       this.initSearchValues('end')
-      this.$refs.selectTree[0].clearHandle()
+      this.$refs.selectTree && (this.$refs.selectTree[0].clearHandle())
       this.searchItem.forEach(item => {
         if (Array.isArray(item.key)) {
           this.$set(this.dateObj, item.key.join(), [undefined, undefined])
