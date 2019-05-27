@@ -36,6 +36,7 @@ import { organization } from '@/createData/auth-config/mixins'
 import basicMethod from '@/config/mixins'
 import { menuRelation } from '@/config/utils'
 import { savePageData } from '@/components/methods'
+import { apiListConsoleUser } from '@/api/staff'
 import { apiQueryDepartmentList, apiStopDepartment, apiEditDepartment, apiDelDepartment, apiAddDepartment, apiQueryDepartmentTree } from '@/api/authority'
 
 export default {
@@ -44,12 +45,14 @@ export default {
   data () {
     return {
       allDepartmentTree: [],
-      selectTreeCheckedValue: []
+      selectTreeCheckedValue: [],
+      allPeople: []
     }
   },
   created () {
     this.tablePages.pageSize = 10000
     this.handleGetAllDepartmentTree()
+    this.handleGetAllPeople()
     this.handleGetTableData(apiQueryDepartmentList)
   },
   methods: {
@@ -131,6 +134,15 @@ export default {
     },
     // 点击表格停用按钮
     handleStop (row) {
+      this.$confirm(
+      '确定停用该部门吗，停用后该部门下属所有人员账号将无法使用',
+      '温馨提示',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }
+    ).then(() => {
       apiStopDepartment({ id: row.id }).then(res => {
         if (res.code === '208999') {
           this.$getSuccessMsg(this, res.message)
@@ -139,6 +151,7 @@ export default {
           this.$message.error(res.message)
         }
       })
+    })
     },
     // 点击表格删除按钮
     handleDeleteData (row) {
@@ -236,6 +249,21 @@ export default {
         if (res.code === '208999') {
           this.allDepartmentTree = res.resultMap.data.filter(item => item.departmentType !== 3)
           this.dialogItem[0].dialogData = menuRelation(JSON.parse(JSON.stringify(this.allDepartmentTree)), 'id', 'parentId', 'departmentLevel', 'sortNo')
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+    },
+    handleGetAllPeople () {
+      apiListConsoleUser({ pageSize: 0, currentPage: 0 }).then(res => {
+        if (res.code === '208999') {
+          let list = res.resultMap.page.list
+          list.map(item => {
+            item.parentId = item.departmentId
+            item.departmentName = item.realName
+            item.id = 'a' + item.id
+          })
+          this.allPeople = this.$disposeTreeData(this.allDepartmentTree.concat(list))
         } else {
           this.$message.error(res.message)
         }

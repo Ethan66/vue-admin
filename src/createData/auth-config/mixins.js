@@ -126,7 +126,7 @@ const organizationMoreList = [
   { name: getBtnName('organization-add-same-level'), clickFn: 'handleCreateDepartment', show: showBtn('organization-add-same-level') },
   { name: getBtnName('organization-add-next-level'), clickFn: 'handleCreateNextLevelDepartment', show: showBtn('organization-add-next-level') },
   { name: getBtnName('organization-stop'), clickFn: 'handleStop', show: showBtn('organization-stop') },
-  { name: getBtnName('organization-delete'), clickFn: 'handleDeleteData', show: showBtn('organization-delete') }
+  { name: getBtnName('organization-delete'), clickFn: 'handleDeleteData', show: showBtn('organization-delete'), deleteTip: '确定删除该部门吗，删除后该部门的所有下属部门也被删除' }
 ]
 
 export const organization = {
