@@ -74,7 +74,7 @@
 <script>
 import mySwitch from '@/components/modules/switch'
 import treeSelect from '@/components/tree-select'
-import { setTimeout } from 'timers';
+
 export default {
   name: 'dialogModule',
   components: { mySwitch, treeSelect },
