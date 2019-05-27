@@ -38,7 +38,7 @@ router.beforeEach((to, from, next) => {
     !toPath ? next() : next({ path: toPath })
   } else { // 否则访问路由接口
     // 后台请求菜单列表
-    let { department: departmentId } = JSON.parse(localStorage.getItem('userInfo'))
+    let { department: departmentId } = JSON.parse(localStorage.getItem('userInfo')) || {}
     apiGetUserPermissionResource({ departmentId }).then(res => {
       if (res.code === '208999') {
         const list = res.resultMap.data.list
