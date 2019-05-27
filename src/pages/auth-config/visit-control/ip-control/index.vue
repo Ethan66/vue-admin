@@ -128,7 +128,6 @@ export default {
     },
     // 点击对话框确认按钮
     handleSubmit () {
-      this.$refs.dialog.showDialogForm1 = false
       if (this.isEdit === 0) {
         this.apiCreateData(apiAddIpWhite, this.editData, apiListSysIpWhite)
       } else {  
