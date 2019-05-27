@@ -62,6 +62,7 @@ import staffDialog from './staffDialog'
 import staffInfoDialog from './staffInfoDialog'
 import { apiListConsoleUser } from '@/api/staff'
 export default {
+  name: 'staff-index',
   mixins: [basicMethod, staff, methods],
   data () {
     const checkEmail = (rule, value, callback) => {

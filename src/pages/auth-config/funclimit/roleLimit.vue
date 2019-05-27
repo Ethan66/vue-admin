@@ -104,6 +104,7 @@ const initRoleFormItem = [
 ]
 
 export default {
+  name: 'role-limit',
   components: { classify, typeDialog },
   mixins: [methods, dialogConfig],
   data () {

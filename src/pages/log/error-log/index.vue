@@ -23,6 +23,7 @@ import basicMethod from '@/config/mixins'
 import { apiListPageLoginErrorLog } from '@/api/authority'
 
 export default {
+  name: 'error-log',
   mixins: [basicMethod, errorLog],
   created () {
     this.handleGetTableData(apiListPageLoginErrorLog)

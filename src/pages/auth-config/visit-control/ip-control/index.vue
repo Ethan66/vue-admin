@@ -40,6 +40,7 @@ import basicMethod from '@/config/mixins'
 import { apiListSysIpWhite, apiEditIpWhite, apiAddIpWhite, apiEditIpWhiteStatus } from '@/api/visitControl'
 
 export default {
+  name: 'visit-control',
   mixins: [basicMethod, ipControl],
   created () {
     this.handleGetTableData(apiListSysIpWhite)

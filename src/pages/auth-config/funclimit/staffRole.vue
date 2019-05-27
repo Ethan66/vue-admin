@@ -71,6 +71,7 @@ import staffDialog from './components/staffDialog'
 import { apiPageQueryUserRole } from '@/api/role'
 
 export default {
+  name: 'staff-role',
   mixins: [methods, basicMethod, staffRole, dialogConfig],
   created () {
     this.handleGetTableData(apiPageQueryUserRole)

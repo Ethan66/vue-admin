@@ -1,5 +1,5 @@
 <template>
-  <div class="account">
+  <div class="account catalog">
     <search-module
       class="searchContent"
       :search-item="searchItem"
@@ -72,6 +72,7 @@ import treeSelect from '@/components/tree-select'
 import { apiQueryDepartmentTree, apiListConsoleUser } from '@/api/staff'
 
 export default {
+  name: 'account-control',
   mixins: [basicMethod, account],
   components: { treeSelect },
   created () {
