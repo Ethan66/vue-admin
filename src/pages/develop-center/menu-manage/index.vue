@@ -241,6 +241,33 @@ export default {
           this.apiCreateData(apiCreateConsoleMenu, item)
         })
       }
+    },
+    validateMenuName (rule, value, callback) {
+      if (!value.trim()) {
+        return callback(new Error(this.dialogItem[1].placeholder))
+      }
+      if (value.length > 20) {
+        return callback(new Error('输入内容不能超过20字'))
+      }
+      callback()
+    },
+    validateCode (rule, value, callback) {
+      if (!value.trim()) {
+        return callback(new Error(this.dialogItem[3].placeholder))
+      }
+      if (value.length > 30) {
+        return callback(new Error('输入内容不能超过30字'))
+      }
+      callback()
+    },
+    validateMenuUrl (rule, value, callback) {
+      if (!value.trim()) {
+        return callback(new Error(this.dialogItem[4].placeholder))
+      }
+      if (value.length > 100) {
+        return callback(new Error('输入内容不能超过100字'))
+      }
+      callback()
     }
   }
 }

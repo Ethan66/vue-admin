@@ -126,7 +126,7 @@ const organizationMoreList = [
   { name: getBtnName('organization-add-same-level'), clickFn: 'handleCreateDepartment', show: showBtn('organization-add-same-level') },
   { name: getBtnName('organization-add-next-level'), clickFn: 'handleCreateNextLevelDepartment', show: showBtn('organization-add-next-level') },
   { name: getBtnName('organization-stop'), clickFn: 'handleStop', show: showBtn('organization-stop') },
-  { name: getBtnName('organization-delete'), clickFn: 'handleDeleteData', show: showBtn('organization-delete') }
+  { name: getBtnName('organization-delete'), clickFn: 'handleDeleteData', show: showBtn('organization-delete'), deleteTip: '确定删除该部门吗，删除后该部门的所有下属部门也被删除' }
 ]
 
 export const organization = {
@@ -160,7 +160,8 @@ export const organization = {
       {
         departmentType: { type: 'select', options: [{ label: '集团', value: 0 }, { label: '公司', value: 1 }, { label: '事业部', value: 2 }, { label: '部门', value: 3 }] }
       },
-      'sortNo', 'directorName',
+      { sortNo: { type: 'number' } },
+      'directorName',
       { departmentStatus: { type: 'radio', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }] } }
     ]
     this.searchItem = this.$setItem(tybeObj['organization-manage1'], configSearchItem, 'search')
@@ -168,7 +169,7 @@ export const organization = {
     let dialogItem = this.dialogItem = this.$setItem(tybeObj['organization-manage1'], configDialogItem, 'dialog')
     this.rules = {
       departmentName: [
-        { required: true, message: dialogItem[1].placeholder, trigger: 'blur' }
+        { required: true, trigger: 'blur', validator: this.validateDepartmentName }
       ],
       departmentType: [
         { required: true, message: dialogItem[2].placeholder, trigger: 'change' }
@@ -177,7 +178,7 @@ export const organization = {
         { required: true, message: dialogItem[3].placeholder, trigger: 'blur' }
       ],
       departmentStatus: [
-        { required: true, message: dialogItem[4].placeholder, trigger: 'change' }
+        { required: true, message: dialogItem[5].placeholder, trigger: 'change' }
       ]
     }
   }

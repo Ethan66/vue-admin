@@ -42,7 +42,8 @@ export const menu = {
       },
       'menuName',
       { menuType: { type: 'select', options: [{ label: '目录', value: 0 }, { label: '菜单', value: 1 }, { label: '按钮', value: 2 }] } },
-      'code', 'menuUrl', 'sortNo',
+      'code', 'menuUrl',
+      { sortNo: { type: 'number' } },
       { status: { type: 'radio', options: [{ label: '显示', value: 0 }, { label: '隐藏', value: 1 }] } },
       { remark: { label: '描述', type: 'textarea', rows: 4 } }
     ]
@@ -51,16 +52,16 @@ export const menu = {
     let dialogItem = this.dialogItem = this.$setItem(tybeObj['menu-manage1'], configDialogItem, 'dialog')
     this.rules = {
       menuName: [
-        { required: true, message: dialogItem[1].placeholder, trigger: 'blur' }
+        { required: true, trigger: 'blur', validator: this.validateMenuName }
       ],
       menuType: [
         { required: true, message: dialogItem[2].placeholder, trigger: 'change' }
       ],
       code: [
-        { required: true, message: dialogItem[3].placeholder, trigger: 'blur' }
+        { required: true, trigger: 'blur', validator: this.validateCode }
       ],
       menuUrl: [
-        { required: true, message: dialogItem[4].placeholder, trigger: 'blur' }
+        { required: true, trigger: 'blur', validator: this.validateMenuUrl }
       ],
       sortNo: [
         { required: true, message: dialogItem[5].placeholder, trigger: 'blur' }
@@ -104,13 +105,13 @@ export const pageManage = {
     let dialogItem = this.dialogItem = this.$setItem(tybeObj['page-manage1'], configDialogItem, 'dialog')
     this.rules = {
       pageName: [
-        { required: true, message: dialogItem[0].placeholder, trigger: 'blur' }
+        { required: true, trigger: 'blur', validator: this.validatePageName }
       ],
       pageCode: [
-        { required: true, message: dialogItem[1].placeholder, trigger: 'blur' }
+        { required: true, trigger: 'blur', validator: this.validatePageCode }
       ],
       pageUrl: [
-        { required: true, message: dialogItem[2].placeholder, trigger: 'blur' }
+        { required: true, trigger: 'blur', validator: this.validatePageUrl }
       ],
       menuCode: [
         { required: true, message: dialogItem[3].placeholder, trigger: 'blur' }

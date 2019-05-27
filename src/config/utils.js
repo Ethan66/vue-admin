@@ -61,7 +61,7 @@ const menuSort = (arr, key, sort) => {
     arr[0].first = true
     arr[arr.length - 1].last = true
     arr.forEach(item => {
-      item[key] && menuSort(item[key], key)
+      item[key] && menuSort(item[key], key, sort)
     })
   }
   return arr
