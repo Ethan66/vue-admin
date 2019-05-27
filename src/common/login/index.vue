@@ -5,6 +5,7 @@
       <el-form
         ref="login"
         :model="loginForm"
+        key="login"
         :rules="rules">
         <h3>百凌管理系统</h3>
         <el-form-item prop="user">
@@ -62,6 +63,7 @@
     <template v-else>
       <el-form
         ref="password"
+        key="password"
         :model="passwordForm" :rules="passwordrules">
         <h3>百凌管理系统</h3>
         <el-form-item prop="user">
