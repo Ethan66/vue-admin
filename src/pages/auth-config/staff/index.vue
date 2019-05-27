@@ -65,6 +65,14 @@ export default {
   name: 'staff-index',
   mixins: [basicMethod, staff, methods],
   data () {
+    let checkTel = (rule, value, callback) => {
+      let reg = /^1[34578]\d{9}$/
+      if (!reg.test(value)) {
+        callback(new Error('请输入正确的手机号'))
+      } else {
+        callback()
+      }
+    }
     return {
       defaultSearchObj: { a: 1 },
       staffInfoVisible: false,
@@ -79,9 +87,12 @@ export default {
           { required: true, message: '请输入姓名', trigger: 'blur' },
           { max: 20, message: '最多输入20个字符', trigger: 'blur' }
         ],
+        mailbox: [
+          { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+        ],
         telephone: [
           { required: true, message: '请输入手机号', trigger: 'blur' },
-          { min: 11, max: 11, message: '请输入正确的手机号', trigger: 'blur' }
+          { validator: checkTel, message: '请输入正确的手机号', trigger: ['blur', 'change'] }
         ],
         password: [
           { required: true, message: '请输入初始密码', trigger: 'blur' }
