@@ -41,6 +41,7 @@ import { apiPageFiledQueryList, apiUpdatePageField, apiDeletePageField, apiAddPa
 import createTybe from './createtybe'
 
 export default {
+  name: 'tybe-manage',
   mixins: [basicMethod, tybeManage],
   components: { createTybe },
   data () {
