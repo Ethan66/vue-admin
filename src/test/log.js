@@ -11,7 +11,6 @@ export const tableItemList = [
 
 export const errorTableItem = [
   { label: '姓名', key: 'realName', displayStatus: 0, setStatus: 1, fieldSort: 3, fix: 0 },
-  { label: '菜单名称', key: 'menuName', displayStatus: 0, setStatus: 1, fieldSort: 3, fix: 0 },
   { label: '菜单id', key: 'menuCode', displayStatus: 0, setStatus: 4, fieldSort: 5, fix: 0 },
   { label: '操作类型', key: 'opTypeDesc', displayStatus: 0, setStatus: 4, fieldSort: 5, fix: 0 },
   { label: 'IP', key: 'id', displayStatus: 0, setStatus: 1, fieldSort: 5, fix: 0 },
