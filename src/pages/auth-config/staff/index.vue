@@ -103,9 +103,6 @@ export default {
         position: [
           { required: true, message: '请输入职位', trigger: 'blur' },
           { max: 20, message: '最多输入20个字符', trigger: 'blur' }
-        ],
-        reportTo: [
-          { required: true, message: '请选择汇报对象', trigger: 'blur' }
         ]
       },
       list: [],
