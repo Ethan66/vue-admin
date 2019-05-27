@@ -65,14 +65,6 @@ export default {
   name: 'staff-index',
   mixins: [basicMethod, staff, methods],
   data () {
-    const checkEmail = (rule, value, callback) => {
-      const reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
-      if (!reg.test(value)) {
-        callback(new Error('邮箱格式不正确'))
-      } else {
-        callback()
-      }
-    }
     return {
       defaultSearchObj: { a: 1 },
       staffInfoVisible: false,
@@ -96,9 +88,6 @@ export default {
         ],
         departmentId: [
           { required: true, message: '请选择部门', trigger: 'blur' }
-        ],
-        mailbox: [
-          { validator: checkEmail, trigger: 'blur' }
         ],
         position: [
           { required: true, message: '请输入职位', trigger: 'blur' },

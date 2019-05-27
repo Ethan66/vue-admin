@@ -92,6 +92,10 @@ export default {
   methods: {
     handleClick (type, fn) {
       if (type === 'delete') {
+        this.$refs.staffForm.resetFields()
+        if (this.$refs.treeSelect) {
+          this.$refs.treeSelect[0].clearSelectedNode()
+        }
         if (!fn) {
           this.staffVisible = false
         } else {
@@ -105,12 +109,12 @@ export default {
             } else {
               this.$parent[fn]()
             }
+            this.$refs.staffForm.resetFields()
+            if (this.$refs.treeSelect) {
+              this.$refs.treeSelect[0].clearSelectedNode()
+            }
           }
         })
-      }
-      this.$refs.staffForm.resetFields()
-      if (this.$refs.treeSelect) {
-        this.$refs.treeSelect[0].clearSelectedNode()
       }
     },
     popoverHide (checkedIds, checkedData) {
