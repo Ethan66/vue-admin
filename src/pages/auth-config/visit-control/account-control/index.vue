@@ -60,7 +60,7 @@
   </el-dialog>
     <dialog-confirm
       :confirmContent="confirmContent" :showDialogForm.sync="confrimDiaShow" :confirmFn="confirmFn"/>
-  </div>
+</div>
 </template>
 
 <script>
@@ -94,7 +94,7 @@ export default {
         },
          diaRules: {
           region: [
-            { required: true, message: '请选择授权时间', trigger: 'change' }
+            { required: true, message: '请选择员工', trigger: 'change' }
           ],
           grandType: [
             { required: true, message: '请选择授权时间', trigger: 'change' }
@@ -177,12 +177,12 @@ export default {
       this.chooseDataArr.forEach((item) => {
         this.checkArr.push(item.id)
       })
-      this.handleConfirmInfo('handleBatchFirmPl', '此操作不可逆，是否确认操作?')
+      this.handleConfirmInfo('handleBatchFirmPl', '确认失效对该账号的授权吗？失效后该账号无法通过外网访问管理后台。')
     },
     // 表格失效按钮
     handleInvalid (row) {
       this.saveDataId = row.id
-      this.handleConfirmInfo('handleBatchFirm', '此操作不可逆，是否确认操作?')
+      this.handleConfirmInfo('handleBatchFirm', '确认失效对该账号的授权吗？失效后该账号无法通过外网访问管理后台。')
     },
     // 批量表格失效确认按钮
     handleBatchFirmPl () {
@@ -221,6 +221,7 @@ export default {
                 this.dialogAccountForm = {}
                 this.consoleUserIds = []
                 this.showDialogForm1 = false
+                this.$refs.treeSelect.clearSelectedNodes()
               } else {
                 this.$message.error(res.message)
               }
@@ -240,6 +241,11 @@ export default {
     // 处理表格数据
     handleTableData (tableData) {
       tableData.forEach(item => {
+        if (item.grandBegin) {
+          item.grandBegin = item.grandBegin + '至' + item.grandEnd
+        } else {
+          item.grandBegin = '永 久'
+        }
         item.showBtn = []
         if (item.isDelete === '0') {
           item.showBtn.push('失 效')
