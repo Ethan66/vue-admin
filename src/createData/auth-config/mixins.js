@@ -169,7 +169,7 @@ export const organization = {
     let dialogItem = this.dialogItem = this.$setItem(tybeObj['organization-manage1'], configDialogItem, 'dialog')
     this.rules = {
       departmentName: [
-        { required: true, message: dialogItem[1].placeholder, trigger: 'blur' }
+        { required: true, trigger: 'blur', validator: this.validateDepartmentName }
       ],
       departmentType: [
         { required: true, message: dialogItem[2].placeholder, trigger: 'change' }
