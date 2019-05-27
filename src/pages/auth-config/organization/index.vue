@@ -59,6 +59,7 @@ export default {
       this.handleClearSelectTree()
       this.isEdit = 0
       this.dialogTitle = '新增部门'
+      this.dialogItem[5].show = true
       this.showDialogForm = true
     },
     // 点击表格编辑按钮
@@ -70,6 +71,7 @@ export default {
       this.handleClearSelectTree()
       this.isEdit = 1
       this.dialogTitle = '编辑部门'
+      this.dialogItem[5].show = false
       this.showDialogForm = true
     },
     // 选择菜单树的值后
