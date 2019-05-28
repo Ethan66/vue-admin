@@ -139,7 +139,7 @@ export default {
         { label: '分类名称', key: 'roleName', type: 'input' },
         { label: '显示排序', key: 'sortNo', type: 'input' },
         { label: '创建人', key: 'createrName', type: 'text' },
-        { label: '创建时间', key: 'gmtModified', type: 'text' },
+        { label: '更新时间', key: 'gmtModified', type: 'text' },
         { label: '复制角色权限', key: 'cloneRoleIds', type: 'selectDouble', options: [] }
       ],
       confirmContent: '',
