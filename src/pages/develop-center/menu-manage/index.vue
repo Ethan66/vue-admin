@@ -62,9 +62,9 @@ export default {
   watch: {
     showDialogForm (val) {
       if (!val) {
-        this.dialogItem[0].type = 'selectTree'
-        this.dialogItem[0].disabled = false
-        this.dialogItem[2].disabled = false
+        this.dialogItem[1].type = 'selectTree'
+        this.dialogItem[1].disabled = false
+        this.dialogItem[3].disabled = false
       }
     }
   },
@@ -77,10 +77,12 @@ export default {
     handleGetAllParentTree () {
       this.selectTreeCheckedValue = []
       let filterArr = JSON.parse(JSON.stringify(this.allData.filter(item => item.menuLevel !== 3)))
-      this.allParentMenu = this.dialogItem[0].dialogData = menuRelation(filterArr, 'id', 'menuParentId', 'menuLevel', 'sortNo')
+      this.allParentMenu = this.dialogItem[1].dialogData = menuRelation(filterArr, 'id', 'menuParentId', 'menuLevel', 'sortNo')
     },
     // 点击新增按钮
     handleAdd () {
+      this.dialogItem[0].show = false
+      this.dialogItem[1].show = true
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
       this.handleClearSelectTree()
       this.handleGetAllParentTree()
@@ -90,6 +92,7 @@ export default {
     },
     // 点击表格编辑按钮
     handleEditData (row) {
+      this.dialogItem[0].show = false
       this.editData = JSON.parse(JSON.stringify(row))
       this.handleClearSelectTree()
       this.handleGetAllParentTree()
@@ -104,9 +107,10 @@ export default {
     // 新建平级菜单
     handleCreateLevelMenu (row) {
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
-      this.dialogItem[0].type = 'input'
-      this.dialogItem[0].disabled = true
-      this.dialogItem[2].disabled = true
+      this.dialogItem[0].show = false
+      this.dialogItem[1].type = 'input'
+      this.dialogItem[1].disabled = true
+      this.dialogItem[3].disabled = true
       this.editData.menuParentIdStash = row.menuParentId
       let obj = this.allData.find(item => item.id === row.menuParentId)
       obj && (this.editData.menuParentId = obj.menuName)
@@ -123,9 +127,10 @@ export default {
         return false
       }
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
-      this.dialogItem[0].type = 'input'
-      this.dialogItem[0].disabled = true
-      this.dialogItem[2].disabled = true
+      this.dialogItem[0].show = false
+      this.dialogItem[1].type = 'input'
+      this.dialogItem[1].disabled = true
+      this.dialogItem[3].disabled = true
       this.editData.menuParentIdStash = row.id
       this.editData.menuParentId = row.menuName
       this.editData.menuType = Number(row.menuTypeStash) + 1
@@ -138,7 +143,7 @@ export default {
     handleSelectTreeValue (row) {
       if (!row) return false
       this.editData.menuType = Number(row.menuType) + 1
-      let list = this.dialogItem[2].options.map(item => {
+      let list = this.dialogItem[3].options.map(item => {
         if (item.value <= row.menuType) {
           item.disabled = true
         } else {
@@ -146,19 +151,21 @@ export default {
         }
         return item
       })
-      this.$set(this.dialogItem[2], 'options', list)
+      this.$set(this.dialogItem[3], 'options', list)
     },
     // 清空菜单树的值
     handleClearSelectTree () {
-      let list = this.dialogItem[2].options.map(item => {
+      let list = this.dialogItem[3].options.map(item => {
         item.disabled = false
         return item
       })
-      this.$set(this.dialogItem[2], 'options', list)
+      this.$set(this.dialogItem[3], 'options', list)
     },
     // 点击表格详情按钮
     handleShowDetailDialog (row) {
       this.showDetail = true
+      this.dialogItem[0].show = true
+      this.dialogItem[1].show = false
       this.editData = row
     },
     // 点击表格删除按钮
@@ -244,7 +251,7 @@ export default {
     },
     validateMenuName (rule, value, callback) {
       if (!value.trim()) {
-        return callback(new Error(this.dialogItem[1].placeholder))
+        return callback(new Error(this.dialogItem[2].placeholder))
       }
       if (value.length > 20) {
         return callback(new Error('输入内容不能超过20字'))
@@ -253,7 +260,7 @@ export default {
     },
     validateCode (rule, value, callback) {
       if (!value.trim()) {
-        return callback(new Error(this.dialogItem[3].placeholder))
+        return callback(new Error(this.dialogItem[4].placeholder))
       }
       if (value.length > 30) {
         return callback(new Error('输入内容不能超过30字'))
@@ -262,7 +269,7 @@ export default {
     },
     validateMenuUrl (rule, value, callback) {
       if (!value.trim()) {
-        return callback(new Error(this.dialogItem[4].placeholder))
+        return callback(new Error(this.dialogItem[5].placeholder))
       }
       if (value.length > 100) {
         return callback(new Error('输入内容不能超过100字'))

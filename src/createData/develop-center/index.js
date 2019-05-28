@@ -32,6 +32,9 @@ export const menu = {
       btn: 120
     }
     let configDialogItem = [
+      { menuParentName: {
+        label: '上级菜单', show: false
+      } },
       {
         menuParentId: {
           label: '上级菜单',
