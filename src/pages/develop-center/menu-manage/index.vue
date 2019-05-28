@@ -176,6 +176,7 @@ export default {
     handleSubmit () {
       if(this.editData.remark.length > 100) {
         this.$message.error('描述字段长度不能超过100')
+        return
       }
       if (this.isEdit === 0) {
         if (this.editData.menuParentIdStash) {
