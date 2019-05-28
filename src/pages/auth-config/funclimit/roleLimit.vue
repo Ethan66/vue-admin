@@ -458,7 +458,6 @@ export default {
 
 <style lang="less">
   .role-limit {
-    display: flex;
     p{
       margin: 0;
     }
