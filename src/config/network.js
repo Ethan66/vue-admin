@@ -67,8 +67,7 @@ function handleSpecialError (response) {
   const res = response.data
   // 用户没登录
   if (res.code === '-208999' && res.message === 'sessionId参数不能为空') {
-    localStorage.removeItem('userInfo')
-    router.push({ path: '/login' })
+    clearUserInfo(0)
     return true
   }
   // 用户登录过期或登录失效
@@ -84,8 +83,7 @@ function handleSpecialError (response) {
     ).then(() => {
       apiUserLoginOut().then((res) => {
         if (res.code === '208999') {
-          localStorage.removeItem('userInfo')
-          router.push({ path: '/login' })
+          clearUserInfo(0)
         }
       })
     })
@@ -97,33 +95,39 @@ function handleSpecialError (response) {
     })
     return true
   }
-  if (res.code === '211201') {
+  let path = router.currentRoute.path || ''
+  if (path !== '/login' && res.code === '211201') {
     MessageBox.confirm(
-      '该账号已被停用',
+      '该账号已被停用，请联系管理员',
       '已被停用',
       {
         confirmButtonText: '确认',
         type: 'warning'
       }
     )
-    localStorage.removeItem('userInfo')
-    router.push({ path: '/login' })
+    clearUserInfo()
     return true
   }
-  if (res.code === '211211') {
+  if (path !== '/login' && res.code === '211211') {
     MessageBox.confirm(
-      '该账号已被禁止登录',
+      '该账号已被禁止登录，请联系管理员',
       '已被禁止登录',
       {
         confirmButtonText: '确认',
         type: 'warning'
       }
     )
-    localStorage.removeItem('userInfo')
-    router.push({ path: '/login' })
+    clearUserInfo()
     return true
   }
   return false
+}
+
+let clearUserInfo = (time = 1000) => {
+  setTimeout(() => {
+    localStorage.removeItem('userInfo')
+    router.push({ path: '/login' })
+  }, time)
 }
 
 let handleGetMenuCode = () => {
