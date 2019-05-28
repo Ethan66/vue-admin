@@ -47,7 +47,7 @@ import { apiListConsoleUser } from '@/api/staff'
 import { apiQueryDepartmentList, apiStopDepartment, apiEditDepartment, apiDelDepartment, apiAddDepartment, apiQueryDepartmentTree } from '@/api/authority'
 
 export default {
-  name: 'organization-config',
+  name: 'organization',
   mixins: [basicMethod, organization],
   data () {
     return {

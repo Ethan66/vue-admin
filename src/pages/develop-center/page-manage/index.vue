@@ -102,10 +102,10 @@ export default {
       tableData.forEach(item => {
         item.pageStatusStash = item.pageStatus
         switch (item.pageStatus) {
-          case 1:
+          case 0:
             item.pageStatus = '正常'
             break
-          case 0:
+          case 1:
             item.pageStatus = '停用'
             break
         }
