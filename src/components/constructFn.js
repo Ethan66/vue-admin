@@ -9,7 +9,14 @@ SetItem.prototype.initTableConfig = function (config, hide, sort, fixed) {
   let tableBtnConfig = { key: 'btn', fixed: 'right', label: '操作', type: 'btn' }
   let tableSelection = { key: 'selection', type: 'selection' }
   this.dataArrFilter = this.dataArrFilter.filter(item => {
-    return item[hide] === 0
+    if (item[hide] === 0) {
+      if (item.authority !== '001') {
+        return true
+      } else {
+        return false
+      }
+    }
+    return false
   }).sort((v1, v2) => v1[sort] - v2[sort])
   if (this.configObj.selection) {
     this.dataArrFilter.unshift(Object.assign({}, tableSelection))

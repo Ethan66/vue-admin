@@ -248,6 +248,8 @@ export default {
         item.showBtn = []
         if (item.isDelete === '0') {
           item.showBtn.push('失 效')
+        } else {
+          item.showBtn.push('')
         }
       })
     }

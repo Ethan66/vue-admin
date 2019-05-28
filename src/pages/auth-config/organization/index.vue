@@ -67,6 +67,8 @@ export default {
   methods: {
     // 点击新增按钮
     handleAdd () {
+      this.dialogItem[0].disabled = false
+      this.dialogItem[2].disabled = false
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
       this.editData.departmentStatus = 0
       this.selectTreeCheckedValue = []
@@ -83,6 +85,8 @@ export default {
     // 点击表格编辑按钮
     handleEditData (row) {
       this.editData = JSON.parse(JSON.stringify(row))
+      this.dialogItem[0].disabled = false
+      this.dialogItem[2].disabled = false
       this.editData.departmentStatus = this.editData.departmentStatusStash
       this.editData.departmentType = this.editData.departmentTypeStash
       this.selectTreeCheckedValue = [this.editData.parentId]

@@ -4,7 +4,7 @@ import { showBtn, getBtnName } from '@/components/methods'
 const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
 
 const menuMoreList = [
-  { name: getBtnName('menu-add-same-level'), clickFn: 'handleCreateLevelMenu', show: showBtn('menu-add-same-level1') },
+  { name: getBtnName('menu-add-same-level'), clickFn: 'handleCreateLevelMenu', show: showBtn('menu-add-same-level') },
   { name: getBtnName('menu-add-next-level'), clickFn: 'handleCreateNextLevelMenu', show: showBtn('menu-add-next-level') },
   { name: getBtnName('menu-delete'), clickFn: 'handleDeleteData', show: showBtn('menu-delete') },
   { name: getBtnName('menu-detail'), clickFn: 'handleShowDetailDialog', show: showBtn('menu-detail') }
