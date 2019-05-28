@@ -205,6 +205,7 @@ export default {
         this.$message.error('负责人请选择员工')
       }
       edit.directorId && (edit.directorId = edit.directorId.slice(1))
+      if (!edit.parentId) edit.parentId = null
       this.$refs.dialog.showDialogForm1 = false
       let obj = {
         departmentName: edit.departmentName,
@@ -240,7 +241,7 @@ export default {
       this.searched = true
       savePageData(lowName, val, currentPage, this.activeTabName) // 将搜索等数据缓存
       this.getTableDataApi = api
-      if (val.departmentName) {
+      if (val && val.departmentName) {
         this.getDataByPost = true
       } else {
         this.getDataByPost = false
