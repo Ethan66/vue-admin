@@ -205,11 +205,11 @@ export default {
         this.$message.error('负责人请选择员工')
       }
       edit.directorId && (edit.directorId = edit.directorId.slice(1))
-      if (!edit.parentId) edit.parentId = null
+      if (!edit.parentId) edit.parentId = undefined
       this.$refs.dialog.showDialogForm1 = false
       let obj = {
         departmentName: edit.departmentName,
-        directorId: edit.directorId,
+        directorId: Number(edit.directorId),
         departmentType: edit.departmentType,
         id: edit.id,
         sortNo: edit.sortNo,
