@@ -13,7 +13,7 @@
       :table-btn="tableBtn">
       <div class="btn-content" slot="btn">
         <el-button @click="handleAdd" v-if="$showBtn('menu-add-menu')">{{ $getBtnName('menu-add-menu') }}</el-button>
-        <el-button @click="$router.push({ path: '/main/develop-center/menu-manage/newpage' })">跳转页面</el-button>
+        <!-- <el-button @click="$router.push({ path: '/main/develop-center/menu-manage/newpage' })">跳转页面</el-button> -->
         <el-button @click="handleBatchCreate('catalogue')" v-if="$showBtn('menu-add-catogue-all')">{{ $getBtnName('menu-add-catogue-all') }}</el-button>
         <el-button @click="handleBatchCreate('menu')" v-if="$showBtn('menu-add-menu-all')">{{ $getBtnName('menu-add-menu-all') }}</el-button>
         <el-button @click="handleBatchCreate('btn')" v-if="$showBtn('menu-add-btn-all')">{{ $getBtnName('menu-add-btn-all') }}</el-button>

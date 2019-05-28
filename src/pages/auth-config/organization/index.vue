@@ -206,7 +206,6 @@ export default {
       }
       edit.directorId && (edit.directorId = edit.directorId.slice(1))
       if (!edit.parentId) edit.parentId = undefined
-      this.$refs.dialog.showDialogForm1 = false
       let obj = {
         departmentName: edit.departmentName,
         directorId: Number(edit.directorId),
@@ -361,6 +360,12 @@ export default {
       }
       if (value.length > 20) {
         return callback(new Error('输入内容不能超过20字'))
+      }
+      callback()
+    },
+    validateSortNo (rule, value, callback) {
+      if (value < 0 || !Number(value)) {
+        return callback(new Error('排序必须为正整数'))
       }
       callback()
     }
