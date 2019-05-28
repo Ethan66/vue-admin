@@ -52,8 +52,8 @@ export default {
       editData: {},
       dialogItem: [
         { key: 'password', label: '原密码', type: 'input', show: true },
-        { key: 'newPassword', label: '新密码', type: 'input', show: true },
-        { key: 'checkNewPassword', label: '确认密码', type: 'input', show: true }
+        { key: 'newPassword', label: '新密码', type: 'password', show: true },
+        { key: 'checkNewPassword', label: '确认密码', type: 'password', show: true }
       ],
       dialogBtn: [
         { name: '取消', type: 'delete', show: true, disabled: false, clickFn: 'btnCancel' },
