@@ -123,7 +123,7 @@ export default {
         { label: '分类名称', key: 'roleName', type: 'input' },
         { label: '显示排序', key: 'sortNo', type: 'input' },
         { label: '创建人', key: 'createrName', type: 'text' },
-        { label: '创建时间', key: 'gmtCreate', type: 'text' },
+        { label: '创建时间', key: 'gmtModified', type: 'text' },
         { label: '复制角色权限', key: 'cloneRoleIds', type: 'selectDouble', options: [] }
       ],
       confirmContent: '',
@@ -140,7 +140,7 @@ export default {
     },
     handleEditClass (row) {
       this.handleApiGetConsoleRoleById(row.id)
-      this.handleInitTypeDialog('编辑类型', ['roleName', 'sortNo', 'createrName', 'gmtCreate'], true)
+      this.handleInitTypeDialog('编辑类型', ['roleName', 'sortNo', 'createrName', 'gmtModified'], true)
       this.formItem.map(item => {
         if (item.key === 'roleName') {
           item.label = '分类名称'
@@ -175,7 +175,7 @@ export default {
     },
     handleEditRole (row) {
       this.handleApiGetConsoleRoleById(row.id)
-      this.handleInitTypeDialog('编辑角色', ['resourceParentId', 'roleName', 'sortNo', 'createrName', 'gmtCreate'], true)
+      this.handleInitTypeDialog('编辑角色', ['resourceParentId', 'roleName', 'sortNo', 'createrName', 'gmtModified'], true)
       this.formItem.map(item => {
         if (item.key === 'roleName') {
           item.label = '角色名称'
