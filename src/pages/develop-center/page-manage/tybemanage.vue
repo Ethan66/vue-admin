@@ -69,6 +69,7 @@ export default {
       this.inlineLabelToValue[key] = [{ label: '否', value: 0 }, { label: '是', value: 1 }]
     })
     const { menuCode, pageCode } = this.$route.query
+    console.log(1)
     this.searchDefaultObj = { menuCode, pageCode }
     this.menuCode = menuCode
     this.pageCode = pageCode
