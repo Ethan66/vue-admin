@@ -1,4 +1,4 @@
-import { apiCreateConsoleRole, apiEditeConsoleRole, apiDelConsoleRole, apiGetAllRoleRequestTree, apiPageQueryUserRole, apiGrantUserRole, apiDelUserRole, apiQueryDepartmentList, apiGetConsoleRoleById } from '@/api/role'
+import { apiGetAllRoleRequestTree, apiPageQueryUserRole, apiGrantUserRole, apiDelUserRole, apiQueryDepartmentList, apiGetConsoleRoleById } from '@/api/role'
 import { apiQueryDepartmentTree, apiListConsoleUser } from '@/api/staff'
 
 export default {
@@ -13,55 +13,6 @@ export default {
           if (typeof data === 'object') {
             this.formData = JSON.parse(JSON.stringify(data))
           }
-        } else {
-          this.$message.error(res.message)
-        }
-      })
-    },
-    handleApiCreateConsoleRole () {
-      let params = {
-        resourceType: this.isClassify // 资源类型 0:角色，1:角色分类
-      }
-      Object.assign(params, this.formData)
-      if (Array.isArray(params.cloneRoleIds)) {
-        params.cloneRoleIds = params.cloneRoleIds.join(',')
-      }
-      apiCreateConsoleRole(params).then(res => {
-        this.flag = true
-        if (res.code === '208999') {
-          this.$message.success(res.message)
-          this.handleApiGetAllRoleRequestTree()
-          this.handleDialogClose('typeDialog', 'typeVisible')
-        } else {
-          this.$message.error(res.message)
-        }
-      })
-    },
-    handleApiEditeConsoleRole () {
-      let params = {
-        resourceType: this.isClassify
-      }
-      Object.assign(params, this.formData)
-      apiEditeConsoleRole(params).then(res => {
-        this.flag = true
-        if (res.code === '208999') {
-          this.$message.success(res.message)
-          this.handleApiGetAllRoleRequestTree()
-          this.handleDialogClose('typeDialog', 'typeVisible')
-        } else {
-          this.$message.error(res.message)
-        }
-      })
-    },
-    handleApiDelConsoleRole () {
-      let params = {
-        id: this.delId, // 记录id
-        resourceType: this.isClassify // 资源类型
-      }
-      apiDelConsoleRole(params).then(res => {
-        if (res.code === '208999') {
-          this.$message.success(res.message)
-          this.handleApiGetAllRoleRequestTree()
         } else {
           this.$message.error(res.message)
         }
@@ -91,21 +42,6 @@ export default {
     // 获取角色配置
     getRoleConfig (callback) {
       this.handleApiGetAllRoleRequestTree(callback)
-    },
-    // 获取所属分类
-    handleGetClassify () {
-      let params = {}
-      apiGetAllRoleRequestTree(params).then(res => {
-        if (res.code === '208999') {
-          this.formItem.map(item => {
-            if (item.key === 'resourceParentId') {
-              item.options = res.resultMap.list
-            }
-          })
-        } else {
-          this.$message.error(res.message)
-        }
-      })
     },
     // 查询部门树
     handleApiQueryDepartmentTree () {
@@ -265,22 +201,5 @@ export default {
       formItem = globleItem.filter(item => keys.includes(item.key))
       return formItem
     },
-    /**
-     * 初始化弹框
-     * @param {String} title 弹框标题
-     * @param {Array} keys 需要的formItem的项
-     * @param {Boolean} isEdit 是否是编辑
-     * @param {Boolean} visible 是否显示弹框
-     * @param {Object} row 需要反显的数据
-     */
-    handleInitTypeDialog (title, keys, isEdit) {
-      this.typeDialogTitle = title
-      this.resetFormData('formData')
-      if (Array.isArray(keys)) {
-        this.formItem = this.filterFormItem(this.globleItem, keys)
-      }
-      this.isEdit = isEdit
-      this.typeDialogVisible = true
-    }
   }
 }

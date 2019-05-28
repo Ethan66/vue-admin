@@ -1,38 +1,24 @@
 <template>
   <div class="staff-role">
-    <div class="box-left">
-      <h2>角色分类</h2>
-      <classify
-        ref="classify"
-        :classifyList="classifyList"
-        :total="roleCount"
-        @classify="handleClassify"
-        @role="handleRole"
-        @roleClick="handleRoleClick"
-      />
-    </div>
-    <div class="box-right">
-      <search-module
-        class="searchContent"
-        :search-item="searchItem"
-        :search-values="searchValues"
-        :search-default-obj="defaultSearchObj"
-        @handleSearch="handleSearch"
-      />
-      <table-module
-        ref="table"
-        :table-data="tableData"
-        :table-item="tableItem"
-        :table-btn="tableBtn"
-        :table-pages="tablePages"
-        @handleSendHead="handleSendHead"
-        @table-jump="handleJump">
-        <div class="btn-content" slot="btn">
-          <el-button @click="handleAddStaff">添加员工</el-button>
-        </div>
-      </table-module>
-    </div>
-
+    <search-module
+      class="searchContent"
+      :search-item="searchItem"
+      :search-values="searchValues"
+      :search-default-obj="defaultSearchObj"
+      @handleSearch="handleSearch"
+    />
+    <table-module
+      ref="table"
+      :table-data="tableData"
+      :table-item="tableItem"
+      :table-btn="tableBtn"
+      :table-pages="tablePages"
+      @handleSendHead="handleSendHead"
+      @table-jump="handleJump">
+      <div class="btn-content" slot="btn">
+        <el-button @click="handleAddStaff">添加员工</el-button>
+      </div>
+    </table-module>
     <!-- 添加编辑员工弹框 -->
     <staffDialog
       ref="staffDialog"
@@ -45,16 +31,6 @@
       :treeList="treeList"
       :isEdit="staffDialogIsEdit"
     />
-    <!-- 添加编辑角色分类弹框 -->
-    <typeDialog
-      ref="typeDialog"
-      :dialogVisible.sync="typeDialogVisible"
-      :formItem="formItem"
-      :formData="formData"
-      :rules="typeDialogRules"
-      :dialogTitle="typeDialogTitle"
-      :dialogBtn="typeDialogBtn"
-    />
     <dialog-confirm
       :confirmContent="confirmContent" :showDialogForm.sync="confrimDiaShow" :confirmFn="confirmFn"/>
   </div>
@@ -64,8 +40,6 @@
 import { staffRole } from './mixins'
 import methods from './methods'
 import basicMethod from '@/config/mixins'
-import typeDialog from './components/typeDialog'
-import classify from './components/classify'
 import staffDialog from './components/staffDialog'
 import { apiPageQueryUserRole } from '@/api/role'
 import { apiListConsoleUser } from '@/api/staff'
@@ -75,58 +49,22 @@ export default {
   mixins: [methods, basicMethod, staffRole],
   created () {
     this.handleGetTableData(apiPageQueryUserRole)
-    // 获取角色分类树
-    this.handleApiGetAllRoleRequestTree()
     // 获取部门树
     this.handleApiQueryDepartmentTree()
     // 查询系统用户列表
     this.handleApiListConsoleUser()
   },
   data () {
-    let checkSortNo = (rule, value, callback) => {
-      let reg = /^[0-9]+$/
-      if (!reg.test(value)) {
-        callback(new Error('请输入正确的数值'))
-      } else {
-        callback()
-      }
-    }
     return {
-      typeDialogTitle: '编辑类型',
-      formData: {
-        cloneRoleIds: []
-      },
-      typeDialogRules: {
-        resourceParentId: [
-          { required: true, message: '请选择所属分类', trigger: 'blur' }
-        ],
-        roleName: [
-          { required: true, message: '请输入分类名称', trigger: 'blur' },
-          { max: 20, message: '最多输入20个字符', trigger: 'blur' }
-        ],
-        sortNo: [
-          { required: true, message: '请输入显示排序', trigger: 'blur' },
-          { validator: checkSortNo, message: '请输入正确的数值', trigger: ['blur', 'change'] }
-        ]
-      },
-      typeDialogBtn: [
-        { label: '取 消', type: 'delete', clickfn: 'handleTypeDialogRefuse' },
-        { label: '确 认', type: 'edit', color: 'primary', clickfn: 'handleTypeDialogSubmit' }
-      ],
-      formItem: [],
-      typeDialogVisible: false,
       isEdit: false,
-      isClassify: 0, // 0：角色，1：角色分类
       defaultSearchObj: { a: 1 },
       selectStaff: [],
-      classifyList: [],
       staffDialogIsEdit: false,
       staffDialogVisible: false,
       staffDialogTitle: '添加员工',
       staffDialogFormData: {
         roleIds: []
       },
-      roleCount: 0,
       treeData: [],
       staffDialogFormItem: [],
       staffDialogBtn: [
@@ -146,104 +84,18 @@ export default {
       confirmContent: '',
       confrimDiaShow: false,
       confirmFn: '',
-      delId: '',
       flag: true // 调用api锁
     }
   },
   methods: {
+    roleClick (data) {
+      this.handleGetTableData(apiPageQueryUserRole, data)
+    },
     // 点击搜索按钮
     handleSearch (val) {
       // this.handleGetTableData(this.getTableDataApi, val)
       this.handleGetTableData(apiListConsoleUser, val)
       this.$refs.classify.handleReStatus()
-    },
-    handleEditClass (row) {
-      this.handleApiGetConsoleRoleById(row.id)
-      this.handleInitTypeDialog('编辑类型', ['roleName', 'sortNo', 'createrName', 'gmtModified'], true)
-      this.formItem.map(item => {
-        if (item.key === 'roleName') {
-          item.label = '分类名称'
-        }
-      })
-    },
-    handleAddClass (row) {
-      this.handleInitTypeDialog('新建类型', ['roleName', 'sortNo'], false)
-      this.formItem.map(item => {
-        if (item.key === 'roleName') {
-          item.label = '分类名称'
-        }
-      })
-    },
-    handleDelClass (row) {
-      this.delId = row.id
-      this.handleConfirmInfo('确认删除该分类吗？删除后该分类下所有角色将自动归到未分类角色中。', 'handleApiDelConsoleRole')
-    },
-    /**
-     * type: 点击icon的类型
-     * item: 当前项数据
-     */
-    handleClassify (type, item) {
-      this.isClassify = 1
-      if (type === 'add') {
-        this.handleAddClass(item)
-      } else if (type === 'del') {
-        this.handleDelClass(item)
-      } else if (type === 'edit') {
-        this.handleEditClass(item)
-      }
-    },
-    handleEditRole (row) {
-      this.handleApiGetConsoleRoleById(row.id)
-      this.handleInitTypeDialog('编辑角色', ['resourceParentId', 'roleName', 'sortNo', 'createrName', 'gmtModified'], true)
-      this.formItem.map(item => {
-        if (item.key === 'roleName') {
-          item.label = '角色名称'
-        }
-      })
-      this.handleGetClassify()
-    },
-    handleAddRole (row) {
-      this.handleInitTypeDialog('新建角色', ['resourceParentId', 'roleName', 'sortNo', 'cloneRoleIds'], false)
-      this.formItem.map(item => {
-        if (item.key === 'roleName') {
-          item.label = '角色名称'
-        }
-      })
-      this.handleGetClassify()
-      this.handleApiGetAllRoleRequestTree()
-    },
-    handleDelRole (row) {
-      this.delId = row.id
-      this.handleConfirmInfo('确认删除该角色？删除角色后，本角色下员工所具有的权限会受到影响。', 'handleApiDelConsoleRole')
-    },
-    /**
-     * type: 点击icon的类型
-     * item: 当前项数据
-     */
-    handleRole (type, item) {
-      this.isClassify = 0
-      if (type === 'add') {
-        this.handleAddRole(item)
-      } else if (type === 'del') {
-        this.handleDelRole(item)
-      } else if (type === 'edit') {
-        this.handleEditRole(item)
-      }
-    },
-    /**
-     * 单击角色，更新表格数据
-     * type: role: 单击的角色； all: 单击的全部用户； 否则就是单击的分类
-     * item:
-     */
-    handleRoleClick (type, item) {
-      if (type === 'role') {
-        this.isClassify = 0
-      } else if (type === 'all') {
-        this.isClassify = ''
-      } else {
-        this.isClassify = 1
-      }
-      this.handleGetTableData(apiPageQueryUserRole, { resourceType: this.isClassify, roleId: item.id })
     },
     handleAddStaff () {
       let callback = (list) => {
@@ -290,20 +142,6 @@ export default {
       this.flag = false
       this.handleApiGrantUserRole()
     },
-    handleTypeDialogRefuse () {
-      this.handleDialogClose('typeDialog', 'typeVisible')
-    },
-    handleTypeDialogSubmit () {
-      if (!this.flag) return
-      this.flag = false
-      if (this.isEdit) {
-        // 编辑角色或角色分类，根据isClassify判断
-        this.handleApiEditeConsoleRole()
-      } else {
-        // 添加角色或角色分类，根据isClassify判断
-        this.handleApiCreateConsoleRole()
-      }
-    },
     // 获取表格数据
     handleGetTableData (api, val, currentPage = 1) {
       this.getTableDataApi = api
@@ -340,32 +178,12 @@ export default {
     },
   },
   components: {
-    staffDialog,
-    typeDialog,
-    classify
+    staffDialog
   }
 }
 </script>
 
 <style lang="less">
   .staff-role {
-    display: flex;
-    .box-left {
-      width: 200px;
-      min-width: 200px;
-      background: #fff;
-      margin-right: 10px;
-      h2 {
-        font-family: PingFangSC-Semibold;
-        font-size: 16px;
-        color: #333333;
-        line-height: 16px;
-        padding: 20px 0 20px 15px;
-      }
-    }
-    .box-right {
-      flex: 1;
-      max-width: calc(100% - 210px);
-    }
   }
 </style>
