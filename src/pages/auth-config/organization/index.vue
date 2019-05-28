@@ -265,7 +265,7 @@ export default {
       })
     },
     // 处理表格数据
-    handleTableData (tableData, index) {
+    handleTableData (tableData, getDataByPost) {
       if (tableData.length === 0) {
         this.tableData = []
         return
@@ -296,10 +296,15 @@ export default {
             break
         }
       })
-      if (!this.getDataByPost) {
+      if (!getDataByPost) {
         this.tableData = menuRelation(tableData, 'id', 'parentId', 'departmentLevel', 'sortNo')
       }
       this.initLevel = this.tableData[0].departmentLevel
+      this.allData.forEach(item => {
+        if (item.departmentLevel < this.initLevel) {
+          this.initLevel = item.departmentLevel
+        }
+      })
       this.handleOpenTableTree(this.tableData)
     },
     // 获取部门树
@@ -330,7 +335,7 @@ export default {
     handleClickGetTreeData (row, index) {
       if (row.expand) {
         this.tableData = this.tableData.splice(0, index + 1).concat(this.tableData.slice(row.list.length))
-        this.handleTableData && this.handleTableData(this.tableData || [])
+        this.handleTableData && this.handleTableData(this.tableData || [], true)
         row.expand = false
         return
       }
@@ -348,7 +353,7 @@ export default {
             this.tableData[index].expand = true
             this.tableData[index].list = list
           }
-          this.handleTableData && this.handleTableData(this.tableData || [])
+          this.handleTableData && this.handleTableData(this.tableData || [], true)
         } else {
           this.$message.error(res.message)
         }
