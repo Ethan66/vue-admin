@@ -16,7 +16,7 @@
           <h3>{{ item.menu.menuName }}</h3>
           <div class="object list">
             <p class="title">对象级</p>
-            <el-checkbox-group v-model="resultChecked[item.menu.menuId].objectPermission" :key="`object${i}`">
+            <el-checkbox-group v-model="resultChecked[item.menu.menuId].objectPermission" :key="`object${i}`" @change="handleChangeObj(item.menu.menuId, item.operation)">
               <el-checkbox label="1">查看列表</el-checkbox>
               <el-checkbox label="2">查看详情</el-checkbox>
             </el-checkbox-group>
@@ -24,7 +24,7 @@
           <div class="operation list">
             <div class="title">操作级</div>
             <el-checkbox-group v-model="resultChecked[item.menu.menuId].buttonIds" :key="`operation${i}`">
-              <el-checkbox :label="child.btnId" v-for="(child, i) in item.operation" :key="i">{{ child.btnName }}</el-checkbox>
+              <el-checkbox :label="child.btnId" :disabled="child.disabled" v-for="(child, i) in item.operation" :key="i">{{ child.btnName }}</el-checkbox>
             </el-checkbox-group>
           </div>
           <div class="tybe list">
@@ -53,7 +53,7 @@
           <el-form :model="tybeValueObj" :rules="rules" ref="form" label-width="110px" label-position="left">
             <template v-for="(item, index) in nowTybeList">
               <el-form-item :label="item.fieldName" :prop="item.idStr" :key="index">
-                <el-radio-group v-model="tybeValueObj[item.id]">
+                <el-radio-group v-model="tybeValueObj[item.id]" @change="handleCheckedTybeValueObj">
                   <el-radio label="100">读写</el-radio>
                   <el-radio label="010">只读</el-radio>
                   <el-radio label="001">不可见</el-radio>
@@ -250,11 +250,14 @@ export default {
     },
     // 选中角色
     handleClickRole (type, item) {
+      if (!type) {
+        return
+      }
       if (type === 'classify') {
         this.isClassify = 0
         return
       } else if (type === 'all') {
-        this.isClassify = ''
+        return
       } else {
         this.isClassify = 1
       }
@@ -280,12 +283,17 @@ export default {
         if (res.code === '208999') {
           this.menuList = res.resultMap.data.list.map(item => {
             let obj = {}
+            let btnDisabled = false
             obj.menu = { menuName: item.menuName, menuId: item.menuId }
+            if (Number(item.objectPermission.slice(0, 1)) === 0) {
+              btnDisabled = true
+            }
             obj.operation = item.buttonPermissionList.sort((v1, v2) => (v1.sortNo - v2.sortNo)).map(child => {
               return {
                 btnName: child.buttonName,
                 btnId: child.buttonId,
-                check: child.check
+                check: child.check,
+                disabled: btnDisabled
               }
             })
             obj.objectPermission = item.objectPermission
@@ -315,6 +323,23 @@ export default {
           })
           this.$set(this.resultChecked, [item.menu.menuId], obj)
         })
+      }
+    },
+    handleChangeObj (id, operation) {
+      let result = this.resultChecked[id].objectPermission
+      if (result.join('') === '2') {
+        this.$message.error('授权查看详情请先点击查看列表')
+        result.pop()
+      }
+      if (result.includes('1')) {
+        operation.forEach(item => {
+          item.disabled = false
+        })
+      } else {
+        operation.forEach(item => {
+          item.disabled = true
+        })
+        this.resultChecked[id].buttonIds = []
       }
     },
     // 点击设置字段权限按钮
@@ -349,6 +374,22 @@ export default {
       for (let key in this.tybeValueObj) {
         this.tybeValueObj[key] = this.allSet
       }
+    },
+    // 勾选字段
+    handleCheckedTybeValueObj () {
+      let length = Object.keys(this.tybeValueObj).length
+      let obj = { '100': 0, '010': 0, '001': 0 }
+      Object.keys(this.tybeValueObj).forEach(key => {
+        obj[this.tybeValueObj[key]]++
+      })
+      let result = false
+      for(let key in obj) {
+        if (obj[key] === length) {
+          this.allSet = key
+          result = true
+        }
+      }
+      !result && (this.allSet = '000')
     },
     // 校验必填字段
     validateFn (rule, value, callback) {
@@ -385,7 +426,7 @@ export default {
     },
     // 保存角色权限
     handleSaveRoleResource () {
-      let permissionList = Object.keys(this.resultChecked).map(menuId => {
+      let permissionList = Object.keys(this.resultChecked).filter(menuId => this.resultChecked[menuId].objectPermission.length > 0).map(menuId => {
         let objectPermission = ''
         let objectStr = this.resultChecked[menuId].objectPermission.join('')
         if (objectStr === '1') {
