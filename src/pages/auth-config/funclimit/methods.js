@@ -27,6 +27,7 @@ export default {
         params.cloneRoleIds = params.cloneRoleIds.join(',')
       }
       apiCreateConsoleRole(params).then(res => {
+        this.flag = true
         if (res.code === '208999') {
           this.$message.success(res.message)
           this.handleApiGetAllRoleRequestTree()
@@ -42,6 +43,7 @@ export default {
       }
       Object.assign(params, this.formData)
       apiEditeConsoleRole(params).then(res => {
+        this.flag = true
         if (res.code === '208999') {
           this.$message.success(res.message)
           this.handleApiGetAllRoleRequestTree()
@@ -197,6 +199,7 @@ export default {
         params.roleIds = params.roleIds.join(',')
       }
       apiGrantUserRole(params).then(res => {
+        this.flag = true
         if (res.code === '208999') {
           this.handleDialogClose('staffDialog', 'staffDialogVisible')
           this.handleApiGetAllRoleRequestTree()
