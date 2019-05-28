@@ -189,10 +189,12 @@ export default {
       Object.assign(params, this.staffDialogFormData)
       if (!params.userIds) {
         this.$message.error('请选择员工')
+        this.flag = true
         return
       }
-      if (!params.roleIds.length > 0) {
+      if (params.roleIds.length <= 0) {
         this.$message.error('请选择角色')
+        this.flag = true
         return
       }
       if (Array.isArray(params.roleIds)) {
