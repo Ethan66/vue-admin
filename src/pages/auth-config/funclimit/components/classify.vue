@@ -88,6 +88,7 @@ export default {
 
 <style lang="less">
   .classify {
+    overflow-x: auto;
     h3 {
       font-family: PingFangSC-Regular;
       font-size: 12px;
@@ -116,6 +117,7 @@ export default {
       color: #333333;
       line-height: 40px;
       padding-left: 40px;
+      white-space: nowrap;
       .content {
         display: inline-block;
         cursor: pointer;
@@ -131,16 +133,18 @@ export default {
       background: rgba(65, 98, 219, .05);
     }
     .showIcon {
-      display: none;
+      visibility: hidden;
       i:hover {
         color: #4162DB;
       }
     }
     .title:hover .showIcon{
       display: inline-block;
+      visibility: visible;
     }
     .role:hover .showIcon{
       display: inline-block;
+      visibility: visible;
     }
   }
 </style>

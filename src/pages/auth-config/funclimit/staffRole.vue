@@ -63,16 +63,16 @@
 <script>
 import { staffRole } from './mixins'
 import methods from './methods'
-import dialogConfig from './dialogConfig.js'
 import basicMethod from '@/config/mixins'
-import typeDialog from './typeDialog'
+import typeDialog from './components/typeDialog'
 import classify from './components/classify'
 import staffDialog from './components/staffDialog'
 import { apiPageQueryUserRole } from '@/api/role'
+import { apiListConsoleUser } from '@/api/staff'
 
 export default {
   name: 'staff-role',
-  mixins: [methods, basicMethod, staffRole, dialogConfig],
+  mixins: [methods, basicMethod, staffRole],
   created () {
     this.handleGetTableData(apiPageQueryUserRole)
     // 获取角色分类树
@@ -83,7 +83,40 @@ export default {
     this.handleApiListConsoleUser()
   },
   data () {
+    let checkSortNo = (rule, value, callback) => {
+      let reg = /^[0-9]+$/
+      if (!reg.test(value)) {
+        callback(new Error('请输入正确的数值'))
+      } else {
+        callback()
+      }
+    }
     return {
+      typeDialogTitle: '编辑类型',
+      formData: {
+        cloneRoleIds: []
+      },
+      typeDialogRules: {
+        resourceParentId: [
+          { required: true, message: '请选择所属分类', trigger: 'blur' }
+        ],
+        roleName: [
+          { required: true, message: '请输入分类名称', trigger: 'blur' },
+          { max: 20, message: '最多输入20个字符', trigger: 'blur' }
+        ],
+        sortNo: [
+          { required: true, message: '请输入显示排序', trigger: 'blur' },
+          { validator: checkSortNo, message: '请输入正确的数值', trigger: ['blur', 'change'] }
+        ]
+      },
+      typeDialogBtn: [
+        { label: '取 消', type: 'delete', clickfn: 'handleTypeDialogRefuse' },
+        { label: '确 认', type: 'edit', color: 'primary', clickfn: 'handleTypeDialogSubmit' }
+      ],
+      formItem: [],
+      typeDialogVisible: false,
+      isEdit: false,
+      isClassify: 0, // 0：角色，1：角色分类
       defaultSearchObj: { a: 1 },
       selectStaff: [],
       classifyList: [],
@@ -95,23 +128,7 @@ export default {
       },
       roleCount: 0,
       treeData: [],
-      staffDialogFormItem: [
-        {
-          label: '管理员角色',
-          key: 'admin',
-          options: [
-            { label: '超级管理员', value: '1' },
-            { label: '管理员', value: '2' }
-          ]
-        }, {
-          label: '运营角色',
-          key: 'marketing',
-          options: [
-            { label: '运营经理', value: '3' },
-            { label: '用户运营', value: '4' }
-          ]
-        }
-      ],
+      staffDialogFormItem: [],
       staffDialogBtn: [
         { label: '取 消', type: 'delete', clickfn: 'handleRefuse' },
         { label: '确 认', type: 'edit', color: 'primary', clickfn: 'handleSubmit' }
@@ -123,24 +140,26 @@ export default {
         { label: '分类名称', key: 'roleName', type: 'input' },
         { label: '显示排序', key: 'sortNo', type: 'input' },
         { label: '创建人', key: 'createrName', type: 'text' },
-        { label: '创建时间', key: 'gmtCreate', type: 'text' },
+        { label: '更新时间', key: 'gmtModified', type: 'text' },
         { label: '复制角色权限', key: 'cloneRoleIds', type: 'selectDouble', options: [] }
       ],
       confirmContent: '',
       confrimDiaShow: false,
       confirmFn: '',
-      delId: ''
+      delId: '',
+      flag: true // 调用api锁
     }
   },
   methods: {
     // 点击搜索按钮
     handleSearch (val) {
-      this.handleGetTableData(this.getTableDataApi, val)
+      // this.handleGetTableData(this.getTableDataApi, val)
+      this.handleGetTableData(apiListConsoleUser, val)
       this.$refs.classify.handleReStatus()
     },
     handleEditClass (row) {
       this.handleApiGetConsoleRoleById(row.id)
-      this.handleInitTypeDialog('编辑类型', ['roleName', 'sortNo', 'createrName', 'gmtCreate'], true)
+      this.handleInitTypeDialog('编辑类型', ['roleName', 'sortNo', 'createrName', 'gmtModified'], true)
       this.formItem.map(item => {
         if (item.key === 'roleName') {
           item.label = '分类名称'
@@ -175,7 +194,7 @@ export default {
     },
     handleEditRole (row) {
       this.handleApiGetConsoleRoleById(row.id)
-      this.handleInitTypeDialog('编辑角色', ['resourceParentId', 'roleName', 'sortNo', 'createrName', 'gmtCreate'], true)
+      this.handleInitTypeDialog('编辑角色', ['resourceParentId', 'roleName', 'sortNo', 'createrName', 'gmtModified'], true)
       this.formItem.map(item => {
         if (item.key === 'roleName') {
           item.label = '角色名称'
@@ -227,20 +246,27 @@ export default {
       this.handleGetTableData(apiPageQueryUserRole, { resourceType: this.isClassify, roleId: item.id })
     },
     handleAddStaff () {
-      this.handleApiGetAllRoleRequestTree()
-      this.staffDialogIsEdit = false
-      this.staffDialogTitle = '添加员工'
-      this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
-      this.staffDialogVisible = true
+      let callback = (list) => {
+        this.staffDialogFormItem = list
+        this.staffDialogIsEdit = false
+        this.staffDialogTitle = '添加员工'
+        this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
+        this.staffDialogVisible = true
+      }
+      this.getRoleConfig(callback)
     },
     // 表格编辑按钮
     handleEditData (row) {
-      this.staffDialogIsEdit = true
-      this.staffDialogTitle = '编辑员工'
-      this.staffDialogFormData = JSON.parse(JSON.stringify(row))
-      this.staffDialogFormData.roleIds = row.roleIds.split(',')
-      this.staffDialogFormData.userIds = row.id
-      this.staffDialogVisible = true
+      let callback = (list) => {
+        this.staffDialogFormItem = list
+        this.staffDialogIsEdit = true
+        this.staffDialogTitle = '编辑员工'
+        this.staffDialogFormData = JSON.parse(JSON.stringify(row))
+        this.staffDialogFormData.roleIds = row.roleIds.split(',')
+        this.staffDialogFormData.userIds = row.id
+        this.staffDialogVisible = true
+      }
+      this.getRoleConfig(callback)
     },
     // 点击表格删除按钮
     handleDeleteData (row) {
@@ -260,12 +286,16 @@ export default {
       this.handleDialogClose('staffDialog', 'staffDialogVisible')
     },
     handleSubmit () {
+      if (!this.flag) return
+      this.flag = false
       this.handleApiGrantUserRole()
     },
     handleTypeDialogRefuse () {
       this.handleDialogClose('typeDialog', 'typeVisible')
     },
     handleTypeDialogSubmit () {
+      if (!this.flag) return
+      this.flag = false
       if (this.isEdit) {
         // 编辑角色或角色分类，根据isClassify判断
         this.handleApiEditeConsoleRole()
@@ -286,8 +316,13 @@ export default {
         if (res.code === '208999') {
           this.tablePages.current = currentPage
           if (res.resultMap) {
-            this.allData = res.resultMap.list
-            this.tablePages.total = res.resultMap.total
+            if (res.resultMap.page) {
+              this.allData = res.resultMap.page.list
+              this.tablePages.total = res.resultMap.page.total
+            } else {
+              this.allData = res.resultMap.list
+              this.tablePages.total = res.resultMap.total
+            }
           } else {
             this.allData = []
             this.tablePages.total = 0

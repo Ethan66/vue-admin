@@ -27,6 +27,7 @@ export default {
         params.cloneRoleIds = params.cloneRoleIds.join(',')
       }
       apiCreateConsoleRole(params).then(res => {
+        this.flag = true
         if (res.code === '208999') {
           this.$message.success(res.message)
           this.handleApiGetAllRoleRequestTree()
@@ -42,6 +43,7 @@ export default {
       }
       Object.assign(params, this.formData)
       apiEditeConsoleRole(params).then(res => {
+        this.flag = true
         if (res.code === '208999') {
           this.$message.success(res.message)
           this.handleApiGetAllRoleRequestTree()
@@ -66,7 +68,7 @@ export default {
       })
     },
     // 获取角色分类树
-    handleApiGetAllRoleRequestTree () {
+    handleApiGetAllRoleRequestTree (callback) {
       let params = {
         withUserFlag: 1,
         withRoleFlag: 1
@@ -74,7 +76,7 @@ export default {
       apiGetAllRoleRequestTree(params).then(res => {
         if (res.code === '208999') {
           this.classifyList = this.$disposeTreeData(res.resultMap.list, 'resourceParentId', 0)
-          this.staffDialogFormItem = this.classifyList
+          callback && callback(this.$disposeTreeData(res.resultMap.list, 'resourceParentId', 0))
           this.roleCount = res.resultMap.total || 0
           this.formItem.map(item => {
             if (item.key === 'cloneRoleIds') {
@@ -85,6 +87,10 @@ export default {
           this.$message.error(res.message)
         }
       })
+    },
+    // 获取角色配置
+    getRoleConfig (callback) {
+      this.handleApiGetAllRoleRequestTree(callback)
     },
     // 获取所属分类
     handleGetClassify () {
@@ -180,11 +186,28 @@ export default {
     // 账号分配角色
     handleApiGrantUserRole () {
       let params = {}
-      this.staffDialogFormData.roleIds = this.staffDialogFormData.roleIds.join(',')
       Object.assign(params, this.staffDialogFormData)
+      if (!params.userIds) {
+        this.$message.error('请选择员工')
+        this.flag = true
+        return
+      }
+      if (params.roleIds.length <= 0) {
+        this.$message.error('请选择角色')
+        this.flag = true
+        return
+      }
+      if (Array.isArray(params.roleIds)) {
+        params.roleIds = params.roleIds.join(',')
+      }
       apiGrantUserRole(params).then(res => {
+        this.flag = true
         if (res.code === '208999') {
           this.handleDialogClose('staffDialog', 'staffDialogVisible')
+          this.handleApiGetAllRoleRequestTree()
+          this.handleGetTableData(apiPageQueryUserRole)
+          this.$refs.staffDialog.clearNodes()
+          this.resetFormData('staffDialogFormData')
         } else {
           this.$message.error(res.message)
         }

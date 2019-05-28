@@ -32,6 +32,9 @@ export const menu = {
       btn: 120
     }
     let configDialogItem = [
+      { menuParentName: {
+        label: '上级菜单', show: false
+      } },
       {
         menuParentId: {
           label: '上级菜单',
@@ -64,7 +67,7 @@ export const menu = {
         { required: true, trigger: 'blur', validator: this.validateMenuUrl }
       ],
       sortNo: [
-        { required: true, message: dialogItem[5].placeholder, trigger: 'blur' }
+        { required: true, trigger: 'blur', validator: this.validateSortNo }
       ],
       status: [
         { required: true, message: dialogItem[6].placeholder, trigger: 'change' }
@@ -81,7 +84,7 @@ export const pageManage = {
   created () {
     let configSearchItem = [
       'pageName',
-      { pageStatus: { type: 'select', options: [{ label: '正常', value: 1 }, { label: '停用', value: 0 }] } }
+      { pageStatus: { type: 'select', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }] } }
     ]
     let configTableItem = {
       pageName: { width: 100, clickFn: 'handleGoTybe', clsName: 'cm-btn-color' },
@@ -95,7 +98,7 @@ export const pageManage = {
     }
     let configDialogItem = [
       'pageName', 'pageCode', 'pageUrl', 'menuCode',
-      { pageStatus: { type: 'radio', options: [{ label: '正常', value: 1 }, { label: '停用', value: 0 }] } },
+      { pageStatus: { type: 'radio', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }] } },
       { userName: { label: '创建人', type: 'docs', show: false } },
       { gmtCreate: { label: '创建时间', type: 'docs', show: false } },
       { remark: { label: '描述', type: 'textarea', rows: 4, show: false } }

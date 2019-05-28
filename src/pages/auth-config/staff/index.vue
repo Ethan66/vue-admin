@@ -73,6 +73,14 @@ export default {
         callback()
       }
     }
+    let checkPassword = (rule, value, callback) => {
+      let reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/
+      if (!reg.test(value)) {
+        callback(new Error('请输入6-20位数字+字母的密码'))
+      } else {
+        callback()
+      }
+    }
     return {
       defaultSearchObj: { a: 1 },
       staffInfoVisible: false,
@@ -80,7 +88,7 @@ export default {
       staffForm: {},
       staffFormRules: {
         userName: [
-          { required: true, message: '请输入昵称', trigger: 'blur' },
+          { required: true, message: '请输入账户', trigger: 'blur' },
           { max: 20, message: '最多输入20个字符', trigger: 'blur' }
         ],
         realName: [
@@ -96,7 +104,7 @@ export default {
         ],
         password: [
           { required: true, message: '请输入初始密码', trigger: 'blur' },
-          { min: 6, max: 20, message: '请输入6-20位数字+字母的密码', trigger: 'blur' }
+          { validator: checkPassword, message: '请输入6-20位数字+字母的密码', trigger: ['blur', 'change'] }
         ],
         departmentId: [
           { required: true, message: '请选择部门', trigger: 'blur' }
@@ -119,7 +127,7 @@ export default {
         {
           title: '账号信息',
           formItem: [
-            { label: '昵称', key: 'userName', type: 'input' },
+            { label: '账户', key: 'userName', type: 'input' },
             { label: '姓名', key: 'realName', type: 'input' },
             { label: '手机号', key: 'telephone', type: 'input' },
             { label: '邮箱', key: 'mailbox', type: 'input' },
@@ -159,7 +167,7 @@ export default {
         }, {
           infoTitle: '账号信息',
           infoList: [
-            { label: '昵称', key: 'userName' },
+            { label: '账户', key: 'userName' },
             { label: '姓名', key: 'realName' },
             { label: '手机号', key: 'telephone' },
             { label: '邮箱', key: 'mailbox' }
@@ -193,6 +201,7 @@ export default {
   watch: {
     'staffFormData.departmentId': function (val, oldVal) {
       console.log(val)
+      delete this.staffFormData.reportTo
       this.handleGetReportTo(val)
     }
   },

@@ -15,7 +15,6 @@
       >
       <div class="btn-content" slot="btn">
         <el-button @click="handleAdd">新建页面</el-button>
-        <el-button @click="$router.push({ path: '/main/develop-center/menu-manage/newpage' })">跳转页面</el-button>
         <el-button @click="handleGetMenuList" v-if="$showBtn('page-get-menu')">{{ $getBtnName('page-get-menu') }}</el-button>
         <el-button @click="handleBatchCreate('page')" v-if="$showBtn('page-add-page-all')">{{ $getBtnName('page-add-page-all') }}</el-button>
         <el-button @click="handleGetPageList" v-if="$showBtn('page-get-page-all')">{{ $getBtnName('page-get-page-all') }}</el-button>
@@ -102,10 +101,10 @@ export default {
       tableData.forEach(item => {
         item.pageStatusStash = item.pageStatus
         switch (item.pageStatus) {
-          case 1:
+          case 0:
             item.pageStatus = '正常'
             break
-          case 0:
+          case 1:
             item.pageStatus = '停用'
             break
         }

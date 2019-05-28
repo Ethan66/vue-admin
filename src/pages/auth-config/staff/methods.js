@@ -1,5 +1,6 @@
 import { apiCreateConsoleUser, apiQueryLowerLevelList, apiEditConsoleUser, apiListConsoleUser, apiQueryConsoleUserInfo, apiEditConsoleUserStatus, apiResetConsoleUserPassword, apiQueryDepartmentTree } from '@/api/staff'
 import MD5 from 'js-md5'
+import { savePageData } from '@/components/methods'
 export const methods = {
   methods: {
     // 查询用户部门及下级部门列表和人员列表
@@ -21,7 +22,7 @@ export const methods = {
       })
     },
     handleGetReportTo (departmentId) {
-      let params = { departmentId }
+      let params = { department: departmentId }
       apiQueryLowerLevelList(params).then(res => {
         if (res.code === '208999') {
           this.staffFormItem[1].formItem.map(item => {
@@ -138,6 +139,39 @@ export const methods = {
       apiQueryDepartmentTree(params).then(res => {
         if (res.code === '208999') {
           this.treeData = this.$disposeTreeData(res.resultMap.data)
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+    },
+    // 获取表格数据
+    handleGetTableData (api, val, currentPage = 1) {
+      let lowName = this.$options.name.split('-').join('').toLowerCase()
+      if (!this.searched && sessionStorage.getItem(lowName)) { // 第一次读缓存
+        let obj = JSON.parse(sessionStorage.getItem(lowName))
+        this.searchValues = val = obj.searchValues
+        Object.assign(this.searchValues, this.searchDefaultObj)
+        this.tablePages.current = currentPage = obj.currentPage
+        this.activeTabName = obj.activeTabName
+      }
+      this.searched = true
+      let searchObj = { ...val }
+      delete searchObj.departmentId
+      savePageData(lowName, searchObj, currentPage, this.activeTabName) // 将搜索等数据缓存
+      this.getTableDataApi = api
+      this.tableLoading = true
+      let params = {
+        currentPage: currentPage, pageSize: this.tablePages.pageSize
+      }
+      Object.assign(params, val)
+      api(params).then(res => {
+        if (res.code === '208999') {
+          this.tablePages.current = currentPage
+          this.allData = res.resultMap.page.list
+          this.tablePages.total = res.resultMap.page.total
+          this.tableData = JSON.parse(JSON.stringify(this.allData))
+          this.handleTableData && this.handleTableData(this.tableData || [])
+          this.tableLoading = false
         } else {
           this.$message.error(res.message)
         }

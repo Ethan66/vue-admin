@@ -78,6 +78,8 @@ export default {
   methods: {
     // 添加tab和设置mainActivedTab
     handleAddTabs (child) {
+      let lowName = child.menuUrl.split('/').slice(-2, -1).join()
+      sessionStorage.getItem(lowName) && sessionStorage.removeItem(lowName)
       const tab = { name: child.menuName, url: child.menuUrl, code: child.code }
       if (!this.mainTabs.find(item => {
         if (item === null) {

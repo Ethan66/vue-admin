@@ -47,7 +47,7 @@ import { apiListConsoleUser } from '@/api/staff'
 import { apiQueryDepartmentList, apiStopDepartment, apiEditDepartment, apiDelDepartment, apiAddDepartment, apiQueryDepartmentTree } from '@/api/authority'
 
 export default {
-  name: 'organization-config',
+  name: 'organization',
   mixins: [basicMethod, organization],
   data () {
     return {
@@ -67,6 +67,8 @@ export default {
   methods: {
     // 点击新增按钮
     handleAdd () {
+      this.dialogItem[0].disabled = false
+      this.dialogItem[2].disabled = false
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
       this.editData.departmentStatus = 0
       this.selectTreeCheckedValue = []
@@ -83,13 +85,14 @@ export default {
     // 点击表格编辑按钮
     handleEditData (row) {
       this.editData = JSON.parse(JSON.stringify(row))
+      this.dialogItem[0].disabled = false
+      this.dialogItem[2].disabled = false
       this.editData.departmentStatus = this.editData.departmentStatusStash
       this.editData.departmentType = this.editData.departmentTypeStash
       this.selectTreeCheckedValue = [this.editData.parentId]
       if (this.editData.directorId) {
         this.selectTreeCheckedValue2 = ['a' + this.editData.directorId]
       }
-      this.handleClearSelectTree()
       this.isEdit = 1
       let list = this.dialogItem[2].options.map(item => {
         if (item.value <= Number(this.editData.departmentType) - 1) {
@@ -131,6 +134,7 @@ export default {
       this.dialogItem[0].type = 'input'
       this.dialogItem[0].disabled = true
       this.dialogItem[2].disabled = true
+      this.dialogItem[5].show = true
       this.editData.parentIdStash = row.parentId
       let obj = this.allDepartmentTree.find(item => item.id === row.parentId)
       obj && (this.editData.parentId = obj.departmentName)
@@ -141,15 +145,16 @@ export default {
     },
     // 新建下级部门
     handleCreateNextLevelDepartment (row) {
-      this.editData.departmentStatus = 0
       if (Number(row.departmentType) === 3) {
         this.$message.error('部门不能创建下级部门')
         return false
       }
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
+      this.editData.departmentStatus = 0
       this.dialogItem[0].type = 'input'
       this.dialogItem[0].disabled = true
       this.dialogItem[2].disabled = true
+      this.dialogItem[5].show = true
       this.editData.parentIdStash = row.id
       this.editData.parentId = row.departmentName
       this.editData.departmentType = Number(row.departmentTypeStash) + 1
@@ -206,7 +211,6 @@ export default {
       }
       edit.directorId && (edit.directorId = edit.directorId.slice(1))
       if (!edit.parentId) edit.parentId = undefined
-      this.$refs.dialog.showDialogForm1 = false
       let obj = {
         departmentName: edit.departmentName,
         directorId: Number(edit.directorId),
@@ -265,7 +269,7 @@ export default {
       })
     },
     // 处理表格数据
-    handleTableData (tableData, index) {
+    handleTableData (tableData, getDataByPost) {
       if (tableData.length === 0) {
         this.tableData = []
         return
@@ -296,10 +300,15 @@ export default {
             break
         }
       })
-      if (!this.getDataByPost) {
+      if (!getDataByPost) {
         this.tableData = menuRelation(tableData, 'id', 'parentId', 'departmentLevel', 'sortNo')
       }
       this.initLevel = this.tableData[0].departmentLevel
+      this.allData.forEach(item => {
+        if (item.departmentLevel < this.initLevel) {
+          this.initLevel = item.departmentLevel
+        }
+      })
       this.handleOpenTableTree(this.tableData)
     },
     // 获取部门树
@@ -330,7 +339,7 @@ export default {
     handleClickGetTreeData (row, index) {
       if (row.expand) {
         this.tableData = this.tableData.splice(0, index + 1).concat(this.tableData.slice(row.list.length))
-        this.handleTableData && this.handleTableData(this.tableData || [])
+        this.handleTableData && this.handleTableData(this.tableData || [], true)
         row.expand = false
         return
       }
@@ -348,7 +357,7 @@ export default {
             this.tableData[index].expand = true
             this.tableData[index].list = list
           }
-          this.handleTableData && this.handleTableData(this.tableData || [])
+          this.handleTableData && this.handleTableData(this.tableData || [], true)
         } else {
           this.$message.error(res.message)
         }
@@ -361,6 +370,12 @@ export default {
       }
       if (value.length > 20) {
         return callback(new Error('输入内容不能超过20字'))
+      }
+      callback()
+    },
+    validateSortNo (rule, value, callback) {
+      if (value < 0 || !Number(value)) {
+        return callback(new Error('排序必须为正整数'))
       }
       callback()
     }
