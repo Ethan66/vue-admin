@@ -149,9 +149,9 @@ export default {
       defaultCheckedKeys: [],
       staffInfoItem: [
         {
-          infoTitle: '孙华杰',
+          infoTitle: '',
           infoList: [
-            { label: '状态', key: 'status' },
+            { label: '状态', key: 'statusMsg' },
             { label: '创建时间', key: 'gmtCreate' },
             { label: '创建人', key: 'createrName' },
             { label: '上次登录时间', key: 'lastLogonTime' }
@@ -311,9 +311,13 @@ export default {
     handleStaffInfoDialogClose () {
       this.$refs.staffInfoDialog.staffInfoVisible = false
     },
+    // 显示员工信息弹框
     handleShowInfo (row) {
-      this.staffInfoData = JSON.parse(JSON.stringify(row))
-      this.staffInfoVisible = true
+      // 重置数据
+      this.staffInfoItem[0].infoTitle = ''
+      this.staffInfoData = this.$options.data().staffInfoData
+      // 获取员工信息
+      this.handleApiQueryConsoleUserInfo(row.id)
     },
     optionData (list) {
       let cloneData = JSON.parse(JSON.stringify(list)) // 对源数据深度克隆
