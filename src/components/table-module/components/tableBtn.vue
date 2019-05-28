@@ -119,7 +119,7 @@ export default {
       }
       if (btnName === '删除') {
         let tip = btn.deleteTip || '是否确认删除'
-        this.$confirm(tip, '温馨提示', {
+        this.$confirm(tip, '温馨提醒', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning',

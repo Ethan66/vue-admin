@@ -172,6 +172,9 @@ export const organization = {
     this.searchItem = this.$setItem(tybeObj['organization-manage1'], configSearchItem, 'search')
     this.tableItem = this.$setItem(tybeObj['organization-manage1'], configTableItem, 'table')
     let dialogItem = this.dialogItem = this.$setItem(tybeObj['organization-manage1'], configDialogItem, 'dialog')
+    if (this.tableBtn.filter(item => item.show).length === 0) {
+      this.tableItem.splice(this.tableItem.length - 1, 1)
+    }
     this.rules = {
       departmentName: [
         { required: true, trigger: 'blur', validator: this.validateDepartmentName }

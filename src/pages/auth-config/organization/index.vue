@@ -182,7 +182,7 @@ export default {
     handleStop (row) {
       this.$confirm(
       '确定停用该部门吗，停用后该部门下属所有人员账号将无法使用',
-      '温馨提示',
+      '温馨提醒',
       {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

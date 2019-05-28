@@ -57,7 +57,7 @@ export const setBtnConfig = (obj, tableBtnKeys = ['edit', 'delete'], dialogBtnKe
           }
           let config = Object.assign({}, objBtn[arr[0]], arr[1])
           if (config.code) {
-            if (config.show === undefined) {
+            if (arr[1].show === undefined) {
               config.show = showBtn(config.code)
             }
             config.name = getBtnName(config.code)
@@ -73,27 +73,6 @@ export const setBtnConfig = (obj, tableBtnKeys = ['edit', 'delete'], dialogBtnKe
   }
   return Object.assign({}, obj)
 }
-
-/* // 处理searchItem, tableItem, dialogItem 转为label,key格式
-export const setItem = (arr, type = 'search') => {
-  let key = 'key'
-  if (type === 'table') {
-    key = 'prop'
-  }
-  arr.forEach(item => {
-    if (type === 'search') {
-      if (item.type === 'date') return false
-    }
-    if (type === 'table') {
-      if (item.type === 'selection' || item.type === 'btn' || item.type === 'setting') return false
-      if (!item.type) item.type = 'cell'
-    }
-    let key0 = Object.keys(item)[0]
-    item[key] = key0
-    item.label = item[key0]
-    delete item[key0]
-  })
-} */
 
 export const setItem = (dataArr, config, type) => {
   let data = new SetItem(dataArr, type)

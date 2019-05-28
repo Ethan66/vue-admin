@@ -30,7 +30,7 @@ export default {
     confirmTitle: {
       type: String,
       default () {
-        return '温馨提示'
+        return '温馨提醒'
       }
     },
     confirmContent: String,

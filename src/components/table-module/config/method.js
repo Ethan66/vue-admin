@@ -18,12 +18,20 @@ export const getTableHeight = (totalClsName, reduceClsNameList = []) => {
 
 // 设置table单元格className
 export const getCellClass = (row, newTableItem) => {
-  const lastIndex = newTableItem.length - 1
-  let clsName = ''
-  if (row.columnIndex === lastIndex) {
-    clsName = 'headSetting'
+  let result = []
+  let firstIndex = 0
+  if (newTableItem[0].type === 'selection') {
+    firstIndex = 1
   }
-  return clsName
+  if (row.columnIndex === firstIndex) {
+    result.push('starting')
+  }
+  if (newTableItem.slice(-1)[0].type !== 'btn') return
+  const lastIndex = newTableItem.length - 1
+  if (row.columnIndex === lastIndex) {
+    result.push('headSetting')
+  }
+  return result
 }
 
 // 修改筛选图标
@@ -36,12 +44,20 @@ export const setHeadIcon = () => {
 // mounted中设置table样式
 export const setInitTableStyle = () => {
   let timer = setTimeout(() => {
+    let $totalTable = document.querySelector('.tableModule>.el-table')
+    let bottom = 0
+    if ($totalTable) {
+      if ($totalTable.offsetWidth < document.querySelector('.el-table__header').offsetWidth) {
+        bottom = 7
+      }
+    }
     Array.from(document.querySelectorAll('.el-table__fixed-right')).forEach(item => {
-      item.style.bottom = '7px'
+      item.style.borderLeft = '1px solid #e8e8e8'
+      item.style.bottom = bottom + 'px'
       item.style.right = '7px'
     })
     Array.from(document.querySelectorAll('.el-table__fixed')).forEach(item => {
-      item.style.bottom = '7px'
+      item.style.bottom = bottom + 'px'
     })
     let tableContent = document.querySelector('.el-table__body-wrapper>table')
     tableContent.style.width = tableContent.style.width.slice(0, 2) + 9 + 'px'

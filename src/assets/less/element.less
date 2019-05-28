@@ -100,13 +100,52 @@
     margin-top: 1px;
   }
 }
-.el-message.el-message--error {
-  
-}
 .el-message.el-message--info {
   background: #4162db1a;
   border-color: #4162db33;
   .el-message__icon.el-icon-info {
     color: #4162DB;
+  }
+}
+
+.el-message-box{
+  .el-message-box__header{
+    padding: 28px 60px 10px;
+    .el-message-box__title{
+      font-size: 16px;
+    }
+  }
+  .el-message-box__content{
+    padding: 0 15px 30px 15px;
+  }
+  .el-message-box__status.el-icon-warning{
+    position: absolute;
+    top: -18px;
+    left: 30px;
+    font-size: 20px !important;
+  }
+  .el-message-box__btns{
+    padding: 0 30px 20px 0;
+    .el-button--small{
+      border-radius: 4px;
+      height:30px;
+      font-size: 14px;
+      letter-spacing: 1px;
+      padding: 5px 16px;
+    }
+  }
+}
+.el-popover{
+  .el-tree::-webkit-scrollbar {/*滚动条整体样式*/
+    width: 7px;     /*高宽分别对应横竖滚动条的尺寸*/
+    height: 6px;
+  }
+  .el-tree::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+    border-radius: 3px;
+    background: rgba(0, 0, 0, .15);
+  }
+  .el-tree::-webkit-scrollbar-track {/*滚动条里面轨道*/
+    border-radius: 0;
+    background: transparent;
   }
 }

@@ -21,14 +21,23 @@
   .el-table__fixed-body-wrapper{
     border-right: 1px solid #e8e8e8;
   }
-  .el-table__row td.headSetting{
+  /* .el-table__row td.headSetting{
     border-left: 1px solid #e8e8e8;
-  }
+  } */
   .el-table__row .el-table-column--selection {
     border-right: 1px dashed #e8e8e8;
   }
   .el-table__fixed-right td.headSetting{
     border-left-width: 1px;
+  }
+  .el-table__header th.starting{
+    border-right: 1px solid #e8e8e8;
+  }
+  .el-table__row td.starting{
+    border-right: 1px solid #e8e8e8;
+    &.is-hidden{
+      border-right-width: 0;
+    }
   }
   .el-table{
     color: #666;

@@ -226,7 +226,7 @@ export default {
       background: #19A2F9;
       color: #fff;
     }
-    padding: 20px 15px;
+    padding: 20px 15px 25px;
     background: #fff;
     h3{
       font-size: 16px;
@@ -281,6 +281,7 @@ export default {
     }
     .noMarginBottom{
       margin-bottom: 0;
+      margin-top: 10px;
     }
   }
 </style>
