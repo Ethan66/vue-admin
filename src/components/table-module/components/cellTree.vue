@@ -22,7 +22,12 @@ export default {
   props: {
     item: Object,
     tableData: Array,
-    tableTreeOpenNum: Object
+    treeInitLevel: {
+      type: Number,
+      default: 0
+    },
+    tableTreeOpenNum: Object,
+    getTreeDataByPost: Boolean
   },
   methods: {
     // 树状样式箭头clsName
@@ -36,10 +41,14 @@ export default {
     },
     // 设置树状样式
     handleStyle (row) {
-      return {'padding-left': row.level * 25 + 'px'}
+      return {'padding-left': (row.level - this.treeInitLevel) * 25 + 'px'}
     },
     // 打开（关闭）树结构
     handleToggle (index, row) {
+      if (this.getTreeDataByPost) {
+        this.$emit('clickGetTreeData', row, index)
+        return
+      }
       if (!row.list) return false
       let tableData = JSON.parse(JSON.stringify(this.tableData))
       if (!row.expand) { // 未展开

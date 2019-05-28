@@ -10,7 +10,10 @@
       :table-data.sync="tableData"
       :table-tree-open-num.sync="tableTreeOpenNum"
       :table-item="tableItem"
-      :table-btn="tableBtn">
+      :table-btn="tableBtn"
+      :tree-init-level="initLevel"
+      :get-tree-data-by-post="getDataByPost"
+      @clickGetTreeData="handleClickGetTreeData">
       <div class="btn-content" slot="btn">
         <el-button @click="handleAdd" v-if="$showBtn('organization-add')">{{ $getBtnName('organization-add') }}</el-button>
       </div>
@@ -46,7 +49,9 @@ export default {
     return {
       allDepartmentTree: [],
       selectTreeCheckedValue: [],
-      allPeople: []
+      allPeople: [],
+      initLevel: 0,
+      getDataByPost: false
     }
   },
   created () {
@@ -96,6 +101,7 @@ export default {
     // 新建平级部门
     handleCreateDepartment (row) {
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
+      this.editData.departmentStatus = 0
       this.dialogItem[0].type = 'input'
       this.dialogItem[0].disabled = true
       this.dialogItem[2].disabled = true
@@ -109,6 +115,7 @@ export default {
     },
     // 新建下级部门
     handleCreateNextLevelDepartment (row) {
+      this.editData.departmentStatus = 0
       if (Number(row.departmentType) === 3) {
         this.$message.error('部门不能创建下级部门')
         return false
@@ -195,12 +202,20 @@ export default {
       this.searched = true
       savePageData(lowName, val, currentPage, this.activeTabName) // 将搜索等数据缓存
       this.getTableDataApi = api
+      if (val.departmentName) {
+        this.getDataByPost = true
+      }
       this.tableLoading = true
       api(val).then(res => {
         if (res.code === '208999') {
           this.tablePages.current = currentPage
           this.allData = res.resultMap.data
           this.tableData = this.allData
+          this.tableData.forEach(item => {
+            if (item.hasLower) {
+              item.list = []
+            }
+          })
           this.handleTableData && this.handleTableData(this.tableData || [])
           this.tableLoading = false
         } else {
@@ -240,7 +255,10 @@ export default {
             break
         }
       })
-      this.tableData = menuRelation(tableData, 'id', 'parentId', 'departmentLevel', 'sortNo')
+      if (!this.getDataByPost) {
+        this.tableData = menuRelation(tableData, 'id', 'parentId', 'departmentLevel', 'sortNo')
+      }
+      this.initLevel = this.tableData[0].departmentLevel
       this.handleOpenTableTree(this.tableData)
     },
     // 获取部门树
@@ -254,6 +272,35 @@ export default {
         }
       })
     },
+    // 点击获取子数据
+    handleClickGetTreeData (row, index) {
+      if (row.expand) {
+        this.tableData = this.tableData.splice(0, index + 1).concat(this.tableData.slice(row.list.length))
+        this.handleTableData && this.handleTableData(this.tableData || [])
+        row.expand = false
+        return
+      }
+      apiQueryDepartmentList({ parentId: row.id }).then((res) => {
+        if (res.code === '208999') {
+          res.resultMap.data.forEach(item => {
+            item.level = item.departmentLevel
+            if (item.hasLower) {
+              item.list = []
+            }
+          })
+          let list = res.resultMap.data
+          if (!row.expand) {
+            this.tableData = this.tableData.splice(0, index + 1).concat(list).concat(this.tableData)
+            this.tableData[index].expand = true
+            this.tableData[index].list = list
+          }
+          this.handleTableData && this.handleTableData(this.tableData || [])
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+      console.log(row)
+    },
     handleGetAllPeople () {
       apiListConsoleUser({ pageSize: 0, currentPage: 0 }).then(res => {
         if (res.code === '208999') {
@@ -263,7 +310,9 @@ export default {
             item.departmentName = item.realName
             item.id = 'a' + item.id
           })
+          console.log(this.allDepartmentTree)
           this.allPeople = this.$disposeTreeData(this.allDepartmentTree.concat(list))
+          console.log(this.allPeople)
         } else {
           this.$message.error(res.message)
         }
