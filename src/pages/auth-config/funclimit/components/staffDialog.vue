@@ -1,6 +1,10 @@
 <template>
   <div class="staff-dialog">
-    <el-dialog :visible.sync="staffDialogVisible" :before-close="handleClose" width="520px">
+    <el-dialog
+      :visible.sync="staffDialogVisible"
+      :close-on-press-escape="false"
+      :show-close="false"
+      :close-on-click-modal="false" width="520px">
       <div slot="title" class="dialog-title">
         <span>{{dialogTitle}}</span><i v-if="isEdit">角色配置,请勾选需要的角色</i>
       </div>
@@ -100,16 +104,17 @@ export default {
           this.staffDialogVisible = false
         } else {
           this.$parent[fn]()
+          // 清除选择的员工
+          this.clearNodes()
         }
       } else if (type === 'edit') {
         if (!fn) {
           this.staffDialogVisible = false
+          // 清除选择的员工
+          this.clearNodes()
         } else {
           this.$parent[fn]()
         }
-      }
-      if (!this.isEdit) {
-        this.$refs.treeSelect.clearSelectedNodes()
       }
     },
     popoverHide (checkedIds, checkedData) {
@@ -124,12 +129,10 @@ export default {
       })
       this.formData.userIds = list.join(',')
     },
-    handleClose () {
-      this.staffDialogVisible = false
+    clearNodes () {
       if (!this.isEdit) {
         this.$refs.treeSelect.clearSelectedNodes()
       }
-      this.$parent.staffDialogFormData = this.$parent.$options.data().staffDialogFormData
     }
   },
   components: {
@@ -177,7 +180,7 @@ export default {
             .el-form-item__content {
               .el-checkbox-group {
                 .el-checkbox {
-                  width: 118px;
+                  min-width: 118px;
                   margin-left: 0;
                   .el-checkbox__input.is-checked+.el-checkbox__label {
                     color: #666;
