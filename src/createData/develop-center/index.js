@@ -81,7 +81,7 @@ export const pageManage = {
   created () {
     let configSearchItem = [
       'pageName',
-      { pageStatus: { type: 'select', options: [{ label: '正常', value: 1 }, { label: '停用', value: 0 }] } }
+      { pageStatus: { type: 'select', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }] } }
     ]
     let configTableItem = {
       pageName: { width: 100, clickFn: 'handleGoTybe', clsName: 'cm-btn-color' },
