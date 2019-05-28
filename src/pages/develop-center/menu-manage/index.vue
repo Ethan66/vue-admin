@@ -174,7 +174,9 @@ export default {
     },
     // 点击对话框确认按钮
     handleSubmit () {
-      this.$refs.dialog.showDialogForm1 = false
+      if(this.editData.remark.length > 100) {
+        this.$message.error('描述字段长度不能超过100')
+      }
       if (this.isEdit === 0) {
         if (this.editData.menuParentIdStash) {
           this.editData.menuParentId = this.editData.menuParentIdStash

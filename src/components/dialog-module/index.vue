@@ -31,7 +31,7 @@
                       :disabled="item.disabled || allRead"
                       :rows="item.rows"
                       :maxlength="item.maxlength"
-                      @change="handleChange(item.changeFn, editData[item.key])"
+                      @input="handleChange(item.changeFn, editData[item.key])"
                       v-if="item.type==='textarea'">
             </el-input>
             <el-radio-group v-model="editData[item.key]" v-if="item.type==='radio'" :disabled="item.disabled || allRead" size="small">

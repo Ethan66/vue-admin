@@ -2,7 +2,7 @@
   <div class="dialog-detail" v-if="showDetail">
     <el-dialog :title="title" :visible.sync="showDetail1">
       <ul>
-        <li v-for="(item, i) in dialogItem" :key="i">
+        <li v-for="(item, i) in dialogItem1" :key="i">
           <p :class="['title', `title${chineseTybe}`]">{{ item.label }}</p>
           <p class="content">{{ editData[item.key] }}</p>
         </li>
@@ -26,7 +26,8 @@ export default {
   data () {
     return {
       chineseTybe: 0,
-      showDetail1: false
+      showDetail1: false,
+      dialogItem1: []
     }
   },
   watch: {
@@ -38,7 +39,8 @@ export default {
     }
   },
   created () {
-    this.dialogItem.forEach(item => {
+    this.dialogItem1 = this.dialogItem.filter(item => item.show !== false)
+    this.dialogItem1.forEach(item => {
       if (item.label.length > this.chineseTybe) {
         this.chineseTybe = item.label.length
       }
@@ -71,6 +73,7 @@ export default {
           li{
             margin-bottom: 15px;
             color: #333;
+            position: relative;
             p{
               display: inline-block;
             }
@@ -78,18 +81,36 @@ export default {
               margin-right: 30px;
               &.title5{
                 width: 70px;
+                & + .content{
+                  position: absolute;
+                  left: 100px;
+                }
               }
               &.title4{
                 width: 56px;
+                & + .content{
+                  position: absolute;
+                  left: 86px;
+                }
               }
               &.title3{
                 width: 42px;
+                 & + .content{
+                   position: absolute;
+                  left: 72px;
+                }
               }
               &.title2{
                 width: 28px;
+                 & + .content{
+                   position: absolute;
+                  left: 58px;
+                }
               }
             }
             .content{
+              text-overflow: ellipsis;
+              word-break: break-all;
               color: #666;
             }
           }
