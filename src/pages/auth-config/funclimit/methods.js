@@ -111,7 +111,7 @@ export default {
         if (res.code === '208999') {
           // this.treeList = this.$disposeTreeData(res.resultMap.data)
           this.searchItem.map(item => {
-            if (item.key === 'department') {
+            if (item.key === 'departmentId') {
               item.treeOptions = this.$disposeTreeData(res.resultMap.data)
             }
           })

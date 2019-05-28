@@ -10,7 +10,9 @@ export const staffRole = {
   },
   created () {
     let configSearchItem = ['realName', {
-      department: { type: 'selectTree',
+      departmentId: {
+        label: '部门',
+        type: 'selectTree',
         treeOptions: []
       }
     }]
