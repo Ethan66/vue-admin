@@ -19,6 +19,7 @@ export default {
       if (!this.searched && sessionStorage.getItem(lowName)) { // 第一次读缓存
         let obj = JSON.parse(sessionStorage.getItem(lowName))
         this.searchValues = val = obj.searchValues
+        Object.assign(this.searchValues, this.searchDefaultObj)
         this.tablePages.current = currentPage = obj.currentPage
         this.activeTabName = obj.activeTabName
       }
