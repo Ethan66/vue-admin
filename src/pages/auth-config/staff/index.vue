@@ -73,6 +73,14 @@ export default {
         callback()
       }
     }
+    let checkPassword = (rule, value, callback) => {
+      let reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/
+      if (!reg.test(value)) {
+        callback(new Error('请输入6-20位数字+字母的密码'))
+      } else {
+        callback()
+      }
+    }
     return {
       defaultSearchObj: { a: 1 },
       staffInfoVisible: false,
@@ -96,7 +104,7 @@ export default {
         ],
         password: [
           { required: true, message: '请输入初始密码', trigger: 'blur' },
-          { min: 6, max: 20, message: '请输入6-20位数字+字母的密码', trigger: 'blur' }
+          { validator: checkPassword, message: '请输入6-20位数字+字母的密码', trigger: ['blur', 'change'] }
         ],
         departmentId: [
           { required: true, message: '请选择部门', trigger: 'blur' }
