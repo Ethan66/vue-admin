@@ -129,6 +129,7 @@ export default {
   },
   created () {
     this.timer && clearInterval(this.timer)
+    sessionStorage.clear()
     this.handleCheckIp()
   },
   methods: {

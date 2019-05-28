@@ -33,11 +33,12 @@ router.beforeEach((to, from, next) => {
     }
   }
   // 是否已加载路由或访问的是全局路由不用请求路由接口
-  if (router.options.isAddDynamicMenuRoutes || handleNowRouteType(to, globalRoutes) === 'global') {
+  if ((router.options.isAddDynamicMenuRoutes || handleNowRouteType(to, globalRoutes) === 'global') && !from.meta.firstLogin) {
     document.title = to.meta.title ? to.meta.title : '首页'
     !toPath ? next() : next({ path: toPath })
   } else { // 否则访问路由接口
     // 后台请求菜单列表
+    if (from.path === '/login') from.meta.firstLogin = false
     let { department: departmentId } = JSON.parse(localStorage.getItem('userInfo')) || {}
     apiGetUserPermissionResource({ departmentId }).then(res => {
       if (res.code === '208999') {
