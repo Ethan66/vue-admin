@@ -184,12 +184,25 @@ export default {
     // 账号分配角色
     handleApiGrantUserRole () {
       let params = {}
-      this.staffDialogFormData.roleIds = this.staffDialogFormData.roleIds.join(',')
       Object.assign(params, this.staffDialogFormData)
+      if (!params.userIds) {
+        this.$message.error('请选择员工')
+        return
+      }
+      if (!params.roleIds.length > 0) {
+        this.$message.error('请选择角色')
+        return
+      }
+      if (Array.isArray(params.roleIds)) {
+        params.roleIds = params.roleIds.join(',')
+      }
       apiGrantUserRole(params).then(res => {
         if (res.code === '208999') {
           this.handleDialogClose('staffDialog', 'staffDialogVisible')
+          this.handleApiGetAllRoleRequestTree()
           this.handleGetTableData(apiPageQueryUserRole)
+          this.$refs.staffDialog.clearNodes()
+          this.resetFormData('staffDialogFormData')
         } else {
           this.$message.error(res.message)
         }
