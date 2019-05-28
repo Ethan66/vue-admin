@@ -6,7 +6,7 @@
     :fixed="item.fixed"
     header-align="left">
     <template slot-scope="scope">
-      <span class="menuNameWrap"
+      <span :class="getTreeClass(scope.row)"
         @click.prevent="handleToggle(scope.$index, scope.row)"
         :style="handleStyle(scope.row)"
       >
@@ -30,6 +30,13 @@ export default {
     getTreeDataByPost: Boolean
   },
   methods: {
+    getTreeClass (row) {
+      let res = ['menuNameWrap']
+      if (row.list) {
+        res.push('cursor')
+      }
+      return res
+    },
     // 树状样式箭头clsName
     iconClass (row) {
       let res = []
@@ -69,6 +76,9 @@ export default {
 .tableModule{
   .menuNameWrap{
     padding: 0 10px;
+    &.cursor{
+      cursor: pointer;
+    }
     .arrow{
       display: inline-block; width: 14px; height:12px;
       position: relative;

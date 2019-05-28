@@ -11,6 +11,7 @@ export const showBtn = (buttonCode) => {
 
 // 获取按钮名称
 export const getBtnName = (buttonCode) => {
+  btnList = JSON.parse(sessionStorage.getItem('btnList'))
   let result = ''
   btnList.forEach(item => {
     if (buttonCode === item.btnCode) {

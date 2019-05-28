@@ -40,7 +40,7 @@ export const button = {
 // IP控制
 export const ipControl = {
   data () {
-    return setBtnConfig(JSON.parse(JSON.stringify(initData)), ['edit', { cancel: { name: '启 用', clickFn: 'handleOpen', show: false } }, { cancel: { name: '停 用', clickFn: 'handleStop', show: false } }])
+    return setBtnConfig(JSON.parse(JSON.stringify(initData)), ['edit', { cancel: { name: '启 用', clickFn: 'handleOpen', show: false, code: 'visit-ip-open' } }, { cancel: { name: '停 用', clickFn: 'handleStop', show: false, code: 'visit-ip-stop' } }])
   },
   created () {
     let configSearchItem = [
@@ -161,7 +161,12 @@ export const organization = {
         departmentType: { type: 'select', options: [{ label: '集团', value: 0 }, { label: '公司', value: 1 }, { label: '事业部', value: 2 }, { label: '部门', value: 3 }] }
       },
       { sortNo: { type: 'number' } },
-      'directorName',
+      { directorId: {
+        label: '负责人',
+        type: 'selectTree2',
+        defaultProps: { children: 'childIdList', label: 'departmentName' },
+        dialogData: []
+      } },
       { departmentStatus: { type: 'radio', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }] } }
     ]
     this.searchItem = this.$setItem(tybeObj['organization-manage1'], configSearchItem, 'search')

@@ -84,7 +84,7 @@ export default {
     },
     // 自动打开表格树
     handleOpenTableTree (tableData) {
-
+      console.log(333)
     }
   }
 }
