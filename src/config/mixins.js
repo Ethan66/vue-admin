@@ -15,7 +15,12 @@ export default {
     },
     // 获取表格数据
     handleGetTableData (api, val, currentPage = 1) {
-      let lowName = this.$options.name.split('-').join('').toLowerCase()
+      let lowName
+      if (this.$options.name) {
+        lowName = this.$options.name.split('-').join('').toLowerCase()
+      } else {
+        lowName = {}
+      }
       if (!this.searched && sessionStorage.getItem(lowName)) { // 第一次读缓存
         let obj = JSON.parse(sessionStorage.getItem(lowName))
         this.searchValues = val = obj.searchValues

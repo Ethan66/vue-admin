@@ -1,42 +1,30 @@
 <template>
   <div class="role-limit">
-    <div class="box-left">
-      <h2>角色分类</h2>
-      <classify
-        :classifyList="classifyList"
-        @classify="handleClickClassifyIcon"
-        :total="roleCount"
-        @role="handleClickRoleIcon"
-        @roleClick="handleClickRole"
-      />
-    </div>
-    <div class="box-right">
-      <div class="menuList">
-        <div class="menu" v-for="(item, i) in menuList" :key="i">
-          <h3>{{ item.menu.menuName }}</h3>
-          <div class="object list">
-            <p class="title">对象级</p>
-            <el-checkbox-group v-model="resultChecked[item.menu.menuId].objectPermission" :key="`object${i}`" @change="handleChangeObj(item.menu.menuId, item.operation)">
-              <el-checkbox label="1">查看列表</el-checkbox>
-              <el-checkbox label="2">查看详情</el-checkbox>
-            </el-checkbox-group>
-          </div>
-          <div class="operation list">
-            <div class="title">操作级</div>
-            <el-checkbox-group v-model="resultChecked[item.menu.menuId].buttonIds" :key="`operation${i}`">
-              <el-checkbox :label="child.btnId" :disabled="child.disabled" v-for="(child, i) in item.operation" :key="i">{{ child.btnName }}</el-checkbox>
-            </el-checkbox-group>
-          </div>
-          <div class="tybe list">
-            <div class="title">字段级</div>
-            <p class="cm-btn-color" @click="handleSetTybe(item.menu.menuId)">设置字段权限</p>
-          </div>
+    <div class="menuList">
+      <div class="menu" v-for="(item, i) in menuList" :key="i">
+        <h3>{{ item.menu.menuName }}</h3>
+        <div class="object list">
+          <p class="title">对象级</p>
+          <el-checkbox-group v-model="resultChecked[item.menu.menuId].objectPermission" :key="`object${i}`" @change="handleChangeObj(item.menu.menuId, item.operation)">
+            <el-checkbox label="1">查看列表</el-checkbox>
+            <el-checkbox label="2">查看详情</el-checkbox>
+          </el-checkbox-group>
+        </div>
+        <div class="operation list">
+          <div class="title">操作级</div>
+          <el-checkbox-group v-model="resultChecked[item.menu.menuId].buttonIds" :key="`operation${i}`">
+            <el-checkbox :label="child.btnId" :disabled="child.disabled" v-for="(child, i) in item.operation" :key="i">{{ child.btnName }}</el-checkbox>
+          </el-checkbox-group>
+        </div>
+        <div class="tybe list">
+          <div class="title">字段级</div>
+          <p class="cm-btn-color" @click="handleSetTybe(item.menu.menuId)">设置字段权限</p>
         </div>
       </div>
-      <div class="footer">
-        <el-button>取消</el-button>
-        <el-button type="primary" @click="handleSaveRoleResource">保存</el-button>
-      </div>
+    </div>
+    <div class="footer">
+      <el-button>取消</el-button>
+      <el-button type="primary" @click="handleSaveRoleResource">保存</el-button>
     </div>
     <el-dialog title="设置字段权限" :visible.sync="showTybeDialog">
       <div class="tybeList">
@@ -179,6 +167,9 @@ export default {
     this.handleApiGetAllRoleRequestTree()
   },
   methods: {
+    roleClick (type, item) {
+      this.handleClickRole(type, item)
+    },
     // 点击角色分类图标
     handleClickClassifyIcon (type, item) {
       this.isClassify = 1
@@ -458,13 +449,15 @@ export default {
       this.confirmFn = fnName
       this.confrimDiaShow = true
     },
+    clickRole (item) {
+      this.handleClickRole('rl.e', item)
+    }
   }
 }
 </script>
 
 <style lang="less">
   .role-limit {
-    display: flex;
     p{
       margin: 0;
     }
@@ -484,84 +477,30 @@ export default {
         margin-left: 15px;
       }
     }
-    .box-left {
-      width: 200px;
-      min-width: 200px;
-      background: #fff;
-      margin-right: 10px;
-      h2 {
-        font-family: PingFangSC-Semibold;
-        font-size: 16px;
-        color: #333333;
-        line-height: 16px;
-        padding: 20px 0 20px 15px;
-      }
-      h3 {
-        background: rgba(65, 98, 219, .05);
-        font-family: PingFangSC-Regular;
-        font-size: 12px;
-        color: #4162DB;
-        line-height: 40px;
-        padding-left: 15px;
-      }
-    }
-    .box-right {
-      padding: 15px 0;
-      flex: 1;
-      max-width: calc(100% - 210px);
-      height: calc(100vh - 144px);
-      overflow-y: scroll;
-      background: #fff;
-      &::-webkit-scrollbar {/*滚动条整体样式*/
-          width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
-          height: 4px;
-      }
-      &::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
-          border-radius: 2px;
-          background: rgba(0,0,0,0.5);
-      }
-      &::-webkit-scrollbar-track {/*滚动条里面轨道*/
-          border-radius: 0;
-          background: transparent;
-      }
-      .el-checkbox-group{
-        margin-left: -30px;
-      }
-      .el-checkbox{
-        margin-left: 30px;
-        margin-top: 5px;
-        margin-bottom: 5px;
-      }
-      p.cm-btn-color{
-        margin: 0;
-        font-size: 14px;
-        cursor: pointer;
-      }
-      .menuList{
-        padding: 0 10px 20px 20px;
-        .menu:first-child{
-          h3{
-            padding-top: 0;
-          }
-        }
+    .menuList{
+      padding: 0 10px 20px 20px;
+      .menu:first-child{
         h3{
-          padding: 15px 0;
-          margin-bottom: 24px;
-          border-bottom: 1px solid #e8e8e8;
-          color: #333;
-          font-weight: normal;
-          font-size: 16px;
+          padding-top: 0;
         }
-        .list{
-          display: flex;
-          align-items: center;
-          margin-bottom: 30px;
-          .title{
-            min-width: 42px;
-            margin: 0;
-            margin-right: 50px;
-            font-size: 14px;
-          }
+      }
+      h3{
+        padding: 15px 0;
+        margin-bottom: 24px;
+        border-bottom: 1px solid #e8e8e8;
+        color: #333;
+        font-weight: normal;
+        font-size: 16px;
+      }
+      .list{
+        display: flex;
+        align-items: center;
+        margin-bottom: 30px;
+        .title{
+          min-width: 42px;
+          margin: 0;
+          margin-right: 50px;
+          font-size: 14px;
         }
       }
     }
