@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="dialogTitle" :visible.sync="showDialogForm1" :class="['dialogModule', { doubleColumn }]" :close-on-click-modal="false">
+  <el-dialog :title="dialogTitle" ref="dialog" :visible.sync="showDialogForm1" :class="['dialogModule', { doubleColumn }]" :close-on-click-modal="false">
     <el-form :model="editData" :rules="rules" ref="editData">
       <el-row v-for="(item, i) in dialogItem1" :key="i" :class="handleClass(item.span, item.type)">
         <el-col :class="item.clsName || ''">
@@ -55,6 +55,15 @@
               nodeKey="id" :checkedKeys="selectTreeCheckedValue"
               @change="handleClearSelectTree"
               @popoverHide="popoverHide"/>
+              <tree-select
+              v-if="item.type === 'selectTree2'"
+              ref="selectTree2"
+              clearable
+              :data="item.dialogData"
+              :defaultProps="item.defaultProps"
+              nodeKey="id" :checkedKeys="selectTreeCheckedValueTwo"
+              @change="handleClearSelectTree2"
+              @popoverHide="popoverHide2"/>
           </el-form-item>
         </el-col>
       </el-row>
@@ -102,7 +111,9 @@ export default {
     dialogBtn: Array,
     allRead: Boolean,
     selectTreeCheckedValue: Array,
-    selectTreekey: String
+    selectTreeCheckedValueTwo: Array,
+    selectTreekey: String,
+    selectTreekey2: String
   },
   data () {
     return {
@@ -131,8 +142,12 @@ export default {
           this.$refs.editData.resetFields()
         })
         let selectTree = this.$refs.selectTree
+        let selectTree2 = this.$refs.selectTree2
         if (selectTree && selectTree.length > 0) {
           this.$refs.selectTree[0].clearSelectedNode()
+        }
+        if (selectTree2 && selectTree2.length > 0) {
+          this.$refs.selectTree2[0].clearSelectedNode()
         }
         this.$emit('update:showDialogForm', false)
       }
@@ -184,13 +199,20 @@ export default {
         }
       })
     },
-    handleClearSelectTree () {
-      this.$emit('handleClearSelectTree')
+    handleClearSelectTree (val) {
+      this.$emit('handleClearSelectTree', val)
+    },
+    handleClearSelectTree2 (val) {
+      this.$emit('handleClearSelectTree2', val)
     },
     // 拿到选择树的值
     popoverHide (checkedIds, checkedData) {
       this.editData[this.selectTreekey] = checkedIds
       this.$emit('handleSelectTreeValue', checkedData)
+    },
+    popoverHide2 (checkedIds, checkedData) {
+      this.editData[this.selectTreekey2] = checkedIds
+      this.$emit('handleSelectTreeValue2', checkedData)
     },
     // 点击按钮事件
     handleFn (type, clickFn = '') {
