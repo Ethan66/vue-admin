@@ -64,7 +64,7 @@ export const menu = {
         { required: true, trigger: 'blur', validator: this.validateMenuUrl }
       ],
       sortNo: [
-        { required: true, message: dialogItem[5].placeholder, trigger: 'blur' }
+        { required: true, trigger: 'blur', validator: this.validateSortNo }
       ],
       status: [
         { required: true, message: dialogItem[6].placeholder, trigger: 'change' }
