@@ -268,7 +268,13 @@ export default {
         return callback(new Error('输入内容不能超过100字'))
       }
       callback()
-    }
+    },
+    validateSortNo (rule, value, callback) {
+      if (value < 0 || !Number(value)) {
+        return callback(new Error('输入内容必须为正整数'))
+      }
+      callback()
+    },
   }
 }
 </script>

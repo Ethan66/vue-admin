@@ -89,7 +89,6 @@ export default {
       if (this.editData.directorId) {
         this.selectTreeCheckedValue2 = ['a' + this.editData.directorId]
       }
-      this.handleClearSelectTree()
       this.isEdit = 1
       let list = this.dialogItem[2].options.map(item => {
         if (item.value <= Number(this.editData.departmentType) - 1) {
@@ -131,6 +130,7 @@ export default {
       this.dialogItem[0].type = 'input'
       this.dialogItem[0].disabled = true
       this.dialogItem[2].disabled = true
+      this.dialogItem[5].show = true
       this.editData.parentIdStash = row.parentId
       let obj = this.allDepartmentTree.find(item => item.id === row.parentId)
       obj && (this.editData.parentId = obj.departmentName)
@@ -141,15 +141,16 @@ export default {
     },
     // 新建下级部门
     handleCreateNextLevelDepartment (row) {
-      this.editData.departmentStatus = 0
       if (Number(row.departmentType) === 3) {
         this.$message.error('部门不能创建下级部门')
         return false
       }
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
+      this.editData.departmentStatus = 0
       this.dialogItem[0].type = 'input'
       this.dialogItem[0].disabled = true
       this.dialogItem[2].disabled = true
+      this.dialogItem[5].show = true
       this.editData.parentIdStash = row.id
       this.editData.parentId = row.departmentName
       this.editData.departmentType = Number(row.departmentTypeStash) + 1
