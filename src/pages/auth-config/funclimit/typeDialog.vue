@@ -30,7 +30,7 @@
                 :label="childItem.roleName" :value="childItem.id"></el-option>
             </el-option-group>
           </el-select>
-          <span v-if="item.type === 'text'">{{formData[item.key]}}</span>
+          <span v-if="item.type === 'text'">{{formData[item.key] || formData['gmtCreate']}}</span>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
