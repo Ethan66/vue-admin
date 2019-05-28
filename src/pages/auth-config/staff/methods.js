@@ -22,7 +22,7 @@ export const methods = {
       })
     },
     handleGetReportTo (departmentId) {
-      let params = { departmentId }
+      let params = { department: departmentId }
       apiQueryLowerLevelList(params).then(res => {
         if (res.code === '208999') {
           this.staffFormItem[1].formItem.map(item => {
