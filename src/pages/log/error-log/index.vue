@@ -21,12 +21,14 @@
 import { errorLog } from '@/createData/log/errorLog'
 import basicMethod from '@/config/mixins'
 import { apiListPageLoginErrorLog } from '@/api/authority'
+import { apiQueryPageList } from '@/api/developCenter'
 
 export default {
   name: 'error-log',
   mixins: [basicMethod, errorLog],
   created () {
     this.handleGetTableData(apiListPageLoginErrorLog)
+    this.handleGetPageList()
   },
   data () {
     return {}
@@ -34,6 +36,20 @@ export default {
   methods: {
     handleSendHead (val) {
       console.log(val)
+    },
+    // 获取菜单下拉列表
+    handleGetPageList () {
+      apiQueryPageList().then((res) => {
+        if (res.code === '208999') {
+          res.resultMap.page.list.forEach(item => {
+            item['label'] = item.pageName
+            item['value'] = item.menuCode
+          })
+          this.searchItem[0].options = res.resultMap.page.list
+        } else {
+          this.$message.error(res.message)
+        }
+      })
     },
     // 处理表格数据
     handleTableData (tableData) {
