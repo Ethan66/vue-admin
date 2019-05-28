@@ -94,7 +94,7 @@ export const disposeTreeData = (list, parentId = 'parentId', returnId = 1) => {
       return father.id === child[parentId]
     })
     father.childIdList = branchArr.length > 0 ? branchArr : [] // 给父级添加一个children属性，并赋值
-    if (father['departmentLevel']) { // 存在departmentLevel为部门树
+    if (father['departmentLevel'] === min) { // 存在departmentLevel为部门树
       return father['departmentLevel'] === min // 返回第一层
     } else { // 员工数
       return father[parentId] === returnId // 返回第一层
