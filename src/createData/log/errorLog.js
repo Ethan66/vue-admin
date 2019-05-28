@@ -9,8 +9,14 @@ export const errorLog = {
     return setBtnConfig(JSON.parse(JSON.stringify(initData)))
   },
   created () {
-    console.log(this.tableItem)
     let configSearchItem = [
+      { 'menuCode':
+        { type: 'select',
+          label: '菜单名称',
+          placeholder: '请输入菜单名称',
+          options: [{ label: '成功', value: '0' }, { label: '失败', value: '1' }]
+        }
+      },
       'realName',
       { opStatus:
         { type: 'select',
@@ -30,7 +36,6 @@ export const errorLog = {
       gmtCreate: 80
     }
     this.searchItem = this.$setItem(errorTableItem, configSearchItem, 'search')
-
     this.tableItem = this.$setItem(errorTableItem, configTableItem, 'table')
   }
 }
