@@ -113,7 +113,8 @@ export default {
       confirmContent: '',
       confrimDiaShow: false,
       confirmFn: '',
-      delId: ''
+      delId: '',
+      flag: true // 调用api锁
     }
   },
   methods: {
@@ -251,12 +252,16 @@ export default {
       this.handleDialogClose('staffDialog', 'staffDialogVisible')
     },
     handleSubmit () {
+      if (!this.flag) return
+      this.flag = false
       this.handleApiGrantUserRole()
     },
     handleTypeDialogRefuse () {
       this.handleDialogClose('typeDialog', 'typeVisible')
     },
     handleTypeDialogSubmit () {
+      if (!this.flag) return
+      this.flag = false
       if (this.isEdit) {
         // 编辑角色或角色分类，根据isClassify判断
         this.handleApiEditeConsoleRole()
