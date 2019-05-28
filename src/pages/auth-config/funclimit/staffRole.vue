@@ -68,6 +68,7 @@ import typeDialog from './components/typeDialog'
 import classify from './components/classify'
 import staffDialog from './components/staffDialog'
 import { apiPageQueryUserRole } from '@/api/role'
+import { apiListConsoleUser } from '@/api/staff'
 
 export default {
   name: 'staff-role',
@@ -152,7 +153,8 @@ export default {
   methods: {
     // 点击搜索按钮
     handleSearch (val) {
-      this.handleGetTableData(this.getTableDataApi, val)
+      // this.handleGetTableData(this.getTableDataApi, val)
+      this.handleGetTableData(apiListConsoleUser, val)
       this.$refs.classify.handleReStatus()
     },
     handleEditClass (row) {
@@ -314,8 +316,13 @@ export default {
         if (res.code === '208999') {
           this.tablePages.current = currentPage
           if (res.resultMap) {
-            this.allData = res.resultMap.list
-            this.tablePages.total = res.resultMap.total
+            if (res.resultMap.page) {
+              this.allData = res.resultMap.page.list
+              this.tablePages.total = res.resultMap.page.total
+            } else {
+              this.allData = res.resultMap.list
+              this.tablePages.total = res.resultMap.total
+            }
           } else {
             this.allData = []
             this.tablePages.total = 0
