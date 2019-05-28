@@ -86,7 +86,10 @@ export const methods = {
       }
       apiQueryConsoleUserInfo(params).then(res => {
         if (res.code === '208999') {
-          this.staffInfoData = res.resultMap.data
+          let result = res.resultMap.data
+          this.staffInfoItem[0].infoTitle = result.realName
+          this.staffInfoData = result
+          this.staffInfoVisible = true
         } else {
           this.$message.error(res.message)
         }
