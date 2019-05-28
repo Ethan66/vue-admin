@@ -1,5 +1,13 @@
 export default {
   data () {
+    let checkSortNo = (rule, value, callback) => {
+      let reg = /^[0-9]+$/
+      if (!reg.test(value)) {
+        callback(new Error('请输入正确的数值'))
+      } else {
+        callback()
+      }
+    }
     return {
       typeDialogTitle: '编辑类型',
       formData: {
@@ -14,7 +22,8 @@ export default {
           { max: 20, message: '最多输入20个字符', trigger: 'blur' }
         ],
         sortNo: [
-          { required: true, message: '请输入显示排序', trigger: 'blur' }
+          { required: true, message: '请输入显示排序', trigger: 'blur' },
+          { validator: checkSortNo, message: '请输入正确的数值', trigger: ['blur', 'change'] }
         ]
       },
       typeDialogBtn: [
