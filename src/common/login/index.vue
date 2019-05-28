@@ -128,6 +128,7 @@ export default {
     }
   },
   created () {
+    this.$route.meta.firstLogin = true
     this.timer && clearInterval(this.timer)
     sessionStorage.clear()
     this.handleCheckIp()
