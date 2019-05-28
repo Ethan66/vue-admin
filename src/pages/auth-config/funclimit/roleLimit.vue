@@ -220,6 +220,7 @@ export default {
     handleClickRole (type, item) {
       if (type === 'classify') {
         this.isClassify = 0
+        return
       } else if (type === 'all') {
         this.isClassify = ''
       } else {
@@ -248,7 +249,7 @@ export default {
           this.menuList = res.resultMap.data.list.map(item => {
             let obj = {}
             obj.menu = { menuName: item.menuName, menuId: item.menuId }
-            obj.operation = item.buttonPermissionList.map(child => {
+            obj.operation = item.buttonPermissionList.sort((v1, v2) => (v1.sortNo - v2.sortNo)).map(child => {
               return {
                 btnName: child.buttonName,
                 btnId: child.buttonId,
@@ -302,7 +303,7 @@ export default {
             item.idStr = String(item.id)
             this.$set(this.tybeValueObj, item.id, value)
             if (item.fieldRequired) {
-              this.$set(this.rules, item.id, [{ required: true, validator: this.validateFn, message: `请选择${item.tybeName}` }])
+              this.$set(this.rules, item.idStr, [{ required: true, validator: this.validateFn, message: `请选择${item.fieldName}` }])
             }
           })
           this.showTybeDialog = true
@@ -319,7 +320,7 @@ export default {
     },
     // 校验必填字段
     validateFn (rule, value, callback) {
-      if (value === '') {
+      if (value === '000') {
         this.$message.error(rule.message)
       } else {
         callback()

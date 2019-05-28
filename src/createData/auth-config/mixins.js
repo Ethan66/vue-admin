@@ -180,7 +180,7 @@ export const organization = {
         { required: true, message: dialogItem[2].placeholder, trigger: 'change' }
       ],
       sortNo: [
-        { required: true, message: dialogItem[3].placeholder, trigger: 'blur' }
+        { required: true, validator: this.validateSortNo, trigger: 'blur' }
       ],
       departmentStatus: [
         { required: true, message: dialogItem[5].placeholder, trigger: 'change' }
