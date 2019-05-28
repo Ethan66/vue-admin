@@ -165,7 +165,8 @@ export const organization = {
         label: '负责人',
         type: 'selectTree2',
         defaultProps: { children: 'childIdList', label: 'departmentName' },
-        dialogData: []
+        dialogData: [],
+        textTip: '部门负责人即为部门管理人员'
       } },
       { departmentStatus: { type: 'radio', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }] } }
     ]

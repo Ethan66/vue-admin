@@ -65,6 +65,7 @@
               @change="handleClearSelectTree2"
               @popoverHide="popoverHide2"/>
           </el-form-item>
+          <p class="textTip" v-if="item.textTip">{{ item.textTip }}</p>
         </el-col>
       </el-row>
     </el-form>
@@ -324,12 +325,18 @@ export default {
               .el-form-item__content{
                 margin-left: 100px;
               }
+               & + .textTip{
+                margin-left: 100px;
+              }
             }
             &.label4{
               .el-form-item__label{
                 width: 96px;
               }
               .el-form-item__content{
+                margin-left: 96px;
+              }
+              & + .textTip{
                 margin-left: 96px;
               }
             }
@@ -340,12 +347,18 @@ export default {
               .el-form-item__content{
                 margin-left: 83px;
               }
+               & + .textTip{
+                margin-left: 83px;
+              }
             }
             &.label2{
               .el-form-item__label{
                 width: 82px;
               }
               .el-form-item__content{
+                margin-left: 82px;
+              }
+               & + .textTip{
                 margin-left: 82px;
               }
             }
@@ -419,6 +432,11 @@ export default {
       label {
         width: 140px;
       }
+    }
+    .textTip{
+      margin-top: -15px;
+      color: #B2B2B2;
+      font-size: 12px;
     }
   }
 </style>

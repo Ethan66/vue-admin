@@ -24,7 +24,7 @@ export const menu = {
       menuName: { type: 'tree', width: 200 },
       menuType: 80,
       menuLevel: 100,
-      menuUrl: 200,
+      menuUrl: { width: 200, textTip: '改页面的链接地址' },
       sortNo: 80,
       code: 100,
       status: { width: 80, clsName: 'menuStatus' },
