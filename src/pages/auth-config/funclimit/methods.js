@@ -66,7 +66,7 @@ export default {
       })
     },
     // 获取角色分类树
-    handleApiGetAllRoleRequestTree () {
+    handleApiGetAllRoleRequestTree (callback) {
       let params = {
         withUserFlag: 1,
         withRoleFlag: 1
@@ -74,7 +74,7 @@ export default {
       apiGetAllRoleRequestTree(params).then(res => {
         if (res.code === '208999') {
           this.classifyList = this.$disposeTreeData(res.resultMap.list, 'resourceParentId', 0)
-          this.staffDialogFormItem = this.classifyList
+          callback && callback(this.$disposeTreeData(res.resultMap.list, 'resourceParentId', 0))
           this.roleCount = res.resultMap.total || 0
           this.formItem.map(item => {
             if (item.key === 'cloneRoleIds') {
@@ -85,6 +85,10 @@ export default {
           this.$message.error(res.message)
         }
       })
+    },
+    // 获取角色配置
+    getRoleConfig (callback) {
+      this.handleApiGetAllRoleRequestTree(callback)
     },
     // 获取所属分类
     handleGetClassify () {
@@ -185,6 +189,7 @@ export default {
       apiGrantUserRole(params).then(res => {
         if (res.code === '208999') {
           this.handleDialogClose('staffDialog', 'staffDialogVisible')
+          this.handleGetTableData(apiPageQueryUserRole)
         } else {
           this.$message.error(res.message)
         }

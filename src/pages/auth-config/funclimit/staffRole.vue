@@ -95,23 +95,7 @@ export default {
       },
       roleCount: 0,
       treeData: [],
-      staffDialogFormItem: [
-        {
-          label: '管理员角色',
-          key: 'admin',
-          options: [
-            { label: '超级管理员', value: '1' },
-            { label: '管理员', value: '2' }
-          ]
-        }, {
-          label: '运营角色',
-          key: 'marketing',
-          options: [
-            { label: '运营经理', value: '3' },
-            { label: '用户运营', value: '4' }
-          ]
-        }
-      ],
+      staffDialogFormItem: [],
       staffDialogBtn: [
         { label: '取 消', type: 'delete', clickfn: 'handleRefuse' },
         { label: '确 认', type: 'edit', color: 'primary', clickfn: 'handleSubmit' }
@@ -227,20 +211,27 @@ export default {
       this.handleGetTableData(apiPageQueryUserRole, { resourceType: this.isClassify, roleId: item.id })
     },
     handleAddStaff () {
-      this.handleApiGetAllRoleRequestTree()
-      this.staffDialogIsEdit = false
-      this.staffDialogTitle = '添加员工'
-      this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
-      this.staffDialogVisible = true
+      let callback = (list) => {
+        this.staffDialogFormItem = list
+        this.staffDialogIsEdit = false
+        this.staffDialogTitle = '添加员工'
+        this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
+        this.staffDialogVisible = true
+      }
+      this.getRoleConfig(callback)
     },
     // 表格编辑按钮
     handleEditData (row) {
-      this.staffDialogIsEdit = true
-      this.staffDialogTitle = '编辑员工'
-      this.staffDialogFormData = JSON.parse(JSON.stringify(row))
-      this.staffDialogFormData.roleIds = row.roleIds.split(',')
-      this.staffDialogFormData.userIds = row.id
-      this.staffDialogVisible = true
+      let callback = (list) => {
+        this.staffDialogFormItem = list
+        this.staffDialogIsEdit = true
+        this.staffDialogTitle = '编辑员工'
+        this.staffDialogFormData = JSON.parse(JSON.stringify(row))
+        this.staffDialogFormData.roleIds = row.roleIds.split(',')
+        this.staffDialogFormData.userIds = row.id
+        this.staffDialogVisible = true
+      }
+      this.getRoleConfig(callback)
     },
     // 点击表格删除按钮
     handleDeleteData (row) {
