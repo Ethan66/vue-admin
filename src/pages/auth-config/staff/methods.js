@@ -11,6 +11,20 @@ export const methods = {
               let list = res.resultMap.departmentTree || []
               item.dialogData = this.$disposeTreeData(list)
             }
+            // if (item.key === 'reportTo') {
+            //   item.options = res.resultMap.userlist || []
+            // }
+          })
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+    },
+    handleGetReportTo (departmentId) {
+      let params = { departmentId }
+      apiQueryLowerLevelList(params).then(res => {
+        if (res.code === '208999') {
+          this.staffFormItem[1].formItem.map(item => {
             if (item.key === 'reportTo') {
               item.options = res.resultMap.userlist || []
             }
@@ -72,7 +86,10 @@ export const methods = {
       }
       apiQueryConsoleUserInfo(params).then(res => {
         if (res.code === '208999') {
-          this.staffInfoData = res.resultMap.data
+          let result = res.resultMap.data
+          this.staffInfoItem[0].infoTitle = result.realName
+          this.staffInfoData = result
+          this.staffInfoVisible = true
         } else {
           this.$message.error(res.message)
         }

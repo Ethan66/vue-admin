@@ -58,8 +58,11 @@
           :key="`tree${i}`"
           :item="item"
           :tableData="tableData"
+          :treeInitLevel="treeInitLevel"
           :tableTreeOpenNum="tableTreeOpenNum"
+          :getTreeDataByPost="getTreeDataByPost"
           @handAddTableData="handAddTableData"
+          @clickGetTreeData="handleClickGetTreeData"
         >
         </cell-tree>
         <table-btn
@@ -135,6 +138,10 @@ export default {
     },
     // 表格树保存打开状态
     tableTreeOpenNum: Object,
+    // 表格树最开始的等级
+    treeInitLevel: Number,
+    // 表格树打开是否需要请求接口
+    getTreeDataByPost: Boolean,
     // 初始化表头映射关系
     tableItem: {
       type: Array,
@@ -276,6 +283,10 @@ export default {
         this.tableData.splice(index, 1)
         this.$set(this, 'tableData', this.tableData )
       }
+    },
+    // 树表格点击请求子数据
+    handleClickGetTreeData (row, index) {
+      this.$emit('clickGetTreeData', row, index)
     },
     // 树表格修改tableData
     handAddTableData (tableData) {

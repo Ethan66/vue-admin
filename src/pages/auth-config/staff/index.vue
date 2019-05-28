@@ -65,6 +65,14 @@ export default {
   name: 'staff-index',
   mixins: [basicMethod, staff, methods],
   data () {
+    let checkTel = (rule, value, callback) => {
+      let reg = /^1[34578]\d{9}$/
+      if (!reg.test(value)) {
+        callback(new Error('请输入正确的手机号'))
+      } else {
+        callback()
+      }
+    }
     return {
       defaultSearchObj: { a: 1 },
       staffInfoVisible: false,
@@ -79,12 +87,16 @@ export default {
           { required: true, message: '请输入姓名', trigger: 'blur' },
           { max: 20, message: '最多输入20个字符', trigger: 'blur' }
         ],
+        mailbox: [
+          { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+        ],
         telephone: [
           { required: true, message: '请输入手机号', trigger: 'blur' },
-          { min: 11, max: 11, message: '请输入正确的手机号', trigger: 'blur' }
+          { validator: checkTel, message: '请输入正确的手机号', trigger: ['blur', 'change'] }
         ],
         password: [
-          { required: true, message: '请输入初始密码', trigger: 'blur' }
+          { required: true, message: '请输入初始密码', trigger: 'blur' },
+          { min: 6, max: 20, message: '请输入6-20位数字+字母的密码', trigger: 'blur' }
         ],
         departmentId: [
           { required: true, message: '请选择部门', trigger: 'blur' }
@@ -100,7 +112,9 @@ export default {
         { label: '确 认', type: 'edit', color: 'primary', clickfn: 'handleSubmit' }
       ],
       staffDialogTitle: '添加员工',
-      staffFormData: {},
+      staffFormData: {
+        departmentId: ''
+      },
       staffFormItem: [
         {
           title: '账号信息',
@@ -109,7 +123,7 @@ export default {
             { label: '姓名', key: 'realName', type: 'input' },
             { label: '手机号', key: 'telephone', type: 'input' },
             { label: '邮箱', key: 'mailbox', type: 'input' },
-            { label: '初始密码', key: 'password', type: 'input' }
+            { label: '初始密码', key: 'password', type: 'input', disabled: false }
           ]
         }, {
           title: '职位信息',
@@ -135,9 +149,9 @@ export default {
       defaultCheckedKeys: [],
       staffInfoItem: [
         {
-          infoTitle: '孙华杰',
+          infoTitle: '',
           infoList: [
-            { label: '状态', key: 'status' },
+            { label: '状态', key: 'statusMsg' },
             { label: '创建时间', key: 'gmtCreate' },
             { label: '创建人', key: 'createrName' },
             { label: '上次登录时间', key: 'lastLogonTime' }
@@ -176,7 +190,12 @@ export default {
     this.handleApiQueryDepartmentTree()
     this.handleGetTableData(apiListConsoleUser)
   },
-  computed: {},
+  watch: {
+    'staffFormData.departmentId': function (val, oldVal) {
+      console.log(val)
+      this.handleGetReportTo(val)
+    }
+  },
   methods: {
     handleNodeClick (data) {
       this.departmentId = data.id
@@ -206,10 +225,15 @@ export default {
     },
     // 点击表格编辑按钮
     handleEditData (row) {
-      this.handleApiQueryLowerLevelList()
       this.staffFormData = JSON.parse(JSON.stringify(row))
+      this.handleApiQueryLowerLevelList()
       this.defaultCheckedKeys = [this.staffFormData.departmentId]
       this.staffFormData.password = '******'
+      this.staffFormItem[0].formItem.map(item => {
+        if (item.key === 'password') {
+          item.disabled = true
+        }
+      })
       this.staffFormData.reportTo = Number(this.staffFormData.reportTo)
       this.isEdit = 1
       this.staffDialogTitle = '编辑员工'
@@ -218,9 +242,10 @@ export default {
     // 点击新增按钮
     handleAdd () {
       this.staffFormData = this.$options.data().staffFormData
-      this.isEdit = 0
+      this.staffFormItem = this.$options.data().staffFormItem
+      this.handleApiQueryLowerLevelList() // 获取部门列表
       this.staffDialogTitle = '添加员工'
-      this.handleApiQueryLowerLevelList()
+      this.isEdit = 0
       this.staffDialogVisible = true
     },
     // 停用账号
@@ -286,9 +311,13 @@ export default {
     handleStaffInfoDialogClose () {
       this.$refs.staffInfoDialog.staffInfoVisible = false
     },
+    // 显示员工信息弹框
     handleShowInfo (row) {
-      this.staffInfoData = JSON.parse(JSON.stringify(row))
-      this.staffInfoVisible = true
+      // 重置数据
+      this.staffInfoItem[0].infoTitle = ''
+      this.staffInfoData = this.$options.data().staffInfoData
+      // 获取员工信息
+      this.handleApiQueryConsoleUserInfo(row.id)
     },
     optionData (list) {
       let cloneData = JSON.parse(JSON.stringify(list)) // 对源数据深度克隆

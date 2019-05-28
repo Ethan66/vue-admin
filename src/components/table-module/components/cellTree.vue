@@ -6,7 +6,7 @@
     :fixed="item.fixed"
     header-align="left">
     <template slot-scope="scope">
-      <span class="menuNameWrap"
+      <span :class="getTreeClass(scope.row)"
         @click.prevent="handleToggle(scope.$index, scope.row)"
         :style="handleStyle(scope.row)"
       >
@@ -22,9 +22,21 @@ export default {
   props: {
     item: Object,
     tableData: Array,
-    tableTreeOpenNum: Object
+    treeInitLevel: {
+      type: Number,
+      default: 0
+    },
+    tableTreeOpenNum: Object,
+    getTreeDataByPost: Boolean
   },
   methods: {
+    getTreeClass (row) {
+      let res = ['menuNameWrap']
+      if (row.list) {
+        res.push('cursor')
+      }
+      return res
+    },
     // 树状样式箭头clsName
     iconClass (row) {
       let res = []
@@ -36,10 +48,14 @@ export default {
     },
     // 设置树状样式
     handleStyle (row) {
-      return {'padding-left': row.level * 25 + 'px'}
+      return {'padding-left': (row.level - this.treeInitLevel) * 25 + 'px'}
     },
     // 打开（关闭）树结构
     handleToggle (index, row) {
+      if (this.getTreeDataByPost) {
+        this.$emit('clickGetTreeData', row, index)
+        return
+      }
       if (!row.list) return false
       let tableData = JSON.parse(JSON.stringify(this.tableData))
       if (!row.expand) { // 未展开
@@ -60,6 +76,9 @@ export default {
 .tableModule{
   .menuNameWrap{
     padding: 0 10px;
+    &.cursor{
+      cursor: pointer;
+    }
     .arrow{
       display: inline-block; width: 14px; height:12px;
       position: relative;

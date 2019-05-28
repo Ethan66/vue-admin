@@ -10,7 +10,10 @@
       :table-data.sync="tableData"
       :table-tree-open-num.sync="tableTreeOpenNum"
       :table-item="tableItem"
-      :table-btn="tableBtn">
+      :table-btn="tableBtn"
+      :tree-init-level="initLevel"
+      :get-tree-data-by-post="getDataByPost"
+      @clickGetTreeData="handleClickGetTreeData">
       <div class="btn-content" slot="btn">
         <el-button @click="handleAdd" v-if="$showBtn('organization-add')">{{ $getBtnName('organization-add') }}</el-button>
       </div>
@@ -24,9 +27,13 @@
       :dialogBtn="dialogBtn"
       :rules="rules"
       :select-tree-checked-value="selectTreeCheckedValue"
+      :select-tree-checked-value-two="selectTreeCheckedValue2"
       selectTreekey="parentId"
+      selectTreekey2="directorId"
       @handleSelectTreeValue="handleSelectTreeValue"
+      @handleSelectTreeValue2="handleSelectTreeValue2"
       @handleClearSelectTree="handleClearSelectTree"
+      @handleClearSelectTree2="handleClearSelectTree2"
     />
   </div>
 </template>
@@ -46,13 +53,15 @@ export default {
     return {
       allDepartmentTree: [],
       selectTreeCheckedValue: [],
-      allPeople: []
+      selectTreeCheckedValue2: [],
+      allPeople: [],
+      initLevel: 0,
+      getDataByPost: false
     }
   },
   created () {
     this.tablePages.pageSize = 10000
     this.handleGetAllDepartmentTree()
-    this.handleGetAllPeople()
     this.handleGetTableData(apiQueryDepartmentList)
   },
   methods: {
@@ -61,11 +70,15 @@ export default {
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
       this.editData.departmentStatus = 0
       this.selectTreeCheckedValue = []
+      this.selectTreeCheckedValue2 = []
       this.handleClearSelectTree()
       this.isEdit = 0
       this.dialogTitle = '新增部门'
       this.dialogItem[5].show = true
       this.showDialogForm = true
+      this.$nextTick(() => {
+        this.$refs.dialog.$refs.editData.clearValidate()
+      })
     },
     // 点击表格编辑按钮
     handleEditData (row) {
@@ -73,11 +86,26 @@ export default {
       this.editData.departmentStatus = this.editData.departmentStatusStash
       this.editData.departmentType = this.editData.departmentTypeStash
       this.selectTreeCheckedValue = [this.editData.parentId]
+      if (this.editData.directorId) {
+        this.selectTreeCheckedValue2 = ['a' + this.editData.directorId]
+      }
       this.handleClearSelectTree()
       this.isEdit = 1
+      let list = this.dialogItem[2].options.map(item => {
+        if (item.value <= Number(this.editData.departmentType) - 1) {
+          item.disabled = true
+        } else {
+          item.disabled = false
+        }
+        return item
+      })
+      this.$set(this.dialogItem[2], 'options', list)
       this.dialogTitle = '编辑部门'
       this.dialogItem[5].show = false
       this.showDialogForm = true
+      this.$nextTick(() => {
+        this.$refs.dialog.$refs.editData.clearValidate()
+      })
     },
     // 选择菜单树的值后
     handleSelectTreeValue (row) {
@@ -93,9 +121,13 @@ export default {
       })
       this.$set(this.dialogItem[2], 'options', list)
     },
+    handleSelectTreeValue2 (row) {
+      console.log(row)
+    },
     // 新建平级部门
     handleCreateDepartment (row) {
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
+      this.editData.departmentStatus = 0
       this.dialogItem[0].type = 'input'
       this.dialogItem[0].disabled = true
       this.dialogItem[2].disabled = true
@@ -109,6 +141,7 @@ export default {
     },
     // 新建下级部门
     handleCreateNextLevelDepartment (row) {
+      this.editData.departmentStatus = 0
       if (Number(row.departmentType) === 3) {
         this.$message.error('部门不能创建下级部门')
         return false
@@ -125,12 +158,20 @@ export default {
       this.showDialogForm = true
     },
     // 清空菜单树的值
-    handleClearSelectTree () {
+    handleClearSelectTree (val) {
+      if (!val) {
+        this.editData.parentId = ''
+      }
       let list = this.dialogItem[2].options.map(item => {
         item.disabled = false
         return item
       })
       this.$set(this.dialogItem[2], 'options', list)
+    },
+    handleClearSelectTree2 (val) {
+       if (!val) {
+        this.editData.directorId = ''
+      }
     },
     // 点击表格停用按钮
     handleStop (row) {
@@ -160,6 +201,10 @@ export default {
     // 点击对话框确认按钮
     handleSubmit () {
       let edit = this.editData
+      if (edit.directorId && String(edit.directorId).slice(0, 1) !== 'a') {
+        this.$message.error('负责人请选择员工')
+      }
+      edit.directorId && (edit.directorId = edit.directorId.slice(1))
       this.$refs.dialog.showDialogForm1 = false
       let obj = {
         departmentName: edit.departmentName,
@@ -195,12 +240,22 @@ export default {
       this.searched = true
       savePageData(lowName, val, currentPage, this.activeTabName) // 将搜索等数据缓存
       this.getTableDataApi = api
+      if (val.departmentName) {
+        this.getDataByPost = true
+      } else {
+        this.getDataByPost = false
+      }
       this.tableLoading = true
       api(val).then(res => {
         if (res.code === '208999') {
           this.tablePages.current = currentPage
           this.allData = res.resultMap.data
           this.tableData = this.allData
+          this.tableData.forEach(item => {
+            if (item.hasLower) {
+              item.list = []
+            }
+          })
           this.handleTableData && this.handleTableData(this.tableData || [])
           this.tableLoading = false
         } else {
@@ -240,7 +295,10 @@ export default {
             break
         }
       })
-      this.tableData = menuRelation(tableData, 'id', 'parentId', 'departmentLevel', 'sortNo')
+      if (!this.getDataByPost) {
+        this.tableData = menuRelation(tableData, 'id', 'parentId', 'departmentLevel', 'sortNo')
+      }
+      this.initLevel = this.tableData[0].departmentLevel
       this.handleOpenTableTree(this.tableData)
     },
     // 获取部门树
@@ -249,25 +307,52 @@ export default {
         if (res.code === '208999') {
           this.allDepartmentTree = res.resultMap.data.filter(item => item.departmentType !== 3)
           this.dialogItem[0].dialogData = menuRelation(JSON.parse(JSON.stringify(this.allDepartmentTree)), 'id', 'parentId', 'departmentLevel', 'sortNo')
+          apiListConsoleUser({ pageSize: 0, currentPage: 0 }).then(res => {
+            if (res.code === '208999') {
+              let list = res.resultMap.page.list
+              list.map(item => {
+                item.parentId = item.departmentId
+                item.departmentName = item.realName
+                item.id = 'a' + item.id
+              })
+              this.dialogItem[4].dialogData = this.$disposeTreeData(this.allDepartmentTree.concat(list))
+            } else {
+              this.$message.error(res.message)
+            }
+          })
         } else {
           this.$message.error(res.message)
         }
       })
     },
-    handleGetAllPeople () {
-      apiListConsoleUser({ pageSize: 0, currentPage: 0 }).then(res => {
+    // 点击获取子数据
+    handleClickGetTreeData (row, index) {
+      if (row.expand) {
+        this.tableData = this.tableData.splice(0, index + 1).concat(this.tableData.slice(row.list.length))
+        this.handleTableData && this.handleTableData(this.tableData || [])
+        row.expand = false
+        return
+      }
+      apiQueryDepartmentList({ parentId: row.id }).then((res) => {
         if (res.code === '208999') {
-          let list = res.resultMap.page.list
-          list.map(item => {
-            item.parentId = item.departmentId
-            item.departmentName = item.realName
-            item.id = 'a' + item.id
+          res.resultMap.data.forEach(item => {
+            item.level = item.departmentLevel
+            if (item.hasLower) {
+              item.list = []
+            }
           })
-          this.allPeople = this.$disposeTreeData(this.allDepartmentTree.concat(list))
+          let list = res.resultMap.data
+          if (!row.expand) {
+            this.tableData = this.tableData.splice(0, index + 1).concat(list).concat(this.tableData)
+            this.tableData[index].expand = true
+            this.tableData[index].list = list
+          }
+          this.handleTableData && this.handleTableData(this.tableData || [])
         } else {
           this.$message.error(res.message)
         }
       })
+      console.log(row)
     },
     validateDepartmentName (rule, value, callback) {
       if (!value.trim()) {

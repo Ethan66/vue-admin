@@ -121,9 +121,9 @@ export default {
     initSearchValues (type) {
       if (type === 'start') {
         let temp = JSON.parse(sessionStorage.getItem(this.$parent.$options.name.split('-').join('')))
-        if (temp) {
-          Object.keys(temp).forEach(key => {
-            this.$set(this.searchValues, key, temp[key])
+        if (temp && temp.searchValues) {
+          Object.keys(temp.searchValues).forEach(key => {
+            this.$set(this.searchValues, key, temp.searchValues[key])
           })
         }
         return
