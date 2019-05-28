@@ -1,7 +1,7 @@
 <template>
   <div class="app-wrapper">
     <sidebar class="sidebar-container el-scrollbar">
-      <h1 @click="handleGoHome">新百凌后台管理系统</h1>
+      <h1>新百凌后台管理系统</h1>
     </sidebar>
     <div class="main-container">
       <navbar/>
@@ -29,12 +29,12 @@ export default {
     }
   },
   methods: {
-    handleGoHome () {
-      this.$router.push({ name: 'home' })
-      this.mainTabs = [{ name: '首页', url: '/' }]
-      this.mainActivedTab = this.mainTabs[0]
-      sessionStorage.setItem('mainActivedTab', JSON.stringify(this.mainActivedTab))
-    }
+    // handleGoHome () {
+    //   this.$router.push({ name: 'home' })
+    //   this.mainTabs = [{ name: '首页', url: '/' }]
+    //   this.mainActivedTab = this.mainTabs[0]
+    //   sessionStorage.setItem('mainActivedTab', JSON.stringify(this.mainActivedTab))
+    // }
   }
 }
 </script>
