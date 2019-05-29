@@ -87,7 +87,7 @@ export const pageManage = {
   },
   created () {
     let configSearchItem = [
-      { menuCode: { type: 'select', label: '菜单名称', options: [] } },
+      { menuCode: { type: 'select', placeholder: '请选择菜单名称', label: '菜单名称', options: [] } },
       'pageName',
       { pageStatus: { type: 'select', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }] } }
     ]
