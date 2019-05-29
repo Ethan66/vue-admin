@@ -197,7 +197,7 @@ export default {
         const list = configTybe[type].map((item, i) => {
           item.fieldSort = i + 1
           let obj = this.batchPageList.find(child => child.pageCode === item.pageCode)
-          if (obj.constructor === Object) {
+          if ( obj && obj.constructor === Object) {
             item.menuCode = obj.menuCode
           }
           return item
