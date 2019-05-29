@@ -12,7 +12,7 @@ export const staff = {
       { cancel: { name: '启用', clickFn: 'handleStart', show: false, code: 'staff-admin-open' } },
       { cancel: { name: '禁止登录', clickFn: 'handleForbidLogin', show: false, code: 'staff-admin-nologin' } },
       { cancel: { name: '允许登录', clickFn: 'handleAllowLogin', show: false, code: 'staff-admin-login' } },
-      { cancel: { name: '重置密码', clickFn: 'handleResetPassword', show: true, code: 'staff-admin-reset' } }
+      { cancel: { name: '重置密码', clickFn: 'handleResetPassword', code: 'staff-admin-reset' } }
     ])
   },
   created () {
@@ -30,6 +30,9 @@ export const staff = {
     }
     this.searchItem = this.$setItem(staffTest, configSearchItem, 'search')
     this.tableItem = this.$setItem(staffTest, configTableItem, 'table')
+    if (this.tableBtn.filter(item => item.show).length === 0) {
+      this.tableItem.splice(this.tableItem.length - 1, 1)
+    }
     this.rules = {
       buttonName: [
         { required: true, message: '请输入按钮名称', trigger: 'blur' }

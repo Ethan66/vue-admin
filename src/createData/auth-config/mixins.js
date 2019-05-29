@@ -25,6 +25,9 @@ export const button = {
     let configDialogItem = ['buttonName', 'buttonCode']
     this.searchItem = this.$setItem(buttonTest, configSearchItem, 'search')
     this.tableItem = this.$setItem(buttonTest, configTableItem, 'table')
+    if (this.tableBtn.filter(item => item.show).length === 0) {
+      this.tableItem.splice(this.tableItem.length - 1, 1)
+    }
     this.dialogItem = this.$setItem(buttonTest, configDialogItem, 'dialog')
     this.rules = {
       buttonName: [
@@ -40,7 +43,7 @@ export const button = {
 // IP控制
 export const ipControl = {
   data () {
-    return setBtnConfig(JSON.parse(JSON.stringify(initData)), ['edit', { cancel: { name: '启 用', clickFn: 'handleOpen', show: false, code: 'visit-ip-open' } }, { cancel: { name: '停 用', clickFn: 'handleStop', show: false, code: 'visit-ip-stop' } }])
+    return setBtnConfig(JSON.parse(JSON.stringify(initData)), [{ edit: { code: 'visit-ip-edit' } }, { cancel: { name: '启 用', clickFn: 'handleOpen', show: false, code: 'visit-ip-open' } }, { cancel: { name: '停 用', clickFn: 'handleStop', show: false, code: 'visit-ip-stop' } }])
   },
   created () {
     let configSearchItem = [
@@ -71,6 +74,9 @@ export const ipControl = {
     ]
     this.searchItem = this.$setItem(ipTableItem, configSearchItem, 'search')
     this.tableItem = this.$setItem(ipTableItem, configTableItem, 'table')
+    if (this.tableBtn.filter(item => item.show).length === 0) {
+      this.tableItem.splice(this.tableItem.length - 1, 1)
+    }
     this.dialogItem = this.$setItem(ipTableItem, configDialogItem, 'dialog')
     this.rules = {
       addressIp: [
@@ -118,6 +124,9 @@ export const account = {
     }
     this.searchItem = this.$setItem(accountTableItem, configSearchItem, 'search')
     this.tableItem = this.$setItem(accountTableItem, configTableItem, 'table')
+    if (this.tableBtn.filter(item => item.show).length === 0) {
+      this.tableItem.splice(this.tableItem.length - 1, 1)
+    }
   }
 }
 

@@ -19,6 +19,12 @@ const config = {
       { menuName: '异常日志', menuParentName: '日志管理', code: 'error-log', menuUrl: '/log/error-log/index', sortNo: 2 }
     ],
     btn: [
+      // 功能权限管理
+      { menuName: '编 辑', menuParentName: '权限管理', code: 'config-manage-edit', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      { menuName: '删 除', menuParentName: '权限管理', code: 'config-manage-delete', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      { menuName: '添加员工', menuParentName: '权限管理', code: 'config-manage-add', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      // 员工管理
+      { menuName: '新建员工', menuParentName: '员工管理', code: 'staff-manage-add', menuUrl: '/pilianganniu1-1', sortNo: 1 }
       // 菜单管理
       // { menuName: '新增菜单', menuParentName: '菜单管理', code: 'menu-add-menu', menuUrl: '/pilianganniu1-1', sortNo: 1 },
       // { menuName: '批量新建目录', menuParentName: '菜单管理', code: 'menu-add-catogue-all', menuUrl: '/pilianganniu1-1', sortNo: 1 },
@@ -30,7 +36,7 @@ const config = {
       // { menuName: '新建下级菜单', menuParentName: '菜单管理', code: 'menu-add-next-level', menuUrl: '/pilianganniu2-1', sortNo: 1 },
       // { menuName: '删除', menuParentName: '菜单管理', code: 'menu-delete', menuUrl: '/pilianganniu2-1', sortNo: 1 },
       // { menuName: '详情', menuParentName: '菜单管理', code: 'menu-detail', menuUrl: '/pilianganniu2-1', sortNo: 1 },
-      // // 页面管理
+      // 页面管理
       // { menuName: '新建页面', menuParentName: '页面管理', code: 'page-add-page', menuUrl: '/pilianganniu1-1', sortNo: 1 },
       // { menuName: '获取全部menuList', menuParentName: '页面管理', code: 'page-get-menu', menuUrl: '/pilianganniu1-1', sortNo: 1 },
       // { menuName: '批量新建页面', menuParentName: '页面管理', code: 'page-add-page-all', menuUrl: '/pilianganniu1-1', sortNo: 1 },
@@ -53,18 +59,18 @@ const config = {
       // { menuName: '新建平级部门', menuParentName: '组织架构', code: 'organization-add-same-level', menuUrl: '/pilianganniu1-1', sortNo: 1 },
       // { menuName: '新建下级部门', menuParentName: '组织架构', code: 'organization-add-next-level', menuUrl: '/pilianganniu1-1', sortNo: 1 },
       // { menuName: '停用', menuParentName: '组织架构', code: 'organization-stop', menuUrl: '/pilianganniu1-1', sortNo: 1 },
-      // { menuName: '删除', menuParentName: '组织架构', code: 'organization-delete', menuUrl: '/pilianganniu1-1', sortNo: 1 },
-         
+      // { menuName: '删除', menuParentName: '组织架构', code: 'organization-delete', menuUrl: '/pilianganniu1-1', sortNo: 1 },    
       // ip授权
-      { menuName: '启 用', menuParentName: '访问控制', code: 'visit-ip-open', menuUrl: '/pilianganniu1-1', sortNo: 1 },
-      { menuName: '启 用', menuParentName: '访问控制', code: 'visit-ip-open-batch', menuUrl: '/pilianganniu1-1', sortNo: 1 },
-      { menuName: '停 用', menuParentName: '访问控制', code: 'visit-ip-stop', menuUrl: '/pilianganniu1-1', sortNo: 1 },
-      { menuName: '停 用', menuParentName: '访问控制', code: 'visit-ip-stop-batch', menuUrl: '/pilianganniu1-1', sortNo: 1 },
-      { menuName: '添加IP', menuParentName: '访问控制', code: 'visit-ip-add-ip', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      // { menuName: '启 用', menuParentName: '访问控制', code: 'visit-ip-open', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      // { menuName: '启 用', menuParentName: '访问控制', code: 'visit-ip-open-batch', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      // { menuName: '停 用', menuParentName: '访问控制', code: 'visit-ip-stop', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      // { menuName: '停 用', menuParentName: '访问控制', code: 'visit-ip-stop-batch', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      // { menuName: '添加IP', menuParentName: '访问控制', code: 'visit-ip-add-ip', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      // { menuName: '编 辑', menuParentName: '访问控制', code: 'visit-ip-edit', menuUrl: '/pilianganniu1-1', sortNo: 1 },
       // 账号授权
-      { menuName: '失 效', menuParentName: '访问控制', code: 'visit-c-stop', menuUrl: '/pilianganniu1-1', sortNo: 1 },
-      { menuName: '失 效', menuParentName: '访问控制', code: 'visit-c-stop-batch', menuUrl: '/pilianganniu1-1', sortNo: 1 },
-      { menuName: '添加授权', menuParentName: '访问控制', code: 'visit-c-add', menuUrl: '/pilianganniu1-1', sortNo: 1 }
+      // { menuName: '失 效', menuParentName: '访问控制', code: 'visit-c-stop', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      // { menuName: '失 效', menuParentName: '访问控制', code: 'visit-c-stop-batch', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      // { menuName: '添加授权', menuParentName: '访问控制', code: 'visit-c-add', menuUrl: '/pilianganniu1-1', sortNo: 1 }
     ]
   }
 }

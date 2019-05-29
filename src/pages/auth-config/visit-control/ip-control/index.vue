@@ -15,7 +15,7 @@
       @table-jump="handleJump">
       <div class="btn-content" slot="btn">
         <span v-if="chooseDataArr.length > 0">已选择 <i>{{ chooseDataArr.length }}</i> 条</span>
-        <el-button @click="handleAdd" v-if="chooseDataArr.length < 1">添加IP</el-button>
+        <el-button @click="handleAdd" v-if="chooseDataArr.length < 1 && $showBtn('visit-ip-add-ip')">{{$getBtnName('visit-ip-add-ip')}}</el-button>
         <el-button @click="handleBatchOpen" v-if="chooseDataArr.length > 0 && $showBtn('visit-ip-open-batch')">{{$getBtnName('visit-ip-open-batch')}}</el-button>
         <el-button @click="handleBatchStop" v-if="chooseDataArr.length > 0 && $showBtn('visit-ip-stop-batch')">{{$getBtnName('visit-ip-stop-batch')}}</el-button>
       </div>
