@@ -12,7 +12,7 @@
     </el-tabs>
     <el-dropdown>
       <span class="el-dropdown-link">
-        {{ userName }}<i class="el-icon-arrow-down el-icon--right"></i>
+        <img class="username" src="~@/assets/img/username.png" />{{ userName }}<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item class="width100">
@@ -180,3 +180,12 @@ export default {
   }
 }
 </script>
+
+<style lang="less">
+  .username{
+    margin-right: 5px;
+    width: 14px;
+    vertical-align: middle;
+  }
+</style>
+

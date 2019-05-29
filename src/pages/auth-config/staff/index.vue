@@ -118,8 +118,8 @@ export default {
       },
       list: [],
       staffDialogBtn: [
-        { label: '取 消', type: 'delete', clickfn: 'handleRefuse' },
-        { label: '确 认', type: 'edit', color: 'primary', clickfn: 'handleSubmit' }
+        { label: '取消', type: 'delete', clickfn: 'handleRefuse' },
+        { label: '确认', type: 'edit', color: 'primary', clickfn: 'handleSubmit' }
       ],
       staffDialogTitle: '添加员工',
       staffFormData: {
@@ -349,6 +349,10 @@ export default {
 </script>
 
 <style lang="less">
+  .el-button--default{
+    color: #888;
+    border: 1px solid #e8e8e8;
+  }
   .staff-admin {
     display: flex;
     .box-left {

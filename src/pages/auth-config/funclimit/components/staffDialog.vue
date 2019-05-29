@@ -183,7 +183,7 @@ export default {
                   min-width: 118px;
                   margin-left: 0;
                   .el-checkbox__input.is-checked+.el-checkbox__label {
-                    color: #666;
+                    color: #888;
                   }
                   .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
                     background-color: #4162DB;
@@ -216,7 +216,7 @@ export default {
             padding: 0;
           }
           .el-button--default {
-            color: #666;
+            color: #888;
             border: 1px solid #E8E8E8;
           }
         }

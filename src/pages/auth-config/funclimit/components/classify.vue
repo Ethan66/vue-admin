@@ -120,6 +120,10 @@ export default {
       .content {
         display: inline-block;
         cursor: pointer;
+        width: 98px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       i {
         padding-left: 7px;
@@ -129,7 +133,7 @@ export default {
     }
     .active {
       color: #4162DB;
-      background: rgba(65, 98, 219, .05);
+      background: rgba(65, 98, 219, .1);
     }
     .showIcon {
       visibility: hidden;

@@ -101,7 +101,7 @@ export default {
 <style lang="less">
   .sidebarContent{
     .iconfont {
-      width: 14px;
+      width: 15px;
       margin-right: 5px;
       margin-top: -2px;
     }

@@ -43,6 +43,6 @@ export default {
  .main-container{
   width: calc(100% - 225px);
   margin-left: 225px;
-  background: #e8e8e8;
+  background: #f2f4f5;
 }
 </style>

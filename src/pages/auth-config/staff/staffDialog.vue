@@ -129,6 +129,10 @@ export default {
 
 <style lang="less">
   .staff-dialog-box {
+    .el-button--default{
+      color: #888;
+      border: 1px solid #e8e8e8;
+    }
     .el-dialog{
       min-width: 700px;
       border-radius: 4px;
@@ -164,6 +168,7 @@ export default {
           font-family: PingFangSC-Semibold;
           font-size: 14px;
           color: #333333;
+          font-weight: bold;
           letter-spacing: 0;
           padding-bottom: 10px;
         }
@@ -181,6 +186,7 @@ export default {
               color: #333;
               letter-spacing: -0.43px;
               line-height: 20px;
+              font-weight: normal;
             }
             .el-form-item__label::before {
               color: #F41824;

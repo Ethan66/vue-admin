@@ -84,7 +84,7 @@ export default {
         top: 2px;
         left: 30px;
         font-size: 16px;
-        color: #666666;
+        color: #888;
       }
     }
     .el-dialog {
@@ -94,7 +94,7 @@ export default {
     }
     .confirm-content {
       font-size: 14px;
-      color: #666666;
+      color: #888;
       line-height: 24px;
       padding: 0 30px;
       display: block;

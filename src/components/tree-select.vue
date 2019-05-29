@@ -281,6 +281,9 @@ export default {
 </script>
 
 <style lang="less">
+.el-popover{
+  width: 230px !important;
+}
 .tree-select {
   z-index: 111;
   .mask{

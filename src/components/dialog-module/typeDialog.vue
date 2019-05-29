@@ -145,7 +145,7 @@ export default {
               padding: 0;
             }
             .el-button--default {
-              color: #666;
+              color: #888;
               border: 1px solid #E8E8E8;
             }
           }
