@@ -205,8 +205,11 @@ export default {
   },
   watch: {
     'staffFormData.departmentId': function (val, oldVal) {
-      delete this.staffFormData.reportTo
-      if (val !== '') {
+      if (oldVal) {
+        delete this.staffFormData.reportTo
+      }
+      if (val) {
+        console.log(val);
         this.handleGetReportTo(val)
       }
     }
