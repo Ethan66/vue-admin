@@ -186,6 +186,9 @@ export default {
       apiDelConsoleRole(params).then(res => {
         if (res.code === '208999') {
           this.$message.success(res.message)
+          if (this.activeName === 'first') {
+            this.$refs.staffRole.getStaffList()
+          }
           this.handleApiGetAllRoleRequestTree()
         } else {
           this.$message.error(res.message)

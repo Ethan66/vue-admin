@@ -15,7 +15,7 @@
             />
           </div>
           <div class="box-right">
-            <staffRole ref="staffRole"></staffRole>
+            <staffRole ref="staffRole" @getClassifyList="getClassifyList"></staffRole>
           </div>
         </div>
       </el-tab-pane>
@@ -127,7 +127,7 @@ export default {
       this.confirmContent = txt
       this.confirmFn = fnName
       this.confrimDiaShow = true
-    },
+    }
   },
   components: {
     staffRole,

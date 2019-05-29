@@ -142,6 +142,7 @@ export default {
           this.handleDialogClose('staffDialog', 'staffDialogVisible')
           this.handleApiGetAllRoleRequestTree()
           this.handleGetTableData(apiPageQueryUserRole)
+          this.$emit('getClassifyList')
           this.$refs.staffDialog.clearNodes()
           this.resetFormData('staffDialogFormData')
         } else {
@@ -163,6 +164,7 @@ export default {
         if (res.code === '208999') {
           this.$message.success(res.message)
           this.handleGetTableData(apiPageQueryUserRole)
+          this.$emit('getClassifyList')
         } else {
           this.$message.error(res.message)
         }

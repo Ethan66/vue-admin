@@ -15,7 +15,7 @@ export default {
         verificationCode: [{ required: true, trigger: 'blur', validator: this.validateCode }]
       },
       passwordrules: {
-        user: [{ required: true, trigger: 'blur', message: '请输入用户名' }],
+        user: [{ required: true, trigger: 'blur', validator: this.validateUser }],
         password: [
           { required: true, trigger: 'blur', message: '请输入新密码' },
           { validator: this.checkPassword, message: '请输入6-20位数字+字母的密码', trigger: ['blur', 'change'] }
