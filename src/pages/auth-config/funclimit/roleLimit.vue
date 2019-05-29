@@ -407,7 +407,10 @@ export default {
           }).then(res => {
             if (res.code === '208999') {
               this.showTybeDialog = false
-              this.$getSuccessMsg(this, res.message)
+              this.$message({
+                type: 'success',
+                message: res.message
+              })
             } else {
               this.$message.error(res.message)
             }
@@ -438,7 +441,10 @@ export default {
         permissionList
       }).then(res => {
         if (res.code === '208999') {
-          this.$getSuccessMsg(this, res.message)
+          this.$message({
+            type: 'success',
+            message: res.message
+          })
         } else {
           this.$message.error(res.message)
         }
