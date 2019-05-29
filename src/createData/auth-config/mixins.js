@@ -1,44 +1,10 @@
 import { basicInitObj } from '@/components/basicObj'
-import { buttonTest, ipTableItem, accountTableItem } from '@/test/auth-config'
+import { ipTableItem, accountTableItem } from '@/test/auth-config'
 import { showBtn, getBtnName, setBtnConfig } from '@/components/methods'
 
 const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
 
 const initData = Object.assign({}, basicInitObj)
-
-export const button = {
-  data () {
-    return setBtnConfig(JSON.parse(JSON.stringify(initData)))
-  },
-  created () {
-    let configSearchItem = ['buttonName']
-    let configTableItem = {
-      selection: 50,
-      id: 80,
-      buttonName: 200,
-      buttonMenuName: 100,
-      buttonCode: 100,
-      gmtCreate: 200,
-      gmtModified: 80,
-      isDelete: 80
-    }
-    let configDialogItem = ['buttonName', 'buttonCode']
-    this.searchItem = this.$setItem(buttonTest, configSearchItem, 'search')
-    this.tableItem = this.$setItem(buttonTest, configTableItem, 'table')
-    if (this.tableBtn.filter(item => item.show).length === 0) {
-      this.tableItem.splice(this.tableItem.length - 1, 1)
-    }
-    this.dialogItem = this.$setItem(buttonTest, configDialogItem, 'dialog')
-    this.rules = {
-      buttonName: [
-        { required: true, message: '请输入按钮名称', trigger: 'blur' }
-      ],
-      buttonCode: [
-        { required: true, message: '请输入按钮编码', trigger: 'blur' }
-      ]
-    }
-  }
-}
 
 // IP控制
 export const ipControl = {

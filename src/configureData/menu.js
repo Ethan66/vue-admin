@@ -20,11 +20,11 @@ const config = {
     ],
     btn: [
       // 功能权限管理
-      { menuName: '编 辑', menuParentName: '权限管理', code: 'config-manage-edit', menuUrl: '/pilianganniu1-1', sortNo: 1 },
-      { menuName: '删 除', menuParentName: '权限管理', code: 'config-manage-delete', menuUrl: '/pilianganniu1-1', sortNo: 1 },
-      { menuName: '添加员工', menuParentName: '权限管理', code: 'config-manage-add', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      // { menuName: '编 辑', menuParentName: '权限管理', code: 'config-manage-edit', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      // { menuName: '删 除', menuParentName: '权限管理', code: 'config-manage-delete', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      // { menuName: '添加员工', menuParentName: '权限管理', code: 'config-manage-add', menuUrl: '/pilianganniu1-1', sortNo: 1 },
       // 员工管理
-      { menuName: '新建员工', menuParentName: '员工管理', code: 'staff-manage-add', menuUrl: '/pilianganniu1-1', sortNo: 1 }
+      // { menuName: '新建员工', menuParentName: '员工管理', code: 'staff-manage-add', menuUrl: '/pilianganniu1-1', sortNo: 1 }
       // 菜单管理
       // { menuName: '新增菜单', menuParentName: '菜单管理', code: 'menu-add-menu', menuUrl: '/pilianganniu1-1', sortNo: 1 },
       // { menuName: '批量新建目录', menuParentName: '菜单管理', code: 'menu-add-catogue-all', menuUrl: '/pilianganniu1-1', sortNo: 1 },
