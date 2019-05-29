@@ -28,6 +28,7 @@
       :dialog-item="dialogItem"
       :dialog-btn="dialogBtn"
       :rules="rules"
+      :selectTreeWidth="selectTreeWidth1"
       :select-tree-checked-value="selectTreeCheckedValue"
       selectTreekey="menuParentId"
       @handleSelectTreeValue="handleSelectTreeValue"
@@ -56,7 +57,8 @@ export default {
     return {
       showDetail: false,
       allParentMenu: [],
-      selectTreeCheckedValue: []
+      selectTreeCheckedValue: [],
+      selectTreeWidth1: 244
     }
   },
   watch: {

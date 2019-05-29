@@ -28,6 +28,8 @@
       :rules="rules"
       :select-tree-checked-value="selectTreeCheckedValue"
       :select-tree-checked-value-two="selectTreeCheckedValue2"
+      :selectTreeWidth="selectTreeWidth1"
+      :selectTreeWidth2="selectTreeWidth2"
       selectTreekey="parentId"
       selectTreekey2="directorId"
       @handleSelectTreeValue="handleSelectTreeValue"
@@ -52,6 +54,8 @@ export default {
   data () {
     return {
       allDepartmentTree: [],
+      selectTreeWidth1: 304,
+      selectTreeWidth2: 304,
       selectTreeCheckedValue: [],
       selectTreeCheckedValue2: [],
       allPeople: [],

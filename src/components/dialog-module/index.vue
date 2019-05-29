@@ -50,6 +50,7 @@
               v-if="item.type === 'selectTree'"
               ref="selectTree"
               clearable
+              :width="selectTreeWidth"
               :data="item.dialogData"
               :defaultProps="item.defaultProps"
               nodeKey="id" :checkedKeys="selectTreeCheckedValue"
@@ -59,6 +60,7 @@
               v-if="item.type === 'selectTree2'"
               ref="selectTree2"
               clearable
+              :width="selectTreeWidth2"
               :data="item.dialogData"
               :defaultProps="item.defaultProps"
               nodeKey="id" :checkedKeys="selectTreeCheckedValueTwo"
@@ -113,6 +115,8 @@ export default {
     allRead: Boolean,
     selectTreeCheckedValue: Array,
     selectTreeCheckedValueTwo: Array,
+    selectTreeWidth: Number,
+    selectTreeWidth2: Number,
     selectTreekey: String,
     selectTreekey2: String
   },
