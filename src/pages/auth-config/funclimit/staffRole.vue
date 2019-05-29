@@ -16,7 +16,7 @@
       @handleSendHead="handleSendHead"
       @table-jump="handleJump">
       <div class="btn-content" slot="btn">
-        <el-button @click="handleAddStaff">添加员工</el-button>
+        <el-button @click="handleAddStaff" v-if="$showBtn('config-manage-add')">{{$getBtnName('config-manage-add')}}</el-button>
       </div>
     </table-module>
     <!-- 添加编辑员工弹框 -->

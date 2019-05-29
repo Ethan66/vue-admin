@@ -26,7 +26,7 @@
         @handleSendHead="handleSendHead"
         @table-jump="handleJump">
         <div class="btn-content" slot="btn">
-          <el-button @click="handleAdd">新建员工</el-button>
+          <el-button @click="handleAdd" v-if="$showBtn('staff-manage-add')">{{$getBtnName('staff-manage-add')}}</el-button>
         </div>
       </table-module>
     </div>

@@ -6,7 +6,7 @@ const initData = Object.assign({}, basicInitObj)
 
 export const staffRole = {
   data () {
-    return setBtnConfig(JSON.parse(JSON.stringify(initData)), ['edit', 'delete'])
+    return setBtnConfig(JSON.parse(JSON.stringify(initData)), [{ edit: { code: 'config-manage-edit' } }, { delete: { code: 'config-manage-delete' } }])
   },
   created () {
     let configSearchItem = ['realName', {
@@ -34,7 +34,9 @@ export const staffRole = {
     this.searchItem = this.$setItem(staffRoleTest, configSearchItem, 'search')
     this.tableItem = this.$setItem(staffRoleTest, configTableItem, 'table')
     this.dialogItem = this.$setItem(staffRoleTest, configDialogItem, 'dialog')
-
+    if (this.tableBtn.filter(item => item.show).length === 0) {
+      this.tableItem.splice(this.tableItem.length - 1, 1)
+    }
     this.rules = {
       id: [
         { required: true, message: '请输入IP地址', trigger: 'blur' }

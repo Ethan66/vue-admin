@@ -37,5 +37,8 @@ export const errorLog = {
     }
     this.searchItem = this.$setItem(errorTableItem, configSearchItem, 'search')
     this.tableItem = this.$setItem(errorTableItem, configTableItem, 'table')
+    if (this.tableBtn.filter(item => item.show).length === 0) {
+      this.tableItem.splice(this.tableItem.length - 1, 1)
+    }
   }
 }

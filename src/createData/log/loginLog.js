@@ -29,5 +29,8 @@ export const loginLog = {
     }
     this.searchItem = this.$setItem(tableItemList, configSearchItem, 'search')
     this.tableItem = this.$setItem(tableItemList, configTableItem, 'table')
+    if (this.tableBtn.filter(item => item.show).length === 0) {
+      this.tableItem.splice(this.tableItem.length - 1, 1)
+    }
   }
 }

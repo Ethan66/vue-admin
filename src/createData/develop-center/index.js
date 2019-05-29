@@ -52,6 +52,9 @@ export const menu = {
     ]
     this.searchItem = this.$setItem(tybeObj['menu-manage1'], configSearchItem, 'search')
     this.tableItem = this.$setItem(tybeObj['menu-manage1'], configTableItem, 'table')
+    if (this.tableBtn.filter(item => item.show).length === 0) {
+      this.tableItem.splice(this.tableItem.length - 1, 1)
+    }
     let dialogItem = this.dialogItem = this.$setItem(tybeObj['menu-manage1'], configDialogItem, 'dialog')
     this.rules = {
       menuName: [
@@ -105,6 +108,9 @@ export const pageManage = {
     ]
     this.searchItem = this.$setItem(tybeObj['page-manage1'], configSearchItem, 'search')
     this.tableItem = this.$setItem(tybeObj['page-manage1'], configTableItem, 'table')
+    if (this.tableBtn.filter(item => item.show).length === 0) {
+      this.tableItem.splice(this.tableItem.length - 1, 1)
+    }
     let dialogItem = this.dialogItem = this.$setItem(tybeObj['page-manage1'], configDialogItem, 'dialog')
     this.rules = {
       pageName: [
@@ -146,6 +152,9 @@ export const tybeManage = {
     }
     this.searchItem = this.$setItem(tybeObj['tybe-manage1'], configSearchItem, 'search')
     this.tableItem = this.$setItem(tybeObj['tybe-manage1'], configTableItem, 'table')
+    if (this.tableBtn.filter(item => item.show).length === 0) {
+      this.tableItem.splice(this.tableItem.length - 1, 1)
+    }
   }
 }
 
@@ -165,6 +174,9 @@ export const fastCreateType = {
       btn: 160
     }
     this.tableItem = this.$setItem(tybeObj['tybe-manage2'], configTableItem, 'table')
+    if (this.tableBtn.filter(item => item.show).length === 0) {
+      this.tableItem.splice(this.tableItem.length - 1, 1)
+    }
     this.rules = {
       id: [
         { required: true, message: '请输入菜单id', trigger: 'blur' }
