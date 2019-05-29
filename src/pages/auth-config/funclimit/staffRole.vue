@@ -88,6 +88,9 @@ export default {
     }
   },
   methods: {
+    getStaffList () {
+      this.handleGetTableData(apiPageQueryUserRole)
+    },
     roleClick (data) {
       this.handleGetTableData(apiPageQueryUserRole, data)
     },
