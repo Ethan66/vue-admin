@@ -30,6 +30,8 @@
       :pageCode="pageCode"
       :dialogTitle="dialogTitle"
       />
+    <dialog-confirm
+      :confirmContent="confirmContent" :showDialogForm.sync="confrimDiaShow" :confirmFn="confirmFn"/>
   </div>
 </template>
 
@@ -54,7 +56,11 @@ export default {
         setStatus: [],
         fixedStatus: [],
         fieldRequired: []
-      }
+      },
+      confirmFn: '',
+      confirmContent: '',
+      confrimDiaShow: false,
+      seleData: []
     }
   },
   watch: {
@@ -76,6 +82,12 @@ export default {
     this.handleGetTableData(apiPageFiledQueryList, Object.assign({}, this.searchValues, this.searchDefaultObj))
   },
   methods: {
+    // 确认消息
+    handleConfirmInfo (fnName, txt) {
+      this.confirmFn = fnName
+      this.confirmContent = txt
+      this.confrimDiaShow = true
+    },
     // 点击快速生成按钮
     handleFastCreate () {
       this.isEdit = 0
@@ -98,13 +110,24 @@ export default {
     },
     // 点击表格删除按钮
     handleDeleteData (rows) {
+      console.log(rows)
       let ids = []
-      if (rows.constructor === Object) {
-        ids.push(rows.id)
+      if (this.seleData.length > 0) {
+        if (this.seleData.constructor === Object) {
+          ids.push(this.seleData.id)
+        } else {
+          ids = this.seleData.map(item => {
+            return item.id
+          })
+        }
       } else {
-        ids = rows.map(item => {
-          return item.id
-        })
+        if (rows.constructor === Object) {
+          ids.push(rows.id)
+        } else {
+          ids = rows.map(item => {
+            return item.id
+          })
+        }
       }
       apiDeletePageField({ ids }).then(res => {
         if (res.code === '208999') {
@@ -120,7 +143,8 @@ export default {
     },
     // 点击删除按钮
     handleDelete () {
-      this.handleDeleteData(this.chooseDataArr)
+      this.seleData = this.chooseDataArr
+      this.handleConfirmInfo('handleDeleteData', '确认失效对该账号的授权吗？失效后该账号无法通过外网访问管理后台。')
     },
     // 处理表格数据
     handleTableData (tableData, index) {

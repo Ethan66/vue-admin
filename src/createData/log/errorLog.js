@@ -30,7 +30,6 @@ export const errorLog = {
       menuName: 100,
       menuCode: 70,
       opTypeDesc: 100,
-      id: 100,
       opStatusDesc: { clsName: 'opStatusDesc', width: 80 },
       opResult: 90,
       gmtCreate: 90

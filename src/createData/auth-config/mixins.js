@@ -95,7 +95,7 @@ export const ipControl = {
 // 账户控制
 export const account = {
   data () {
-    return setBtnConfig(JSON.parse(JSON.stringify(initData)), [{ cancel: { name: '失 效', clickFn: 'handleInvalid', code: 'visit-c-stop' } }])
+    return setBtnConfig(JSON.parse(JSON.stringify(initData)), [{ cancel: { name: '失 效', clickFn: 'handleInvalid', show: false, code: 'visit-c-stop' } }])
   },
   created () {
     let configSearchItem = [

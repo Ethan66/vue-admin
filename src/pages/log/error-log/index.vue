@@ -15,13 +15,14 @@
       @table-jump="handleJump">
     </table-module>
   </div>
+  
 </template>
 
 <script>
 import { errorLog } from '@/createData/log/errorLog'
 import basicMethod from '@/config/mixins'
 import { apiListPageLoginErrorLog } from '@/api/authority'
-import { apiQueryPageList } from '@/api/developCenter'
+import { apiQueryParentConsoleMenu } from '@/api/developCenter'
 
 export default {
   name: 'error-log',
@@ -39,13 +40,13 @@ export default {
     },
     // 获取菜单下拉列表
     handleGetPageList () {
-      apiQueryPageList().then((res) => {
+      apiQueryParentConsoleMenu({menuLevel: 2}).then((res) => {
         if (res.code === '208999') {
-          res.resultMap.page.list.forEach(item => {
-            item['label'] = item.pageName
-            item['value'] = item.menuCode
+          res.resultMap.data.forEach(item => {
+            item['label'] = item.menuName
+            item['value'] = item.code
           })
-          this.searchItem[0].options = res.resultMap.page.list
+          this.searchItem[0].options = res.resultMap.data
         } else {
           this.$message.error(res.message)
         }
