@@ -24,7 +24,7 @@ export const apiDeleteConsoleMenu = (params) => {
 
 // 查询父菜单下拉菜单
 export const apiQueryParentConsoleMenu = (params) => {
-  return postRequest(base + '/queryParentConsoleMenu', params)
+  return postRequest(base + '/queryAllConsoleMenu', params)
 }
 
 // 页面管理

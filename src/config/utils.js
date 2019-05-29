@@ -77,7 +77,7 @@ export const getSuccessMsg = (that, text, type = 'success', title = '成功') =>
   })
 }
 // 处理树形结构数据
-export const disposeTreeData = (list, parentId = 'parentId', returnId = 1) => {
+export const disposeTreeData = (list, parentId = 'parentId', returnId = 0) => {
   let min = Infinity
   let cloneData = JSON.parse(JSON.stringify(list)) // 对源数据深度克隆
   function compare (key) {

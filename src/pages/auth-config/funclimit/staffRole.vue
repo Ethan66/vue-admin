@@ -48,7 +48,7 @@ export default {
   name: 'staff-role',
   mixins: [methods, basicMethod, staffRole],
   created () {
-    this.handleGetTableData(apiPageQueryUserRole)
+    this.getStaffList()
     // 获取部门树
     this.handleApiQueryDepartmentTree()
     // 查询系统用户列表
@@ -84,21 +84,28 @@ export default {
       confirmContent: '',
       confrimDiaShow: false,
       confirmFn: '',
-      flag: true // 调用api锁
+      flag: true, // 调用api锁
+      delAllRole: 1
     }
   },
   methods: {
-    getStaffList () {
-      this.handleGetTableData(apiPageQueryUserRole)
+    getStaffList (data) {
+      this.handleGetTableData(apiPageQueryUserRole, data)
     },
     roleClick (data) {
-      this.handleGetTableData(apiPageQueryUserRole, data)
+      if (!data.roleId || data.roleId < 0) {
+        this.delAllRole = 1
+      } else {
+        this.delAllRole = 0
+      }
+      this.getStaffList(data)
     },
     // 点击搜索按钮
     handleSearch (val) {
-      // this.handleGetTableData(this.getTableDataApi, val)
+      // 搜索调用员工管理的列表
       this.handleGetTableData(apiListConsoleUser, val)
-      this.$refs.classify.handleReStatus()
+      this.delAllRole = 1
+      this.$emit('handleReStatus')
     },
     handleAddStaff () {
       let callback = (list) => {
@@ -125,9 +132,14 @@ export default {
     },
     // 点击表格删除按钮
     handleDeleteData (row) {
+      if (!row.roleIds) {
+        this.$message.warning('该用户未分配角色')
+        return
+      }
       this.delStaffId = row.id
       this.delStaffRoleIds = row.roleIds
-      this.handleConfirmInfo('确认删除该员工所有角色？', 'delStaffAllRole')
+      let text = this.delAllRole ? '确认删除该员工所有角色？' : '确认删除该员工角色？'
+      this.handleConfirmInfo(text, 'delStaffAllRole')
     },
     delStaffAllRole () {
       this.handleApiDelUserRole(this.delStaffId, this.delStaffRoleIds)
@@ -183,7 +195,7 @@ export default {
       this.confirmContent = txt
       this.confirmFn = fnName
       this.confrimDiaShow = true
-    },
+    }
   },
   components: {
     staffDialog
