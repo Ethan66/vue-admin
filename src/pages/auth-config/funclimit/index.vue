@@ -143,6 +143,9 @@ export default {
 
 <style lang="less">
 .funclimit {
+  .el-form-item__label{
+    font-weight: normal;
+  }
   .noMargin{
     margin-top: -15px;
   }

@@ -75,7 +75,6 @@ export default {
       this.inlineLabelToValue[key] = [{ label: '否', value: 0 }, { label: '是', value: 1 }]
     })
     const { menuCode, pageCode } = this.$route.query
-    console.log(1)
     this.searchDefaultObj = { menuCode, pageCode }
     this.menuCode = menuCode
     this.pageCode = pageCode
@@ -102,15 +101,16 @@ export default {
     },
     // 页面名称字段点击事件
     handleGoPage () {
-      console.log(111)
     },
     // 点击表格保存按钮
     handleEditData (row) {
+      if (!row.isDelete) {
+        delete row.isDelete
+      }
       this.apiEditData(apiUpdatePageField, row, apiPageFiledQueryList)
     },
     // 点击表格删除按钮
     handleDeleteData (rows) {
-      console.log(rows)
       let ids = []
       if (this.seleData.length > 0) {
         if (this.seleData.constructor === Object) {
@@ -152,6 +152,7 @@ export default {
         this.tableData = []
         return
       }
+      this.tableData.sort((v1, v2) => v1.fieldSort - v2.fieldSort)
       this.tableData = tableData.map(item => {
         item.displayStatus = item.displayStatus ? '是' : '否'
         item.setStatus = item.setStatus ? '是' : '否'

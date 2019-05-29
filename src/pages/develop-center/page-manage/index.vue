@@ -55,7 +55,7 @@ export default {
   methods: {
     // 获取菜单下拉列表
     handleGetPageListData () {
-      apiQueryParentConsoleMenu({menuLevel: 2}).then((res) => {
+      apiQueryParentConsoleMenu({menuLevel: 2, isDelete: 0}).then((res) => {
         if (res.code === '208999') {
           res.resultMap.data.forEach(item => {
             item['label'] = item.menuName
