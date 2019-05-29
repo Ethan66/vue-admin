@@ -2,9 +2,14 @@
 .el-input__inner{
   border-color: #e8e8e8;
   border-radius: 2px;
+  padding: 0 10px;
   &:hover{
     border-color: @themeColor;
   }
+}
+
+.el-form-item.is-success .el-input__inner, .el-form-item.is-success .el-input__inner:focus, .el-form-item.is-success .el-textarea__inner, .el-form-item.is-success .el-textarea__inner:focus{
+  border-color:  #E8E8E8;
 }
 
 .el-input.is-active .el-input__inner{
@@ -17,6 +22,7 @@
 .el-button{
   color: @buttonColor;
   border-color: @buttonColor;
+  border-radius: 2px;
   &:hover{
     color: @buttonColor;
     border-color: @themeColor;
@@ -132,6 +138,12 @@
       font-size: 14px;
       letter-spacing: 1px;
       padding: 5px 16px;
+      border-color: #e8e8e8;
+      color: #666;
+      &.el-button--primary{
+        color: #fff;
+        border-color: @buttonColor;
+      }
     }
   }
 }

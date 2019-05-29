@@ -52,7 +52,6 @@ export const setInitTableStyle = () => {
       }
     }
     Array.from(document.querySelectorAll('.el-table__fixed-right')).forEach(item => {
-      item.style.borderLeft = '1px solid #e8e8e8'
       item.style.bottom = bottom + 'px'
       item.style.right = '7px'
     })

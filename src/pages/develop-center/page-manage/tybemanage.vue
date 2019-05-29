@@ -131,7 +131,10 @@ export default {
       }
       apiDeletePageField({ ids }).then(res => {
         if (res.code === '208999') {
-          this.$getSuccessMsg(this, '删除成功')
+          this.$message({
+            type: 'success',
+            message: res.message
+          })
           this.handleGetTableData(apiPageFiledQueryList, Object.assign({}, this.searchValues, this.searchDefaultObj))
         } else {
           this.$message.error(res.message)

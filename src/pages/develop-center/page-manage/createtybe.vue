@@ -137,7 +137,10 @@ export default {
         apiAddBatchPageField({ list }).then(res => {
           if (res.code === '208999') {
             this.step++
-            this.$getSuccessMsg(this, res.message)
+            this.$message({
+              type: 'success',
+              message: res.message
+            })
           } else {
             this.$message.error(res.message)
           }
@@ -146,7 +149,10 @@ export default {
         apiAddPageField(Object.assign({}, this.tableData[0], { pageCode, menuCode })).then(res => {
           if (res.code === '208999') {
             this.step++
-            this.$getSuccessMsg(this, res.message)
+            this.$message({
+              type: 'success',
+              message: res.message
+            })
           } else {
             this.$message.error(res.message)
           }

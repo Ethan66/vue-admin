@@ -1,5 +1,5 @@
 <template>
-  <div class="staff-dialog">
+  <div class="staff-dialog-box">
     <el-dialog
       :close-on-click-modal="false"
       :close-on-press-escape="false"
@@ -13,8 +13,8 @@
           <div class="form-title" :key="index">{{item.title}}</div>
           <div class="form-template" :key="'t' + index">
             <div class="form-flex-box" v-for="(formItem, index) in item.formItem" :key="index">
-              <el-form-item v-if="formItem.type === 'input'" :label="formItem.label" :prop="formItem.key">
-                <el-input :disabled="formItem.disabled" v-model="formData[formItem.key]"></el-input>
+              <el-form-item v-if="['input', 'password'].includes(formItem.type)" :label="formItem.label" :prop="formItem.key">
+                <el-input :disabled="formItem.disabled" v-model="formData[formItem.key]" :type="formItem.type"></el-input>
               </el-form-item>
               <el-form-item v-if="formItem.type === 'select'" :label="formItem.label" :prop="formItem.key">
                 <el-select v-model="formData[formItem.key]" :placeholder="formItem.placeholder">
@@ -128,7 +128,7 @@ export default {
 </script>
 
 <style lang="less">
-  .staff-dialog {
+  .staff-dialog-box {
     .el-dialog{
       min-width: 700px;
       border-radius: 4px;

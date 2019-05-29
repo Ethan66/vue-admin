@@ -1,5 +1,5 @@
 <template>
-  <div class="staff-dialog">
+  <div class="funclimit-staff-dialog">
     <el-dialog
       :visible.sync="staffDialogVisible"
       :close-on-press-escape="false"
@@ -142,7 +142,7 @@ export default {
 </script>
 
 <style lang="less">
-  .staff-dialog {
+  .funclimit-staff-dialog {
     .el-dialog {
       .el-dialog__header {
         border-bottom: 1px solid #E8E8E8;

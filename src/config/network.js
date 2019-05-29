@@ -70,7 +70,7 @@ function handleSpecialError (response) {
     return true
   }
   // 用户登录过期或登录失效
-  if (res.code === '211100' || res.code === '211207' || res.code === '211200') {
+  if (res.code === '211100' || res.code === '211207') {
     let $dialog = document.querySelector('.el-message-box__wrapper')
     if ($dialog && $dialog.style.display !== 'none') return true
     MessageBox.confirm(

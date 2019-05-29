@@ -51,6 +51,8 @@
       :rules="staffFormRules"
       :defaultCheckedKeys.sync="defaultCheckedKeys"
     />
+    <dialog-confirm
+      :confirmContent="confirmContent" :showDialogForm.sync="confrimDiaShow" :confirmFn="confirmFn"/>
   </div>
 </template>
 
@@ -131,7 +133,7 @@ export default {
             { label: '姓名', key: 'realName', type: 'input' },
             { label: '手机号', key: 'telephone', type: 'input' },
             { label: '邮箱', key: 'mailbox', type: 'input' },
-            { label: '初始密码', key: 'password', type: 'input', disabled: false }
+            { label: '初始密码', key: 'password', type: 'password', disabled: false }
           ]
         }, {
           title: '职位信息',
@@ -191,7 +193,10 @@ export default {
         label: 'departmentName'
       },
       treeData: [],
-      departmentId: '' // 点击部门树的id
+      departmentId: '', // 点击部门树的id
+      confirmContent: '',
+      confrimDiaShow: false,
+      confirmFn: '',
     }
   },
   created () {
@@ -200,8 +205,11 @@ export default {
   },
   watch: {
     'staffFormData.departmentId': function (val, oldVal) {
-      delete this.staffFormData.reportTo
-      if (val !== '') {
+      if (oldVal) {
+        delete this.staffFormData.reportTo
+      }
+      if (val) {
+        console.log(val);
         this.handleGetReportTo(val)
       }
     }
@@ -238,7 +246,7 @@ export default {
       this.staffFormData = JSON.parse(JSON.stringify(row))
       this.handleApiQueryLowerLevelList()
       this.defaultCheckedKeys = [this.staffFormData.departmentId]
-      this.staffFormData.password = '******'
+      this.staffFormData.password = 'a12345'
       this.staffFormItem[0].formItem.map(item => {
         if (item.key === 'password') {
           item.disabled = true
@@ -260,49 +268,47 @@ export default {
     },
     // 停用账号
     handleStop (row) {
-      this.$confirm('确定停用该员工账号吗？停用后该员工将无法登录后台管理系统。', '温馨提醒', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消'
-      }).then(() => {
-        this.handleApiEditConsoleUserStatus(row.id, row.status, 1)
-      })
+      this.stopId = row.id
+      this.stopStatus = row.status
+      this.handleConfirmInfo('确定停用该员工账号吗？停用后该员工将无法登录后台管理系统。', 'stop')
+    },
+    stop () {
+      this.handleApiEditConsoleUserStatus(this.stopId, this.stopStatus, 1)
     },
     // 启用账号
     handleStart (row) {
-      this.$confirm('确定启用该员工账号吗？', '温馨提醒', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消'
-      }).then(() => {
-        this.handleApiEditConsoleUserStatus(row.id, row.status, 0)
-      })
+      this.startId = row.id
+      this.startStatus = row.status
+      this.handleConfirmInfo('确定启用该员工账号吗？', 'start')
+    },
+    start () {
+      this.handleApiEditConsoleUserStatus(this.startId, this.startStatus, 0)
     },
     // 禁止登录
     handleForbidLogin (row) {
-      console.log(row)
-      this.$confirm('确定禁止该员工账号登录吗？', '温馨提醒', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消'
-      }).then(() => {
-        this.handleApiEditConsoleUserStatus(row.id, 2, row.isDelete)
-      })
+      this.forbidId = row.id
+      this.forbidIsDelete = row.isDelete
+      this.handleConfirmInfo('确定禁止该员工账号登录吗？', 'forbidLogin')
+    },
+    forbidLogin () {
+      this.handleApiEditConsoleUserStatus(this.forbidId, 2, this.forbidIsDelete)
     },
     // 允许登录
     handleAllowLogin (row) {
-      this.$confirm('确定允许该员工账号登录吗？', '温馨提醒', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消'
-      }).then(() => {
-        this.handleApiEditConsoleUserStatus(row.id, 0, row.isDelete)
-      })
+      this.allowId = row.id
+      this.allowisDelete = row.isDelete
+      this.handleConfirmInfo('确定允许该员工账号登录吗？', 'allowLogin')
+    },
+    allowLogin () {
+      this.handleApiEditConsoleUserStatus(this.allowId, 0, this.allowisDelete)
     },
     // 重置密码
     handleResetPassword (row) {
-      this.$confirm('确定重置该员工账号密码吗？新密码将以短信发送。', '温馨提醒', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消'
-      }).then(() => {
-        this.handleApiResetConsoleUserPassword(row.id)
-      })
+      this.resetId = row.id
+      this.handleConfirmInfo('确定重置该员工账号密码吗？新密码将以短信发送。', 'resetPassword')
+    },
+    resetPassword () {
+      this.handleApiResetConsoleUserPassword(this.resetId)
     },
     // staffdialog 取消按钮
     handleRefuse () {
@@ -329,14 +335,11 @@ export default {
       // 获取员工信息
       this.handleApiQueryConsoleUserInfo(row.id)
     },
-    optionData (list) {
-      let cloneData = JSON.parse(JSON.stringify(list)) // 对源数据深度克隆
-      return cloneData.filter(father => { // 循环所有项，并添加children属性
-        let branchArr = cloneData.filter(child => father.id === child.parentId) // 返回每一项的子级数组
-        father.childIdList = branchArr.length > 0 ? branchArr : [] // 给父级添加一个children属性，并赋值
-        return father.parentId === 0 // 返回第一层
-      })
-    }
+    handleConfirmInfo (txt, fnName) {
+      this.confirmContent = txt
+      this.confirmFn = fnName
+      this.confrimDiaShow = true
+    },
   },
   components: {
     staffDialog,

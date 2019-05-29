@@ -15,7 +15,7 @@
             />
           </div>
           <div class="box-right">
-            <staffRole ref="staffRole"></staffRole>
+            <staffRole ref="staffRole" @getClassifyList="getClassifyList"></staffRole>
           </div>
         </div>
       </el-tab-pane>
@@ -127,7 +127,7 @@ export default {
       this.confirmContent = txt
       this.confirmFn = fnName
       this.confrimDiaShow = true
-    },
+    }
   },
   components: {
     staffRole,
@@ -147,6 +147,20 @@ export default {
       min-width: 200px;
       background: #fff;
       margin-right: 10px;
+      height: calc(100vh - 144px);
+      overflow: auto;
+      &::-webkit-scrollbar {/*滚动条整体样式*/
+          width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
+          height: 4px;
+      }
+      &::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+          border-radius: 2px;
+          background: rgba(0,0,0,0.5);
+      }
+      &::-webkit-scrollbar-track {/*滚动条里面轨道*/
+          border-radius: 0;
+          background: transparent;
+      }
       h2 {
         font-family: PingFangSC-Semibold;
         font-size: 16px;
@@ -173,14 +187,6 @@ export default {
       &::-webkit-scrollbar-track {/*滚动条里面轨道*/
           border-radius: 0;
           background: transparent;
-      }
-      .el-checkbox-group{
-        margin-left: -30px;
-      }
-      .el-checkbox{
-        margin-left: 30px;
-        margin-top: 5px;
-        margin-bottom: 5px;
       }
       p.cm-btn-color{
         margin: 0;
