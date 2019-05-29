@@ -144,7 +144,7 @@ export default {
     // 点击删除按钮
     handleDelete () {
       this.seleData = this.chooseDataArr
-      this.handleConfirmInfo('handleDeleteData', '确认失效对该账号的授权吗？失效后该账号无法通过外网访问管理后台。')
+      this.handleConfirmInfo('handleDeleteData', '此操作不可逆，确认继续操作？')
     },
     // 处理表格数据
     handleTableData (tableData, index) {
