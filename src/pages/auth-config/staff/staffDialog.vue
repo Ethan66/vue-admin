@@ -26,6 +26,7 @@
               <el-form-item v-if="formItem.type === 'selectTree'" :label="formItem.label" :prop="formItem.key">
                 <tree-select
                   ref="treeSelect"
+                  :width="230"
                   :data="formItem.dialogData"
                   :defaultProps="formItem.defaultProps"
                   nodeKey="id" :checkedKeys="defaultCheckedKeys"
