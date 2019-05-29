@@ -421,9 +421,9 @@ export default {
         let objectPermission = ''
         let objectStr = this.resultChecked[menuId].objectPermission.join('')
         if (objectStr === '1') {
-          objectPermission = '01'
-        } else if (objectStr === '2') {
           objectPermission = '10'
+        } else if (objectStr === '2') {
+          objectPermission = '01'
         } else if (objectStr === '12' || objectStr === '21') {
           objectPermission = '11'
         }

@@ -149,12 +149,12 @@ export const organization = {
     ]
     let configTableItem = {
       departmentCount: 80,
-      sortNo: 60,
+      sortNo: 90,
       departmentName: { type: 'tree', width: 200 },
       directorName: 80,
       departmentStatus: { clsName: 'departmentStatus', width: 80 },
       departmentType: 100,
-      btn: 120
+      btn: 130
     }
     let configDialogItem = [
       {
