@@ -20,6 +20,8 @@
 }
 
 .el-button{
+  color: @buttonColor;
+  border-color: @buttonColor;
   border-radius: 2px;
   &:hover{
     color: @buttonColor;
@@ -136,6 +138,12 @@
       font-size: 14px;
       letter-spacing: 1px;
       padding: 5px 16px;
+      border-color: #e8e8e8;
+      color: #666;
+      &.el-button--primary{
+        color: #fff;
+        border-color: @buttonColor;
+      }
     }
   }
 }

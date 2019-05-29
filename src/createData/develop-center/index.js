@@ -29,7 +29,7 @@ export const menu = {
       code: 100,
       status: { width: 80, clsName: 'menuStatus' },
       remark: 100,
-      btn: 120
+      btn: 130
     }
     let configDialogItem = [
       { menuParentName: {
@@ -46,6 +46,7 @@ export const menu = {
       'menuName',
       { menuType: { type: 'select', options: [{ label: '目录', value: 0 }, { label: '菜单', value: 1 }, { label: '按钮', value: 2 }] } },
       'code', 'menuUrl',
+      { 'menuIcon': { label: '菜单图标', width: 80 } },
       { sortNo: { type: 'number' } },
       { status: { type: 'radio', options: [{ label: '显示', value: 0 }, { label: '隐藏', value: 1 }] } },
       { remark: { label: '描述', type: 'textarea', rows: 4 } }
@@ -73,7 +74,7 @@ export const menu = {
         { required: true, trigger: 'blur', validator: this.validateSortNo }
       ],
       status: [
-        { required: true, message: dialogItem[6].placeholder, trigger: 'change' }
+        { required: true, message: dialogItem[8].placeholder, trigger: 'change' }
       ]
     }
   }

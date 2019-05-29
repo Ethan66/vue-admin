@@ -32,8 +32,8 @@ export const errorLog = {
       opTypeDesc: 100,
       id: 100,
       opStatusDesc: { clsName: 'opStatusDesc', width: 80 },
-      opResult: 80,
-      gmtCreate: 80
+      opResult: 90,
+      gmtCreate: 90
     }
     this.searchItem = this.$setItem(errorTableItem, configSearchItem, 'search')
     this.tableItem = this.$setItem(errorTableItem, configTableItem, 'table')
