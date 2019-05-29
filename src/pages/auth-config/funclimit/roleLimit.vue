@@ -304,9 +304,9 @@ export default {
             if (item.objectPermission === '11') {
               obj.objectPermission.push('1', '2')
             } else if (item.objectPermission === '10') {
-              obj.objectPermission.push('2')
-            } else if (item.objectPermission === '01') {
               obj.objectPermission.push('1')
+            } else if (item.objectPermission === '01') {
+              obj.objectPermission.push('2')
             }
           }
           item.operation && item.operation.forEach(btn => {
