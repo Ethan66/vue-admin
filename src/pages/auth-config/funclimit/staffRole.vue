@@ -205,5 +205,10 @@ export default {
 
 <style lang="less">
   .staff-role {
+    .el-checkbox-group{
+      .el-checkbox{
+        margin-right: 20px;
+      }
+    }
   }
 </style>

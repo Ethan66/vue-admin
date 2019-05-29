@@ -72,7 +72,7 @@ export default {
     apiEditData (editDataApi, obj, getTableDataApi) {
       return editDataApi(obj).then(res => {
         if (res.code === '208999') {
-          this.$refs.dialog.showDialogForm1 = false
+          this.$refs.dialog && (this.$refs.dialog.showDialogForm1 = false)
           this.$message({
             message: res.message,
             type: 'success'
@@ -99,7 +99,6 @@ export default {
     },
     // 自动打开表格树
     handleOpenTableTree (tableData) {
-      console.log(333)
     }
   }
 }

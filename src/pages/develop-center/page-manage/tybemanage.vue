@@ -75,7 +75,6 @@ export default {
       this.inlineLabelToValue[key] = [{ label: '否', value: 0 }, { label: '是', value: 1 }]
     })
     const { menuCode, pageCode } = this.$route.query
-    console.log(1)
     this.searchDefaultObj = { menuCode, pageCode }
     this.menuCode = menuCode
     this.pageCode = pageCode
@@ -102,7 +101,6 @@ export default {
     },
     // 页面名称字段点击事件
     handleGoPage () {
-      console.log(111)
     },
     // 点击表格保存按钮
     handleEditData (row) {
