@@ -23,7 +23,7 @@
 <template>
   <div class="tree-select">
     <div class="mask" v-show="isShowSelect" @click="isShowSelect = !isShowSelect"></div>
-    <el-popover placement="bottom-start" :width="style" trigger="manual"
+    <el-popover ref="elPopover" placement="bottom-start" :width="width" trigger="manual"
                 v-model="isShowSelect" @hide="popoverHide">
       <el-tree class="common-tree" :style="style" ref="tree" :data="data" :props="defaultProps"
               :show-checkbox="multiple"
@@ -132,7 +132,7 @@ export default {
       options: [],
       selectedData: [], // 选中的节点
       style: 'width:' + this.width + 'px;' + 'height:' + this.height + 'px;',
-      selectStyle: 'width:' + (this.width + 24) + 'px;',
+      selectStyle: 'width:' + (this.width) + 'px;',
       checkedIds: [],
       checkedData: []
     }
@@ -281,9 +281,6 @@ export default {
 </script>
 
 <style lang="less">
-.el-popover{
-  width: 230px !important;
-}
 .tree-select {
   z-index: 111;
   .mask{

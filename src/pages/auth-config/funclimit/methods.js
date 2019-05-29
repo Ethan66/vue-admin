@@ -28,12 +28,6 @@ export default {
         if (res.code === '208999') {
           this.classifyList = this.$disposeTreeData(res.resultMap.list, 'resourceParentId', 0)
           callback && callback(this.$disposeTreeData(res.resultMap.list, 'resourceParentId', 0))
-          this.roleCount = res.resultMap.total || 0
-          this.formItem.map(item => {
-            if (item.key === 'cloneRoleIds') {
-              item.options = this.classifyList
-            }
-          })
         } else {
           this.$message.error(res.message)
         }
@@ -98,7 +92,7 @@ export default {
     handleApiQueryDepartmentList () {
       apiQueryDepartmentList({}).then(res => {
         if (res.code === '208999') {
-          console.log('res', res);
+          console.log('res', res)
         } else {
           this.$message.error(res.message)
         }
@@ -202,6 +196,6 @@ export default {
       let formItem = []
       formItem = globleItem.filter(item => keys.includes(item.key))
       return formItem
-    },
+    }
   }
 }

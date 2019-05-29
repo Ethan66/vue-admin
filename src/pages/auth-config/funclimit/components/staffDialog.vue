@@ -13,6 +13,7 @@
         label-position="left" ref="ruleForm" class="demo-ruleForm">
         <el-form-item v-if="!isEdit" class="select-tree-item" label="请选择员工" prop="name">
           <tree-select
+            :width="360"
             ref="treeSelect"
             :data="treeList" :defaultProps="defaultProps"
             multiple nodeKey="id" :checkedKeys="treeCheckedData"
