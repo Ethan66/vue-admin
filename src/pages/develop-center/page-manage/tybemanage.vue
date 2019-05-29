@@ -106,11 +106,13 @@ export default {
     },
     // 点击表格保存按钮
     handleEditData (row) {
+      if (!row.isDelete) {
+        delete row.isDelete
+      }
       this.apiEditData(apiUpdatePageField, row, apiPageFiledQueryList)
     },
     // 点击表格删除按钮
     handleDeleteData (rows) {
-      console.log(rows)
       let ids = []
       if (this.seleData.length > 0) {
         if (this.seleData.constructor === Object) {
@@ -152,6 +154,7 @@ export default {
         this.tableData = []
         return
       }
+      this.tableData.sort((v1, v2) => v1.fieldSort - v2.fieldSort)
       this.tableData = tableData.map(item => {
         item.displayStatus = item.displayStatus ? '是' : '否'
         item.setStatus = item.setStatus ? '是' : '否'
