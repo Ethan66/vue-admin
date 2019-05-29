@@ -239,6 +239,7 @@ export default {
     },
     // 处理表格数据
     handleTableData (tableData) {
+      this.tableItem.push({fixed: "right", label: "操作", prop: "btn", type: "btn", width: 75})
       tableData.forEach(item => {
         if (item.grandBegin) {
           item.grandBegin = item.grandBegin + '至' + item.grandEnd

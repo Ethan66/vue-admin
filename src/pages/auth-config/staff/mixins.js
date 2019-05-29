@@ -19,13 +19,13 @@ export const staff = {
     let configSearchItem = ['status', 'realName']
     let configTableItem = {
       selection: 50,
-      realName: { width: 100, clickFn: 'handleShowInfo', clsName: 'cm-btn-color' },
-      telephone: 100,
+      realName: { width: 80, clickFn: 'handleShowInfo', clsName: 'cm-btn-color' },
+      telephone: 120,
       departmentName: 100,
       position: 100,
-      reportToName: 80,
+      reportToName: 100,
       statusMsg: 100,
-      roleName: 80,
+      roleName: 120,
       btn: 260
     }
     this.searchItem = this.$setItem(staffTest, configSearchItem, 'search')

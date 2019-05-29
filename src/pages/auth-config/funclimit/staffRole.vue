@@ -124,7 +124,11 @@ export default {
         this.staffDialogIsEdit = true
         this.staffDialogTitle = '编辑员工'
         this.staffDialogFormData = JSON.parse(JSON.stringify(row))
-        this.staffDialogFormData.roleIds = row.roleIds.split(',')
+        if (row.roleIds) {
+          this.staffDialogFormData.roleIds = row.roleIds.split(',')
+        } else {
+          this.staffDialogFormData.roleIds = []
+        }
         this.staffDialogFormData.userIds = row.id
         this.staffDialogVisible = true
       }

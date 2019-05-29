@@ -196,7 +196,7 @@ export default {
       departmentId: '', // 点击部门树的id
       confirmContent: '',
       confrimDiaShow: false,
-      confirmFn: '',
+      confirmFn: ''
     }
   },
   created () {
@@ -209,7 +209,7 @@ export default {
         delete this.staffFormData.reportTo
       }
       if (val) {
-        console.log(val);
+        console.log(val)
         this.handleGetReportTo(val)
       }
     }
@@ -339,7 +339,7 @@ export default {
       this.confirmContent = txt
       this.confirmFn = fnName
       this.confrimDiaShow = true
-    },
+    }
   },
   components: {
     staffDialog,
@@ -360,6 +360,19 @@ export default {
       min-width: 200px;
       background: #fff;
       margin-right: 10px;
+      overflow: auto;
+      &::-webkit-scrollbar {/*滚动条整体样式*/
+          width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
+          height: 4px;
+      }
+      &::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+          border-radius: 2px;
+          background: #ccc
+      }
+      &::-webkit-scrollbar-track {/*滚动条里面轨道*/
+          border-radius: 0;
+          background: transparent;
+      }
       .tree-box {
         background: #fff;
         h2 {
@@ -372,6 +385,8 @@ export default {
         .el-tree {
           .el-tree-node {
             .el-tree-node__content {
+              // margin-left: 10px !important;
+              border-left: 10px solid #fff;
               height: 30px;
               .el-tree-node__label {
                 font-family: PingFangSC-Regular;
@@ -379,10 +394,15 @@ export default {
                 color: #333333;
               }
             }
+            .el-tree-node__content:hover {
+              background-color: #f5f7fa;
+              border-left: 10px solid #f5f7fa;
+            }
           }
           .is-current {
             >.el-tree-node__content{
-              background: rgba(66, 99, 219, 0.095);
+              background: #EDF0FC;
+              border-left: 10px solid #EDF0FC;
               .el-icon-caret-right {
                 color: #4162DB;
               }
@@ -400,6 +420,21 @@ export default {
     .box-right {
       flex: 1;
       max-width: calc(100% - 210px);
+      height: calc(100vh - 100px);
+      overflow-y: scroll;
+      background: #fff;
+      &::-webkit-scrollbar {/*滚动条整体样式*/
+          width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
+          height: 4px;
+      }
+      &::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+          border-radius: 2px;
+          background: #ccc;
+      }
+      &::-webkit-scrollbar-track {/*滚动条里面轨道*/
+          border-radius: 0;
+          background: transparent;
+      }
     }
   }
 </style>
