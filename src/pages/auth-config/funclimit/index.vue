@@ -1,6 +1,6 @@
 <template>
   <div class="funclimit">
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs v-model="activeName" @tab-click="handleClick" class="noMargin">
       <el-tab-pane label="员工角色分配" name="first">
         <div class="display-box">
           <div class="box-left">
@@ -143,6 +143,9 @@ export default {
 
 <style lang="less">
 .funclimit {
+  .noMargin{
+    margin-top: -15px;
+  }
   .display-box {
     display: flex;
     .box-left {
@@ -158,7 +161,7 @@ export default {
       }
       &::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
           border-radius: 2px;
-          background: rgba(0,0,0,0.5);
+          background: #ccc
       }
       &::-webkit-scrollbar-track {/*滚动条里面轨道*/
           border-radius: 0;
@@ -185,7 +188,7 @@ export default {
       }
       &::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
           border-radius: 2px;
-          background: rgba(0,0,0,0.5);
+          background: #ccc;
       }
       &::-webkit-scrollbar-track {/*滚动条里面轨道*/
           border-radius: 0;

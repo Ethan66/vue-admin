@@ -48,7 +48,7 @@ export default {
             color: #fff;
           }
           span:nth-child(2){
-            color: #666;
+            color: #888;
           }
         }
       }
@@ -66,7 +66,7 @@ export default {
         span{
           padding: 0 16px; font-size: 14px; letter-spacing: 1px;
           &:first-child{
-            color: #666;
+            color: #888;
           }
         }
       }

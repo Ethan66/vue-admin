@@ -96,12 +96,15 @@ export default {
         line-height: 20px;
         display: flex;
         flex-wrap: wrap;
+        &>div{
+          color: #333;
+        }
         div{
           width: 50%;
           span {
             font-family: PingFangSC-Regular;
             font-size: 14px;
-            color: #666666;
+            color: #888;
             letter-spacing: -0.43px;
             line-height: 20px;
           }

@@ -97,7 +97,7 @@
   .el-message__content {
     font-family: PingFangSC-Regular;
     font-size: 12px;
-    color: #666666;
+    color: #888;
     letter-spacing: 0;
     line-height: 18px;
   }
@@ -139,13 +139,19 @@
       letter-spacing: 1px;
       padding: 5px 16px;
       border-color: #e8e8e8;
-      color: #666;
+      color: #888;
       &.el-button--primary{
         color: #fff;
         border-color: @buttonColor;
       }
     }
   }
+}
+.el-tabs__item.is-active{
+  color: @buttonColor;
+}
+.el-tabs__active-bar{
+  background-color: @buttonColor;
 }
 .el-popover{
   .el-tree::-webkit-scrollbar {/*滚动条整体样式*/
@@ -160,4 +166,9 @@
     border-radius: 0;
     background: transparent;
   }
+}
+
+.el-popover .el-checkbox__input.is-checked .el-checkbox__inner, .el-popover .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+  background-color: @buttonColor !important;
+    border-color: @buttonColor !important;
 }

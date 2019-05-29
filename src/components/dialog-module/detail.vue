@@ -26,8 +26,7 @@ export default {
   data () {
     return {
       chineseTybe: 0,
-      showDetail1: false,
-      dialogItem1: []
+      showDetail1: false
     }
   },
   watch: {
@@ -38,13 +37,16 @@ export default {
       if (val) this.showDetail1 = val
     }
   },
-  created () {
-    this.dialogItem1 = this.dialogItem.filter(item => item.show !== false)
-    this.dialogItem1.forEach(item => {
-      if (item.label.length > this.chineseTybe) {
-        this.chineseTybe = item.label.length
-      }
-    })
+  computed: {
+    dialogItem1 () {
+      let result = this.dialogItem.filter(item => item.show !== false)
+      result.forEach(item => {
+        if (item.label.length > this.chineseTybe) {
+          this.chineseTybe = item.label.length
+        }
+      })
+      return result
+    }
   }
 }
 </script>
@@ -111,7 +113,7 @@ export default {
             .content{
               text-overflow: ellipsis;
               word-break: break-all;
-              color: #666;
+              color: #888;
             }
           }
         }
