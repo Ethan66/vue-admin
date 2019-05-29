@@ -14,13 +14,14 @@
   }
   .el-table .cell, .el-table th div, .el-table--border td:first-child .cell, .el-table--border th:first-child .cell{
     padding-left: 15px;
+    padding-right: 15px;
   }
   .el-table--border td, .el-table--border th, .el-table__body-wrapper .el-table--border.is-scrolling-left~.el-table__fixed{
     border-right-color: transparent;
   }
-  .el-table__fixed-body-wrapper{
+  /* .el-table__fixed-body-wrapper{
     border-right: 1px solid #e8e8e8;
-  }
+  } */
   /* .el-table__row td.headSetting{
     border-left: 1px solid #e8e8e8;
   } */
@@ -28,11 +29,11 @@
     border-right: 1px dashed #e8e8e8;
   }
   .el-table__fixed-right td.headSetting{
-    border-left-width: 1px;
+    border-left: 1px solid #e8e8e8;
   }
-  .el-table__header th.starting{
+ /*  .el-table__header th.starting{
     border-right: 1px solid #e8e8e8;
-  }
+  } */
   .el-table__row td.starting{
     border-right: 1px solid #e8e8e8;
     &.is-hidden{
@@ -57,7 +58,6 @@
         & > table {
           border-right: 1px solid #e8e8e8;
           tr td span.status{
-            margin-left: -14px;
             &>.status-i {
               display: inline-block;
               width: 6px;

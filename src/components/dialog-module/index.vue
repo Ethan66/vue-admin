@@ -317,7 +317,7 @@ export default {
         .el-form{
           width: 100%;
           .el-form-item{
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             &.label5, &.label6{
               .el-form-item__label{
                 width: 100px;

@@ -191,7 +191,10 @@ export default {
     ).then(() => {
       apiStopDepartment({ id: row.id }).then(res => {
         if (res.code === '208999') {
-          this.$getSuccessMsg(this, res.message)
+          this.$message({
+            type: 'success',
+            message: res.message
+          })
           this.handleGetTableData(apiQueryDepartmentList, this.searchValues)
         } else {
           this.$message.error(res.message)

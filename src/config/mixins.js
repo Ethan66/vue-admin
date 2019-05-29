@@ -58,7 +58,10 @@ export default {
       return createDataApi(obj).then(res => {
         if (res.code === '208999') {
           this.$refs.dialog.showDialogForm1 = false
-          this.$getSuccessMsg(this, res.message)
+          this.$message({
+            message: res.message,
+            type: 'success'
+          })
           getTableDataApi && this.handleGetTableData(getTableDataApi, this.searchValues, this.tablePages.current)
         } else {
           this.$message.error(res.message)
@@ -70,7 +73,10 @@ export default {
       return editDataApi(obj).then(res => {
         if (res.code === '208999') {
           this.$refs.dialog.showDialogForm1 = false
-          this.$getSuccessMsg(this, res.message)
+          this.$message({
+            message: res.message,
+            type: 'success'
+          })
           getTableDataApi && this.handleGetTableData(getTableDataApi, this.searchValues, this.tablePages.current)
         } else {
           this.$message.error(res.message)
@@ -81,7 +87,10 @@ export default {
     apiDeleteData (deleteDataApi, id, getTableDataApi) {
       return deleteDataApi({ id: id }).then(res => {
         if (res.code === '208999') {
-          this.$getSuccessMsg(this, '删除成功')
+          this.$message({
+            message: res.message,
+            type: 'success'
+          })
           getTableDataApi && this.handleGetTableData(getTableDataApi, this.searchValues, this.tablePages.current)
         } else {
           this.$message.error(res.message)

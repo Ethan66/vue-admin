@@ -7,12 +7,12 @@
         :label="item.name"
         :name="item.url"
       >
-        {{item.content}}
+        {{ item.content }}
       </el-tab-pane>
     </el-tabs>
     <el-dropdown>
       <span class="el-dropdown-link">
-        <i class="iconfont ad-user"></i> {{ userName }}<i class="el-icon-arrow-down el-icon--right"></i>
+        {{ userName }}<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item class="width100">

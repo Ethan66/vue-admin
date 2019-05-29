@@ -115,7 +115,10 @@ export default {
       apiListConsoleMenu({ currentPage: 1, pageSize: 10000 }).then(res => {
         if (res.code === '208999') {
           this.batchMenuList = res.resultMap.page.list.map(item => ({ menuName: item.menuName, code: item.code }))
-          this.$getSuccessMsg(this, res.message)
+          this.$message({
+            type: 'success',
+            message: res.message
+          })
         } else {
           this.$message.error(res.message)
         }
@@ -126,7 +129,10 @@ export default {
       apiQueryPageList({ currentPage: 1, pageSize: 10000 }).then(res => {
         if (res.code === '208999') {
           this.batchPageList = res.resultMap.page.list.map(item => ({ pageCode: item.pageCode, menuCode: item.menuCode }))
-          this.$getSuccessMsg(this, res.message)
+          this.$message({
+            type: 'success',
+            message: res.message
+          })
         } else {
           this.$message.error(res.message)
         }
@@ -161,7 +167,10 @@ export default {
         list.forEach(item => {
           apiAddPage(item).then(res => {
             if (res.code === '208999') {
-              this.$getSuccessMsg(this, res.message)
+              this.$message({
+                type: 'success',
+                message: res.message
+              })
             } else {
               this.$message.error(res.message)
             }
@@ -179,7 +188,10 @@ export default {
         })
         apiAddBatchPageField({ list }).then(res => {
           if (res.code === '208999') {
-            this.$getSuccessMsg(this, res.message)
+            this.$message({
+              type: 'success',
+              message: res.message
+            })
           } else {
             this.$message.error(res.message)
           }

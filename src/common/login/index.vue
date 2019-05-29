@@ -55,7 +55,7 @@
             @click.native.prevent="submitForm('login')"
           >登 录</el-button>
         </el-form-item>
-        <p class="forgetPwd cm-hover-color" @click="handlePassword">忘记密码？</p>
+        <p class="forgetPwd cm-hover-color" @click="handlePassword">忘记密码</p>
       </el-form>
     </template>
 
@@ -317,6 +317,9 @@ export default {
 
 <style lang="less">
   .bl-login{
+    .el-form-item{
+      margin-bottom: 25px;
+    }
     position: relative;
     width: 100%;
     height: 100%;
@@ -345,12 +348,12 @@ export default {
       left: 50%;
       transform: translate(-50%, -50%);
       width: 400px;
-      padding: 30px;
+      padding: 25px 30px;
       border-radius: 4px;
       background: #fff;
     }
     .el-form-item.noMargin{
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
     .el-button.cm-bg-color{
       width: 100%;
@@ -367,12 +370,12 @@ export default {
         right: 10px;
         transform: translateY(-50%);
         cursor: pointer;
-        color: #ddd;
+        color: #B2B2B2;
       }
     }
     .forgetPwd{
       margin: 0;
-      font-size: 13px;
+      font-size: 12px;
       text-align: center;
     }
   }

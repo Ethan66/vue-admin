@@ -407,7 +407,10 @@ export default {
           }).then(res => {
             if (res.code === '208999') {
               this.showTybeDialog = false
-              this.$getSuccessMsg(this, res.message)
+              this.$message({
+                type: 'success',
+                message: res.message
+              })
             } else {
               this.$message.error(res.message)
             }
@@ -421,9 +424,9 @@ export default {
         let objectPermission = ''
         let objectStr = this.resultChecked[menuId].objectPermission.join('')
         if (objectStr === '1') {
-          objectPermission = '01'
-        } else if (objectStr === '2') {
           objectPermission = '10'
+        } else if (objectStr === '2') {
+          objectPermission = '01'
         } else if (objectStr === '12' || objectStr === '21') {
           objectPermission = '11'
         }
@@ -438,7 +441,10 @@ export default {
         permissionList
       }).then(res => {
         if (res.code === '208999') {
-          this.$getSuccessMsg(this, res.message)
+          this.$message({
+            type: 'success',
+            message: res.message
+          })
         } else {
           this.$message.error(res.message)
         }
