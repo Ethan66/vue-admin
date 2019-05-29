@@ -25,7 +25,7 @@ export const loginLog = {
       loginIp: 100,
       gmtModified: 80,
       loginStatus: { clsName: 'loginStatus', width: 80 },
-      gmtCreate: 80
+      gmtCreate: 90
     }
     this.searchItem = this.$setItem(tableItemList, configSearchItem, 'search')
     this.tableItem = this.$setItem(tableItemList, configTableItem, 'table')

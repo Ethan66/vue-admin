@@ -5,7 +5,7 @@
       <router-link :to="item.menuUrl">
         <el-menu-item :index="item.menuUrl" :class="{'nosubmenu-arrow':!isNest}" @click="handleAddTabs(item)">
           <template>
-            <i :class="item.menuIcon || ''" class="iconfont" />{{ item.menuName }}
+            <img v-if="item.menuIcon" :src="require(`@/assets/img${item.menuIcon}.png`)" class="iconfont" />{{ item.menuName }}
           </template>
         </el-menu-item>
       </router-link>
@@ -15,7 +15,7 @@
     <el-submenu v-else :index="item.code">
       <template slot="title">
         <template>
-          <i :class="item.menuIcon || ''" class="iconfont" />{{ item.menuName }}
+          <img v-if="item.menuIcon" :src="require(`@/assets/img${item.menuIcon}.png`)" class="iconfont" />{{ item.menuName }}
         </template>
       </template>
 
@@ -101,7 +101,9 @@ export default {
 <style lang="less">
   .sidebarContent{
     .iconfont {
-      margin-right: 15px; vertical-align: top;
+      width: 14px;
+      margin-right: 5px;
+      margin-top: -2px;
     }
   }
 </style>
