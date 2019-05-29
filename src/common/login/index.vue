@@ -282,7 +282,7 @@ export default {
                 this.$message.success('重置密码成功')
                 this.isLogin = true
               } else {
-                if (!this.handleSpeciaCode(res.code)) {
+                if (!this.handleSpeciaCode(res.code, 'password')) {
                   this.$message.error(res.message)
                 }
                 throw new Error()
