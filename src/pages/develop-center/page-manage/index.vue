@@ -37,7 +37,7 @@
 import { pageManage } from '@/createData/develop-center'
 import basicMethod from '@/config/mixins'
 import configTybe from '@/configureData/pageKey'
-import { apiQueryPageList, apiAddPage, apiUpdatePage, apiListConsoleMenu, apiAddBatchPageField } from '@/api/developCenter'
+import { apiQueryPageList, apiAddPage, apiUpdatePage, apiListConsoleMenu, apiAddBatchPageField, apiQueryParentConsoleMenu } from '@/api/developCenter'
 
 export default {
   name: 'page-manage',
@@ -50,8 +50,24 @@ export default {
   },
   created () {
     this.handleGetTableData(apiQueryPageList)
+    this.handleGetPageListData()
   },
   methods: {
+    // 获取菜单下拉列表
+    handleGetPageListData () {
+      apiQueryParentConsoleMenu({menuLevel: 2}).then((res) => {
+        if (res.code === '208999') {
+          res.resultMap.data.forEach(item => {
+            item['label'] = item.menuName
+            item['value'] = item.code
+          })
+          this.searchItem[0].options = res.resultMap.data
+          console.log(this.searchItem)
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+    },
     // 点击新增按钮
     handleAdd () {
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
