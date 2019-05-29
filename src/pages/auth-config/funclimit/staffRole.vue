@@ -122,7 +122,12 @@ export default {
     },
     // 点击表格删除按钮
     handleDeleteData (row) {
-      this.handleApiDelUserRole(row.id, row.roleIds)
+      this.delStaffId = row.id
+      this.delStaffRoleIds = row.roleIds
+      this.handleConfirmInfo('确认删除该员工所有角色？', 'delStaffAllRole')
+    },
+    delStaffAllRole () {
+      this.handleApiDelUserRole(this.delStaffId, this.delStaffRoleIds)
     },
     // 处理表格数据
     handleTableData (tableData) {

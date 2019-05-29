@@ -88,7 +88,6 @@ export default {
 
 <style lang="less">
   .classify {
-    overflow-x: auto;
     h3 {
       font-family: PingFangSC-Regular;
       font-size: 12px;
