@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import router from '@/router'
-import { apiUserLoginOut } from '@/api/login'
 axios.defaults.timeout = 50000
 
 // 添加请求拦截器
@@ -72,6 +71,8 @@ function handleSpecialError (response) {
   }
   // 用户登录过期或登录失效
   if (res.code === '211100' || res.code === '211207' || res.code === '211200') {
+    let $dialog = document.querySelector('.el-message-box__wrapper')
+    if ($dialog && $dialog.style.display !== 'none') return true
     MessageBox.confirm(
       '你已被登出，可以取消继续留在该页面，或者重新登录',
       '确定登出',
@@ -81,11 +82,7 @@ function handleSpecialError (response) {
         type: 'warning'
       }
     ).then(() => {
-      apiUserLoginOut().then((res) => {
-        if (res.code === '208999') {
-          clearUserInfo(0)
-        }
-      })
+      clearUserInfo(0)
     })
     return true
   }
