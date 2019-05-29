@@ -209,7 +209,8 @@ export default {
     handlePasswordGetCode () {
       let { user, telephone } = this.passwordForm
       this.$refs['password'].validateField(['user', 'telephone'])
-      if (user.trim() && telephone.trim()) {
+      let reg = /^1[34578]\d{9}$/
+      if (user.trim() && telephone.trim() && reg.test(telephone)) {
         this.handleApiUserForgetVerificationCode(user, telephone)
       }
     },
@@ -267,6 +268,7 @@ export default {
           } else {
             this.isLoading = true
             this.nowErrorCode = ''
+            
             let params = {
               user: this.passwordForm.user,
               newPassword: MD5(this.passwordForm.password),

@@ -16,13 +16,35 @@ export default {
       },
       passwordrules: {
         user: [{ required: true, trigger: 'blur', message: '请输入用户名' }],
-        password: [{ required: true, trigger: 'blur', message: '请输入新密码' }],
-        telephone: [{ required: true, trigger: 'blur', message: '请输入手机号' }],
+        password: [
+          { required: true, trigger: 'blur', message: '请输入新密码' },
+          { validator: this.checkPassword, message: '请输入6-20位数字+字母的密码', trigger: ['blur', 'change'] }
+        ],
+        telephone: [
+          { required: true, trigger: 'blur', message: '请输入手机号' },
+          { validator: this.checkTel, message: '请输入正确的手机号', trigger: ['blur', 'change'] }
+        ],
         verificationCode: [{ required: true, trigger: 'blur', validator: this.validateCode }]
       }
     }
   },
   methods: {
+    checkPassword (rule, value, callback) {
+      let reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/
+      if (!reg.test(value)) {
+        callback(new Error('请输入6-20位数字+字母的密码'))
+      } else {
+        callback()
+      }
+    },
+    checkTel (rule, value, callback) {
+      let reg = /^1[34578]\d{9}$/
+      if (!reg.test(value)) {
+        callback(new Error('请输入正确的手机号'))
+      } else {
+        callback()
+      }
+    },
     // 验证用户名
     validateUser (rule, value, callback) {
       if (!value.trim()) {
