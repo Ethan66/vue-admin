@@ -122,7 +122,7 @@ export default {
       .content {
         display: inline-block;
         cursor: pointer;
-        width: 98px;
+        max-width: 98px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
