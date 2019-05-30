@@ -117,12 +117,12 @@ export default {
       font-size: 12px;
       color: #333333;
       line-height: 40px;
-      padding-left: 40px;
+      padding-left: 30px;
       white-space: nowrap;
       .content {
         display: inline-block;
         cursor: pointer;
-        width: 98px;
+        max-width: 98px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
