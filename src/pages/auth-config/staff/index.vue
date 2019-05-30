@@ -214,12 +214,12 @@ export default {
   watch: {
     'staffFormData.departmentId': function (val, oldVal) {
       if (oldVal) {
-        delete this.staffFormData.reportTo
+        this.$delete(this.staffFormData, 'reportTo')
       }
-      if (val) {
-        console.log(val)
-        this.handleGetReportTo(val)
-      }
+      // if (val) {
+      //   console.log(val)
+      //   this.handleGetReportTo(val)
+      // }
     }
   },
   methods: {
