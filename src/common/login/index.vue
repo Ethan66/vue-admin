@@ -130,6 +130,7 @@ export default {
   created () {
     this.$route.meta.firstLogin = true
     this.timer && clearInterval(this.timer)
+    localStorage.clear()
     sessionStorage.clear()
     this.handleCheckIp()
   },
