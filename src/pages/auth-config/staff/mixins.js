@@ -1,6 +1,7 @@
 import { basicInitObj } from '@/components/basicObj'
 import { setBtnConfig } from '@/components/methods'
-import { staffTest } from '@/test/auth-config'
+
+const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
 
 const initData = Object.assign({}, basicInitObj)
 
@@ -28,8 +29,8 @@ export const staff = {
       roleName: 120,
       btn: 260
     }
-    this.searchItem = this.$setItem(staffTest, configSearchItem, 'search')
-    this.tableItem = this.$setItem(staffTest, configTableItem, 'table')
+    this.searchItem = this.$setItem(tybeObj['staff-manage1'], configSearchItem, 'search')
+    this.tableItem = this.$setItem(tybeObj['staff-manage1'], configTableItem, 'table')
     if (this.tableBtn.filter(item => item.show).length === 0) {
       this.tableItem.splice(this.tableItem.length - 1, 1)
     }

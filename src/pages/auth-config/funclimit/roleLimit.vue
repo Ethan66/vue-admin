@@ -342,7 +342,7 @@ export default {
       apiGetRolePermissionFields({ roleId: this.roleId, menuId }).then(res => {
         if (res.code === '208999') {
           let tybeList = []
-          tybeList = res.resultMap.data.fieldPermissionList
+          tybeList = res.resultMap.data.fieldPermissionList.filter(item => item.setStatus === 1)
           this.nowTybeList = tybeList
           this.nowMenuId = menuId
           tybeList.forEach(item => {
