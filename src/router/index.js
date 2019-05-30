@@ -25,7 +25,7 @@ router.beforeEach((to, from, next) => {
   let toPath = ''
   if (localStorage.getItem('userInfo')) { // 有userInfo，跳转login的时候进入首页
     if (to.path === '/login') {
-      toPath = '/'
+      // toPath = '/'
     }
   } else { // userInfo不存在，全跳转login
     if (to.path !== '/login') {
