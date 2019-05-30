@@ -61,11 +61,29 @@ export default {
       if (!row.expand) { // 未展开
         if (row.list) {
           tableData = tableData.splice(0, index + 1).concat(row.list).concat(tableData)
+          tableData[index].expand = true
         }
       } else { // 展开
-        tableData = tableData.splice(0, index + 1).concat(tableData.slice(row.list.length))
+       let length = 0
+        function findLength (list, expand) {
+          let length = list.length
+          list.forEach(item => {
+            if (item[expand] && item.list) {
+              length += findLength(item.list, expand)
+            }
+            item.expand = false
+          })
+          return length
+        }
+        if (row.list) {
+          length = findLength(row.list, 'expand')
+          console.log(length)
+        }
+        tableData = tableData.splice(0, index + 1).concat(tableData.slice(length))
+        tableData[index].expand = false
+        row.expand = false
       }
-      this.tableTreeOpenNum[row.id] = tableData[index].expand = !tableData[index].expand
+      // this.tableTreeOpenNum[row.id] = tableData[index].expand = !tableData[index].expand
       this.$emit('handAddTableData', tableData)
     },
   }
