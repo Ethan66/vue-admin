@@ -73,7 +73,7 @@ export default {
     // 点击新增按钮
     handleAdd () {
       this.dialogItem[0].disabled = false
-      this.dialogItem[2].disabled = false
+      // this.dialogItem[2].disabled = false
        this.dialogItem[0].type = 'selectTree'
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
       this.editData.departmentStatus = 0
@@ -92,7 +92,7 @@ export default {
     handleEditData (row) {
       this.editData = JSON.parse(JSON.stringify(row))
       this.dialogItem[0].disabled = false
-      this.dialogItem[2].disabled = false
+      // this.dialogItem[2].disabled = false
       this.dialogItem[0].type = 'selectTree'
       this.editData.departmentStatus = this.editData.departmentStatusStash
       this.editData.departmentType = this.editData.departmentTypeStash
@@ -101,7 +101,7 @@ export default {
         this.selectTreeCheckedValue2 = ['a' + this.editData.directorId]
       }
       this.isEdit = 1
-      let list = this.dialogItem[2].options.map(item => {
+      /* let list = this.dialogItem[2].options.map(item => {
         if (item.value <= Number(this.editData.departmentType) - 1) {
           item.disabled = true
         } else {
@@ -109,7 +109,7 @@ export default {
         }
         return item
       })
-      this.$set(this.dialogItem[2], 'options', list)
+      this.$set(this.dialogItem[2], 'options', list) */
       this.dialogTitle = '编辑部门'
       this.dialogItem[5].show = false
       this.showDialogForm = true
@@ -120,7 +120,7 @@ export default {
     // 选择菜单树的值后
     handleSelectTreeValue (row) {
       if (!row) return false
-      this.editData.departmentType = Number(row.departmentType) + 1
+      /* this.editData.departmentType = Number(row.departmentType) + 1
       let list = this.dialogItem[2].options.map(item => {
         if (item.value <= row.departmentType) {
           item.disabled = true
@@ -129,7 +129,7 @@ export default {
         }
         return item
       })
-      this.$set(this.dialogItem[2], 'options', list)
+      this.$set(this.dialogItem[2], 'options', list) */
     },
     handleSelectTreeValue2 (row) {
       console.log(row)
@@ -172,11 +172,11 @@ export default {
       if (!val) {
         this.editData.parentId = ''
       }
-      let list = this.dialogItem[2].options.map(item => {
+      /* let list = this.dialogItem[2].options.map(item => {
         item.disabled = false
         return item
       })
-      this.$set(this.dialogItem[2], 'options', list)
+      this.$set(this.dialogItem[2], 'options', list) */
     },
     handleClearSelectTree2 (val) {
        if (!val) {
@@ -330,7 +330,7 @@ export default {
     handleGetAllDepartmentTree () {
       return apiQueryDepartmentTree({ isWhole: true, hasStop: false }).then(res => {
         if (res.code === '208999') {
-          this.allDepartmentTree = res.resultMap.data.filter(item => item.departmentType !== 3)
+          this.allDepartmentTree = res.resultMap.data
           this.dialogItem[0].dialogData = menuRelation(JSON.parse(JSON.stringify(this.allDepartmentTree)), 'id', 'parentId', 'departmentLevel', 'sortNo')
           apiListConsoleUser({ pageSize: 0, currentPage: 0 }).then(res => {
             if (res.code === '208999') {
@@ -400,7 +400,7 @@ export default {
       console.log(row)
     },
     handleOpenTree (tableData) {
-      let result = tableData
+      let result = []
       function open (result, data, idList) {
         data.forEach(item => {
           result.push(item)
@@ -413,6 +413,7 @@ export default {
         })
       }
       open(result, tableData, this.saveExpendIdList)
+      this.tableData = result
     },
     validateDepartmentName (rule, value, callback) {
       if (!value.trim()) {
