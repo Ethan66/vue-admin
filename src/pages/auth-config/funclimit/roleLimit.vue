@@ -374,7 +374,7 @@ export default {
         obj[this.tybeValueObj[key]]++
       })
       let result = false
-      for(let key in obj) {
+      for (let key in obj) {
         if (obj[key] === length) {
           this.allSet = key
           result = true
@@ -484,7 +484,7 @@ export default {
       }
     }
     .menuList{
-      padding: 0 10px 20px 20px;
+      padding: 20px 10px 20px 20px;
       .menu:first-child{
         h3{
           padding-top: 0;
