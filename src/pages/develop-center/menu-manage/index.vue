@@ -10,7 +10,10 @@
       :table-data.sync="tableData"
       :table-tree-open-num.sync="tableTreeOpenNum"
       :table-item="tableItem"
-      :table-btn="tableBtn">
+      :table-btn="tableBtn"
+      :get-tree-data-by-post="getDataByPost"
+      @clickGetTreeData="handleClickGetTreeData"
+    >
       <div class="btn-content" slot="btn">
         <el-button @click="handleAdd" v-if="$showBtn('menu-add-menu')">{{ $getBtnName('menu-add-menu') }}</el-button>
         <!-- <el-button @click="$router.push({ path: '/main/develop-center/menu-manage/newpage' })">跳转页面</el-button> -->
@@ -58,7 +61,8 @@ export default {
       showDetail: false,
       allParentMenu: [],
       selectTreeCheckedValue: [],
-      selectTreeWidth1: 244
+      selectTreeWidth1: 244,
+      getDataByPost: true
     }
   },
   watch: {
@@ -191,8 +195,37 @@ export default {
         this.apiEditData(apiEditeConsoleMenu, this.editData, apiListConsoleMenu)
       }
     },
+    // 点击获取子数据
+    handleClickGetTreeData (row, index) {
+      if (row.expand) {
+        let length = 0
+        function findLength (list, expand) {
+          let length = list.length
+          list.forEach(item => {
+            if (item[expand] && item.list) {
+              length += findLength(item.list, expand)
+            }
+            item.expand = false
+          })
+          return length
+        }
+        if (row.list) {
+          length = findLength(row.list, 'expand')
+        }
+        this.tableData = this.tableData.splice(0, index + 1).concat(this.tableData.slice(length))
+        this.handleTableData && this.handleTableData(this.tableData || [], true)
+        row.expand = false
+        return
+      } else {
+        if (row.list) {
+          this.tableData = this.tableData.splice(0, index + 1).concat(row.list).concat(this.tableData)
+          row.expand = true
+          this.handleTableData && this.handleTableData(this.tableData || [], true)
+        }
+      }
+    },
     // 处理表格数据
-    handleTableData (tableData, index) {
+    handleTableData (tableData, getDataByPost) {
       if (tableData.length === 0) {
         this.tableData = []
         return
@@ -222,7 +255,9 @@ export default {
             break
         }
       })
-      this.tableData = menuRelation(tableData, 'id', 'menuParentId', 'menuLevelStash', 'sortNo')
+      if (!getDataByPost) {
+        this.tableData = menuRelation(tableData, 'id', 'menuParentId', 'menuLevelStash', 'sortNo')
+      }
     },
     // 批量新建
     handleBatchCreate (type) {

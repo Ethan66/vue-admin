@@ -117,7 +117,7 @@ export default {
       font-size: 12px;
       color: #333333;
       line-height: 40px;
-      padding-left: 40px;
+      padding-left: 30px;
       white-space: nowrap;
       .content {
         display: inline-block;
