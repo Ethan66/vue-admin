@@ -30,7 +30,7 @@
         <router-link v-else :to="child.menuUrl" :key="child.name">
           <el-menu-item :index="child.menuUrl" @click="handleAddTabs(child)">
             <template>
-              <i class="iconfont" :class="child.menuIcon" />{{ child.menuName }}
+              <i v-if="child.menuIcon" class="iconfont" :class="child.menuIcon" />{{ child.menuName }}
             </template>
           </el-menu-item>
         </router-link>

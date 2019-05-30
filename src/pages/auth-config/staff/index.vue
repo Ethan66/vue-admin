@@ -26,6 +26,7 @@
         @handleSendHead="handleSendHead"
         @table-jump="handleJump">
         <div class="btn-content" slot="btn">
+          <span v-if="chooseDataArr.length > 0">已选择 <i>{{ chooseDataArr.length }}</i> 条</span>
           <el-button @click="handleBatchStop" v-if="$showBtn('staff-batch-stop') && chooseDataArr.length > 0">{{$getBtnName('staff-batch-stop')}}</el-button>
           <el-button @click="handleBatchStart" v-if="$showBtn('staff-batch-start') && chooseDataArr.length > 0">{{$getBtnName('staff-batch-start')}}</el-button>
           <el-button @click="handleBatchForbidLogin" v-if="$showBtn('staff-batch-stop-log') && chooseDataArr.length > 0">{{$getBtnName('staff-batch-stop-log')}}</el-button>
@@ -214,12 +215,12 @@ export default {
   watch: {
     'staffFormData.departmentId': function (val, oldVal) {
       if (oldVal) {
-        delete this.staffFormData.reportTo
+        this.$delete(this.staffFormData, 'reportTo')
       }
-      if (val) {
-        console.log(val)
-        this.handleGetReportTo(val)
-      }
+      // if (val) {
+      //   console.log(val)
+      //   this.handleGetReportTo(val)
+      // }
     }
   },
   methods: {
@@ -427,7 +428,7 @@ export default {
             .el-tree-node__content {
               // margin-left: 10px !important;
               border-left: 10px solid #fff;
-              height: 30px;
+              height: 35px;
               .el-tree-node__label {
                 font-family: PingFangSC-Regular;
                 font-size: 14px;

@@ -17,9 +17,9 @@ export const methods = {
               })
               console.log('赋值')
             }
-            // if (item.key === 'reportTo') {
-            //   item.options = res.resultMap.userlist || []
-            // }
+            if (item.key === 'reportTo') {
+              item.options = res.resultMap.userlist || []
+            }
           })
         } else {
           this.$message.error(res.message)

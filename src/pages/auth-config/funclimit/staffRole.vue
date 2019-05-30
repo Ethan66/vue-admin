@@ -17,6 +17,7 @@
       :selectableFn="handleSelectChange"
       @table-jump="handleJump">
       <div class="btn-content" slot="btn">
+        <span v-if="chooseDataArr.length > 0">已选择 <i>{{ chooseDataArr.length }}</i> 条</span>
         <el-button @click="handleBatchDelete" v-if="$showBtn('config-batch-delete') && chooseDataArr.length > 0">{{$getBtnName('config-batch-delete')}}</el-button>
         <el-button @click="handleAddStaff" v-if="$showBtn('config-manage-add') && chooseDataArr.length < 1">{{$getBtnName('config-manage-add')}}</el-button>
       </div>
