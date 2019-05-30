@@ -31,9 +31,9 @@ export const staffRole = {
         buttonMenuName: { type: 'select', options: [] }
       }
     ]
-    this.searchItem = this.$setItem(tybeObj['staff-manage1'], configSearchItem, 'search')
-    this.tableItem = this.$setItem(tybeObj['staff-manage1'], configTableItem, 'table')
-    this.dialogItem = this.$setItem(tybeObj['staff-manage1'], configDialogItem, 'dialog')
+    this.searchItem = this.$setItem(tybeObj['function-limit1'], configSearchItem, 'search')
+    this.tableItem = this.$setItem(tybeObj['function-limit1'], configTableItem, 'table')
+    this.dialogItem = this.$setItem(tybeObj['function-limit1'], configDialogItem, 'dialog')
     if (this.tableBtn.filter(item => item.show).length === 0) {
       this.tableItem.splice(this.tableItem.length - 1, 1)
     }

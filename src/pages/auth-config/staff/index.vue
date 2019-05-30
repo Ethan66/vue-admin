@@ -421,8 +421,6 @@ export default {
       flex: 1;
       max-width: calc(100% - 210px);
       height: calc(100vh - 100px);
-      overflow-y: scroll;
-      background: #fff;
       &::-webkit-scrollbar {/*滚动条整体样式*/
           width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
           height: 4px;
