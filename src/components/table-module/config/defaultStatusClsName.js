@@ -25,6 +25,22 @@ export default {
   },
   isDeleteMsg: {
     '正常': 'colorBlue',
-    '失败': 'colorRed'
+    '失效': 'colorRed'
+  },
+  isDelete: {
+    '有效': 'colorBlue',
+    '失效': 'colorRed'
+  },
+  isDeleteName: {
+    '正常': 'colorBlue',
+    '失败': 'colorRed',
+    '有效': 'colorBlue',
+    '失效': 'colorRed'
+  },
+  statusMsg: {
+    '正常': 'colorBlue',
+    '允许登陆': 'colorBlue',
+    '停用': 'colorRed',
+    '禁止登陆': 'colorRed'
   }
 }

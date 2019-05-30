@@ -1,19 +1,23 @@
 import { basicInitObj } from '@/components/basicObj'
-import { setBtnConfig } from '@/components/methods'
+import { setBtnConfig, getBtnName, showBtn } from '@/components/methods'
 
 const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
 
 const initData = Object.assign({}, basicInitObj)
 
+// 员工管理
+const organizationMoreList = [
+  { name: getBtnName('staff-admin-stop'), clickFn: 'handleStop', show: showBtn('staff-admin-stop') },
+  { name: getBtnName('staff-admin-open'), clickFn: 'handleStart', show: showBtn('staff-admin-open') },
+  { name: getBtnName('staff-admin-login'), clickFn: 'handleAllowLogin', show: showBtn('staff-admin-login') },
+  { name: getBtnName('staff-admin-nologin'), clickFn: 'handleForbidLogin', show: showBtn('staff-admin-nologin') },
+  { name: getBtnName('staff-admin-reset'), clickFn: 'handleResetPassword', show: showBtn('staff-admin-reset') }
+]
+
 export const staff = {
   data () {
     return setBtnConfig(JSON.parse(JSON.stringify(initData)), [
-      { edit: { code: 'staff-admin-edit' } },
-      { cancel: { name: '停用', clickFn: 'handleStop', show: false, code: 'staff-admin-stop' } },
-      { cancel: { name: '启用', clickFn: 'handleStart', show: false, code: 'staff-admin-open' } },
-      { cancel: { name: '禁止登录', clickFn: 'handleForbidLogin', show: false, code: 'staff-admin-nologin' } },
-      { cancel: { name: '允许登录', clickFn: 'handleAllowLogin', show: false, code: 'staff-admin-login' } },
-      { cancel: { name: '重置密码', clickFn: 'handleResetPassword', code: 'staff-admin-reset' } }
+      { edit: { code: 'staff-admin-edit' } }, { more: { list: organizationMoreList, code: 'organization-more' } }
     ])
   },
   created () {
@@ -34,9 +38,9 @@ export const staff = {
       departmentName: 100,
       position: 100,
       reportToName: 100,
-      statusMsg: 100,
+      statusMsg: { clsName: 'statusMsg', width: 100 },
       roleName: 120,
-      btn: 260
+      btn: 120
     }
     this.searchItem = this.$setItem(tybeObj['staff-manage1'], configSearchItem, 'search')
     this.tableItem = this.$setItem(tybeObj['staff-manage1'], configTableItem, 'table')

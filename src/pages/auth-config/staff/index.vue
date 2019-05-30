@@ -26,6 +26,7 @@
         @handleSendHead="handleSendHead"
         @table-jump="handleJump">
         <div class="btn-content" slot="btn">
+          <span v-if="chooseDataArr.length > 0">已选择 <i>{{ chooseDataArr.length }}</i> 条</span>
           <el-button @click="handleBatchStop" v-if="$showBtn('staff-batch-stop') && chooseDataArr.length > 0">{{$getBtnName('staff-batch-stop')}}</el-button>
           <el-button @click="handleBatchStart" v-if="$showBtn('staff-batch-start') && chooseDataArr.length > 0">{{$getBtnName('staff-batch-start')}}</el-button>
           <el-button @click="handleBatchForbidLogin" v-if="$showBtn('staff-batch-stop-log') && chooseDataArr.length > 0">{{$getBtnName('staff-batch-stop-log')}}</el-button>

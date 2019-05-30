@@ -24,7 +24,7 @@ export const ipControl = {
       selection: 50,
       addressIp: 80,
       creater: 80,
-      isDelete: { clsName: 'isDelete', width: 80 },
+      isDeleteName: { clsName: 'isDeleteName', width: 80 },
       remark: 100,
       gmtCreate: 160,
       btn: 120
