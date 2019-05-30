@@ -118,7 +118,7 @@ export default {
         return false
       }
       if (btnName === '删除') {
-        if (btn.noTip !== false) {
+        if (btn.noTip === false) {
           this.parent[fn](row)
         } else {
           let tip = btn.deleteTip || '是否确认删除'
