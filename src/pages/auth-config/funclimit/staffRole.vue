@@ -43,7 +43,7 @@ import { staffRole } from './mixins'
 import methods from './methods'
 import basicMethod from '@/config/mixins'
 import staffDialog from './components/staffDialog'
-import { apiPageQueryUserRole, apiEditConsoleUserStatus } from '@/api/role'
+import { apiPageQueryUserRole, apiBatchClearUserRole } from '@/api/role'
 import { apiListConsoleUser } from '@/api/staff'
 
 export default {
@@ -121,9 +121,9 @@ export default {
     },
     handleSelectChange (row) {
       if (row.roleIds) {
-        return false
-      } else {
         return true
+      } else {
+        return false
       }
     },
     // 表格编辑按钮
@@ -158,7 +158,21 @@ export default {
       this.handleApiDelUserRole(this.delStaffId, this.delStaffRoleIds)
     },
     handleBatchDelete () {
-
+      this.handleConfirmInfo('此操作不可逆，确认批量删除？', 'batchDelete')
+    },
+    batchDelete () {
+      let strArr = []
+      this.chooseDataArr.forEach(item => {
+        strArr.push(item.id)
+      })
+      apiBatchClearUserRole({userIds: strArr.join(',')}).then(res => {
+        if (res.code === '208999') {
+          this.$message.success('删除成功')
+          this.handleApiListConsoleUser()
+        } else {
+          this.$message.error(res.message)
+        }
+      })
     },
     // 处理表格数据
     handleTableData (tableData) {

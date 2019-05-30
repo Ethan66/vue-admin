@@ -66,6 +66,6 @@ export const apiQueryDepartmentList = (params) => {
 }
 
 // 角色分配批量删除
-export const apiEditConsoleUserStatus = (params) => {
-  return postRequest(base + '/editConsoleUserStatus', params)
+export const apiBatchClearUserRole = (params) => {
+  return postRequest(base + '/batchClearUserRole', params)
 }
