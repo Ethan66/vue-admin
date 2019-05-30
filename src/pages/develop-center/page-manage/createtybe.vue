@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="快速生成" :visible.sync="showDialog" :class="[`create-tybe`, { 'handCreate': this.type==='handCreate' }]">
+  <el-dialog title="快速生成" :visible.sync="showDialog" :class="[`create-tybe`, { 'handCreate': this.type==='handCreate' }, { 'success': this.step === 2 }]">
     <template v-if="type==='fastCreate' && step !== 2">
       <el-steps :active="step" finish-status="success">
         <el-step title="选择表"></el-step>
@@ -14,23 +14,22 @@
         </el-form>
       </template>
     </template>
-    <template v-if="step===1">
-      <table-module
-        ref="table"
-        isInlineEdit
-        :inlineLabelToValue="inlineLabelToValue"
-        :table-data.sync="tableData"
-        :table-item="tableItem"
-        :table-btn="tableBtn"
-        maxHeight="200"
-      />
-    </template>
+    <table-module
+      v-if="step===1"
+      ref="table"
+      isInlineEdit
+      :inlineLabelToValue="inlineLabelToValue"
+      :table-data.sync="tableData"
+      :table-item="tableItem"
+      :table-btn="tableBtn"
+      maxHeight="200"
+    />
     <template v-if="step===2">
       <div class="finish">
         <p class="img">
           <i class="el-icon-success"></i>
         </p>
-        <p class="text">提交完成</p>
+        <p class="text">提交成功</p>
         <p class="btn">
           <el-button>取消</el-button>
           <el-button type="primary" @click="handleContinueAdd">继续添加</el-button>
@@ -39,7 +38,7 @@
     </template>
     <span slot="footer" class="dialog-footer" v-if="step !== 2">
       <el-button @click="showDialog = false">取 消</el-button>
-      <el-button v-if="step===1 && type==='fastCreate'" type="primary" @click="step--">上一步</el-button>
+      <el-button v-if="step===1 && type==='fastCreate'" @click="step--">上一步</el-button>
       <el-button v-if="step===0" type="primary" @click="handleGoNext">下一步</el-button>
       <el-button v-if="step===1" type="primary" @click="handleSubmit">提交</el-button>
     </span>
@@ -203,6 +202,17 @@ export default {
 
 <style lang="less">
   .create-tybe{
+    &.success{
+      .el-dialog__body{
+        position: relative;
+        .finish{
+          position: absolute;
+          top: 300%;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+      }
+    }
     &.handCreate{
       .el-dialog{
         min-height: 425px;
@@ -212,6 +222,10 @@ export default {
       width: 900px;
       min-height: 555px;
       position: relative;
+      .el-button--default{
+        color: #888;
+        border: 1px solid #e8e8e8;
+      }
       .el-dialog__header{
         padding: 0;
         border-bottom: 1px solid #e8e8e8;
@@ -232,7 +246,7 @@ export default {
               font-weight: normal;
             }
             &.is-success{
-              color: #4162DB;
+              color: #888;
             }
           }
           .el-step__head{
@@ -323,13 +337,14 @@ export default {
       .img{
         i{
           font-size: 80px;
-          color: green;
+          color: #67AE1A;
         }
       }
       .text{
         margin: 15px 0 30px;
         font-size: 18px;
-        color: #000;
+        color: #333;
+        font-weight: bold;
       }
       .el-button{
         width: 88px;
@@ -338,6 +353,8 @@ export default {
     }
     .el-button{
       padding: 12px 28px;
+      font-size: 16px;
+      border-radius: 4px;
       &+.el-button{
         margin-left: 20px;
       }

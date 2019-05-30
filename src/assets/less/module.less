@@ -43,7 +43,7 @@
   .el-table{
     color: #333;
     .el-table__body-wrapper::-webkit-scrollbar {/*滚动条整体样式*/
-          width: 8px;     /*高宽分别对应横竖滚动条的尺寸*/
+          width: 6px;     /*高宽分别对应横竖滚动条的尺寸*/
           height: 8px;
       }
       .el-table__body-wrapper::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
@@ -56,7 +56,6 @@
       }
       .el-table__body-wrapper{
         & > table {
-          border-right: 1px solid #e8e8e8;
           tr td span.status{
             &>.status-i {
               display: inline-block;
@@ -75,6 +74,8 @@
       border-color: @buttonColor;
     }
     th{
+      height: 50px;
+      padding: 0;
       background: #F2F4F5;
       border-right: #F2F4F5;
       >.cell{
@@ -82,8 +83,8 @@
       }
     }
     td{
-      padding: 10px 0;
       height: 50px;
+      padding: 0;
     }
      .el-icon{
       width: 16px;
@@ -101,6 +102,9 @@
         opacity: .7;
       }
     }
+  }
+  .el-table-column--selection .el-checkbox{
+    margin: 0;
   }
   .el-table__fixed-right-patch{
     background-color: #F2F4F5;

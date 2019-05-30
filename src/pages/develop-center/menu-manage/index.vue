@@ -1,5 +1,5 @@
 <template>
-  <div class="catalog">
+  <div class="catalog menu-manage">
     <search-module
       :search-item="searchItem"
       :search-values="searchValues"
@@ -290,3 +290,11 @@ export default {
   }
 }
 </script>
+
+<style lang="less">
+  .menu-manage{
+    .el-textarea{
+      height: 84px;
+    }
+  }
+</style>
