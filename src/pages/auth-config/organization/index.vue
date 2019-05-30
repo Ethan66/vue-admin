@@ -94,11 +94,12 @@ export default {
       this.dialogItem[0].disabled = false
       // this.dialogItem[2].disabled = false
       this.dialogItem[0].type = 'selectTree'
+      if (this.editData.directorId) this.editData.directorId = 'a' + this.editData.directorId
       this.editData.departmentStatus = this.editData.departmentStatusStash
       this.editData.departmentType = this.editData.departmentTypeStash
       this.selectTreeCheckedValue = [this.editData.parentId]
       if (this.editData.directorId) {
-        this.selectTreeCheckedValue2 = ['a' + this.editData.directorId]
+        this.selectTreeCheckedValue2 = [this.editData.directorId]
       }
       this.isEdit = 1
       /* let list = this.dialogItem[2].options.map(item => {
@@ -265,6 +266,9 @@ export default {
           this.allData = res.resultMap.data
           this.tableData = this.allData
           this.tableData.forEach(item => {
+            if (item.departmentStatus === 0) {
+              item.showBtnCode = ['organization-add-same-level', 'organization-delete']
+            }
             if (item.hasLower) {
               item.list = []
             }
