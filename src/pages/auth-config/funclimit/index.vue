@@ -186,6 +186,7 @@ export default {
         overflow: scroll;
       }
       flex: 1;
+      overflow: auto;
       background: #fff;
       max-width: calc(100% - 210px);
       height: calc(100vh - 130px);
