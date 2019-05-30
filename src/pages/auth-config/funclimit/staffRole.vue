@@ -14,9 +14,11 @@
       :table-btn="tableBtn"
       :table-pages="tablePages"
       @handleSendHead="handleSendHead"
+      :selectableFn="handleSelectChange"
       @table-jump="handleJump">
       <div class="btn-content" slot="btn">
-        <el-button @click="handleAddStaff" v-if="$showBtn('config-manage-add')">{{$getBtnName('config-manage-add')}}</el-button>
+        <el-button @click="handleBatchDelete" v-if="$showBtn('config-manage-add') && chooseDataArr.length > 0">删除</el-button>
+        <el-button @click="handleAddStaff" v-if="$showBtn('config-manage-add') && chooseDataArr.length < 1">{{$getBtnName('config-manage-add')}}</el-button>
       </div>
     </table-module>
     <!-- 添加编辑员工弹框 -->
@@ -41,7 +43,7 @@ import { staffRole } from './mixins'
 import methods from './methods'
 import basicMethod from '@/config/mixins'
 import staffDialog from './components/staffDialog'
-import { apiPageQueryUserRole } from '@/api/role'
+import { apiPageQueryUserRole, apiEditConsoleUserStatus } from '@/api/role'
 import { apiListConsoleUser } from '@/api/staff'
 
 export default {
@@ -117,6 +119,13 @@ export default {
       }
       this.getRoleConfig(callback)
     },
+    handleSelectChange (row) {
+      if (row.roleIds) {
+        return false
+      } else {
+        return true
+      }
+    },
     // 表格编辑按钮
     handleEditData (row) {
       let callback = (list) => {
@@ -135,7 +144,7 @@ export default {
       this.getRoleConfig(callback)
     },
     // 点击表格删除按钮
-    handleDeleteData (row) {
+    handleDeleteBtn (row) {
       if (!row.roleIds) {
         this.$message.warning('该用户未分配角色')
         return
@@ -147,6 +156,9 @@ export default {
     },
     delStaffAllRole () {
       this.handleApiDelUserRole(this.delStaffId, this.delStaffRoleIds)
+    },
+    handleBatchDelete () {
+
     },
     // 处理表格数据
     handleTableData (tableData) {

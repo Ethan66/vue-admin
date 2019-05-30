@@ -6,7 +6,7 @@ const initData = Object.assign({}, basicInitObj)
 
 export const staffRole = {
   data () {
-    return setBtnConfig(JSON.parse(JSON.stringify(initData)), [{ edit: { code: 'config-manage-edit' } }, { delete: { code: 'config-manage-delete' } }])
+    return setBtnConfig(JSON.parse(JSON.stringify(initData)), [{ edit: { code: 'config-manage-edit' } }, { cancel: { noTip: false, code: 'config-manage-delete', clickFn: 'handleDeleteBtn' } }])
   },
   created () {
     let configSearchItem = ['realName', {
