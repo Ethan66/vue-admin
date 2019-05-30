@@ -428,7 +428,7 @@ export default {
             .el-tree-node__content {
               // margin-left: 10px !important;
               border-left: 10px solid #fff;
-              height: 30px;
+              height: 35px;
               .el-tree-node__label {
                 font-family: PingFangSC-Regular;
                 font-size: 14px;
