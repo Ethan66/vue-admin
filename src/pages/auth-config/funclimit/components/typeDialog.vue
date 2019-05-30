@@ -128,10 +128,12 @@ export default {
           }
         }
         .el-dialog__body {
+          color: #888;
           padding: 30px 67px;
           .el-form {
             .el-form-item {
               .el-form-item__label {
+                color: #333;
                 line-height: 30px;
               }
               .el-form-item__content {

@@ -117,6 +117,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+  .el-tree-node__content{
+    height: 30px;
+  }
   .el-scrollbar .el-scrollbar__view .el-select-dropdown__item{
     height: auto;
     max-height: 274px;

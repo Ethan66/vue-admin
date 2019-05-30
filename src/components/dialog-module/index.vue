@@ -286,11 +286,15 @@ export default {
 <style lang="less">
   .dialogModule {
     .el-radio__input.is-checked+.el-radio__label{
-      color: #4162DB;
+      color: #333;
     }
     .el-radio__input.is-checked .el-radio__inner{
       background: #4162DB;
       border-color: #4162DB;
+    }
+    .el-button--default{
+      color: #888;
+      border: 1px solid #e8e8e8;
     }
     .el-radio+.el-radio{
       margin-left: 12px;
@@ -324,13 +328,13 @@ export default {
             margin-bottom: 20px;
             &.label5, &.label6{
               .el-form-item__label{
-                width: 100px;
+                width: 106px;
               }
               .el-form-item__content{
-                margin-left: 100px;
+                margin-left: 106px;
               }
                & + .textTip{
-                margin-left: 100px;
+                margin-left: 106px;
               }
             }
             &.label4{
@@ -380,7 +384,7 @@ export default {
         .el-form-item__label {
           line-height: 30px;
           font-weight: normal;
-          color: #1c1c1c;
+          color: #333;
         }
         .el-form-item__content {
           margin-left: 100px;
@@ -402,6 +406,8 @@ export default {
           width: 60px;
           height: 30px;
           padding: 0;
+          border-radius: 4px;
+          letter-spacing: 1px;
           line-height: 30px;
         }
       }
@@ -438,7 +444,8 @@ export default {
       }
     }
     .textTip{
-      margin-top: -15px;
+      margin-top: -10px;
+      margin-bottom: 25px;
       color: #B2B2B2;
       font-size: 12px;
     }

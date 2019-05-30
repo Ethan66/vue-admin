@@ -6,7 +6,7 @@ const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
 const menuMoreList = [
   { name: getBtnName('menu-add-same-level'), clickFn: 'handleCreateLevelMenu', show: showBtn('menu-add-same-level') },
   { name: getBtnName('menu-add-next-level'), clickFn: 'handleCreateNextLevelMenu', show: showBtn('menu-add-next-level') },
-  { name: getBtnName('menu-delete'), clickFn: 'handleDeleteData', show: showBtn('menu-delete') },
+  { name: getBtnName('menu-delete'), clickFn: 'handleDeleteData', show: showBtn('menu-delete'), deleteTip: '确定删除该菜单吗？删除后该菜单下的所有内容也将被删除。' },
   { name: getBtnName('menu-detail'), clickFn: 'handleShowDetailDialog', show: showBtn('menu-detail') }
 ]
 
@@ -25,11 +25,11 @@ export const menu = {
       menuType: 80,
       menuLevel: 100,
       menuUrl: { width: 200, textTip: '改页面的链接地址' },
-      sortNo: 80,
+      sortNo: 90,
       code: 100,
       status: { width: 80, clsName: 'menuStatus' },
       remark: 100,
-      btn: 130
+      btn: 118
     }
     let configDialogItem = [
       { menuParentName: {
@@ -49,7 +49,7 @@ export const menu = {
       { 'menuIcon': { label: '菜单图标', width: 80 } },
       { sortNo: { type: 'number' } },
       { status: { type: 'radio', options: [{ label: '显示', value: 0 }, { label: '隐藏', value: 1 }] } },
-      { remark: { label: '描述', type: 'textarea', rows: 4 } }
+      { remark: { label: '描述', type: 'textarea', rows: 4, placeholder: '100字以内' } }
     ]
     this.searchItem = this.$setItem(tybeObj['menu-manage1'], configSearchItem, 'search')
     this.tableItem = this.$setItem(tybeObj['menu-manage1'], configTableItem, 'table')
@@ -106,7 +106,7 @@ export const pageManage = {
       { pageStatus: { type: 'radio', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }] } },
       { userName: { label: '创建人', type: 'docs', show: false } },
       { gmtCreate: { label: '创建时间', type: 'docs', show: false } },
-      { remark: { label: '描述', type: 'textarea', rows: 4, show: false } }
+      { remark: { label: '描述', type: 'textarea', rows: 4, show: false, placeholder: '100字以内' } }
     ]
     this.searchItem = this.$setItem(tybeObj['page-manage1'], configSearchItem, 'search')
     this.tableItem = this.$setItem(tybeObj['page-manage1'], configTableItem, 'table')
@@ -137,7 +137,7 @@ export const pageManage = {
 // 字段管理
 export const tybeManage = {
   data () {
-    return this.$setBtnConfig(JSON.parse(JSON.stringify(searchTableInitObj)), [{ edit: { code: 'tybe-edit' } }, { cancel: { code: 'tybe-cancel' } }, { delete: { code: 'tybe-delete' } }])
+    return this.$setBtnConfig(JSON.parse(JSON.stringify(searchTableInitObj)), [{ edit: { code: 'tybe-edit' } }, { delete: { code: 'tybe-delete' } }])
   },
   created () {
     let configSearchItem = ['fieldName', 'fieldValue']
@@ -150,7 +150,7 @@ export const tybeManage = {
       setStatus: { width: 140, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
       fieldSort: { width: 90, type: 'input', canEdit: 1 },
       fixedStatus: { width: 140, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
-      btn: 160
+      btn: 112
     }
     this.searchItem = this.$setItem(tybeObj['tybe-manage1'], configSearchItem, 'search')
     this.tableItem = this.$setItem(tybeObj['tybe-manage1'], configTableItem, 'table')
@@ -163,7 +163,7 @@ export const tybeManage = {
 // 快速创建字段
 export const fastCreateType = {
   data () {
-    return this.$setBtnConfig(JSON.parse(JSON.stringify(tableInitObj)), [{ edit: { noClickFn: true } }, 'cancel', { delete: { noClickFn: true } }])
+    return this.$setBtnConfig(JSON.parse(JSON.stringify(tableInitObj)), [{ edit: { noClickFn: true } }, { delete: { noClickFn: true } }])
   },
   created () {
     let configTableItem = {
@@ -173,7 +173,7 @@ export const fastCreateType = {
       fieldRequired: { width: 80, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
       displayStatus: { width: 80, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
       setStatus: { width: 120, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
-      btn: 160
+      btn: 112
     }
     this.tableItem = this.$setItem(tybeObj['tybe-manage2'], configTableItem, 'table')
     if (this.tableBtn.filter(item => item.show).length === 0) {

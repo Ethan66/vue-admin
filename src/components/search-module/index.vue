@@ -1,8 +1,8 @@
 <template>
   <div class="searchContent">
-    <h3>查询条件<span class="cm-btn-color" @click="handleShowAll">更多搜索</span></h3>
+    <h3>查询条件<span class="cm-btn-color" @click="handleShowAll" v-if="searchItem1.length > 6">更多搜索</span></h3>
     <el-form :inline="true" :model="searchValues" size="small">
-      <div class="searchWrap">
+      <div class="searchWrap" :class="{ onlyTwoSearchItem: searchItem1.length < 3 }">
         <template v-for="(item, i) in searchItem1">
           <el-form-item :label="item.label" :key="i" v-if="item.type!=='date'">
             <el-input
@@ -241,6 +241,11 @@ export default {
     .searchWrap{
       display: flex;
       flex-wrap: wrap;
+      &.onlyTwoSearchItem{
+        .el-form-item__label{
+          min-width: 0 !important;
+        }
+      }
     }
     .el-form{
       .el-form-item--small{

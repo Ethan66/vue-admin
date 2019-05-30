@@ -495,13 +495,11 @@ export default {
         margin-bottom: 24px;
         border-bottom: 1px solid #e8e8e8;
         color: #333;
-        font-weight: normal;
         font-size: 16px;
       }
       .list{
         display: flex;
-        align-items: center;
-        margin-bottom: 30px;
+        margin-bottom: 15px;
         .title{
           min-width: 42px;
           margin: 0;
@@ -515,6 +513,14 @@ export default {
       .el-dialog__header{
         padding: 13px 15px;
         border-bottom: 1px solid #e8e8e8;
+      }
+      .el-button--default{
+        color: #888;
+        border: 1px solid #e8e8e8;
+      }
+      .el-dialog__title{
+        font-size: 16px;
+        font-weight: bold;
       }
       .el-dialog__body{
         padding: 15px 30px 0;

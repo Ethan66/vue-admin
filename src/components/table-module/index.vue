@@ -9,7 +9,6 @@
       :header-cell-class-name="handleSetCellClass"
       :cell-class-name="handleSetCellClass"
       border
-      stripe
       style="width: 100%;"
       class="table"
       @sort-change="handleSort"

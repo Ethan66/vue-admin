@@ -111,6 +111,8 @@ export default {
       }
     }
     .role {
+      display: flex;
+      align-items: center;
       font-family: PingFangSC-Regular;
       font-size: 12px;
       color: #333333;

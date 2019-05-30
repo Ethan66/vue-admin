@@ -114,6 +114,7 @@ export default {
           .el-form {
             .el-form-item {
               .el-form-item__label {
+                color: #333;
                 line-height: 30px;
               }
               .el-form-item__content {

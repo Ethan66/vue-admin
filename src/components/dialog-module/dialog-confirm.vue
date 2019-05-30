@@ -9,7 +9,7 @@
       :title="confirmTitle"
       :visible.sync="dialogVisibleConfrim"
       :show-close='false'
-      width="30%">
+      width="420px">
       <div slot="title" class="icon-wap">
         <i class="confirm-icon"><img src="~@/assets/img/confirm.png" alt=""/></i>
         <span class="icon-tit">{{confirmTitle}}</span>

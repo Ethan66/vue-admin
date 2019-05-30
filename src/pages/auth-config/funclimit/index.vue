@@ -32,7 +32,7 @@
               @roleClick="handleRoleClick"
             />
           </div>
-          <div class="box-right">
+          <div class="box-right overflow">
             <roleLimit ref="roleLimit"></roleLimit>
           </div>
         </div>
@@ -149,6 +149,9 @@ export default {
   .noMargin{
     margin-top: -15px;
   }
+  .tableModule {
+    margin-top: 0;
+  }
   .display-box {
     display: flex;
     .box-left {
@@ -156,7 +159,7 @@ export default {
       min-width: 200px;
       background: #fff;
       margin-right: 10px;
-      height: calc(100vh - 144px);
+      height: calc(100vh - 130px);
       overflow: auto;
       &::-webkit-scrollbar {/*滚动条整体样式*/
           width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
@@ -179,9 +182,13 @@ export default {
       }
     }
     .box-right {
+      &.overflow{
+        overflow: scroll;
+      }
       flex: 1;
+      background: #fff;
       max-width: calc(100% - 210px);
-      height: calc(100vh - 144px);
+      height: calc(100vh - 130px);
       &::-webkit-scrollbar {/*滚动条整体样式*/
           width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
           height: 4px;

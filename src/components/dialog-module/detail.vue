@@ -74,6 +74,7 @@ export default {
         ul{
           li{
             margin-bottom: 15px;
+            line-height: 20px;
             color: #333;
             position: relative;
             p{
