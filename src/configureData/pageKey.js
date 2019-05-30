@@ -6,8 +6,7 @@ const config = {
       { menuName: '页面管理', pageCode: 'tybe-manage1', pageName: '字段管理', pageUrl: '/default-url', pageStatus: 0 },
       { menuName: '页面管理', pageCode: 'tybe-manage2', pageName: '快速生成字段', pageUrl: '/default-url', pageStatus: 0 },
       { menuName: '功能权限管理', pageCode: 'function-limit1', pageName: '', pageUrl: '/default-url', pageStatus: 0 },
-      { menuName: '访问控制', pageCode: 'visit-manage1', pageName: '', pageUrl: '/default-url', pageStatus: 0 },
-      { menuName: '访问控制', pageCode: 'visit-manage1', pageName: 'IP控制', pageUrl: '/default-url', pageStatus: 0 },
+      { menuName: '访问控制', pageCode: 'visit-manage2', pageName: 'IP控制', pageUrl: '/default-url', pageStatus: 0 },
       { menuName: '访问控制', pageCode: 'visit-manage1', pageName: '账户控制', pageUrl: '/default-url', pageStatus: 0 },
       { menuName: '员工管理', pageCode: 'staff-manage1', pageName: '', pageUrl: '/default-url', pageStatus: 0 },
       { menuName: '组织架构', pageCode: 'organization-manage1', pageName: '', pageUrl: '/default-url', pageStatus: 0 },
@@ -77,11 +76,11 @@ const config = {
       { pageCode: 'visit-manage1', fieldName: '状态', fieldValue: 'isDeleteMsg', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
       { pageCode: 'visit-manage1', fieldName: '创建时间', fieldValue: 'gmtCreate', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
       // IP控制
-      { pageCode: 'visit-manage1', fieldName: 'IP地址', fieldValue: 'addressIp', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
-      { pageCode: 'visit-manage1', fieldName: '创建人', fieldValue: 'creater', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
-      { pageCode: 'visit-manage1', fieldName: '状态', fieldValue: 'isDeleteName', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
-      { pageCode: 'visit-manage1', fieldName: '描述', fieldValue: 'remark', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
-      { pageCode: 'visit-manage1', fieldName: '创建时间', fieldValue: 'gmtCreate', fieldRequired: 1, displayStatus: 0, setStatus: 0 }
+      { pageCode: 'visit-manage2', fieldName: 'IP地址', fieldValue: 'addressIp', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
+      { pageCode: 'visit-manage2', fieldName: '创建人', fieldValue: 'creater', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
+      { pageCode: 'visit-manage2', fieldName: '状态', fieldValue: 'isDeleteName', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
+      { pageCode: 'visit-manage2', fieldName: '描述', fieldValue: 'remark', fieldRequired: 1, displayStatus: 0, setStatus: 0 },
+      { pageCode: 'visit-manage2', fieldName: '创建时间', fieldValue: 'gmtCreate', fieldRequired: 1, displayStatus: 0, setStatus: 0 }
     ]
   },
   'version_2.0.0': {

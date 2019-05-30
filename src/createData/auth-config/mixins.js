@@ -1,5 +1,4 @@
 import { basicInitObj } from '@/components/basicObj'
-import { ipTableItem, accountTableItem } from '@/test/auth-config'
 import { showBtn, getBtnName, setBtnConfig } from '@/components/methods'
 
 const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
@@ -38,12 +37,12 @@ export const ipControl = {
         }
       }
     ]
-    this.searchItem = this.$setItem(ipTableItem, configSearchItem, 'search')
-    this.tableItem = this.$setItem(ipTableItem, configTableItem, 'table')
+    this.searchItem = this.$setItem(tybeObj['visit-manage2'], configSearchItem, 'search')
+    this.tableItem = this.$setItem(tybeObj['visit-manage2'], configTableItem, 'table')
     if (this.tableBtn.filter(item => item.show).length === 0) {
       this.tableItem.splice(this.tableItem.length - 1, 1)
     }
-    this.dialogItem = this.$setItem(ipTableItem, configDialogItem, 'dialog')
+    this.dialogItem = this.$setItem(tybeObj['visit-manage2'], configDialogItem, 'dialog')
     this.rules = {
       addressIp: [
         { required: true, message: '请输入IP地址', trigger: 'blur' }
@@ -88,8 +87,8 @@ export const account = {
       gmtCreate: 160,
       btn: 70
     }
-    this.searchItem = this.$setItem(accountTableItem, configSearchItem, 'search')
-    this.tableItem = this.$setItem(accountTableItem, configTableItem, 'table')
+    this.searchItem = this.$setItem(tybeObj['visit-manage1'], configSearchItem, 'search')
+    this.tableItem = this.$setItem(tybeObj['visit-manage1'], configTableItem, 'table')
     if (this.tableBtn.filter(item => item.show).length === 0) {
       this.tableItem.splice(this.tableItem.length - 1, 1)
     }
