@@ -231,7 +231,9 @@ export default {
         return
       }
       tableData.forEach(item => {
-        item.menuTypeStash = item.menuType
+        if (item.menuTypeStash === undefined) {
+          item.menuTypeStash = item.menuType
+        }
         switch (item.menuType) {
           case 0:
             item.menuType = '目录'
@@ -243,8 +245,10 @@ export default {
             item.menuType = '按钮'
             break
         }
-        item.menuLevelStash = item.menuLevel - 1
-        item.menuLevel = `${item.menuLevel}级`
+        if (item.menuLevelStash === undefined) {
+          item.menuLevelStash = item.menuLevel - 1
+          item.menuLevel = `${item.menuLevel}级`
+        }
         item.statusStash = item.status
         switch (item.status) {
           case 0:
@@ -258,6 +262,15 @@ export default {
       if (!getDataByPost) {
         this.tableData = menuRelation(tableData, 'id', 'menuParentId', 'menuLevelStash', 'sortNo')
       }
+      function fn (data) {
+          data.forEach(item => {
+            if (item.list && item.list.length > 0) {
+              item.hasLower = true
+              fn(item.list)
+            }
+          })
+        }
+        fn (this.tableData)
     },
     // 批量新建
     handleBatchCreate (type) {
