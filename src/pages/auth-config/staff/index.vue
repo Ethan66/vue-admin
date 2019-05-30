@@ -254,14 +254,13 @@ export default {
       this.staffFormData = JSON.parse(JSON.stringify(row))
       this.handleApiQueryLowerLevelList()
       console.log(this.staffFormData.departmentId)
-      this.defaultCheckedKeys = [this.staffFormData.departmentId]
       this.staffFormData.password = 'a12345'
       this.staffFormItem[0].formItem.map(item => {
         if (item.key === 'password') {
           item.disabled = true
         }
       })
-      this.staffFormData.reportTo =  this.staffFormData.reportTo === '0' ? '' : Number(this.staffFormData.reportTo)
+      this.staffFormData.reportTo = !this.staffFormData.reportTo || this.staffFormData.reportTo === '0' ? '' : Number(this.staffFormData.reportTo)
       this.isEdit = 1
       this.staffDialogTitle = '编辑员工'
       this.staffDialogVisible = true

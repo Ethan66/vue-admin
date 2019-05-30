@@ -1,6 +1,7 @@
 import { apiCreateConsoleUser, apiQueryLowerLevelList, apiEditConsoleUser, apiListConsoleUser, apiQueryConsoleUserInfo, apiEditConsoleUserStatus, apiResetConsoleUserPassword, apiQueryDepartmentTree } from '@/api/staff'
 import MD5 from 'js-md5'
 import { savePageData } from '@/components/methods'
+
 export const methods = {
   methods: {
     // 查询用户部门及下级部门列表和人员列表
@@ -11,6 +12,10 @@ export const methods = {
             if (item.key === 'departmentId') {
               let list = res.resultMap.departmentTree || []
               item.dialogData = this.$disposeTreeData(list)
+              this.$nextTick(() => {
+                this.defaultCheckedKeys = [this.staffFormData.departmentId]
+              })
+              console.log('赋值')
             }
             // if (item.key === 'reportTo') {
             //   item.options = res.resultMap.userlist || []
