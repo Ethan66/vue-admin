@@ -29,7 +29,7 @@
           <el-button @click="handleBatchStop" v-if="$showBtn('staff-batch-stop') && chooseDataArr.length > 0">{{$getBtnName('staff-batch-stop')}}</el-button>
           <el-button @click="handleBatchStart" v-if="$showBtn('staff-batch-start') && chooseDataArr.length > 0">{{$getBtnName('staff-batch-start')}}</el-button>
           <el-button @click="handleBatchForbidLogin" v-if="$showBtn('staff-batch-stop-log') && chooseDataArr.length > 0">{{$getBtnName('staff-batch-stop-log')}}</el-button>
-          <el-button @click="handleAdd" v-if="$showBtn('staff-batch-ok-log') && chooseDataArr.length > 0">{{$getBtnName('staff-batch-ok-log')}}</el-button>
+          <el-button @click="handleBacthAllowLogin" v-if="$showBtn('staff-batch-ok-log') && chooseDataArr.length > 0">{{$getBtnName('staff-batch-ok-log')}}</el-button>
           <el-button @click="handleAdd" v-if="$showBtn('staff-manage-add') && chooseDataArr.length < 1">{{$getBtnName('staff-manage-add')}}</el-button>
         </div>
       </table-module>
@@ -461,6 +461,7 @@ export default {
       flex: 1;
       max-width: calc(100% - 210px);
       height: calc(100vh - 100px);
+      overflow: auto;
       &::-webkit-scrollbar {/*滚动条整体样式*/
           width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
           height: 4px;

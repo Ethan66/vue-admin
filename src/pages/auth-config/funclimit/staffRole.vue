@@ -168,7 +168,7 @@ export default {
       apiBatchClearUserRole({userIds: strArr.join(',')}).then(res => {
         if (res.code === '208999') {
           this.$message.success('删除成功')
-          this.handleApiListConsoleUser()
+          this.getStaffList()
         } else {
           this.$message.error(res.message)
         }
