@@ -74,6 +74,7 @@ export default {
     handleAdd () {
       this.dialogItem[0].disabled = false
       this.dialogItem[2].disabled = false
+       this.dialogItem[0].type = 'selectTree'
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
       this.editData.departmentStatus = 0
       this.selectTreeCheckedValue = []
@@ -92,6 +93,7 @@ export default {
       this.editData = JSON.parse(JSON.stringify(row))
       this.dialogItem[0].disabled = false
       this.dialogItem[2].disabled = false
+      this.dialogItem[0].type = 'selectTree'
       this.editData.departmentStatus = this.editData.departmentStatusStash
       this.editData.departmentType = this.editData.departmentTypeStash
       this.selectTreeCheckedValue = [this.editData.parentId]
@@ -160,7 +162,7 @@ export default {
       this.dialogItem[5].show = true
       this.editData.parentIdStash = row.id
       this.editData.parentId = row.departmentName
-      this.editData.departmentType = Number(row.departmentTypeStash) + 1
+      this.editData.departmentType = Number(row.departmentTypeStash)
       this.isEdit = 0
       this.dialogTitle = '新建部门'
       this.showDialogForm = true
@@ -401,12 +403,10 @@ export default {
       let result = tableData
       function open (result, data, idList) {
         data.forEach(item => {
+          result.push(item)
           if (idList.includes(item.id)) {
             item.expand = true
             if (item.list) {
-              item.list.forEach(child => {
-                result.push(child)
-              })
               open(result, item.list, idList)
             }
           }

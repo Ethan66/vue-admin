@@ -40,7 +40,7 @@ export default {
     // 树状样式箭头clsName
     iconClass (row) {
       let res = []
-      if (row.list) {
+      if (row.hasLower) {
         res.push('arrow')
       }
       row.expand ? res.push('arrowDown') : res.push('arrowRight')
