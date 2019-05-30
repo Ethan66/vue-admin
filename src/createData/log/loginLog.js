@@ -1,7 +1,7 @@
 import { basicInitObj } from '@/components/basicObj'
 import { setBtnConfig } from '@/components/methods'
-import { tableItemList } from '@/test/log'
 
+const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
 const initData = Object.assign({}, basicInitObj)
 
 export const loginLog = {
@@ -27,8 +27,8 @@ export const loginLog = {
       loginStatus: { clsName: 'loginStatus', width: 80 },
       gmtCreate: 90
     }
-    this.searchItem = this.$setItem(tableItemList, configSearchItem, 'search')
-    this.tableItem = this.$setItem(tableItemList, configTableItem, 'table')
+    this.searchItem = this.$setItem(tybeObj['log-login1'], configSearchItem, 'search')
+    this.tableItem = this.$setItem(tybeObj['log-login1'], configTableItem, 'table')
     if (this.tableBtn.filter(item => item.show).length === 0) {
       this.tableItem.splice(this.tableItem.length - 1, 1)
     }

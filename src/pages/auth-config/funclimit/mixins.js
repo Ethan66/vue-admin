@@ -1,7 +1,7 @@
 import { basicInitObj } from '@/components/basicObj'
 import { setBtnConfig } from '@/components/methods'
-import { staffRoleTest } from '@/test/auth-config'
 
+const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
 const initData = Object.assign({}, basicInitObj)
 
 export const staffRole = {
@@ -31,9 +31,9 @@ export const staffRole = {
         buttonMenuName: { type: 'select', options: [] }
       }
     ]
-    this.searchItem = this.$setItem(staffRoleTest, configSearchItem, 'search')
-    this.tableItem = this.$setItem(staffRoleTest, configTableItem, 'table')
-    this.dialogItem = this.$setItem(staffRoleTest, configDialogItem, 'dialog')
+    this.searchItem = this.$setItem(tybeObj['staff-manage1'], configSearchItem, 'search')
+    this.tableItem = this.$setItem(tybeObj['staff-manage1'], configTableItem, 'table')
+    this.dialogItem = this.$setItem(tybeObj['staff-manage1'], configDialogItem, 'dialog')
     if (this.tableBtn.filter(item => item.show).length === 0) {
       this.tableItem.splice(this.tableItem.length - 1, 1)
     }
