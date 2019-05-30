@@ -28,7 +28,9 @@ const config = {
       { menuName: '停用', menuParentName: '员工管理', code: 'staff-batch-stop', menuUrl: '/pilianganniu1-1', sortNo: 1 },
       { menuName: '启用', menuParentName: '员工管理', code: 'staff-batch-start', menuUrl: '/pilianganniu1-1', sortNo: 1 },
       { menuName: '禁止登录', menuParentName: '员工管理', code: 'staff-batch-stop-log', menuUrl: '/pilianganniu1-1', sortNo: 1 },
-      { menuName: '允许登录', menuParentName: '员工管理', code: 'staff-batch-ok-log', menuUrl: '/pilianganniu1-1', sortNo: 1 }
+      { menuName: '允许登录', menuParentName: '员工管理', code: 'staff-batch-ok-log', menuUrl: '/pilianganniu1-1', sortNo: 1 },
+      // 功能权限管理
+      { menuName: '删除', menuParentName: '功能权限管理', code: 'config-batch-delete', menuUrl: '/pilianganniu1-1', sortNo: 1 }
       // // 菜单管理
       // { menuName: '新增菜单', menuParentName: '菜单管理', code: 'menu-add-menu', menuUrl: '/pilianganniu1-1', sortNo: 1 },
       // { menuName: '批量新建目录', menuParentName: '菜单管理', code: 'menu-add-catogue-all', menuUrl: '/pilianganniu1-1', sortNo: 1 },

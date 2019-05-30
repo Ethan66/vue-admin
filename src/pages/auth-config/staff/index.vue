@@ -200,7 +200,11 @@ export default {
       departmentId: '', // 点击部门树的id
       confirmContent: '',
       confrimDiaShow: false,
-      confirmFn: ''
+      confirmFn: '',
+      stopId: [],
+      startId: [],
+      forbidId: [],
+      allowId: []
     }
   },
   created () {
@@ -249,6 +253,7 @@ export default {
     handleEditData (row) {
       this.staffFormData = JSON.parse(JSON.stringify(row))
       this.handleApiQueryLowerLevelList()
+      console.log(this.staffFormData.departmentId)
       this.defaultCheckedKeys = [this.staffFormData.departmentId]
       this.staffFormData.password = 'a12345'
       this.staffFormItem[0].formItem.map(item => {
@@ -256,7 +261,7 @@ export default {
           item.disabled = true
         }
       })
-      this.staffFormData.reportTo = Number(this.staffFormData.reportTo)
+      this.staffFormData.reportTo =  this.staffFormData.reportTo === '0' ? '' : Number(this.staffFormData.reportTo)
       this.isEdit = 1
       this.staffDialogTitle = '编辑员工'
       this.staffDialogVisible = true
