@@ -17,7 +17,16 @@ export const staff = {
     ])
   },
   created () {
-    let configSearchItem = ['status', 'realName']
+    let configSearchItem = [{
+      status: { type: 'select',
+        label: '状态',
+        options: [
+          { label: '正常', value: 0 },
+          { label: '停用', value: 1 },
+          { label: '禁止登录', value: 2 }
+        ]
+      }
+    }, 'realName']
     let configTableItem = {
       selection: 50,
       realName: { width: 80, clickFn: 'handleShowInfo', clsName: 'cm-btn-color' },
