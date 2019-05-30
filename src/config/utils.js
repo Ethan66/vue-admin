@@ -50,7 +50,7 @@ export const menuRelation = (data, id, pId, level, sort) => {
 }
 
 // 目录排序
-const menuSort = (arr, key, sort) => {
+export const menuSort = (arr, key, sort) => {
   if (Array.isArray(arr) && arr[0]) {
     if (arr.length > 1) {
       arr.sort((v1, v2) => {
