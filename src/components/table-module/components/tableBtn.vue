@@ -118,17 +118,21 @@ export default {
         return false
       }
       if (btnName === '删除') {
-        let tip = btn.deleteTip || '是否确认删除'
-        this.$confirm(tip, '温馨提醒', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-          callback: action => {
-            if (action === 'confirm') {
-              this.parent[fn](row)
+        if (btn.noTip !== false) {
+          this.parent[fn](row)
+        } else {
+          let tip = btn.deleteTip || '是否确认删除'
+          this.$confirm(tip, '温馨提醒', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+            callback: action => {
+              if (action === 'confirm') {
+                this.parent[fn](row)
+              }
             }
-          }
-        })
+          })
+        }
       } else if (!this.isInlineEdit) { // 非行内编辑
         this.parent[fn](row)
       } else if (this.isInlineEdit) { // 行内编辑
@@ -222,8 +226,8 @@ export default {
       padding-left: 0;
     }
     }
-     .btnCls+.btnCls, .el-dropdown{
-        padding-left: 9px;
+    .btnCls+.btnCls, .el-dropdown{
+      padding-left: 9px;
         &::before{
         position: absolute;
         left: 0;
@@ -231,7 +235,10 @@ export default {
         transform: translateY(-57%);
         display: block;
         content: '|';
+      }
+      .btnCls{
+        padding-right: 0;
+      }
     }
-     }
   }
 </style>
