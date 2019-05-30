@@ -26,7 +26,11 @@
         @handleSendHead="handleSendHead"
         @table-jump="handleJump">
         <div class="btn-content" slot="btn">
-          <el-button @click="handleAdd" v-if="$showBtn('staff-manage-add')">{{$getBtnName('staff-manage-add')}}</el-button>
+          <el-button @click="handleBatchStop" v-if="$showBtn('staff-batch-stop') && chooseDataArr.length > 0">{{$getBtnName('staff-batch-stop')}}</el-button>
+          <el-button @click="handleBatchStart" v-if="$showBtn('staff-batch-start') && chooseDataArr.length > 0">{{$getBtnName('staff-batch-start')}}</el-button>
+          <el-button @click="handleBatchForbidLogin" v-if="$showBtn('staff-batch-stop-log') && chooseDataArr.length > 0">{{$getBtnName('staff-batch-stop-log')}}</el-button>
+          <el-button @click="handleAdd" v-if="$showBtn('staff-batch-ok-log') && chooseDataArr.length > 0">{{$getBtnName('staff-batch-ok-log')}}</el-button>
+          <el-button @click="handleAdd" v-if="$showBtn('staff-manage-add') && chooseDataArr.length < 1">{{$getBtnName('staff-manage-add')}}</el-button>
         </div>
       </table-module>
     </div>
@@ -196,7 +200,11 @@ export default {
       departmentId: '', // 点击部门树的id
       confirmContent: '',
       confrimDiaShow: false,
-      confirmFn: ''
+      confirmFn: '',
+      stopId: [],
+      startId: [],
+      forbidId: [],
+      allowId: []
     }
   },
   created () {
@@ -245,6 +253,7 @@ export default {
     handleEditData (row) {
       this.staffFormData = JSON.parse(JSON.stringify(row))
       this.handleApiQueryLowerLevelList()
+      console.log(this.staffFormData.departmentId)
       this.defaultCheckedKeys = [this.staffFormData.departmentId]
       this.staffFormData.password = 'a12345'
       this.staffFormItem[0].formItem.map(item => {
@@ -252,7 +261,7 @@ export default {
           item.disabled = true
         }
       })
-      this.staffFormData.reportTo = Number(this.staffFormData.reportTo)
+      this.staffFormData.reportTo =  this.staffFormData.reportTo === '0' ? '' : Number(this.staffFormData.reportTo)
       this.isEdit = 1
       this.staffDialogTitle = '编辑员工'
       this.staffDialogVisible = true
@@ -268,39 +277,71 @@ export default {
     },
     // 停用账号
     handleStop (row) {
-      this.stopId = row.id
+      this.stopId.push(row)
       this.stopStatus = row.status
       this.handleConfirmInfo('确定停用该员工账号吗？停用后该员工将无法登录后台管理系统。', 'stop')
     },
     stop () {
       this.handleApiEditConsoleUserStatus(this.stopId, this.stopStatus, 1)
     },
+    // 批量停用账号
+    handleBatchStop () {
+      this.stopId = this.chooseDataArr
+      this.handleConfirmInfo('确定停用该员工账号吗？停用后该员工将无法登录后台管理系统。', 'batchStop')
+    },
+    batchStop () {
+      this.handleApiEditConsoleUserStatus(this.stopId, '', 1)
+    },
     // 启用账号
     handleStart (row) {
-      this.startId = row.id
+      this.startId.push(row)
       this.startStatus = row.status
       this.handleConfirmInfo('确定启用该员工账号吗？', 'start')
     },
     start () {
       this.handleApiEditConsoleUserStatus(this.startId, this.startStatus, 0)
     },
+    // 批量启用账号
+    handleBatchStart (row) {
+      this.startId = this.chooseDataArr
+      this.handleConfirmInfo('确定启用该员工账号吗？', 'batchstart')
+    },
+    batchstart () {
+      this.handleApiEditConsoleUserStatus(this.startId, '', 0)
+    },
     // 禁止登录
     handleForbidLogin (row) {
-      this.forbidId = row.id
+      this.forbidId.push(row)
       this.forbidIsDelete = row.isDelete
       this.handleConfirmInfo('确定禁止该员工账号登录吗？', 'forbidLogin')
     },
     forbidLogin () {
       this.handleApiEditConsoleUserStatus(this.forbidId, 2, this.forbidIsDelete)
     },
+    // 批量禁止登录
+    handleBatchForbidLogin (row) {
+      this.forbidId = this.chooseDataArr
+      this.handleConfirmInfo('确定禁止该员工账号登录吗？', 'batchForbidLogin')
+    },
+    batchForbidLogin () {
+      this.handleApiEditConsoleUserStatus(this.forbidId, 2, '')
+    },
     // 允许登录
     handleAllowLogin (row) {
-      this.allowId = row.id
+      this.allowId.push(row)
       this.allowisDelete = row.isDelete
       this.handleConfirmInfo('确定允许该员工账号登录吗？', 'allowLogin')
     },
     allowLogin () {
       this.handleApiEditConsoleUserStatus(this.allowId, 0, this.allowisDelete)
+    },
+    // 批量允许登录
+    handleBacthAllowLogin (row) {
+      this.allowId = this.chooseDataArr
+      this.handleConfirmInfo('确定允许该员工账号登录吗？', 'batchAllowLogin')
+    },
+    batchAllowLogin () {
+      this.handleApiEditConsoleUserStatus(this.allowId, 0, '')
     },
     // 重置密码
     handleResetPassword (row) {

@@ -16,7 +16,6 @@
           <el-select
             v-if="item.type === 'selectDouble'"
             v-model="formData[item.key]"
-            multiple
             :placeholder="item.placeholder">
             <el-option-group
               v-for="(optionItem, index) in item.options"

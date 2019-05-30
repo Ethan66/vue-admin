@@ -64,3 +64,8 @@ export const apiSetRolePermissionFields = (params) => {
 export const apiQueryDepartmentList = (params) => {
   return postRequest(base + '/queryDepartmentList', params)
 }
+
+// 角色分配批量删除
+export const apiBatchClearUserRole = (params) => {
+  return postRequest(base + '/batchClearUserRole', params)
+}

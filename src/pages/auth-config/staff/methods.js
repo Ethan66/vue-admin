@@ -103,8 +103,12 @@ export const methods = {
      * @param {*} isDelete 0:启用 ； 1：停用
      */
     handleApiEditConsoleUserStatus (id, status, isDelete) {
+      let ids = []
+      id.forEach(item => {
+        ids.push(item.id)
+      })
       let params = {
-        id: id,
+        ids: ids,
         status: status,
         isDelete: Number(isDelete)
       }
