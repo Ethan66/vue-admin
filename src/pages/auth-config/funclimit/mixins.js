@@ -23,7 +23,7 @@ export const staffRole = {
       departmentName: 60,
       position: 60,
       roleName: 60,
-      btn: 112
+      btn: 120
     }
     let configDialogItem = [
       ['id', 'buttonMenuName'],
