@@ -60,7 +60,7 @@ export default {
       selectTreeCheckedValue2: [],
       allPeople: [],
       initLevel: 0,
-      getDataByPost: false
+      getDataByPost: true
     }
   },
   created () {
@@ -252,11 +252,11 @@ export default {
       this.searched = true
       savePageData(lowName, val, currentPage, this.activeTabName) // 将搜索等数据缓存
       this.getTableDataApi = api
-      if (val && val.departmentName) {
+      /* if (val && val.departmentName) {
         this.getDataByPost = true
       } else {
         this.getDataByPost = false
-      }
+      } */
       this.tableLoading = true
       api(val).then(res => {
         if (res.code === '208999') {
@@ -345,7 +345,21 @@ export default {
     // 点击获取子数据
     handleClickGetTreeData (row, index) {
       if (row.expand) {
-        this.tableData = this.tableData.splice(0, index + 1).concat(this.tableData.slice(row.list.length))
+        let length = 0
+        function findLength (list, expand) {
+          let length = list.length
+          list.forEach(item => {
+            if (item[expand] && item.list) {
+              length += findLength(item.list, expand)
+            }
+            item.expand = false
+          })
+          return length
+        }
+        if (row.list) {
+          length = findLength(row.list, 'expand')
+        }
+        this.tableData = this.tableData.splice(0, index + 1).concat(this.tableData.slice(length))
         this.handleTableData && this.handleTableData(this.tableData || [], true)
         row.expand = false
         return
