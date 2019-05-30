@@ -60,7 +60,8 @@ export default {
       selectTreeCheckedValue2: [],
       allPeople: [],
       initLevel: 0,
-      getDataByPost: true
+      getDataByPost: true,
+      saveExpendIdList: []
     }
   },
   created () {
@@ -137,7 +138,6 @@ export default {
       this.editData.departmentStatus = 0
       this.dialogItem[0].type = 'input'
       this.dialogItem[0].disabled = true
-      this.dialogItem[2].disabled = true
       this.dialogItem[5].show = true
       this.editData.parentIdStash = row.parentId
       let obj = this.allDepartmentTree.find(item => item.id === row.parentId)
@@ -157,7 +157,6 @@ export default {
       this.editData.departmentStatus = 0
       this.dialogItem[0].type = 'input'
       this.dialogItem[0].disabled = true
-      this.dialogItem[2].disabled = true
       this.dialogItem[5].show = true
       this.editData.parentIdStash = row.id
       this.editData.parentId = row.departmentName
@@ -269,6 +268,9 @@ export default {
             }
           })
           this.handleTableData && this.handleTableData(this.tableData || [])
+          if (this.saveExpendIdList.length > 0) {
+            this.handleOpenTree(this.tableData)
+          }
           this.tableLoading = false
         } else {
           this.$message.error(res.message)
@@ -282,7 +284,9 @@ export default {
         return
       }
       tableData.forEach(item => {
-        item.departmentStatusStash = item.departmentStatus
+        if (item.departmentStatusStash === undefined) {
+          item.departmentStatusStash = item.departmentStatus
+        }
         switch (item.departmentStatus) {
           case 0:
             item.departmentStatus = '正常'
@@ -291,7 +295,9 @@ export default {
             item.departmentStatus = '停用'
             break
         }
-        item.departmentTypeStash = item.departmentType
+        if (item.departmentTypeStash === undefined) {
+          item.departmentTypeStash = item.departmentType
+        }
         switch (item.departmentType) {
           case 0:
             item.departmentType = '集团'
@@ -345,6 +351,10 @@ export default {
     // 点击获取子数据
     handleClickGetTreeData (row, index) {
       if (row.expand) {
+        let i = this.saveExpendIdList.indexOf(row.id)
+        if ( i > 0) {
+          this.saveExpendIdList.splice(i, 1)
+        }
         let length = 0
         function findLength (list, expand) {
           let length = list.length
@@ -364,6 +374,7 @@ export default {
         row.expand = false
         return
       }
+      this.saveExpendIdList.push(row.id)
       apiQueryDepartmentList({ parentId: row.id }).then((res) => {
         if (res.code === '208999') {
           res.resultMap.data.forEach(item => {
@@ -374,6 +385,7 @@ export default {
           })
           let list = res.resultMap.data
           if (!row.expand) {
+            list.sort((v1, v2) => (v1.sortNo - v2.sortNo))
             this.tableData = this.tableData.splice(0, index + 1).concat(list).concat(this.tableData)
             this.tableData[index].expand = true
             this.tableData[index].list = list
@@ -384,6 +396,23 @@ export default {
         }
       })
       console.log(row)
+    },
+    handleOpenTree (tableData) {
+      let result = tableData
+      function open (result, data, idList) {
+        data.forEach(item => {
+          if (idList.includes(item.id)) {
+            item.expand = true
+            if (item.list) {
+              item.list.forEach(child => {
+                result.push(child)
+              })
+              open(result, item.list, idList)
+            }
+          }
+        })
+      }
+      open(result, tableData, this.saveExpendIdList)
     },
     validateDepartmentName (rule, value, callback) {
       if (!value.trim()) {

@@ -170,6 +170,20 @@ export default {
       }
       .el-dialog__body {
         padding: 30px 30px;
+        height: 400px;
+        overflow: auto;
+        &::-webkit-scrollbar {/*滚动条整体样式*/
+            width: 6px;     /*高宽分别对应横竖滚动条的尺寸*/
+            height: 4px;
+        }
+        &::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+            border-radius: 6px;
+            background: #bbb
+        }
+        &::-webkit-scrollbar-track {/*滚动条里面轨道*/
+            border-radius: 0;
+            background: transparent;
+        }
         .el-form {
           .el-form-item {
             display: flex;

@@ -215,12 +215,12 @@ export default {
   watch: {
     'staffFormData.departmentId': function (val, oldVal) {
       if (oldVal) {
-        delete this.staffFormData.reportTo
+        this.$delete(this.staffFormData, 'reportTo')
       }
-      if (val) {
-        console.log(val)
-        this.handleGetReportTo(val)
-      }
+      // if (val) {
+      //   console.log(val)
+      //   this.handleGetReportTo(val)
+      // }
     }
   },
   methods: {
@@ -428,7 +428,7 @@ export default {
             .el-tree-node__content {
               // margin-left: 10px !important;
               border-left: 10px solid #fff;
-              height: 30px;
+              height: 35px;
               .el-tree-node__label {
                 font-family: PingFangSC-Regular;
                 font-size: 14px;

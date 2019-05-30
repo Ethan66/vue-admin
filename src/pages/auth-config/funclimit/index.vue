@@ -160,6 +160,15 @@ export default {
       background: #fff;
       margin-right: 10px;
       height: calc(100vh - 130px);
+      h2 {
+        font-family: PingFangSC-Semibold;
+        font-size: 16px;
+        color: #333333;
+        line-height: 16px;
+        padding: 20px 0 20px 15px;
+      }
+    }
+    .box-left:hover {
       overflow: auto;
       &::-webkit-scrollbar {/*滚动条整体样式*/
           width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
@@ -172,13 +181,6 @@ export default {
       &::-webkit-scrollbar-track {/*滚动条里面轨道*/
           border-radius: 0;
           background: transparent;
-      }
-      h2 {
-        font-family: PingFangSC-Semibold;
-        font-size: 16px;
-        color: #333333;
-        line-height: 16px;
-        padding: 20px 0 20px 15px;
       }
     }
     .box-right {
