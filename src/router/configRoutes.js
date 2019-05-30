@@ -26,7 +26,7 @@ export default [
     path: '/develop-center',
     component: Layout,
     children: [
-      { path: '/develop-center/page-manage/tybemanage', component: () => import('@/pages/develop-center/page-manage/tybemanage'), name: 'tybe-manage', meta: { title: '字段管理' } },
+      { path: '/develop-center/page-manage/tybemanage', component: () => import('@/pages/develop-center/page-manage/tybemanage'), name: 'tybe-manage', meta: { title: '字段管理' } }
     ]
   }
 ]
