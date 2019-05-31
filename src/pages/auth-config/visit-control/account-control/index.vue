@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { account } from '@/createData/auth-config/mixins'
+import { account } from '../../mixins'
 import basicMethod from '@/config/mixins'
 import { apiPageConsoleUserWhite, apiAddConsoleUserWhite, apiEditConsoleUserWhiteStatus } from '@/api/visitControl'
 import { debuglog } from 'util';

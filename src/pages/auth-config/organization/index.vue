@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { organization } from '@/createData/auth-config/mixins'
+import { organization } from '../mixins'
 import basicMethod from '@/config/mixins'
 import { menuRelation } from '@/config/utils'
 import { savePageData } from '@/components/methods'

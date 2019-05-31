@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { staffRole } from './mixins'
+import { staffRole } from '../mixins'
 import methods from './methods'
 import basicMethod from '@/config/mixins'
 import staffDialog from './components/staffDialog'

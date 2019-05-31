@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { ipControl } from '@/createData/auth-config/mixins'
+import { ipControl } from '../../mixins'
 import basicMethod from '@/config/mixins'
 import { apiListSysIpWhite, apiEditIpWhite, apiAddIpWhite, apiEditIpWhiteStatus } from '@/api/visitControl'
 
