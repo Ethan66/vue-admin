@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { tybeManage } from '@/createData/develop-center'
+import { tybeManage } from '../mixin'
 import basicMethod from '@/config/mixins'
 import { menuRelation } from '@/config/utils'
 import { apiPageFiledQueryList, apiUpdatePageField, apiDeletePageField, apiAddPageField, apiPageFieldRapidGeneration } from '@/api/developCenter'

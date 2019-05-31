@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { menu } from '@/createData/develop-center'
+import { menu } from '../mixin'
 import basicMethod from '@/config/mixins'
 import { menuRelation } from '@/config/utils'
 import batchConfig from '@/configureData/menu'

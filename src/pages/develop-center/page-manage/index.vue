@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { pageManage } from '@/createData/develop-center'
+import { pageManage } from '../mixin'
 import basicMethod from '@/config/mixins'
 import configTybe from '@/configureData/pageKey'
 import { apiQueryPageList, apiAddPage, apiUpdatePage, apiListConsoleMenu, apiAddBatchPageField, apiQueryParentConsoleMenu } from '@/api/developCenter'

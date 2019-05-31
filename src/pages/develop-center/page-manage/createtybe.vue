@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { fastCreateType } from '@/createData/develop-center'
+import { fastCreateType } from '../mixin'
 import basicMethod from '@/config/mixins'
 import { apiPageFiledQueryList, apiAddPageField, apiPageFieldRapidGeneration, apiAddBatchPageField } from '@/api/developCenter'
 
