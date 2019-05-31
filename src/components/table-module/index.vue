@@ -95,7 +95,7 @@
       v-if="tablePages.current"
     >
       <el-pagination
-        :current-page="tablePages.current"
+        :current-page.sync="tablePages.current"
         :page-sizes="[20, 40, 50, 100]"
         :page-size="tablePages.pageSize"
         :total="tablePages.total"

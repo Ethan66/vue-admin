@@ -38,7 +38,7 @@ export default {
       Object.assign(params, val)
       api(params).then(res => {
         if (res.code === '208999') {
-          this.tablePages.current = currentPage
+          this.$set(this.tablePages, 'current', currentPage)
           this.allData = res.resultMap.page.list
           this.tablePages.total = res.resultMap.page.total
           this.tableData = JSON.parse(JSON.stringify(this.allData))
