@@ -50,8 +50,6 @@
       :dialogTitle="typeDialogTitle"
       :dialogBtn="typeDialogBtn"
     />
-    <dialog-confirm
-      :confirmContent="confirmContent" :showDialogForm.sync="confrimDiaShow" :confirmFn="confirmFn"/>
   </div>
 </template>
 
@@ -78,9 +76,6 @@ export default {
       classifyList: [],
       roleCount: 0,
       isClassify: 0, // 0：角色，1：角色分类
-      confirmContent: '',
-      confrimDiaShow: false,
-      confirmFn: '',
       formItem: [],
       typeDialogVisible: false,
       typeDialogBtn: [
@@ -132,11 +127,6 @@ export default {
         document.querySelector(`#pane-second .classify .role`).classList.add('active')
         this.$refs.roleLimit.clickRole(obj.childIdList[0])
       }
-    },
-    handleConfirmInfo (txt, fnName) {
-      this.confirmContent = txt
-      this.confirmFn = fnName
-      this.confrimDiaShow = true
     },
     handleReStatus () {
       this.$refs.classify.handleReStatus()

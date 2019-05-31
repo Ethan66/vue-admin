@@ -34,8 +34,6 @@
       :treeList="treeList"
       :isEdit="staffDialogIsEdit"
     />
-    <dialog-confirm
-      :confirmContent="confirmContent" :showDialogForm.sync="confrimDiaShow" :confirmFn="confirmFn"/>
   </div>
 </template>
 
@@ -84,9 +82,6 @@ export default {
         { label: '更新时间', key: 'gmtModified', type: 'text' },
         { label: '复制角色权限', key: 'cloneRoleIds', type: 'selectDouble', options: [] }
       ],
-      confirmContent: '',
-      confrimDiaShow: false,
-      confirmFn: '',
       flag: true, // 调用api锁
       delAllRole: 1
     }
@@ -153,13 +148,31 @@ export default {
       this.delStaffId = row.id
       this.delStaffRoleIds = row.roleIds
       let text = this.delAllRole ? '确认删除该员工所有角色？' : '确认删除该员工角色？'
-      this.handleConfirmInfo(text, 'delStaffAllRole')
+      this.$confirm(text, '温馨提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        callback: action => {
+          if (action === 'confirm') {
+            this.delStaffAllRole()
+          }
+        }
+      })
     },
     delStaffAllRole () {
       this.handleApiDelUserRole(this.delStaffId, this.delStaffRoleIds)
     },
     handleBatchDelete () {
-      this.handleConfirmInfo('此操作不可逆，确认批量删除？', 'batchDelete')
+      this.$confirm('此操作不可逆，确认批量删除？', '温馨提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        callback: action => {
+          if (action === 'confirm') {
+            this.batchDelete()
+          }
+        }
+      })
     },
     batchDelete () {
       let strArr = []
@@ -221,11 +234,6 @@ export default {
           this.tableLoading = false
         }
       })
-    },
-    handleConfirmInfo (txt, fnName) {
-      this.confirmContent = txt
-      this.confirmFn = fnName
-      this.confrimDiaShow = true
     }
   },
   components: {

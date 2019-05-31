@@ -66,8 +66,6 @@
       :dialogTitle="typeDialogTitle"
       :dialogBtn="typeDialogBtn"
     />
-    <dialog-confirm
-      :confirmContent="confirmContent" :showDialogForm.sync="confrimDiaShow" :confirmFn="confirmFn"/>
   </div>
 </template>
 
@@ -145,9 +143,6 @@ export default {
           { menuId: '', objectIdList: [], buttonIdList: [] }
         ]
       },
-      confirmContent: '',
-      confrimDiaShow: false,
-      confirmFn: '',
       delId: ''
     }
   },
@@ -167,77 +162,9 @@ export default {
     this.handleApiGetAllRoleRequestTree()
   },
   methods: {
+    // 点击角色
     roleClick (type, item) {
       this.handleClickRole(type, item)
-    },
-    // 点击角色分类图标
-    handleClickClassifyIcon (type, item) {
-      this.isClassify = 1
-      if (type === 'add') {
-        this.handleAddClass(item)
-      } else if (type === 'del') {
-        this.handleDelClass(item)
-      } else if (type === 'edit') {
-        this.handleEditClass(item)
-      }
-    },
-    // 点击角色图标
-    handleClickRoleIcon (type, item) {
-      this.isClassify = 0
-      if (type === 'add') {
-        this.handleAddRole(item)
-      } else if (type === 'del') {
-        this.handleDelRole(item)
-      } else if (type === 'edit') {
-        this.handleEditRole(item)
-      }
-    },
-    // 编辑角色分类
-    handleEditClass (item) {
-      this.typeDialogTitle = '编辑类型'
-      this.formItem = initFormItem
-      this.isEdit = true
-      this.formData = JSON.parse(JSON.stringify(item))
-      this.typeDialogVisible = true
-    },
-    // 新增角色分类
-    handleAddClass (row) {
-      this.typeDialogTitle = '新建类型'
-      this.formItem = initFormItem.slice(0, 2)
-      this.isEdit = false
-      this.typeDialogVisible = true
-    },
-    handleDelClass (row) {
-      this.delId = row.id
-      this.handleConfirmInfo('确认删除该分类吗？删除后该分类下所有角色将自动归到未分类角色中。', 'handleApiDelConsoleRole')
-    },
-    // 编辑角色
-    handleEditRole (row) {
-      this.typeDialogTitle = '编辑角色'
-      this.isEdit = true
-      this.formItem = initRoleFormItem.concat([
-        { label: '创建人', type: 'text', key: 'creater' },
-        { label: '创建时间', type: 'text', key: 'gmtCreate' }
-      ])
-      this.formData = JSON.parse(JSON.stringify(row))
-      this.handleGetClassify()
-      this.typeDialogVisible = true
-    },
-    // 新增角色
-    handleAddRole (row) {
-      this.typeDialogTitle = '新建角色'
-      this.isEdit = false
-      this.formItem = initRoleFormItem.concat([
-        { label: '复制角色权限', key: 'cloneRoleIds', type: 'selectDouble', options: [] }
-      ])
-      this.handleGetClassify()
-      this.handleApiGetAllRoleRequestTree()
-      this.typeDialogVisible = true
-    },
-    // 删除角色
-    handleDelRole (row) {
-      this.delId = row.id
-      this.handleConfirmInfo('确认删除该角色？删除角色后，本角色下员工所具有的权限会受到影响。', 'handleApiDelConsoleRole')
     },
     // 选中角色
     handleClickRole (type, item) {
@@ -450,11 +377,7 @@ export default {
         }
       })
     },
-    handleConfirmInfo (txt, fnName) {
-      this.confirmContent = txt
-      this.confirmFn = fnName
-      this.confrimDiaShow = true
-    },
+    // 初次默认选择角色
     clickRole (item) {
       this.handleClickRole('rl.e', item)
     }

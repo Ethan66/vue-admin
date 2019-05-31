@@ -73,7 +73,16 @@ export default {
     },
     handleDelClass (row) {
       this.delId = row.id
-      this.handleConfirmInfo('确认删除该分类吗？删除后该分类下所有角色将自动归到未分类角色中。', 'handleApiDelConsoleRole')
+      this.$confirm('确认删除该分类吗？删除后该分类下所有角色将自动归到未分类角色中。', '温馨提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        callback: action => {
+          if (action === 'confirm') {
+            this.handleApiDelConsoleRole()
+          }
+        }
+      })
     },
     handleEditRole (row) {
       this.handleApiGetConsoleRoleById(row.id)
@@ -112,7 +121,16 @@ export default {
     },
     handleDelRole (row) {
       this.delId = row.id
-      this.handleConfirmInfo('确认删除该角色？删除角色后，本角色下员工所具有的权限会受到影响。', 'handleApiDelConsoleRole')
+      this.$confirm('确认删除该角色？删除角色后，本角色下员工所具有的权限会受到影响。', '温馨提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        callback: action => {
+          if (action === 'confirm') {
+            this.handleApiDelConsoleRole()
+          }
+        }
+      })
     },
     handleApiGetConsoleRoleById (id) {
       let params = {
