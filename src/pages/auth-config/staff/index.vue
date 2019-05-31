@@ -56,8 +56,6 @@
       :rules="staffFormRules"
       :defaultCheckedKeys.sync="defaultCheckedKeys"
     />
-    <dialog-confirm
-      :confirmContent="confirmContent" :showDialogForm.sync="confrimDiaShow" :confirmFn="confirmFn"/>
   </div>
 </template>
 
@@ -199,9 +197,6 @@ export default {
       },
       treeData: [],
       departmentId: '', // 点击部门树的id
-      confirmContent: '',
-      confrimDiaShow: false,
-      confirmFn: '',
       stopId: [],
       startId: [],
       forbidId: [],
@@ -279,7 +274,16 @@ export default {
     handleStop (row) {
       this.stopId.push(row)
       this.stopStatus = row.status
-      this.handleConfirmInfo('确定停用该员工账号吗？停用后该员工将无法登录后台管理系统。', 'stop')
+      this.$confirm('确定停用该员工账号吗？停用后该员工将无法登录后台管理系统。', '温馨提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        callback: action => {
+          if (action === 'confirm') {
+            this.stop()
+          }
+        }
+      })
     },
     stop () {
       this.handleApiEditConsoleUserStatus(this.stopId, this.stopStatus, 1)
@@ -287,7 +291,16 @@ export default {
     // 批量停用账号
     handleBatchStop () {
       this.stopId = this.chooseDataArr
-      this.handleConfirmInfo('确定停用该员工账号吗？停用后该员工将无法登录后台管理系统。', 'batchStop')
+      this.$confirm('确定停用该员工账号吗？停用后该员工将无法登录后台管理系统。', '温馨提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        callback: action => {
+          if (action === 'confirm') {
+            this.batchStop()
+          }
+        }
+      })
     },
     batchStop () {
       this.handleApiEditConsoleUserStatus(this.stopId, '', 1)
@@ -296,7 +309,16 @@ export default {
     handleStart (row) {
       this.startId.push(row)
       this.startStatus = row.status
-      this.handleConfirmInfo('确定启用该员工账号吗？', 'start')
+      this.$confirm('确定启用该员工账号吗？', '温馨提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        callback: action => {
+          if (action === 'confirm') {
+            this.start()
+          }
+        }
+      })
     },
     start () {
       this.handleApiEditConsoleUserStatus(this.startId, this.startStatus, 0)
@@ -304,7 +326,16 @@ export default {
     // 批量启用账号
     handleBatchStart (row) {
       this.startId = this.chooseDataArr
-      this.handleConfirmInfo('确定启用该员工账号吗？', 'batchstart')
+      this.$confirm('确定启用该员工账号吗？', '温馨提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        callback: action => {
+          if (action === 'confirm') {
+            this.batchstart()
+          }
+        }
+      })
     },
     batchstart () {
       this.handleApiEditConsoleUserStatus(this.startId, '', 0)
@@ -313,7 +344,16 @@ export default {
     handleForbidLogin (row) {
       this.forbidId.push(row)
       this.forbidIsDelete = row.isDelete
-      this.handleConfirmInfo('确定禁止该员工账号登录吗？', 'forbidLogin')
+      this.$confirm('确定禁止该员工账号登录吗？', '温馨提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        callback: action => {
+          if (action === 'confirm') {
+            this.forbidLogin()
+          }
+        }
+      })
     },
     forbidLogin () {
       this.handleApiEditConsoleUserStatus(this.forbidId, 2, this.forbidIsDelete)
@@ -321,7 +361,16 @@ export default {
     // 批量禁止登录
     handleBatchForbidLogin (row) {
       this.forbidId = this.chooseDataArr
-      this.handleConfirmInfo('确定禁止该员工账号登录吗？', 'batchForbidLogin')
+      this.$confirm('确定禁止该员工账号登录吗？', '温馨提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        callback: action => {
+          if (action === 'confirm') {
+            this.batchForbidLogin()
+          }
+        }
+      })
     },
     batchForbidLogin () {
       this.handleApiEditConsoleUserStatus(this.forbidId, 2, '')
@@ -330,7 +379,16 @@ export default {
     handleAllowLogin (row) {
       this.allowId.push(row)
       this.allowisDelete = row.isDelete
-      this.handleConfirmInfo('确定允许该员工账号登录吗？', 'allowLogin')
+      this.$confirm('确定允许该员工账号登录吗？', '温馨提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        callback: action => {
+          if (action === 'confirm') {
+            this.allowLogin()
+          }
+        }
+      })
     },
     allowLogin () {
       this.handleApiEditConsoleUserStatus(this.allowId, 0, this.allowisDelete)
@@ -338,7 +396,16 @@ export default {
     // 批量允许登录
     handleBacthAllowLogin (row) {
       this.allowId = this.chooseDataArr
-      this.handleConfirmInfo('确定允许该员工账号登录吗？', 'batchAllowLogin')
+      this.$confirm('确定允许该员工账号登录吗？', '温馨提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        callback: action => {
+          if (action === 'confirm') {
+            this.batchAllowLogin()
+          }
+        }
+      })
     },
     batchAllowLogin () {
       this.handleApiEditConsoleUserStatus(this.allowId, 0, '')
@@ -346,7 +413,16 @@ export default {
     // 重置密码
     handleResetPassword (row) {
       this.resetId = row.id
-      this.handleConfirmInfo('确定重置该员工账号密码吗？新密码将以短信发送。', 'resetPassword')
+      this.$confirm('确定重置该员工账号密码吗？新密码将以短信发送。', '温馨提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        callback: action => {
+          if (action === 'confirm') {
+            this.resetPassword()
+          }
+        }
+      })
     },
     resetPassword () {
       this.handleApiResetConsoleUserPassword(this.resetId)
@@ -376,11 +452,6 @@ export default {
       // 获取员工信息
       this.handleApiQueryConsoleUserInfo(row.id)
     },
-    handleConfirmInfo (txt, fnName) {
-      this.confirmContent = txt
-      this.confirmFn = fnName
-      this.confrimDiaShow = true
-    }
   },
   components: {
     staffDialog,

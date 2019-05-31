@@ -29,8 +29,6 @@
       :dialogBtn="dialogBtn"
       :rules="rules"
     />
-    <dialog-confirm
-      :confirmContent="confirmContent" :showDialogForm.sync="confrimDiaShow" :confirmFn="confirmFn"/>
   </div>
 </template>
 
@@ -76,20 +74,32 @@ export default {
       this.dialogTitle = '编辑IP'
       this.showDialogForm = true
     },
-    // 确认消息
-    handleConfirmInfo (fnName, txt) {
-      this.confirmFn = fnName
-      this.confirmContent = txt
-      this.confrimDiaShow = true
-    },
     // 点击表格启用
     handleOpen (row) {
       this.saveTableData = row
-      this.handleConfirmInfo('handleOpenConfirm', '确认启用对该IP的授权吗？启用后可以通过该IP地址访问管理后台。')
+      this.$confirm('确认启用对该IP的授权吗？启用后可以通过该IP地址访问管理后台。', '温馨提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        callback: action => {
+          if (action === 'confirm') {
+            this.handleOpenConfirm()
+          }
+        }
+      })
     },
     // 点击批量启用按钮
     handleBatchOpen () {
-      this.handleConfirmInfo('handleBatchOpenFirm', '确认启用对该IP的授权吗？启用后可以通过该IP地址访问管理后台。')
+      this.$confirm('确认启用对该IP的授权吗？启用后可以通过该IP地址访问管理后台。', '温馨提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        callback: action => {
+          if (action === 'confirm') {
+            this.handleBatchOpenFirm()
+          }
+        }
+      })
     },
     // 批量启用确认按钮
     handleBatchOpenFirm () {
@@ -101,7 +111,16 @@ export default {
     },
     // 点击批量停止按钮
     handleBatchStop () {
-      this.handleConfirmInfo('handleBatchStopFirm', '确认停止对该IP的授权吗？停用后无法通过该IP地址访问管理后台。')
+      this.$confirm('确认停止对该IP的授权吗？停用后无法通过该IP地址访问管理后台。', '温馨提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        callback: action => {
+          if (action === 'confirm') {
+            this.handleBatchStopFirm()
+          }
+        }
+      })
     },
     // 批量停止确认按钮
     handleBatchStopFirm () {
@@ -114,7 +133,16 @@ export default {
     // 表格停用按钮
     handleStop (val) {
       this.saveTableData = val
-      this.handleConfirmInfo('handleStopConfirm', '确认停止对该IP的授权吗？停用后无法通过该IP地址访问管理后台。')
+      this.$confirm('确认停止对该IP的授权吗？停用后无法通过该IP地址访问管理后台。', '温馨提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        callback: action => {
+          if (action === 'confirm') {
+            this.handleStopConfirm()
+          }
+        }
+      })
     },
     // 启用弹窗确认按钮
     handleOpenConfirm () {

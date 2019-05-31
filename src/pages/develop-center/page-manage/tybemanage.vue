@@ -30,8 +30,6 @@
       :pageCode="pageCode"
       :dialogTitle="dialogTitle"
       />
-    <dialog-confirm
-      :confirmContent="confirmContent" :showDialogForm.sync="confrimDiaShow" :confirmFn="confirmFn"/>
   </div>
 </template>
 
@@ -57,9 +55,6 @@ export default {
         fixedStatus: [],
         fieldRequired: []
       },
-      confirmFn: '',
-      confirmContent: '',
-      confrimDiaShow: false,
       seleData: []
     }
   },
@@ -81,12 +76,6 @@ export default {
     this.handleGetTableData(apiPageFiledQueryList, Object.assign({}, this.searchValues, this.searchDefaultObj))
   },
   methods: {
-    // 确认消息
-    handleConfirmInfo (fnName, txt) {
-      this.confirmFn = fnName
-      this.confirmContent = txt
-      this.confrimDiaShow = true
-    },
     // 点击快速生成按钮
     handleFastCreate () {
       this.isEdit = 0
@@ -144,7 +133,16 @@ export default {
     // 点击删除按钮
     handleDelete () {
       this.seleData = this.chooseDataArr
-      this.handleConfirmInfo('handleDeleteData', '此操作不可逆，确认继续操作？')
+      this.$confirm('此操作不可逆，确认继续操作？', '温馨提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        callback: action => {
+          if (action === 'confirm') {
+            this.handleDeleteData()
+          }
+        }
+      })
     },
     // 处理表格数据
     handleTableData (tableData, index) {

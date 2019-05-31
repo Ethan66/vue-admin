@@ -58,8 +58,6 @@
       <el-button type="primary" @click="handleSubmit('dialogAccountForm')">确定</el-button>
     </div>
   </el-dialog>
-    <dialog-confirm
-      :confirmContent="confirmContent" :showDialogForm.sync="confrimDiaShow" :confirmFn="confirmFn"/>
 </div>
 </template>
 
@@ -163,12 +161,6 @@ export default {
       this.consoleUserIds = list
       this.dialogAccountForm.region = list
     },
-    // 确认消息
-    handleConfirmInfo (fnName, txt) {
-      this.confirmFn = fnName
-      this.confirmContent = txt
-      this.confrimDiaShow = true
-    },
     // 点击新增按钮
     handleAdd () {
       this.showDialogForm1 = true
@@ -178,12 +170,30 @@ export default {
       this.chooseDataArr.forEach((item) => {
         this.checkArr.push(item.id)
       })
-      this.handleConfirmInfo('handleBatchFirmPl', '确认失效对该账号的授权吗？失效后该账号无法通过外网访问管理后台。')
+      this.$confirm('确认失效对该账号的授权吗？失效后该账号无法通过外网访问管理后台。', '温馨提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        callback: action => {
+          if (action === 'confirm') {
+            this.handleBatchFirmPl()
+          }
+        }
+      })
     },
     // 表格失效按钮
     handleInvalid (row) {
       this.saveDataId = row.id
-      this.handleConfirmInfo('handleBatchFirm', '确认失效对该账号的授权吗？失效后该账号无法通过外网访问管理后台。')
+      this.$confirm('确认失效对该账号的授权吗？失效后该账号无法通过外网访问管理后台。', '温馨提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        callback: action => {
+          if (action === 'confirm') {
+            this.handleBatchFirm()
+          }
+        }
+      })
     },
     // 批量表格失效确认按钮
     handleBatchFirmPl () {
