@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { loginLog } from '@/createData/log/loginLog'
+import { loginLog } from '../mixin'
 import basicMethod from '@/config/mixins'
 import { apiListPageLoginLog } from '@/api/authority'
 

@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { errorLog } from '@/createData/log/errorLog'
+import { errorLog } from '../mixin'
 import basicMethod from '@/config/mixins'
 import { apiListPageLoginErrorLog } from '@/api/authority'
 import { apiQueryParentConsoleMenu } from '@/api/developCenter'
