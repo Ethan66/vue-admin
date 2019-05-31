@@ -137,7 +137,7 @@ export const pageManage = {
 // 字段管理
 export const tybeManage = {
   data () {
-    return this.$setBtnConfig(JSON.parse(JSON.stringify(searchTableInitObj)), [{ edit: { code: 'tybe-edit' } }, { delete: { code: 'tybe-delete' } }])
+    return this.$setBtnConfig(JSON.parse(JSON.stringify(searchTableInitObj)), [{ edit: { code: 'tybe-edit' } }, 'cancel', { delete: { code: 'tybe-delete' } }])
   },
   created () {
     let configSearchItem = ['fieldName', 'fieldValue']
@@ -150,7 +150,7 @@ export const tybeManage = {
       setStatus: { width: 140, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
       fieldSort: { width: 90, type: 'input', canEdit: 1 },
       fixedStatus: { width: 140, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
-      btn: 112
+      btn: 156
     }
     this.searchItem = this.$setItem(tybeObj['tybe-manage1'], configSearchItem, 'search')
     this.tableItem = this.$setItem(tybeObj['tybe-manage1'], configTableItem, 'table')

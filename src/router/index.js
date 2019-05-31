@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '@/store'
 import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css'// Progress 进度条样式
 import Layout from '@/common/layout/Layout'
@@ -64,7 +65,12 @@ router.beforeEach((to, from, next) => {
             sessionStorage.setItem('btnList', JSON.stringify(btnList || []))
             menuList = menuRelation(menuList, 'id', 'menuParentId', 'menuLevel', 'sortNo')
             if (from.path === '/login' && menuList && menuList[0].list && menuList[0].list[0]) {
-              toPath = menuList[0].list[0].menuUrl
+              let obj = menuList[0].list[0]
+              toPath = obj.menuUrl
+              let mainActivedTab = { code: obj.code, name: obj.menuName, url: obj.menuUrl }
+              sessionStorage.setItem('mainActivedTab', JSON.stringify(mainActivedTab))
+              store.commit('UPDATETABS', [mainActivedTab])
+              store.commit('UPDATEMINACTIVEDTAB', [mainActivedTab])
             }
             handleAddMenuRoutes(menuList, configRoutes)
             sessionStorage.setItem('menuList', JSON.stringify(menuList || '[]'))

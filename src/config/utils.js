@@ -67,15 +67,6 @@ export const menuSort = (arr, key, sort) => {
   return arr
 }
 
-// 成功提示
-export const getSuccessMsg = (that, text, type = 'success', title = '成功') => {
-  that.$notify({
-    title: title,
-    message: text,
-    type: type,
-    duration: 2000
-  })
-}
 // 处理树形结构数据
 export const disposeTreeData = (list, parentId = 'parentId', returnId = 0) => {
   let min = Infinity

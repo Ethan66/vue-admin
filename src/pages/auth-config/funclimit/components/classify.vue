@@ -1,7 +1,7 @@
 <template>
   <div class="classify">
     <h3 ref="all" class="active">
-      <div
+      <div v-if="type==='staffRole'"
         @click.stop="handleRoleClick('all', '', $event)"
       >全部用户({{total}})</div>
     </h3>
@@ -46,7 +46,8 @@ export default {
     },
     total: {
       type: Number
-    }
+    },
+    type: String
   },
   data () {
     return {
@@ -63,6 +64,9 @@ export default {
     },
     handleRoleClick (item, type, event) {
       let el = event.target.parentNode
+      if (this.type === 'roleLimit' && el.classList.contains('title')) {
+        return
+      }
       // 为当前单击项增加active样式
       if (!el.classList.contains('active')) {
         if (this.oldNode !== el && typeof this.oldNode === 'object') {

@@ -7,6 +7,7 @@
             <h2>角色分类</h2>
             <classify
               ref="classify"
+              type="staffRole"
               :classifyList="classifyList"
               :total="roleCount"
               @classify="handleClassify"
@@ -25,6 +26,7 @@
             <h2>角色分类</h2>
             <classify
               ref="classify"
+              type="roleLimit"
               :classifyList="classifyList"
               :total="roleCount"
               @classify="handleClassify"
@@ -120,7 +122,15 @@ export default {
   methods: {
     handleClick (tab, event) {
       if (this.activeName === 'second') {
-        this.$refs.roleLimit.clickRole(this.classifyList[0])
+        let index = 0
+        let obj = this.classifyList.find((item, i) => {
+          if (item.childIdList && item.childIdList[0]) {
+            index = i
+            return true
+          }
+        })
+        document.querySelector(`#pane-second .classify .role`).classList.add('active')
+        this.$refs.roleLimit.clickRole(obj.childIdList[0])
       }
     },
     handleConfirmInfo (txt, fnName) {
