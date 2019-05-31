@@ -23,8 +23,6 @@
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <dialog-confirm
-      :confirmContent="confirmContent" :showDialogForm.sync="confrimDiaShow" :confirmFn="confirmFn"/>
     <dialog-module
       ref="dialog"
       dialogTitle="修改密码"
@@ -45,9 +43,6 @@ export default {
   data () {
     return {
       userName: '',
-      confirmContent: '',
-      confirmFn: '',
-      confrimDiaShow: false,
       showDialogForm: false,
       editData: {},
       dialogItem: [
@@ -140,21 +135,21 @@ export default {
       this.showDialogForm = true
     },
     logout () {
-      this.handleConfirmInfo('handleApiUserLoginOut', '确定退出?')
-    },
-    handleApiUserLoginOut () {
-      apiUserLoginOut().then((res) => {
-        if (res.code === '208999') {
-          localStorage.removeItem('userInfo')
-          this.$router.push({ path: '/login' })
+      this.$confirm('确定退出', '温馨提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        callback: action => {
+          if (action === 'confirm') {
+            apiUserLoginOut().then((res) => {
+              if (res.code === '208999') {
+                localStorage.removeItem('userInfo')
+                this.$router.push({ path: '/login' })
+              }
+            })
+          }
         }
       })
-    },
-    // 确认消息
-    handleConfirmInfo (fnName, txt) {
-      this.confirmFn = fnName
-      this.confirmContent = txt
-      this.confrimDiaShow = true
     },
     btnCancel () {
       this.$refs.dialog.showDialogForm1 = false
