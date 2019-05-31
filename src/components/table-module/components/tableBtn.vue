@@ -141,6 +141,7 @@ export default {
           if (this.inlineLabelToValue) {
             this.handleLabelToValue(row, 'edit')
           }
+          row.showBtn = ['取消']
           row.editStatus = true
           row.editBtnName = '保存'
           row.editBtnColor = 'success'
@@ -150,6 +151,7 @@ export default {
             input && input.focus()
           })
         } else if (btnName === '编辑' && row.editBtnName === '保存') { // 点击保存按钮
+          row.showBtn = ['删除']
           row.editStatus = false
           row.editBtnName = undefined
           row.editBtnColor = undefined
@@ -161,6 +163,7 @@ export default {
           if (noClickFn) return false
           this.parent[fn](sendRowData)
         } else if (btnName === '取消') { // 点击取消
+          row.showBtn = ['删除']
           if (!row.editStatus) return
           row.editStatus = false
           this.tableItem.forEach(item => {

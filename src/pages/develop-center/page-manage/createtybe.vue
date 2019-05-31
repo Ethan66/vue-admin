@@ -190,6 +190,11 @@ export default {
         return
       }
       tableData.forEach(item => {
+        if (item.editStatus) {
+          item.showBtn = ['取消']
+        } else {
+          item.showBtn = ['删除']
+        }
         item.displayStatus = item.displayStatus ? '是' : '否'
         item.setStatus = item.setStatus ? '是' : '否'
         item.fieldRequired = item.fieldRequired ? '是' : '否'

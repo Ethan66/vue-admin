@@ -137,7 +137,7 @@ export const pageManage = {
 // 字段管理
 export const tybeManage = {
   data () {
-    return this.$setBtnConfig(JSON.parse(JSON.stringify(searchTableInitObj)), [{ edit: { code: 'tybe-edit' } }, 'cancel', { delete: { code: 'tybe-delete' } }])
+    return this.$setBtnConfig(JSON.parse(JSON.stringify(searchTableInitObj)), [{ edit: { code: 'tybe-edit' } }, { cancel: { show: false } }, { delete: { code: 'tybe-delete', show: false } }])
   },
   created () {
     let configSearchItem = ['fieldName', 'fieldValue']
@@ -150,7 +150,7 @@ export const tybeManage = {
       setStatus: { width: 140, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
       fieldSort: { width: 90, type: 'input', canEdit: 1 },
       fixedStatus: { width: 140, type: 'select', canEdit: 1, options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
-      btn: 156
+      btn: 116
     }
     this.searchItem = this.$setItem(tybeObj['tybe-manage1'], configSearchItem, 'search')
     this.tableItem = this.$setItem(tybeObj['tybe-manage1'], configTableItem, 'table')
@@ -163,7 +163,7 @@ export const tybeManage = {
 // 快速创建字段
 export const fastCreateType = {
   data () {
-    return this.$setBtnConfig(JSON.parse(JSON.stringify(tableInitObj)), [{ edit: { noClickFn: true } }, { delete: { noClickFn: true } }])
+    return this.$setBtnConfig(JSON.parse(JSON.stringify(tableInitObj)), [{ edit: { noClickFn: true } }, { cancel: { show: false } }, { delete: { noClickFn: true, show: false } }])
   },
   created () {
     let configTableItem = {
