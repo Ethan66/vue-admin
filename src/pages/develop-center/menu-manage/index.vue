@@ -50,7 +50,7 @@
 import { menu } from '../mixin'
 import basicMethod from '@/config/mixins'
 import { menuRelation } from '@/config/utils'
-import batchConfig from '@/configureData/menu'
+import batchConfig from '@/config/menu'
 import { apiListConsoleMenu, apiEditeConsoleMenu, apiCreateConsoleMenu, apiDeleteConsoleMenu } from '@/api/developCenter'
 
 export default {

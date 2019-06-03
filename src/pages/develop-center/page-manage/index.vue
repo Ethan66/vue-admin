@@ -36,7 +36,7 @@
 <script>
 import { pageManage } from '../mixin'
 import basicMethod from '@/config/mixins'
-import configTybe from '@/configureData/pageKey'
+import configTybe from '@/config/pageKey'
 import { apiQueryPageList, apiAddPage, apiUpdatePage, apiListConsoleMenu, apiAddBatchPageField, apiQueryParentConsoleMenu } from '@/api/developCenter'
 
 export default {
