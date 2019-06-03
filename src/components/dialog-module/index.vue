@@ -85,7 +85,7 @@
 
 <script>
 import mySwitch from '@/components/modules/switch'
-import treeSelect from '@/components/tree-select'
+import treeSelect from '@/components/modules/tree-select'
 
 export default {
   name: 'dialogModule',

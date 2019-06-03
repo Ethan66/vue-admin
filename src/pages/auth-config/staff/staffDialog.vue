@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import treeSelect from '@/components/tree-select'
+import treeSelect from '@/components/modules/tree-select'
 export default {
   props: {
     dialogVisible: {
