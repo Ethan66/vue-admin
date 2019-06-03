@@ -14,11 +14,11 @@
       @table-jump="handleJump"
       >
       <div class="btn-content" slot="btn">
-        <el-button @click="handleAdd" v-if="$showBtn('page-add-page')">{{$getBtnName('page-add-page')}}</el-button>
-        <el-button @click="handleGetMenuList" v-if="$showBtn('page-get-menu')">{{ $getBtnName('page-get-menu') }}</el-button>
-        <el-button @click="handleBatchCreate('page')" v-if="$showBtn('page-add-page-all')">{{ $getBtnName('page-add-page-all') }}</el-button>
-        <el-button @click="handleGetPageList" v-if="$showBtn('page-get-page-all')">{{ $getBtnName('page-get-page-all') }}</el-button>
-        <el-button @click="handleBatchCreate('tybe')" v-if="$showBtn('page-add-tybe-all')">{{ $getBtnName('page-add-tybe-all') }}</el-button>
+        <el-button @click="handleAdd" v-if="$authBtn('page-add-page')">{{$authBtn('page-add-page')}}</el-button>
+        <el-button @click="handleGetMenuList" v-if="$authBtn('page-get-menu')">{{ $authBtn('page-get-menu') }}</el-button>
+        <el-button @click="handleBatchCreate('page')" v-if="$authBtn('page-add-page-all')">{{ $authBtn('page-add-page-all') }}</el-button>
+        <el-button @click="handleGetPageList" v-if="$authBtn('page-get-page-all')">{{ $authBtn('page-get-page-all') }}</el-button>
+        <el-button @click="handleBatchCreate('tybe')" v-if="$authBtn('page-add-tybe-all')">{{ $authBtn('page-add-tybe-all') }}</el-button>
       </div>
     </table-module>
     <dialog-module

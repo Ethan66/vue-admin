@@ -3,22 +3,22 @@ import { SetItem } from './constructFn'
 
 let btnList = JSON.parse(sessionStorage.getItem('btnList'))
 
-// 展示按钮
-export const showBtn = (buttonCode) => {
-  btnList = JSON.parse(sessionStorage.getItem('btnList'))
-  return btnList.some(item => item.btnCode === buttonCode)
-}
-
-// 获取按钮名称
-export const getBtnName = (buttonCode) => {
-  btnList = JSON.parse(sessionStorage.getItem('btnList'))
-  let result = ''
-  btnList.forEach(item => {
-    if (buttonCode === item.btnCode) {
-      result = item.btnName
+// 展示、获取按钮
+export const authBtn = (btnCode, type) => {
+  !btnList && (btnList = JSON.parse(sessionStorage.getItem('btnList')))
+  let obj = btnList.find(item => item.btnCode === btnCode)
+  if (type) {
+    if (obj) {
+      return true
+    } else {
+      return false
     }
-  })
-  return result
+  }
+  if (obj) {
+    return obj.btnName
+  } else {
+    return false
+  }
 }
 
 // 初始化编辑数据
@@ -58,9 +58,9 @@ export const setBtnConfig = (obj, tableBtnKeys = ['edit', 'delete'], dialogBtnKe
           let config = Object.assign({}, objBtn[arr[0]], arr[1])
           if (config.code) {
             if (arr[1].show === undefined) {
-              config.show = showBtn(config.code)
+              config.show = authBtn(config.code, 'show')
             }
-            config.name = getBtnName(config.code)
+            config.name = authBtn(config.code)
           }
           obj[btnType].push(config)
         } else {

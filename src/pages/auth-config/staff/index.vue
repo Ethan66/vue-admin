@@ -27,11 +27,11 @@
         @table-jump="handleJump">
         <div class="btn-content" slot="btn">
           <span v-if="chooseDataArr.length > 0">已选择 <i>{{ chooseDataArr.length }}</i> 条</span>
-          <el-button @click="handleBatchStop" v-if="$showBtn('staff-batch-stop') && chooseDataArr.length > 0">{{$getBtnName('staff-batch-stop')}}</el-button>
-          <el-button @click="handleBatchStart" v-if="$showBtn('staff-batch-start') && chooseDataArr.length > 0">{{$getBtnName('staff-batch-start')}}</el-button>
-          <el-button @click="handleBatchForbidLogin" v-if="$showBtn('staff-batch-stop-log') && chooseDataArr.length > 0">{{$getBtnName('staff-batch-stop-log')}}</el-button>
-          <el-button @click="handleBacthAllowLogin" v-if="$showBtn('staff-batch-ok-log') && chooseDataArr.length > 0">{{$getBtnName('staff-batch-ok-log')}}</el-button>
-          <el-button @click="handleAdd" v-if="$showBtn('staff-manage-add') && chooseDataArr.length < 1">{{$getBtnName('staff-manage-add')}}</el-button>
+          <el-button @click="handleBatchStop" v-if="$authBtn('staff-batch-stop') && chooseDataArr.length > 0">{{$authBtn('staff-batch-stop')}}</el-button>
+          <el-button @click="handleBatchStart" v-if="$authBtn('staff-batch-start') && chooseDataArr.length > 0">{{$authBtn('staff-batch-start')}}</el-button>
+          <el-button @click="handleBatchForbidLogin" v-if="$authBtn('staff-batch-stop-log') && chooseDataArr.length > 0">{{$authBtn('staff-batch-stop-log')}}</el-button>
+          <el-button @click="handleBacthAllowLogin" v-if="$authBtn('staff-batch-ok-log') && chooseDataArr.length > 0">{{$authBtn('staff-batch-ok-log')}}</el-button>
+          <el-button @click="handleAdd" v-if="$authBtn('staff-manage-add') && chooseDataArr.length < 1">{{$authBtn('staff-manage-add')}}</el-button>
         </div>
       </table-module>
     </div>

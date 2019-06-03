@@ -1,5 +1,5 @@
 import { basicInitObj } from '@/components/basicObj'
-import { showBtn, getBtnName, setBtnConfig } from '@/components/methods'
+import { authBtn, setBtnConfig } from '@/components/methods'
 
 const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
 const initData = Object.assign({}, basicInitObj)
@@ -96,10 +96,10 @@ export const account = {
 
 // 组织架构
 const organizationMoreList = [
-  { name: getBtnName('organization-add-same-level'), clickFn: 'handleCreateDepartment', show: showBtn('organization-add-same-level') },
-  { name: getBtnName('organization-add-next-level'), clickFn: 'handleCreateNextLevelDepartment', show: showBtn('organization-add-next-level') },
-  { name: getBtnName('organization-stop'), clickFn: 'handleStop', show: showBtn('organization-stop') },
-  { name: getBtnName('organization-delete'), clickFn: 'handleDeleteData', show: showBtn('organization-delete'), deleteTip: '确定删除该部门吗，删除后该部门的所有下属部门也被删除' }
+  { name: authBtn('organization-add-same-level'), clickFn: 'handleCreateDepartment', show: authBtn('organization-add-same-level', 'show') },
+  { name: authBtn('organization-add-next-level'), clickFn: 'handleCreateNextLevelDepartment', show: authBtn('organization-add-next-level', 'show') },
+  { name: authBtn('organization-stop'), clickFn: 'handleStop', show: authBtn('organization-stop', 'show') },
+  { name: authBtn('organization-delete'), clickFn: 'handleDeleteData', show: authBtn('organization-delete', 'show'), deleteTip: '确定删除该部门吗，删除后该部门的所有下属部门也被删除' }
 ]
 
 export const organization = {

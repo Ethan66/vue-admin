@@ -15,7 +15,7 @@
       :get-tree-data-by-post="getDataByPost"
       @clickGetTreeData="handleClickGetTreeData">
       <div class="btn-content" slot="btn">
-        <el-button @click="handleAdd" v-if="$showBtn('organization-add')">{{ $getBtnName('organization-add') }}</el-button>
+        <el-button @click="handleAdd" v-if="$authBtn('organization-add')">{{ $authBtn('organization-add') }}</el-button>
       </div>
     </table-module>
     <dialog-module

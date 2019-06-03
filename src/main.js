@@ -8,7 +8,7 @@ import router from './router'
 import store from './store'
 import { adminModule } from '@/components'
 import { format, disposeTreeData } from '@/config/utils'
-import { initEditData, setItem, setBtnConfig, showBtn, getBtnName } from '@/components/methods'
+import { initEditData, setItem, setBtnConfig, authBtn } from '@/components/methods'
 
 Vue.use(ElementUI)
 Vue.use(adminModule)
@@ -18,8 +18,7 @@ Vue.prototype.$setItem = setItem
 Vue.prototype.$setBtnConfig = setBtnConfig
 Vue.prototype.$disposeTreeData = disposeTreeData
 Vue.prototype.$format = format
-Vue.prototype.$showBtn = showBtn
-Vue.prototype.$getBtnName = getBtnName
+Vue.prototype.$authBtn = authBtn
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

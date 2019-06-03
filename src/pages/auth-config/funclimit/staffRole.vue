@@ -23,8 +23,8 @@
       @table-jump="handleJump">
       <div class="btn-content" slot="btn">
         <span v-if="chooseDataArr.length > 0">已选择 <i>{{ chooseDataArr.length }}</i> 条</span>
-        <el-button @click="handleBatchDelete" v-if="$showBtn('config-batch-delete') && chooseDataArr.length > 0">{{$getBtnName('config-batch-delete')}}</el-button>
-        <el-button @click="handleAddStaff" v-if="$showBtn('config-manage-add') && chooseDataArr.length < 1">{{$getBtnName('config-manage-add')}}</el-button>
+        <el-button @click="handleBatchDelete" v-if="$authBtn('config-batch-delete') && chooseDataArr.length > 0">{{$authBtn('config-batch-delete')}}</el-button>
+        <el-button @click="handleAddStaff" v-if="$authBtn('config-manage-add') && chooseDataArr.length < 1">{{$authBtn('config-manage-add')}}</el-button>
       </div>
     </table-module>
     <!-- 添加编辑员工弹框 -->

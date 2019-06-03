@@ -1,5 +1,5 @@
 import { basicInitObj } from '@/components/basicObj'
-import { setBtnConfig, getBtnName, showBtn } from '@/components/methods'
+import { setBtnConfig, authBtn } from '@/components/methods'
 
 const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
 
@@ -7,11 +7,11 @@ const initData = Object.assign({}, basicInitObj)
 
 // 员工管理
 const organizationMoreList = [
-  { name: getBtnName('staff-admin-stop'), clickFn: 'handleStop', show: showBtn('staff-admin-stop') },
-  { name: getBtnName('staff-admin-open'), clickFn: 'handleStart', show: showBtn('staff-admin-open') },
-  { name: getBtnName('staff-admin-login'), clickFn: 'handleAllowLogin', show: showBtn('staff-admin-login') },
-  { name: getBtnName('staff-admin-nologin'), clickFn: 'handleForbidLogin', show: showBtn('staff-admin-nologin') },
-  { name: getBtnName('staff-admin-reset'), clickFn: 'handleResetPassword', show: showBtn('staff-admin-reset') }
+  { name: authBtn('staff-admin-stop'), clickFn: 'handleStop', show: authBtn('staff-admin-stop', 'show') },
+  { name: authBtn('staff-admin-open'), clickFn: 'handleStart', show: authBtn('staff-admin-open', 'show') },
+  { name: authBtn('staff-admin-login'), clickFn: 'handleAllowLogin', show: authBtn('staff-admin-login', 'show') },
+  { name: authBtn('staff-admin-nologin'), clickFn: 'handleForbidLogin', show: authBtn('staff-admin-nologin', 'show') },
+  { name: authBtn('staff-admin-reset'), clickFn: 'handleResetPassword', show: authBtn('staff-admin-reset', 'show') }
 ]
 
 export const staff = {
