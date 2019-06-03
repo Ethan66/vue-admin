@@ -24,12 +24,16 @@
             ><el-option
                 v-for="(pro, index) in item.options" :key="index" :label="pro.label" :value="pro.value"></el-option>
             </el-select>
-            <selectTree
-              ref="selectTree"
+            <tree-select
               v-if="item.type === 'selectTree'"
-              :props="props"
-              :options="item.treeOptions"
-              @getValue="getValue($event, item.key)"
+              ref="selectTree"
+              clearable
+              :width="selectTreeWidth"
+              :data="item.dialogData"
+              :defaultProps="item.defaultProps"
+              nodeKey="id" :checkedKeys="selectTreeCheckedValue"
+              @change="handleClearSelectTree"
+              @popoverHide="popoverHide"
             />
           </el-form-item>
           <el-form-item v-if="item.type === 'date'" :label="item.label" :key="i">
@@ -57,7 +61,7 @@
 </template>
 
 <script>
-import selectTree from '../select-tree/select-tree'
+import treeSelect from '@/components/tree-select'
 export default {
   name: 'searchModule',
   props: {
@@ -75,7 +79,13 @@ export default {
       default: true
     },
     // 默认搜索条件
-    searchDefaultObj: Object
+    searchDefaultObj: Object,
+    // 搜索树宽度
+    selectTreeWidth: Number,
+    // 搜素树key值
+    selectTreekey: String,
+    // 搜索树默认已经选择的值
+    selectTreeCheckedValue: Array,
   },
   data () {
     return {
@@ -185,10 +195,19 @@ export default {
       })
       console.log(this.searchValues)
       this.$emit('handleSearch', this.searchValues)
+    },
+    // 清空搜索树内容
+    handleClearSelectTree (val) {
+      this.$emit('handleClearSelectTree', val)
+    },
+     // 拿到选择树的值
+    popoverHide (checkedIds, checkedData) {
+      this.searchValues[this.selectTreekey] = checkedIds
+      this.$emit('handleSelectTreeValue', checkedData)
     }
   },
   components: {
-    selectTree
+    treeSelect
   }
 }
 </script>

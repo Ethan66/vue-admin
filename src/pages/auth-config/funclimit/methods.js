@@ -45,10 +45,10 @@ export default {
       }
       apiQueryDepartmentTree(params).then(res => {
         if (res.code === '208999') {
-          // this.treeList = this.$disposeTreeData(res.resultMap.data)
           this.searchItem.map(item => {
             if (item.key === 'departmentId') {
-              item.treeOptions = this.$disposeTreeData(res.resultMap.data)
+              // item.treeOptions = this.$disposeTreeData(res.resultMap.data)
+              item.dialogData = this.$disposeTreeData(res.resultMap.data)
             }
           })
         } else {

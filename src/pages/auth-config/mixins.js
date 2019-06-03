@@ -176,7 +176,8 @@ export const staffRole = {
       departmentId: {
         label: '部门',
         type: 'selectTree',
-        treeOptions: []
+        dialogData: [],
+        defaultProps: { children: 'childIdList', label: 'departmentName' }
       }
     }]
     let configTableItem = {

@@ -5,6 +5,11 @@
       :search-item="searchItem"
       :search-values="searchValues"
       :search-default-obj="defaultSearchObj"
+      :select-tree-checked-value="selectTreeCheckedValue"
+      :selectTreeWidth="230"
+      selectTreekey="departmentId"
+      @handleSelectTreeValue="handleSelectTreeValue"
+      @handleClearSelectTree="handleClearSelectTree"
       @handleSearch="handleSearch"
     />
     <table-module
@@ -83,7 +88,8 @@ export default {
         { label: '复制角色权限', key: 'cloneRoleIds', type: 'selectDouble', options: [] }
       ],
       flag: true, // 调用api锁
-      delAllRole: 1
+      delAllRole: 1,
+      selectTreeCheckedValue: []
     }
   },
   methods: {
@@ -188,6 +194,12 @@ export default {
         }
       })
     },
+    // 选择树后操作
+    handleSelectTreeValue () {
+      this.selectTreeCheckedValue = [this.searchValues.departmentId]
+    },
+    // 清空选择树
+    handleClearSelectTree (val) {},
     // 处理表格数据
     handleTableData (tableData) {
       tableData.forEach(item => {
@@ -208,6 +220,8 @@ export default {
     },
     // 获取表格数据
     handleGetTableData (api, val, currentPage = 1) {
+      this.handleSaveSearchValues(val, currentPage)
+      this.handleSelectTreeValue()
       this.getTableDataApi = api
       this.tableLoading = true
       let params = {
