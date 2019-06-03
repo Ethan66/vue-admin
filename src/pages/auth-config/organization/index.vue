@@ -243,7 +243,9 @@ export default {
     },
     // 获取表格数据
     handleGetTableData (api, val, currentPage = 1) {
-      this.handleSaveSearchValues (val, currentPage)
+      let obj = this.handleSaveSearchValues (val, currentPage)
+      val = obj.val || val
+      currentPage = obj.currentPage || currentPage
       this.getTableDataApi = api
       /* if (val && val.departmentName) {
         this.getDataByPost = true
@@ -253,7 +255,6 @@ export default {
       this.tableLoading = true
       api(val).then(res => {
         if (res.code === '208999') {
-          this.tablePages.current = currentPage
           this.allData = res.resultMap.data
           this.tableData = this.allData
           this.tableData.forEach(item => {

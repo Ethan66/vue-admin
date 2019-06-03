@@ -220,17 +220,18 @@ export default {
     },
     // 获取表格数据
     handleGetTableData (api, val, currentPage = 1) {
-      this.handleSaveSearchValues(val, currentPage)
+      let obj = this.handleSaveSearchValues(val, currentPage)
+       val = obj.val || val
+      currentPage = obj.currentPage || currentPage
       this.handleSelectTreeValue()
       this.getTableDataApi = api
       this.tableLoading = true
       let params = {
-        currentPage: currentPage, pageSize: this.tablePages.pageSize
+        currentPage: this.tablePages.current, pageSize: this.tablePages.pageSize
       }
       Object.assign(params, val)
       api(params).then(res => {
         if (res.code === '208999') {
-          this.tablePages.current = currentPage
           if (res.resultMap) {
             if (res.resultMap.page) {
               this.allData = res.resultMap.page.list
