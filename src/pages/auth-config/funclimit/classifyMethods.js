@@ -1,5 +1,4 @@
 import { apiCreateConsoleRole, apiEditeConsoleRole, apiDelConsoleRole, apiGetAllRoleRequestTree, apiGetConsoleRoleById } from '@/api/role'
-import { savePageData } from '@/components/methods'
 
 export default {
   methods: {
@@ -286,21 +285,7 @@ export default {
     },
     // 获取表格数据
     handleGetTableData (api, val, currentPage = 1) {
-      let lowName
-      if (this.$options.name) {
-        lowName = this.$options.name.split('-').join('').toLowerCase()
-      } else {
-        lowName = {}
-      }
-      if (!this.searched && sessionStorage.getItem(lowName)) { // 第一次读缓存
-        let obj = JSON.parse(sessionStorage.getItem(lowName))
-        this.searchValues = val = obj.searchValues
-        Object.assign(this.searchValues, this.searchDefaultObj)
-        this.tablePages.current = currentPage = obj.currentPage
-        this.activeTabName = obj.activeTabName
-      }
-      this.searched = true
-      savePageData(lowName, val, currentPage, this.activeTabName) // 将搜索等数据缓存
+      this.handleSaveSearchValues(val, currentPage)
       this.getTableDataApi = api
       this.tableLoading = true
       let params = {
@@ -319,6 +304,6 @@ export default {
           this.$message.error(res.message)
         }
       })
-    },
+    }
   }
 }

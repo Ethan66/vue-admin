@@ -15,21 +15,7 @@ export default {
     },
     // 获取表格数据
     handleGetTableData (api, val, currentPage = 1) {
-      let lowName
-      if (this.$options.name) {
-        lowName = this.$options.name.split('-').join('').toLowerCase()
-      } else {
-        lowName = {}
-      }
-      if (!this.searched && sessionStorage.getItem(lowName)) { // 第一次读缓存
-        let obj = JSON.parse(sessionStorage.getItem(lowName))
-        this.searchValues = val = obj.searchValues
-        Object.assign(this.searchValues, this.searchDefaultObj)
-        this.tablePages.current = currentPage = obj.currentPage
-        this.activeTabName = obj.activeTabName
-      }
-      this.searched = true
-      savePageData(lowName, val, currentPage, this.activeTabName) // 将搜索等数据缓存
+      this.handleSaveSearchValues(val, currentPage)
       this.getTableDataApi = api
       this.tableLoading = true
       let params = {
@@ -99,6 +85,24 @@ export default {
     },
     // 自动打开表格树
     handleOpenTableTree (tableData) {
+    },
+    // searchValues本地缓存
+    handleSaveSearchValues (val, currentPage) {
+      let lowName
+      if (this.$options.name) {
+        lowName = this.$options.name.split('-').join('').toLowerCase()
+      } else {
+        lowName = {}
+      }
+      if (!this.searched && sessionStorage.getItem(lowName)) { // 第一次读缓存
+        let obj = JSON.parse(sessionStorage.getItem(lowName))
+        this.searchValues = val = obj.searchValues
+        Object.assign(this.searchValues, this.searchDefaultObj)
+        this.tablePages.current = currentPage = obj.currentPage
+        this.activeTabName = obj.activeTabName
+      }
+      this.searched = true
+      savePageData(lowName, val, currentPage, this.activeTabName) // 将搜索等数据缓存
     }
   }
 }

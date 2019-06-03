@@ -1,6 +1,5 @@
 import { apiCreateConsoleUser, apiQueryLowerLevelList, apiEditConsoleUser, apiListConsoleUser, apiQueryConsoleUserInfo, apiEditConsoleUserStatus, apiResetConsoleUserPassword, apiQueryDepartmentTree } from '@/api/staff'
 import MD5 from 'js-md5'
-import { savePageData } from '@/components/methods'
 
 export const methods = {
   methods: {
@@ -155,18 +154,7 @@ export const methods = {
     },
     // 获取表格数据
     handleGetTableData (api, val, currentPage = 1) {
-      let lowName = this.$options.name.split('-').join('').toLowerCase()
-      if (!this.searched && sessionStorage.getItem(lowName)) { // 第一次读缓存
-        let obj = JSON.parse(sessionStorage.getItem(lowName))
-        this.searchValues = val = obj.searchValues
-        Object.assign(this.searchValues, this.searchDefaultObj)
-        this.tablePages.current = currentPage = obj.currentPage
-        this.activeTabName = obj.activeTabName
-      }
-      this.searched = true
-      let searchObj = { ...val }
-      delete searchObj.departmentId
-      savePageData(lowName, searchObj, currentPage, this.activeTabName) // 将搜索等数据缓存
+      this.handleSaveSearchValues(val, currentPage)
       this.getTableDataApi = api
       this.tableLoading = true
       let params = {
