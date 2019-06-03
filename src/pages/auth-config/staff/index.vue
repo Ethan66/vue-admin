@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { staff } from './mixins'
+import { staff } from '../mixins'
 import { methods } from './methods'
 import basicMethod from '@/config/mixins'
 import staffDialog from './staffDialog'

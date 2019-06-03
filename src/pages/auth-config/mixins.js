@@ -2,12 +2,11 @@ import { basicInitObj } from '@/components/basicObj'
 import { authBtn, setBtnConfig } from '@/components/methods'
 
 const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
-const initData = Object.assign({}, basicInitObj)
 
 // IP控制
 export const ipControl = {
   data () {
-    return setBtnConfig(JSON.parse(JSON.stringify(initData)), [{ edit: { code: 'visit-ip-edit' } }, { cancel: { name: '启 用', clickFn: 'handleOpen', show: false, code: 'visit-ip-open' } }, { cancel: { name: '停 用', clickFn: 'handleStop', show: false, code: 'visit-ip-stop' } }])
+    return setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), [{ edit: { code: 'visit-ip-edit' } }, { cancel: { name: '启 用', clickFn: 'handleOpen', show: false, code: 'visit-ip-open' } }, { cancel: { name: '停 用', clickFn: 'handleStop', show: false, code: 'visit-ip-stop' } }])
   },
   created () {
     let configSearchItem = [
@@ -59,7 +58,7 @@ export const ipControl = {
 // 账户控制
 export const account = {
   data () {
-    return setBtnConfig(JSON.parse(JSON.stringify(initData)), [{ cancel: { name: '失 效', clickFn: 'handleInvalid', show: false, code: 'visit-c-stop' } }])
+    return setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), [{ cancel: { name: '失 效', clickFn: 'handleInvalid', show: false, code: 'visit-c-stop' } }])
   },
   created () {
     let configSearchItem = [
@@ -166,10 +165,10 @@ export const organization = {
   }
 }
 
-// 员工管理
+// 员工角色分配
 export const staffRole = {
   data () {
-    return setBtnConfig(JSON.parse(JSON.stringify(initData)), [{ edit: { code: 'config-manage-edit' } }, { cancel: { noTip: false, code: 'config-manage-delete', clickFn: 'handleDeleteBtn' } }])
+    return setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), [{ edit: { code: 'config-manage-edit' } }, { cancel: { noTip: false, code: 'config-manage-delete', clickFn: 'handleDeleteBtn' } }])
   },
   created () {
     let configSearchItem = ['realName', {
@@ -211,3 +210,57 @@ export const staffRole = {
     }
   }
 }
+
+// 员工管理
+const staffManageMoreList = [
+  { name: authBtn('staff-admin-stop'), clickFn: 'handleStop', show: authBtn('staff-admin-stop', 'show') },
+  { name: authBtn('staff-admin-open'), clickFn: 'handleStart', show: authBtn('staff-admin-open', 'show') },
+  { name: authBtn('staff-admin-login'), clickFn: 'handleAllowLogin', show: authBtn('staff-admin-login', 'show') },
+  { name: authBtn('staff-admin-nologin'), clickFn: 'handleForbidLogin', show: authBtn('staff-admin-nologin', 'show') },
+  { name: authBtn('staff-admin-reset'), clickFn: 'handleResetPassword', show: authBtn('staff-admin-reset', 'show') }
+]
+
+export const staff = {
+  data () {
+    return setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), [
+      { edit: { code: 'staff-admin-edit' } }, { more: { list: staffManageMoreList, code: 'organization-more' } }
+    ])
+  },
+  created () {
+    let configSearchItem = [{
+      status: { type: 'select',
+        label: '状态',
+        options: [
+          { label: '正常', value: 0 },
+          { label: '停用', value: 1 },
+          { label: '禁止登录', value: 2 }
+        ]
+      }
+    }, 'realName']
+    let configTableItem = {
+      selection: 50,
+      realName: { width: 80, clickFn: 'handleShowInfo', clsName: 'cm-btn-color' },
+      telephone: 120,
+      departmentName: 100,
+      position: 100,
+      reportToName: 100,
+      statusMsg: { clsName: 'statusMsg', width: 100 },
+      roleName: 120,
+      btn: 120
+    }
+    this.searchItem = this.$setItem(tybeObj['staff-manage1'], configSearchItem, 'search')
+    this.tableItem = this.$setItem(tybeObj['staff-manage1'], configTableItem, 'table')
+    if (this.tableBtn.filter(item => item.show).length === 0) {
+      this.tableItem.splice(this.tableItem.length - 1, 1)
+    }
+    this.rules = {
+      buttonName: [
+        { required: true, message: '请输入按钮名称', trigger: 'blur' }
+      ],
+      buttonCode: [
+        { required: true, message: '请输入按钮编码', trigger: 'blur' }
+      ]
+    }
+  }
+}
+
