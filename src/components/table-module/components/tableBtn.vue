@@ -15,7 +15,7 @@
           <template v-if="!btn.list">
             <template v-if="!isInlineEdit">
               <p
-                v-if="btn.show || (scope.row.showBtn && scope.row.showBtn.includes(btn.name))"
+                v-if="handleShowBtn(btn, scope.row)"
                 class="btnCls"
                 :key="i+index"
                 :disabled="btn.disabled || (scope.row.disabledBtn && scope.row.disabledBtn.includes(btn.name))"
@@ -35,7 +35,7 @@
           </template>
           <template v-if="btn.list">
             <el-dropdown
-              v-if="btn.show || (scope.row.showBtn && scope.row.showBtn.includes(btn.name))"
+              v-if="handleShowBtn(btn, scope.row)"
               :key="i+index"
               @command="handleChooseBtn"
             >
@@ -44,7 +44,9 @@
               >{{ btn.name }}<i class="el-icon-arrow-down"></i></p>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item
-                  v-for="(operato, i) in btn.list"
+                  v-for="(operato, i) in btn.list
+                  .filter(item => item.show)
+                  .filter(item => (scope.row.showBtnCode && scope.row.showBtnCode.includes(item.code)) || item.inlineShow !== false)"
                   :key="i"
                   :disabled="operato.disabled"
                   :command="handleCreateCommand(operato, scope.row, index)"
@@ -92,7 +94,10 @@ export default {
   methods: {
     // 是否显示按钮
     handleShowBtn (btn, row) {
-      return btn.show || (row.showBtn && row.showBtn.includes(btn.name))
+      if (!btn.show) return false
+      if (row.showBtnCode && row.showBtnCode.includes(btn.code)) return true
+      if (btn.inlineShow !== false) return true
+      return false
     },
     handleSetInlineShowName (btn, row) {
       return btn.name === '编辑' && row.editBtnName ? row.editBtnName : btn.name
@@ -181,7 +186,6 @@ export default {
     },
     // 更多按钮时下拉选择触发
     handleChooseBtn (command) {
-      console.log(arguments)
       let { operato, row, index } = command
       this.handleBtnClick(operato.clickFn, row, index, operato, operato.noClickFn)
     },

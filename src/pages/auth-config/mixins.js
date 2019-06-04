@@ -6,7 +6,7 @@ const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
 // IP控制
 export const ipControl = {
   data () {
-    return setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), [{ edit: { code: 'visit-ip-edit' } }, { cancel: { name: '启 用', clickFn: 'handleOpen', show: false, code: 'visit-ip-open' } }, { cancel: { name: '停 用', clickFn: 'handleStop', show: false, code: 'visit-ip-stop' } }])
+    return setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), [{ edit: { code: 'visit-ip-edit' } }, { cancel: { clickFn: 'handleOpen', inlineShow: false, code: 'visit-ip-open' } }, { cancel: { clickFn: 'handleStop', inlineShow: false, code: 'visit-ip-stop' } }])
   },
   created () {
     let configSearchItem = [
@@ -58,7 +58,7 @@ export const ipControl = {
 // 账户控制
 export const account = {
   data () {
-    return setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), [{ cancel: { name: '失 效', clickFn: 'handleInvalid', show: false, code: 'visit-c-stop' } }])
+    return setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), [{ cancel: { clickFn: 'handleInvalid', inlineShow: false, code: 'visit-c-stop' } }])
   },
   created () {
     let configSearchItem = [
@@ -83,7 +83,7 @@ export const account = {
       remark: 100,
       isDeleteMsg: { clsName: 'isDeleteMsg', width: 80 },
       gmtCreate: 160,
-      btn: 70
+      btn: 75
     }
     this.searchItem = this.$setItem(tybeObj['visit-manage1'], configSearchItem, 'search')
     this.tableItem = this.$setItem(tybeObj['visit-manage1'], configTableItem, 'table')
@@ -97,7 +97,8 @@ export const account = {
 const organizationMoreList = authMoreBtn([
   { code: 'organization-add-same-level', clickFn: 'handleCreateDepartment' },
   { code: 'organization-add-next-level', clickFn: 'handleCreateNextLevelDepartment' },
-  { code: 'organization-stop', clickFn: 'handleStop' },
+  { code: 'organization-stop', clickFn: 'handleStop', config: { inlineShow: false } },
+  { code: 'organization-open', clickFn: 'handleOpen', config: { inlineShow: false } },
   { code: 'organization-delete', clickFn: 'handleDeleteData', config: { deleteTip: '确定删除该部门吗，删除后该部门的所有下属部门也被删除' } }
 ])
 
@@ -213,10 +214,10 @@ export const staffRole = {
 
 // 员工管理
 const staffManageMoreList = authMoreBtn([
-  { code: 'staff-admin-stop', clickFn: 'handleStop' },
-  { code: 'staff-admin-open', clickFn: 'handleStart' },
-  { code: 'staff-admin-login', clickFn: 'handleAllowLogin' },
-  { code: 'staff-admin-nologin', clickFn: 'handleForbidLogin' },
+  { code: 'staff-admin-stop', clickFn: 'handleStop', config: { inlineShow: false } },
+  { code: 'staff-admin-open', clickFn: 'handleStart', config: { inlineShow: false } },
+  { code: 'staff-admin-login', clickFn: 'handleAllowLogin', config: { inlineShow: false } },
+  { code: 'staff-admin-nologin', clickFn: 'handleForbidLogin', config: { inlineShow: false } },
   { code: 'staff-admin-reset', clickFn: 'handleResetPassword' }
 ])
 

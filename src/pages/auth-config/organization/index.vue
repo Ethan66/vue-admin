@@ -180,6 +180,10 @@ export default {
       })
     })
     },
+    // 点击表格启用按钮
+    handleOpen () {
+      console.log('open')
+    },
     // 点击表格删除按钮
     handleDeleteData (row) {
       this.apiDeleteData(apiDelDepartment, row.id, apiQueryDepartmentList)
@@ -232,7 +236,9 @@ export default {
           this.tableData = JSON.parse(JSON.stringify(this.allData))
           this.tableData.forEach(item => {
             if (item.departmentStatus === 0) {
-              item.showBtnCode = ['organization-add-same-level', 'organization-delete']
+              item.showBtnCode = ['organization-stop']
+            } else {
+              item.showBtnCode = ['organization-open']
             }
             if (item.hasLower) {
               item.list = []

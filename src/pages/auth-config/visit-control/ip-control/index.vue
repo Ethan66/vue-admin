@@ -168,12 +168,12 @@ export default {
     // 处理表格数据
     handleTableData (tableData) {
       tableData.forEach(item => {
-        item.showBtn = []
+        item.showBtnCode = []
         if (item.isDelete === '0') {
-          item.showBtn.push('停 用')
+          item.showBtnCode.push('visit-ip-stop')
         }
         if (item.isDelete === '1') {
-          item.showBtn.push('启 用')
+          item.showBtnCode.push('visit-ip-open')
         }
       })
     }

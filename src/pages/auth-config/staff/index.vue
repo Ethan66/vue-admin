@@ -230,18 +230,18 @@ export default {
     handleTableData (tableData) {
       tableData.forEach(item => {
         item.userType = item.userType === '0' ? '百凌管理平台用户' : item.userType === '1' ? '商户系统用户' : '其他'
-        item.showBtn = []
+        item.showBtnCode = []
         if (item.status === 0) {
-          item.showBtn.push('禁止登录')
+          item.showBtnCode.push('staff-admin-nologin')
         }
         if (item.status === 2) {
-          item.showBtn.push('允许登录')
+          item.showBtnCode.push('staff-admin-login')
         }
         if (item.isDelete === '0') {
-          item.showBtn.push('停用')
+          item.showBtnCode.push('staff-admin-stop')
         }
         if (item.isDelete === '1') {
-          item.showBtn.push('启用')
+          item.showBtnCode.push('staff-admin-open')
         }
       })
     },

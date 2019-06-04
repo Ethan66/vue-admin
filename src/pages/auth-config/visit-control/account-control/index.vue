@@ -76,7 +76,6 @@ export default {
   created () {
     this.handleGetTableData(apiPageConsoleUserWhite)
     this.handleApiListConsoleUser()
-    this.tableItem.push({fixed: "right", label: "操作", prop: "btn", type: "btn", width: 75})
   },
   data () {
     return {
@@ -256,9 +255,9 @@ export default {
         } else {
           item.grandBegin = '永 久'
         }
-        item.showBtn = []
+        item.showBtnCode = []
         if (item.isDelete === '0') {
-          item.showBtn.push('失 效')
+          item.showBtnCode.push('visit-c-stop')
         }
       })
     }
