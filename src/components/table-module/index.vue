@@ -58,8 +58,10 @@
           :item="item"
           :tableData="tableData"
           :treeInitLevel="treeInitLevel"
-          :tableTreeOpenNum="tableTreeOpenNum"
+          :treeExpandIds="treeExpandIds"
+          :treeParentId="treeParentId"
           :getTreeDataByPost="getTreeDataByPost"
+          @handleSaveOpenIds="handleSaveOpenIds"
           @handAddTableData="handAddTableData"
           @clickGetTreeData="handleClickGetTreeData"
         >
@@ -135,12 +137,17 @@ export default {
       type: Array,
       required: true
     },
-    // 表格树保存打开状态
-    tableTreeOpenNum: Object,
     // 表格树最开始的等级
     treeInitLevel: Number,
     // 表格树打开是否需要请求接口
     getTreeDataByPost: Boolean,
+    // 表格树父亲id名字
+    treeParentId: {
+      type: String,
+      default: 'parentId'
+    },
+    // 保存表格树打开的ids
+    treeExpandIds: Array,
     // 初始化表头映射关系
     tableItem: {
       type: Array,
@@ -290,6 +297,10 @@ export default {
     // 树表格修改tableData
     handAddTableData (tableData) {
       this.$emit('update:tableData', tableData)
+    },
+    // 表格树保存已打开的id
+    handleSaveOpenIds (idList) {
+      this.$emit('update:treeExpandIds', idList)
     },
     // 事件：选中一条数据后保存选中状态按钮
     handleSelectChange (val) {

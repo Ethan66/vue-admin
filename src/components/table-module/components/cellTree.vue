@@ -26,7 +26,8 @@ export default {
       type: Number,
       default: 0
     },
-    tableTreeOpenNum: Object,
+    treeParentId: String,
+    treeExpandIds: Array,
     getTreeDataByPost: Boolean
   },
   methods: {
@@ -52,7 +53,11 @@ export default {
     },
     // 打开（关闭）树结构
     handleToggle (index, row) {
-      if (this.getTreeDataByPost) {
+      let treeExpandIds = JSON.parse(JSON.stringify(this.treeExpandIds))
+      if (this.getTreeDataByPost && !row.expand) {
+        row.expand = true
+        treeExpandIds.push(row.id)
+        this.$emit('handleSaveOpenIds', treeExpandIds)
         this.$emit('clickGetTreeData', row, index)
         return
       }
@@ -62,28 +67,24 @@ export default {
         if (row.list) {
           tableData = tableData.splice(0, index + 1).concat(row.list).concat(tableData)
           tableData[index].expand = true
+          treeExpandIds.push(row.id)
+          this.$emit('handleSaveOpenIds', treeExpandIds)
         }
       } else { // 展开
-       let length = 0
-        function findLength (list, expand) {
-          let length = list.length
-          list.forEach(item => {
-            if (item[expand] && item.list) {
-              length += findLength(item.list, expand)
-            }
-            item.expand = false
-          })
-          return length
-        }
-        if (row.list) {
-          length = findLength(row.list, 'expand')
-          console.log(length)
-        }
+        let length = 0
+        let arr = [row.id]
+        tableData.forEach(item => {
+          if (arr.includes(item[this.treeParentId])) {
+            arr.push(item.id)
+            length++
+          }
+        })
         tableData = tableData.splice(0, index + 1).concat(tableData.slice(length))
         tableData[index].expand = false
-        row.expand = false
+        let i = treeExpandIds.indexOf(row.id)
+        treeExpandIds.splice(i, 1)
+        this.$emit('handleSaveOpenIds', treeExpandIds)
       }
-      // this.tableTreeOpenNum[row.id] = tableData[index].expand = !tableData[index].expand
       this.$emit('handAddTableData', tableData)
     },
   }

@@ -9,7 +9,6 @@ const tableInitObj = {
   allData: [], // 请求接口获取的表格数据
   tableData: [], // 展示到页面的表格数据，比如allData一级菜单表示为1，展示到页面的时候需要将1变为中文一级菜单
   tableItem: [],
-  tableTreeOpenNum: {}, // 表格树打开保存
   tableLoading: true, // 表格刷新
   isEdit: 0, // 用户是编辑还是新增，0表示新增
   tableBtn: [], // 展示到表格的按钮

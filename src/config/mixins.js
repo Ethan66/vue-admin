@@ -85,9 +85,6 @@ export default {
         }
       })
     },
-    // 自动打开表格树
-    handleOpenTableTree (tableData) {
-    },
     // searchValues本地缓存
     handleSaveSearchValues (val, currentPage) {
       let lowName
@@ -106,6 +103,23 @@ export default {
       this.searched = true
       savePageData(lowName, val, currentPage, this.activeTabName) // 将搜索等数据缓存
       return { val, currentPage }
+    },
+    // 编辑后展示已打开的树
+    handleOpenTree (tableData, saveExpendIdList) {
+      let result = []
+      function open (result, data, idList) {
+        data.forEach(item => {
+          result.push(item)
+          if (idList.includes(item.id)) {
+            item.expand = true
+            if (item.list) {
+              open(result, item.list, idList)
+            }
+          }
+        })
+      }
+      open(result, tableData, saveExpendIdList)
+      this.tableData = result
     }
   }
 }

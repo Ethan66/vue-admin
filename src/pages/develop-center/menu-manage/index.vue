@@ -8,11 +8,10 @@
     <table-module
       ref="table"
       :table-data.sync="tableData"
-      :table-tree-open-num.sync="tableTreeOpenNum"
       :table-item="tableItem"
       :table-btn="tableBtn"
-      :get-tree-data-by-post="getDataByPost"
-      @clickGetTreeData="handleClickGetTreeData"
+      :tree-expand-ids.sync="saveExpendIdList"
+      :tree-parent-id="'menuParentId'"
     >
       <div class="btn-content" slot="btn">
         <el-button @click="handleAdd" v-if="$authBtn('menu-add-menu')">{{ $authBtn('menu-add-menu') }}</el-button>
@@ -31,7 +30,7 @@
       :dialog-item="dialogItem"
       :dialog-btn="dialogBtn"
       :rules="rules"
-      :selectTreeWidth="selectTreeWidth1"
+      :selectTreeWidth="244"
       :select-tree-checked-value="selectTreeCheckedValue"
       selectTreekey="menuParentId"
       @handleSelectTreeValue="handleSelectTreeValue"
@@ -61,8 +60,7 @@ export default {
       showDetail: false,
       allParentMenu: [],
       selectTreeCheckedValue: [],
-      selectTreeWidth1: 244,
-      getDataByPost: true
+      saveExpendIdList: []
     }
   },
   watch: {
@@ -195,37 +193,8 @@ export default {
         this.apiEditData(apiEditeConsoleMenu, this.editData, apiListConsoleMenu)
       }
     },
-    // 点击获取子数据
-    handleClickGetTreeData (row, index) {
-      if (row.expand) {
-        let length = 0
-        function findLength (list, expand) {
-          let length = list.length
-          list.forEach(item => {
-            if (item[expand] && item.list) {
-              length += findLength(item.list, expand)
-            }
-            item.expand = false
-          })
-          return length
-        }
-        if (row.list) {
-          length = findLength(row.list, 'expand')
-        }
-        this.tableData = this.tableData.splice(0, index + 1).concat(this.tableData.slice(length))
-        this.handleTableData && this.handleTableData(this.tableData || [], true)
-        row.expand = false
-        return
-      } else {
-        if (row.list) {
-          this.tableData = this.tableData.splice(0, index + 1).concat(row.list).concat(this.tableData)
-          row.expand = true
-          this.handleTableData && this.handleTableData(this.tableData || [], true)
-        }
-      }
-    },
     // 处理表格数据
-    handleTableData (tableData, getDataByPost) {
+    handleTableData (tableData) {
       if (tableData.length === 0) {
         this.tableData = []
         return
@@ -259,18 +228,19 @@ export default {
             break
         }
       })
-      if (!getDataByPost) {
-        this.tableData = menuRelation(tableData, 'id', 'menuParentId', 'menuLevelStash', 'sortNo')
-      }
+      this.tableData = menuRelation(tableData, 'id', 'menuParentId', 'menuLevelStash', 'sortNo')
       function fn (data) {
-          data.forEach(item => {
-            if (item.list && item.list.length > 0) {
-              item.hasLower = true
-              fn(item.list)
-            }
-          })
-        }
-        fn (this.tableData)
+        data.forEach(item => {
+          if (item.list && item.list.length > 0) {
+            item.hasLower = true
+            fn(item.list)
+          }
+        })
+      }
+      fn (this.tableData)
+      if (this.saveExpendIdList.length > 0) {
+        this.handleOpenTree(this.tableData, this.saveExpendIdList)
+      }
     },
     // 批量新建
     handleBatchCreate (type) {
