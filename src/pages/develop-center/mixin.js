@@ -1,14 +1,14 @@
 import { basicInitObj, searchTableInitObj, tableInitObj } from '@/components/basicObj'
-import { authBtn } from '@/components/methods'
+import { authMoreBtn } from '@/components/methods'
 
 const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
 
-const menuMoreList = [
-  { name: authBtn('menu-add-same-level'), clickFn: 'handleCreateLevelMenu', show: authBtn('menu-add-same-level', 'show') },
-  { name: authBtn('menu-add-next-level'), clickFn: 'handleCreateNextLevelMenu', show: authBtn('menu-add-next-level', 'show') },
-  { name: authBtn('menu-delete'), clickFn: 'handleDeleteData', show: authBtn('menu-delete', 'show'), deleteTip: '确定删除该菜单吗？删除后该菜单下的所有内容也将被删除。' },
-  { name: authBtn('menu-detail'), clickFn: 'handleShowDetailDialog', show: authBtn('menu-detail', 'show') }
-]
+const menuMoreList = authMoreBtn([
+  { code: 'menu-add-same-level', clickFn: 'handleCreateLevelMenu' },
+  { code: 'menu-add-next-level', clickFn: 'handleCreateNextLevelMenu' },
+  { code: 'menu-delete', clickFn: 'handleDeleteData' },
+  { code: 'menu-detail', clickFn: 'handleShowDetailDialog' }
+])
 
 // 菜单管理
 export const menu = {

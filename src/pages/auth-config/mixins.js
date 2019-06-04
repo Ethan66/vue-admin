@@ -1,5 +1,5 @@
 import { basicInitObj } from '@/components/basicObj'
-import { authBtn, setBtnConfig } from '@/components/methods'
+import { authMoreBtn, setBtnConfig } from '@/components/methods'
 
 const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
 
@@ -94,12 +94,12 @@ export const account = {
 }
 
 // 组织架构
-const organizationMoreList = [
-  { name: authBtn('organization-add-same-level'), clickFn: 'handleCreateDepartment', show: authBtn('organization-add-same-level', 'show') },
-  { name: authBtn('organization-add-next-level'), clickFn: 'handleCreateNextLevelDepartment', show: authBtn('organization-add-next-level', 'show') },
-  { name: authBtn('organization-stop'), clickFn: 'handleStop', show: authBtn('organization-stop', 'show') },
-  { name: authBtn('organization-delete'), clickFn: 'handleDeleteData', show: authBtn('organization-delete', 'show'), deleteTip: '确定删除该部门吗，删除后该部门的所有下属部门也被删除' }
-]
+const organizationMoreList = authMoreBtn([
+  { code: 'organization-add-same-level', clickFn: 'handleCreateDepartment' },
+  { code: 'organization-add-next-level', clickFn: 'handleCreateNextLevelDepartment' },
+  { code: 'organization-stop', clickFn: 'handleStop' },
+  { code: 'organization-delete', clickFn: 'handleDeleteData', config: { deleteTip: '确定删除该部门吗，删除后该部门的所有下属部门也被删除' } }
+])
 
 export const organization = {
   data () {
@@ -212,13 +212,13 @@ export const staffRole = {
 }
 
 // 员工管理
-const staffManageMoreList = [
-  { name: authBtn('staff-admin-stop'), clickFn: 'handleStop', show: authBtn('staff-admin-stop', 'show') },
-  { name: authBtn('staff-admin-open'), clickFn: 'handleStart', show: authBtn('staff-admin-open', 'show') },
-  { name: authBtn('staff-admin-login'), clickFn: 'handleAllowLogin', show: authBtn('staff-admin-login', 'show') },
-  { name: authBtn('staff-admin-nologin'), clickFn: 'handleForbidLogin', show: authBtn('staff-admin-nologin', 'show') },
-  { name: authBtn('staff-admin-reset'), clickFn: 'handleResetPassword', show: authBtn('staff-admin-reset', 'show') }
-]
+const staffManageMoreList = authMoreBtn([
+  { code: 'staff-admin-stop', clickFn: 'handleStop' },
+  { code: 'staff-admin-open', clickFn: 'handleStart' },
+  { code: 'staff-admin-login', clickFn: 'handleAllowLogin' },
+  { code: 'staff-admin-nologin', clickFn: 'handleForbidLogin' },
+  { code: 'staff-admin-reset', clickFn: 'handleResetPassword' }
+])
 
 export const staff = {
   data () {
@@ -263,4 +263,3 @@ export const staff = {
     }
   }
 }
-

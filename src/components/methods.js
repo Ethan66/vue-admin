@@ -21,6 +21,17 @@ export const authBtn = (btnCode, type) => {
   }
 }
 
+// 表格更多按钮里按钮列表展示
+export const authMoreBtn = (list) => {
+  return list.map(item => {
+    let obj = { code: item.code, name: '', clickFn: item.clickFn }
+    obj.name = authBtn(item.code)
+    obj.show = authBtn(item.code, 'show')
+    item.config && Object.assign(obj, item.config)
+    return obj
+  })
+}
+
 // 初始化编辑数据
 export const initEditData = (dialogItem) => {
   try {
