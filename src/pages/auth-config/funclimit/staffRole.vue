@@ -221,9 +221,8 @@ export default {
     // 获取表格数据
     handleGetTableData (api, val, currentPage = 1) {
       let obj = this.handleSaveSearchValues(val, currentPage)
-       val = obj.val || val
+      val = obj.val || val
       currentPage = obj.currentPage || currentPage
-      this.handleSelectTreeValue()
       this.getTableDataApi = api
       this.tableLoading = true
       let params = {
