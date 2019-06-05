@@ -3,7 +3,7 @@
     <!--只有一级菜单-->
     <template v-if="!item.list || item.list.length === 0">
       <router-link :to="item.menuUrl">
-        <el-menu-item :index="item.menuUrl" :class="{'nosubmenu-arrow':!isNest}" @click="handleAddTabs(item)">
+        <el-menu-item :index="item.menuUrl" :class="{'nosubmenu-arrow':!isNest}" @click="handleChooseMenu(item)">
           <template>
             <img v-if="item.menuIcon" :src="require(`@/assets/img${item.menuIcon}.png`)" class="iconfont" />{{ item.menuName }}
           </template>
@@ -28,7 +28,7 @@
           :base-path="child.menuUrl"
           class="nest-menu" />
         <router-link v-else :to="child.menuUrl" :key="child.name">
-          <el-menu-item :index="child.menuUrl" @click="handleAddTabs(child)">
+          <el-menu-item :index="child.menuUrl" @click="handleChooseMenu(child)">
             <template>
               <i v-if="child.menuIcon" class="iconfont" :class="child.menuIcon" />{{ child.menuName }}
             </template>
@@ -65,34 +65,11 @@ export default {
       onlyChild: null
     }
   },
-  computed: {
-    mainTabs: {
-      get () { return this.$store.state.app.mainTabs },
-      set (val) { this.$store.commit('UPDATETABS', val) }
-    },
-    mainActivedTab: {
-      get () { return this.$store.state.app.mainActivedTab },
-      set (val) { this.$store.commit('UPDATEMINACTIVEDTAB', val) }
-    }
-  },
   methods: {
-    // 添加tab和设置mainActivedTab
-    handleAddTabs (child) {
+    // 点击菜单清空缓存
+    handleChooseMenu (child) {
       let lowName = child.menuUrl.split('/').slice(-2, -1).join()
       sessionStorage.getItem(lowName) && sessionStorage.removeItem(lowName)
-      const tab = { name: child.menuName, url: child.menuUrl, code: child.code }
-      if (!this.mainTabs.find(item => {
-        if (item === null) {
-          return false
-        }
-        return item.name === child.menuName
-      })) {
-        const arr = [].concat(this.mainTabs)
-        arr.push(tab)
-        this.mainTabs = arr
-      }
-      this.mainActivedTab = tab
-      sessionStorage.setItem('mainActivedTab', JSON.stringify(this.mainActivedTab))
     }
   }
 }

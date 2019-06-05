@@ -119,8 +119,9 @@ export default {
       if (nowRoute.meta.isTab) {
         const nowUrl = nowRoute.name
         const label = nowRoute.meta.title
+        const code = nowRoute.code
         if (!this.mainTabs.some(item => item.url === nowUrl)) {
-          const tab = { name: label, url: nowUrl }
+          const tab = { name: label, url: nowUrl, code: code }
           const arr = [].concat(this.mainTabs)
           arr.push(tab)
           this.mainTabs = arr
