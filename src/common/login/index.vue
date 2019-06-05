@@ -132,6 +132,8 @@ export default {
     this.timer && clearInterval(this.timer)
     localStorage.clear()
     sessionStorage.clear()
+    this.$store.commit('UPDATE_KEEP_ALIVE_LIST', { type: 'deleteAll' })
+    this.$store.commit('UPDATE_PAGE_SEARCH_VALUES', { type: 'deleteAll' })
     this.handleCheckIp()
   },
   methods: {

@@ -102,12 +102,3 @@ export const setItem = (dataArr, config, type) => {
   data.setKey()
   return data.dataArrFilter
 }
-
-// 跳转页面或刷新保留页面数据
-export const savePageData = (name, searchValues, currentPage, activeTabName = '') => {
-  if (!searchValues) {
-    searchValues = {}
-  }
-  let objStr = JSON.stringify({ searchValues, currentPage, activeTabName })
-  sessionStorage.setItem(name, objStr)
-}

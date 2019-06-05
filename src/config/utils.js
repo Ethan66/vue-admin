@@ -92,3 +92,13 @@ export const disposeTreeData = (list, parentId = 'parentId', returnId = 0) => {
     }
   })
 }
+
+// 从url上获取页面的$options.name
+export const getOptionsName = (url) => {
+  if (url) {
+    let arr = url.split('/').slice(-2)
+    let result = arr[0]
+    arr[1] !== 'index' && (result += `-${arr[1]}`)
+    return result
+  }
+}

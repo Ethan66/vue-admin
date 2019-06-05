@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import { getOptionsName } from '@/config/utils'
 import { apiUserLoginOut, apiUserModifyPassword } from '@/api/login'
 import MD5 from 'js-md5'
 
@@ -112,6 +113,10 @@ export default {
             this.mainActivedTab = index === this.mainTabs.length ? this.mainTabs[this.mainTabs.length - 1] : this.mainTabs[index]
             this.$router.push({ name: this.mainActivedTab.url })
           }
+          let lowName = getOptionsName(tab)
+          sessionStorage.getItem(lowName) && sessionStorage.removeItem(lowName)
+          this.$store.commit('UPDATE_KEEP_ALIVE_LIST', { name: lowName, type: 'delete' })
+          this.$store.commit('UPDATE_PAGE_SEARCH_VALUES', { name: lowName, type: 'delete' })
         }
       }
     },
@@ -184,4 +189,3 @@ export default {
     vertical-align: middle;
   }
 </style>
-

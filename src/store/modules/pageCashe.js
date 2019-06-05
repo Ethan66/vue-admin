@@ -1,6 +1,7 @@
 const pageCashe = {
   state: {
-    keepAliveList: []
+    keepAliveList: [],
+    pageSearchValues: {}
   },
   mutations: {
     UPDATE_KEEP_ALIVE_LIST: (state, payload) => {
@@ -15,6 +16,25 @@ const pageCashe = {
         return true
       }
       i === -1 && state.keepAliveList.push(name)
+    },
+    UPDATE_PAGE_SEARCH_VALUES: (state, payload) => {
+      let { type, name, value } = payload
+      let data = state.pageSearchValues
+      if (type === 'deleteAll') {
+        data = []
+        return true
+      }
+      if (data[name]) {
+        if (type === 'delete') {
+          delete data[name]
+          return true
+        }
+      }
+      if (!value.searchValues) value.searchValues = {}
+      data[name] = value
+      let obj = {}
+      obj[name] = value
+      sessionStorage.setItem('activedSearchValues', JSON.stringify(obj))
     }
   }
 }

@@ -1,6 +1,9 @@
-import { savePageData } from '@/components/methods'
+import { mapGetters } from 'vuex'
 
 export default {
+  computed: {
+    ...mapGetters(['pageSearchValues'])
+  },
   watch: {
     showAll () {
       this.$nextTick(() => {
@@ -85,24 +88,40 @@ export default {
         }
       })
     },
-    // searchValues本地缓存
+    // searchValues vuex缓存
     handleSaveSearchValues (val, currentPage) {
       if (this.keepAlive) return { val, currentPage }
       let lowName
       if (this.$options.name) {
-        lowName = this.$options.name.split('-').join('').toLowerCase()
+        lowName = this.$options.name.toLowerCase()
       } else {
         lowName = {}
       }
-      if (!this.searched && sessionStorage.getItem(lowName)) { // 第一次读缓存
-        let obj = JSON.parse(sessionStorage.getItem(lowName))
+      let savedSearchValues = this.pageSearchValues[lowName]
+      if (this.pageSearchValues) {
+        if (this.pageSearchValues[lowName]) {
+          savedSearchValues = this.pageSearchValues[lowName]
+        } else {
+          let obj = sessionStorage.getItem('activedSearchValues')
+          if (obj) {
+            if (JSON.parse(obj)[lowName]) {
+              savedSearchValues = JSON.parse(obj)[lowName]
+            }
+          }
+        }
+      }
+      if (!this.searched && savedSearchValues) { // 第一次读缓存
+        let obj = savedSearchValues
         this.searchValues = val = obj.searchValues
         Object.assign(this.searchValues, this.searchDefaultObj)
         this.tablePages.current = currentPage = obj.currentPage
         this.activeTabName = obj.activeTabName
       }
       this.searched = true
-      savePageData(lowName, val, currentPage, this.activeTabName) // 将搜索等数据缓存
+      this.$store.commit('UPDATE_PAGE_SEARCH_VALUES', {
+        name: lowName,
+        value: { searchValues: val, currentPage, activeTabName: this.activeTabName } // 将搜索等数据缓存
+      })
       return { val, currentPage }
     },
     // 编辑后展示已打开的树
