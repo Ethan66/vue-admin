@@ -87,6 +87,7 @@ export default {
     },
     // searchValues本地缓存
     handleSaveSearchValues (val, currentPage) {
+      if (this.keepAlive) return { val, currentPage }
       let lowName
       if (this.$options.name) {
         lowName = this.$options.name.split('-').join('').toLowerCase()

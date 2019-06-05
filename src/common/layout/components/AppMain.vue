@@ -1,12 +1,15 @@
 <template>
   <section class="app-main">
     <subTabs v-if="showSubTabs" />
-    <router-view class="transition-group"></router-view>
+    <keep-alive :include="keepAliveList">
+      <router-view class="transition-group"></router-view>
+    </keep-alive>
   </section>
 </template>
 
 <script>
 import subTabs from './subTabs'
+import { mapGetters } from 'vuex'
 export default {
   name: 'AppMain',
   components: { subTabs },
@@ -21,6 +24,9 @@ export default {
       this.transitionKey++
       this.handleIsShowSubTabs(val)
     }
+  },
+  computed: {
+    ...mapGetters(['keepAliveList'])
   },
   created () {
     this.handleIsShowSubTabs(this.$route, true)
