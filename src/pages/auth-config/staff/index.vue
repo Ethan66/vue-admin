@@ -451,7 +451,7 @@ export default {
       this.staffInfoData = this.$options.data().staffInfoData
       // 获取员工信息
       this.handleApiQueryConsoleUserInfo(row.id)
-    },
+    }
   },
   components: {
     staffDialog,

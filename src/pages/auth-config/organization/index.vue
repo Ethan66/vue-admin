@@ -71,7 +71,7 @@ export default {
     // 点击新增按钮
     handleAdd () {
       this.dialogItem[0].disabled = false
-       this.dialogItem[0].type = 'selectTree'
+      this.dialogItem[0].type = 'selectTree'
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
       this.editData.departmentStatus = 0
       this.selectTreeCheckedValue = []
@@ -152,33 +152,33 @@ export default {
       }
     },
     handleClearSelectTree2 (val) {
-       if (!val) {
+      if (!val) {
         this.editData.directorId = ''
       }
     },
     // 点击表格停用按钮
     handleStop (row) {
       this.$confirm(
-      '确定停用该部门吗，停用后该部门下属所有人员账号将无法使用',
-      '温馨提醒',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }
-    ).then(() => {
-      apiStopDepartment({ id: row.id }).then(res => {
-        if (res.code === '208999') {
-          this.$message({
-            type: 'success',
-            message: res.message
-          })
-          this.handleGetTableData(apiQueryDepartmentList, this.searchValues)
-        } else {
-          this.$message.error(res.message)
+        '确定停用该部门吗，停用后该部门下属所有人员账号将无法使用',
+        '温馨提醒',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
         }
+      ).then(() => {
+        apiStopDepartment({ id: row.id }).then(res => {
+          if (res.code === '208999') {
+            this.$message({
+              type: 'success',
+              message: res.message
+            })
+            this.handleGetTableData(apiQueryDepartmentList, this.searchValues)
+          } else {
+            this.$message.error(res.message)
+          }
+        })
       })
-    })
     },
     // 点击表格启用按钮
     handleOpen () {
@@ -214,13 +214,13 @@ export default {
         })
       } else {
         this.apiEditData(apiEditDepartment, obj, apiQueryDepartmentList).then(() => {
-        this.handleGetAllDepartmentTree()
+          this.handleGetAllDepartmentTree()
         })
       }
     },
     // 获取表格数据
     handleGetTableData (api, val, currentPage = 1) {
-      let obj = this.handleSaveSearchValues (val, currentPage)
+      let obj = this.handleSaveSearchValues(val, currentPage)
       val = obj.val || val
       currentPage = obj.currentPage || currentPage
       this.getTableDataApi = api

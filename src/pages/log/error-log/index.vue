@@ -15,7 +15,7 @@
       @table-jump="handleJump">
     </table-module>
   </div>
-  
+
 </template>
 
 <script>
@@ -40,7 +40,7 @@ export default {
     },
     // 获取菜单下拉列表
     handleGetPageList () {
-      apiQueryParentConsoleMenu({menuLevel: 2}).then((res) => {
+      apiQueryParentConsoleMenu({ menuLevel: 2 }).then((res) => {
         if (res.code === '208999') {
           res.resultMap.data.forEach(item => {
             item['label'] = item.menuName

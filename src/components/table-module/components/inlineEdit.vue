@@ -24,7 +24,7 @@ export default {
     type: {
       type: String,
       validator: function (val) {
-        return ['input','select', 'selectMore'].includes(val)
+        return ['input', 'select', 'selectMore'].includes(val)
       }
     },
     item: Object,

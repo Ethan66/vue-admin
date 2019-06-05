@@ -49,7 +49,7 @@ export default {
     },
     // 设置树状样式
     handleStyle (row) {
-      return {'padding-left': (row.level - this.treeInitLevel) * 25 + 'px'}
+      return { 'padding-left': (row.level - this.treeInitLevel) * 25 + 'px' }
     },
     // 打开（关闭）树结构
     handleToggle (index, row) {
@@ -86,7 +86,7 @@ export default {
         this.$emit('handleSaveOpenIds', treeExpandIds)
       }
       this.$emit('handAddTableData', tableData)
-    },
+    }
   }
 }
 </script>

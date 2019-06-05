@@ -53,9 +53,9 @@ export default {
     handleAdd () {
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
       this.dialogItem = [
-        { key: 'addressIp', type: 'input', maxlength: '12', label: 'IP地址', show: true},
-        { key: 'isDelete', label: '状态', type: 'radio', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }], show: true},
-        { key: 'remark', label: '描述', type: 'textarea', maxlength: '100', placeholder: '100字以内', show: true}
+        { key: 'addressIp', type: 'input', maxlength: '12', label: 'IP地址', show: true },
+        { key: 'isDelete', label: '状态', type: 'radio', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }], show: true },
+        { key: 'remark', label: '描述', type: 'textarea', maxlength: '100', placeholder: '100字以内', show: true }
       ]
       this.isEdit = 0
       this.dialogTitle = '添加IP'
@@ -65,10 +65,10 @@ export default {
     handleEditData (row) {
       this.editData = JSON.parse(JSON.stringify(row))
       this.dialogItem = [
-        { key: 'addressIp', type: 'docs', label: 'IP地址', show: true},
+        { key: 'addressIp', type: 'docs', label: 'IP地址', show: true },
         { key: 'remark', label: '描述', type: 'textarea', maxlength: '100', placeholder: '100字以内', show: true },
-        { key: 'creater', label: '创建人', type: 'docs', show: true},
-        { key: 'gmtCreate', label: '创建时间', type: 'docs', show: true}
+        { key: 'creater', label: '创建人', type: 'docs', show: true },
+        { key: 'gmtCreate', label: '创建时间', type: 'docs', show: true }
       ]
       this.isEdit = 1
       this.dialogTitle = '编辑IP'
@@ -107,7 +107,7 @@ export default {
       this.chooseDataArr.forEach((item) => {
         open.push(item.id)
       })
-      this.apiEditData(apiEditIpWhiteStatus, {ids: open, isDelete: 0}, apiListSysIpWhite)
+      this.apiEditData(apiEditIpWhiteStatus, { ids: open, isDelete: 0 }, apiListSysIpWhite)
     },
     // 点击批量停止按钮
     handleBatchStop () {
@@ -128,7 +128,7 @@ export default {
       this.chooseDataArr.forEach((item) => {
         open.push(item.id)
       })
-      this.apiEditData(apiEditIpWhiteStatus, {ids: open, isDelete: 1}, apiListSysIpWhite)
+      this.apiEditData(apiEditIpWhiteStatus, { ids: open, isDelete: 1 }, apiListSysIpWhite)
     },
     // 表格停用按钮
     handleStop (val) {
@@ -158,7 +158,7 @@ export default {
     handleSubmit () {
       if (this.isEdit === 0) {
         this.apiCreateData(apiAddIpWhite, this.editData, apiListSysIpWhite)
-      } else {  
+      } else {
         this.apiEditData(apiEditIpWhite, this.editData, apiListSysIpWhite)
       }
     },

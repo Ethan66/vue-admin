@@ -65,7 +65,6 @@
 import { account } from '../../mixins'
 import basicMethod from '@/config/mixins'
 import { apiPageConsoleUserWhite, apiAddConsoleUserWhite, apiEditConsoleUserWhiteStatus } from '@/api/visitControl'
-import { debuglog } from 'util';
 import treeSelect from '@/components/modules/tree-select'
 import { apiQueryDepartmentTree, apiListConsoleUser } from '@/api/staff'
 
@@ -85,22 +84,22 @@ export default {
         }
       },
       dialogAccountForm: {
-          region: [],
-          date: '',
-          grandType: '0',
-          remark: ''
-        },
-         diaRules: {
-          region: [
-            { required: true, message: '请选择员工', trigger: 'change' }
-          ],
-          grandType: [
-            { required: true, message: '请选择授权时间', trigger: 'change' }
-          ],
-          remark: [
-            { required: true, message: '请填写描述内容', trigger: 'blur' }
-          ]
-        },
+        region: [],
+        date: '',
+        grandType: '0',
+        remark: ''
+      },
+      diaRules: {
+        region: [
+          { required: true, message: '请选择员工', trigger: 'change' }
+        ],
+        grandType: [
+          { required: true, message: '请选择授权时间', trigger: 'change' }
+        ],
+        remark: [
+          { required: true, message: '请填写描述内容', trigger: 'blur' }
+        ]
+      },
       showDialogForm1: false,
       checkArr: [],
       defaultProps: {
@@ -110,7 +109,7 @@ export default {
       treeList: [],
       treeCheckedData: [],
       consoleUserIds: [],
-      saveDataId: '' 
+      saveDataId: ''
     }
   },
   methods: {
@@ -196,11 +195,11 @@ export default {
     },
     // 批量表格失效确认按钮
     handleBatchFirmPl () {
-      this.apiEditData(apiEditConsoleUserWhiteStatus, {ids: this.checkArr, isDelete: 1}, apiPageConsoleUserWhite)
+      this.apiEditData(apiEditConsoleUserWhiteStatus, { ids: this.checkArr, isDelete: 1 }, apiPageConsoleUserWhite)
     },
     // 表格失效确认按钮
     handleBatchFirm () {
-      this.apiEditData(apiEditConsoleUserWhiteStatus, {ids: [this.saveDataId], isDelete: 1}, apiPageConsoleUserWhite)
+      this.apiEditData(apiEditConsoleUserWhiteStatus, { ids: [this.saveDataId], isDelete: 1 }, apiPageConsoleUserWhite)
     },
     handleSelectChange (row) {
       if (row.isDelete === '1') {
@@ -216,7 +215,7 @@ export default {
           let startTime = this.dialogAccountForm.date[0]
           let endTime = this.dialogAccountForm.date[1]
           if (!startTime && this.dialogAccountForm.grandType === '0') {
-            this.$message({type: 'error', message: '请选择时间'})
+            this.$message({ type: 'error', message: '请选择时间' })
             return false
           } else {
             this.editData.grandBegin = startTime
@@ -237,7 +236,7 @@ export default {
             })
           }
         } else {
-          return false;
+          return false
         }
       })
     },

@@ -85,7 +85,7 @@ export default {
     // 搜素树key值
     selectTreekey: String,
     // 搜索树默认已经选择的值
-    selectTreeCheckedValue: Array,
+    selectTreeCheckedValue: Array
   },
   data () {
     return {
@@ -200,7 +200,7 @@ export default {
     handleClearSelectTree (val) {
       this.$emit('handleClearSelectTree', val)
     },
-     // 拿到选择树的值
+    // 拿到选择树的值
     popoverHide (checkedIds, checkedData) {
       this.searchValues[this.selectTreekey] = checkedIds
       this.$emit('handleSelectTreeValue', checkedData)

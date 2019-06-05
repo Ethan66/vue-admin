@@ -185,7 +185,7 @@ export default {
       this.chooseDataArr.forEach(item => {
         strArr.push(item.id)
       })
-      apiBatchClearUserRole({userIds: strArr.join(',')}).then(res => {
+      apiBatchClearUserRole({ userIds: strArr.join(',') }).then(res => {
         if (res.code === '208999') {
           this.$message.success('删除成功')
           this.getStaffList()

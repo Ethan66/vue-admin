@@ -48,8 +48,7 @@
 <script>
 import { fastCreateType } from '../mixin'
 import basicMethod from '@/config/mixins'
-import { apiPageFiledQueryList, apiAddPageField, apiPageFieldRapidGeneration, apiAddBatchPageField } from '@/api/developCenter'
-
+import { apiAddPageField, apiPageFieldRapidGeneration, apiAddBatchPageField } from '@/api/developCenter'
 
 export default {
   mixins: [basicMethod, fastCreateType],
@@ -96,7 +95,7 @@ export default {
         this.form.name = ''
         this.$emit('update:showCreateTybe', val)
       }
-    },
+    }
   },
   created () {
     Object.keys(this.inlineLabelToValue).forEach(key => {

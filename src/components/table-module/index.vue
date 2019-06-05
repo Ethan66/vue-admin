@@ -222,7 +222,7 @@ export default {
   mounted () {
     this.$nextTick(() => {
       this.showTableHeadSetting && setHeadIcon()
-       if (this.maxHeight) {
+      if (this.maxHeight) {
         this.tableHeight = this.maxHeight
         return false
       }
@@ -287,7 +287,7 @@ export default {
       this.$set(this.tableData, index, row)
       if (delete1 === 'delete') {
         this.tableData.splice(index, 1)
-        this.$set(this, 'tableData', this.tableData )
+        this.$set(this, 'tableData', this.tableData)
       }
     },
     // 树表格点击请求子数据

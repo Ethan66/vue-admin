@@ -3,6 +3,10 @@ module.exports = {
   assetsDir: 'blow/static',
   publicPath: '/',
   devServer: {
+    overlay: {
+      warnings: false,
+      errors: false
+    },
     proxy: {
       '/bl/console': {
         target: 'https://tconsole4.bailingpay.com'

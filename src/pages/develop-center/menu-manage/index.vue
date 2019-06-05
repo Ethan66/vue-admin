@@ -178,7 +178,7 @@ export default {
     },
     // 点击对话框确认按钮
     handleSubmit () {
-      if(this.editData.remark.length > 100) {
+      if (this.editData.remark.length > 100) {
         this.$message.error('描述字段长度不能超过100')
         return
       }
@@ -237,7 +237,7 @@ export default {
           }
         })
       }
-      fn (this.tableData)
+      fn(this.tableData)
       if (this.saveExpendIdList.length > 0) {
         this.handleOpenTree(this.tableData, this.saveExpendIdList)
       }
@@ -304,7 +304,7 @@ export default {
         return callback(new Error('输入内容必须为正整数'))
       }
       callback()
-    },
+    }
   }
 }
 </script>
