@@ -68,8 +68,6 @@ export default {
   methods: {
     // 点击菜单清空缓存
     handleChooseMenu (child) {
-      let lowName = child.menuUrl.split('/').slice(-2, -1).join()
-      sessionStorage.getItem(lowName) && sessionStorage.removeItem(lowName)
     }
   }
 }
