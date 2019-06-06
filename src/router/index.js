@@ -130,6 +130,7 @@ function handleAddMenuRoutes (menuList = [], configRoutes = []) {
     ...menuRoutes,
     { path: '*', redirect: { name: '404' } }
   ])
+  handleSaveSubTabs(configRoutes, menuRoutes)
   sessionStorage.setItem('dynamicMenuRoutes', JSON.stringify(menuRoutes || '[]'))
 }
 
@@ -144,7 +145,8 @@ function handleCreateRoute (obj, type = 'parent') {
       title: obj.menuName,
       isDynamic: true,
       isTab: true,
-      iframeUrl: obj.iframeUrl || ''
+      iframeUrl: obj.iframeUrl || '',
+      level: obj.menuLevel
     }
   }
   if (type === 'parent') {
@@ -152,6 +154,51 @@ function handleCreateRoute (obj, type = 'parent') {
     route.children = []
   }
   return route
+}
+
+// 保存二级/三级/四级subTabs
+function handleSaveSubTabs (configRoutes, menuRoutes) {
+  let routeObj = {}
+  configRoutes.forEach(item => {
+    if (item.path && item.children) {
+      routeObj[item.path] = JSON.parse(JSON.stringify(item.children))
+    }
+  })
+  menuRoutes.forEach(item => {
+    if (item.path && item.children) {
+      if (routeObj[item.path]) {
+        routeObj[item.path].push(...JSON.parse(JSON.stringify(item.children)))
+      } else {
+        routeObj[item.path] = JSON.parse(JSON.stringify(item.children))
+      }
+    }
+  })
+  let obj = {}
+  Object.values(routeObj).forEach(value => {
+    if (Array.isArray(value)) {
+      value.forEach(item => {
+        let info = { title: item.meta.title, level: item.meta.level, path: item.path }
+        let last = item.path.split('/').slice(-1).join('')
+        let path = item.path.split('/').slice(0, -1).join('/')
+        if (path && obj[path]) {
+          if (last === 'index') {
+            obj[path].unshift(info)
+          } else {
+            obj[path].push(info)
+          }
+        } else {
+          obj[path] = [info]
+        }
+      })
+    }
+  })
+  let result = {}
+  Object.keys(obj).forEach(key => {
+    if (obj[key].length >= 2) {
+      result[key] = obj[key]
+    }
+  })
+  store.commit('SAVE_SUBTABS_OBJ', result)
 }
 
 export default router

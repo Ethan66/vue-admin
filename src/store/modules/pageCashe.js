@@ -1,7 +1,8 @@
 const pageCashe = {
   state: {
     keepAliveList: [],
-    pageSearchValues: {}
+    pageSearchValues: {},
+    subTabObj: {} // 副标签
   },
   mutations: {
     UPDATE_KEEP_ALIVE_LIST: (state, payload) => {
@@ -35,6 +36,9 @@ const pageCashe = {
       let obj = {}
       obj[name] = value
       sessionStorage.setItem('activedSearchValues', JSON.stringify(obj))
+    },
+    SAVE_SUBTABS_OBJ: (state, data) => {
+      state.subTabObj = data
     }
   }
 }

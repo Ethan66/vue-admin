@@ -1,5 +1,5 @@
 <template>
-  <el-tabs v-model="activeTab" class="subTabs">
+  <el-tabs v-model="activeTab" class="subTabs" @tab-click="handleGoRoute">
     <el-tab-pane
       v-for="(item, index) in subTabs"
       :key="index"
@@ -11,14 +11,21 @@
 
 <script>
 export default {
+  props: {
+    subTabs: Array
+  },
   data () {
     return {
-      activeTab: '',
-      subTabs: JSON.parse(sessionStorage.getItem('subTabs')) || []
+      activeTab: ''
     }
   },
   created () {
-    this.activeTab = this.subTabs[this.subTabs.length - 1].path
+    this.activeTab = this.subTabs[0].path
+  },
+  methods: {
+    handleGoRoute (tab) {
+      this.$router.push(tab.name)
+    }
   }
 }
 </script>

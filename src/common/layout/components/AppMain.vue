@@ -1,6 +1,9 @@
 <template>
   <section class="app-main">
-    <subTabs v-if="showSubTabs" />
+    <subTabs
+      v-if="showSubTabs"
+      :subTabs="subTabs"
+    />
     <keep-alive :include="keepAliveList">
       <router-view class="transition-group"></router-view>
     </keep-alive>
@@ -16,7 +19,8 @@ export default {
   data () {
     return {
       showSubTabs: false,
-      transitionKey: 0
+      transitionKey: 0,
+      subTabs: []
     }
   },
   watch: {
@@ -26,29 +30,21 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['keepAliveList'])
+    ...mapGetters(['keepAliveList', 'subTabObj'])
   },
   created () {
     this.handleIsShowSubTabs(this.$route, true)
   },
   methods: {
     handleIsShowSubTabs (val, isRefresh = false) {
+      let path = val.path.split('/').slice(0, -1).join('/')
       let { title, level } = val.meta
       let index = -1
-      let subTabsArr = JSON.parse(sessionStorage.getItem('subTabs')) || []
-      if (isRefresh && level && Number(level) > 2) {
+      if (this.subTabObj[path]) {
         this.showSubTabs = true
-      } else if (level && Number(level) > 2) {
+        this.subTabs = this.subTabObj[path]
+      } else {
         this.showSubTabs = false
-        index = subTabsArr.findIndex(item => item.path === val.path)
-        index > -1 ? subTabsArr.pop() : subTabsArr.push({ title, path: val.path })
-        sessionStorage.setItem('subTabs', JSON.stringify(subTabsArr))
-        this.$nextTick(() => {
-          this.showSubTabs = true
-        })
-      } else if (subTabsArr.length > 0) {
-        this.showSubTabs = false
-        sessionStorage.removeItem('subTabs')
       }
     }
   }

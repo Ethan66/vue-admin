@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { getOptionsName } from '@/config/utils'
 import { apiUserLoginOut, apiUserModifyPassword } from '@/api/login'
 import MD5 from 'js-md5'
@@ -85,13 +86,24 @@ export default {
     currentUrl: {
       get () { return this.mainActivedTab.url || '' },
       set () {}
-    }
+    },
+    ...mapGetters(['subTabObj'])
   },
   created () {
     this.userName = JSON.parse(localStorage.getItem('userInfo')).consoleName
     if (!this.mainActivedTab.name) {
       this.mainActivedTab = JSON.parse(sessionStorage.getItem('mainActivedTab')) || {}
       this.mainTabs = this.mainActivedTab.name ? [].concat(this.mainActivedTab) : []
+    }
+  },
+  mounted () {
+    let path = this.$route.path.split('/').slice(0, -1).join('/')
+    if (path && this.subTabObj[path]) {
+      this.$nextTick(() => {
+        if (document.querySelector('.app-main .substance')) {
+          document.querySelector('.app-main .substance').style.minHeight = 'calc(100vh - 110px)'
+        }
+      })
     }
   },
   methods: {
@@ -122,6 +134,14 @@ export default {
     },
     handleJudgeNowRoute (nowRoute) {
       if (nowRoute.meta.isTab) {
+        let path = nowRoute.path.split('/').slice(0, -1).join('/')
+        if (path && this.subTabObj[path]) {
+          this.$nextTick(() => {
+            if (document.querySelector('.app-main .substance')) {
+              document.querySelector('.app-main .substance').style.minHeight = 'calc(100vh - 110px)'
+            }
+          })
+        }
         const nowUrl = nowRoute.name
         const label = nowRoute.meta.title
         const code = nowRoute.code
