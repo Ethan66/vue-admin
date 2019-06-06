@@ -1,5 +1,5 @@
 <template>
-  <div class="account catalog">
+  <div class="account substance">
     <search-module
       class="searchContent"
       :search-item="searchItem"

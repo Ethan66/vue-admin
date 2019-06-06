@@ -1,5 +1,5 @@
 <template>
-  <div class="catalog">
+  <div class="substance">
     <search-module
       class="searchContent"
       :search-item="searchItem"

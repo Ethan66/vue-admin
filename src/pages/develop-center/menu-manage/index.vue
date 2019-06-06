@@ -1,5 +1,5 @@
 <template>
-  <div class="catalog menu-manage">
+  <div class="substance menu-manage">
     <search-module
       :search-item="searchItem"
       :search-values="searchValues"
