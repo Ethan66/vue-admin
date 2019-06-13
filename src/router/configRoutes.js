@@ -8,17 +8,32 @@ export default [
     ]
   },
   /* {
+    // 副标签案例
     path: '/develop-center',
     component: Layout,
     children: [
       { path: '/develop-center/menu-manage/newpage', component: () => import('@/pages/develop-center/menu-manage/newpage'), meta: { title: '动态展示副标签' } }
     ]
   }, */
-  {
-    path: '/develop-center/page-manage',
+  // 字段管理
+  { path: '/develop-center/page-manage',
     component: Layout,
     children: [
       { path: 'tybemanage', component: () => import('@/pages/develop-center/page-manage/tybemanage'), meta: { title: '字段页面' } }
+    ]
+  },
+  // 形态管理
+  { path: '/finance-product/product-manage',
+    component: Layout,
+    children: [
+      { path: 'shape-manage/index', component: () => import('@/pages/finance-product/product-manage/shape-manage/index'), meta: { title: '形态管理' } }
+    ]
+  },
+  // 数据权限共享
+  { path: '/auth-config/data-authority',
+    component: Layout,
+    children: [
+      { path: '/auth-config/data-authority/data-share', component: () => import('@/pages/auth-config/data-authority/data-share'), meta: { title: '数据权限共享' } }
     ]
   }
 ]
