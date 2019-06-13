@@ -52,6 +52,13 @@
           </span>
         </template>
         </el-table-column>
+        <cell-radio
+          v-if="item.type==='radio'"
+          :key="`radio${i}`"
+          :item="item"
+          :prop="item.prop"
+          :parent="parent"
+        />
         <cell-tree
           v-if="item.type==='tree'"
           :key="`tree${i}`"
@@ -101,7 +108,7 @@
         :page-sizes="[20, 40, 50, 100]"
         :page-size="tablePages.pageSize"
         :total="tablePages.total"
-        layout="total, sizes, prev, pager, next, jumper"
+        :layout="layout"
         background
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -122,11 +129,12 @@ import userDefineHeadList from './components/userDefineHeadList' // 自定义表
 import tableBtn from './components/tableBtn' // 按钮模块
 import inlineEdit from './components/inlineEdit' // 行内编辑
 import cellTree from './components/cellTree' // 表格树
+import cellRadio from './components/cellRadio' // 表格单选框
 import statusClsName from './config/defaultStatusClsName'
 import { getTableHeight, getCellClass, setHeadIcon, setInitTableStyle } from './config/method'
 export default {
   name: 'tableModule',
-  components: { userDefineHeadList, tableBtn, inlineEdit, cellTree },
+  components: { userDefineHeadList, tableBtn, inlineEdit, cellTree, cellRadio },
   props: {
     // 全部的自定义表头
     totalSetHeadList: Array,
@@ -174,6 +182,11 @@ export default {
       default () {
         return {}
       }
+    },
+    // 页码布局
+    layout: {
+      type: String,
+      default: 'total, sizes, prev, pager, next, jumper'
     },
     // 排序方法
     sortFn: String,
