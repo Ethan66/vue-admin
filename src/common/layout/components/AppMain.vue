@@ -2,7 +2,7 @@
   <section class="app-main">
     <subTabs
       v-if="showSubTabs"
-      :subTabs="subTabs"
+      :subTabs="subTabsData"
     />
     <keep-alive :include="keepAliveList">
       <router-view class="transition-group"></router-view>
@@ -20,7 +20,7 @@ export default {
     return {
       showSubTabs: false,
       transitionKey: 0,
-      subTabs: []
+      subTabsData: []
     }
   },
   watch: {
@@ -42,7 +42,7 @@ export default {
       let index = -1
       if (this.subTabObj[path]) {
         this.showSubTabs = true
-        this.subTabs = this.subTabObj[path]
+        this.subTabsData = this.subTabObj[path]
       } else {
         this.showSubTabs = false
       }

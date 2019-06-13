@@ -20,7 +20,7 @@ export default {
     }
   },
   created () {
-    this.activeTab = this.subTabs[0].path
+    this.activeTab = location.pathname.replace('/blow', '')
   },
   methods: {
     handleGoRoute (tab) {
