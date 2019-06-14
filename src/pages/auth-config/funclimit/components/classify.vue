@@ -73,6 +73,7 @@ export default {
           this.oldNode.classList.remove('active')
         } else if (this.oldNode === '') { // 第一次进入页面时特殊情况
           this.$refs.all.classList.remove('active')
+          document.querySelector(`#pane-second .classify .role`).classList.remove('active')
         }
         el.classList.add('active')
         this.oldNode = event.target.parentNode

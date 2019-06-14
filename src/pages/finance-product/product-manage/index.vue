@@ -11,7 +11,7 @@
     <ul class="productList">
       <li v-for="(item, i) in productList" :key="i">
         <div class="header cm-bg-color">
-          <h3>{{ item.name }}</h3>
+          <h3>{{ item.product_name }}</h3>
           <p class="btn">
             <button
               v-if="$authBtn('product-manage-edit')"
@@ -70,17 +70,17 @@ export default {
   data () {
     return {
       productList: [
-        { id: 1, name: '百凌白条', creater: '系统1', gmtCreate: '时间1', lendingAmount: 87.77, lendAmount: 1.65, total: 65.65, num: 6 },
-        { id: 2, name: '百凌白条', creater: '系统2', gmtCreate: '时间2', lendingAmount: 345.77, lendAmount: 9.65, total: 12.65, num: 6 },
-        { id: 3, name: '百凌白条', creater: '系统3', gmtCreate: '时间3', lendingAmount: 12.77, lendAmount: 76.65, total: 435.65, num: 6 },
-        { id: 4, name: '百凌白条', creater: '系统4', gmtCreate: '时间4', lendingAmount: 54233.77, lendAmount: 1823.65, total: 113.65, num: 6 }
+        { id: 1, product_name: '百凌白条', creater: '系统1', gmt_create: '时间1', lendingAmount: 87.77, lendAmount: 1.65, total: 65.65, num: 6 },
+        { id: 2, product_name: '百凌白条', creater: '系统2', gmt_create: '时间2', lendingAmount: 345.77, lendAmount: 9.65, total: 12.65, num: 6 },
+        { id: 3, product_name: '百凌白条', creater: '系统3', gmt_create: '时间3', lendingAmount: 12.77, lendAmount: 76.65, total: 435.65, num: 6 },
+        { id: 4, product_name: '百凌白条', creater: '系统4', gmt_create: '时间4', lendingAmount: 54233.77, lendAmount: 1823.65, total: 113.65, num: 6 }
       ]
     }
   },
   methods: {
     // 新建产品
     handleCreateData () {
-      this.editData = { name: '' }
+      this.editData = { product_name: '' }
       this.dialogItem[1].show = false
       this.dialogItem[2].show = false
       this.showDialogForm = true
