@@ -1,4 +1,4 @@
-import { basicInitObj } from '@/components/basicObj'
+import { basicInitObj, tableInitObj } from '@/components/basicObj'
 import { authMoreBtn, setBtnConfig } from '@/components/methods'
 
 const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
@@ -262,5 +262,83 @@ export const staff = {
         { required: true, message: '请输入按钮编码', trigger: 'blur' }
       ]
     }
+  }
+}
+
+// 基础数据权限
+export const dataAuth = {
+  data () {
+    return this.$setBtnConfig(JSON.parse(JSON.stringify(tableInitObj)))
+  },
+  created () {
+    let configTableItem = {
+      pageName: { width: 100, clsName: 'cm-btn-color' },
+      pageCode: { width: 200, type: 'radio', options: [{ label: '私有', value: 0 }, { label: '公开只读', value: 1 }, { label: '公开读写', value: 2 }], changeFn: 'handleChooseAuth' },
+      menuCode: 120,
+      userName: 80,
+      pageStatus: { width: 80, clsName: 'pageStatus' },
+      remark: 80,
+      pageUrl: 200
+    }
+    this.tableItem = this.$setItem(tybeObj['page-manage1'], configTableItem, 'table')
+  }
+}
+
+// 数据权限共享
+const dataShareMoreList = authMoreBtn([
+  { code: 'data-share-startup', clickFn: 'handleChangeStatus', config: { inlineShow: false } },
+  { code: 'data-share-stop', clickFn: 'handleChangeStatus', config: { inlineShow: false } },
+  { code: 'data-share-delete', clickFn: 'handleDeleteData' }
+])
+
+export const dataShare = {
+  data () {
+    return this.$setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), [{ edit: { code: 'data-share-edit' } }, { more: { list: dataShareMoreList, code: 'data-share-more' } }])
+  },
+  created () {
+    let configSearchItem = [
+      'menuName',
+      { status: { type: 'select', options: [{ label: '显示', value: 0 }, { label: '隐藏', value: 1 }] } }
+    ]
+    let configTableItem = {
+      menuName: 200,
+      menuType: 80,
+      menuLevel: 100,
+      menuUrl: { width: 200, textTip: '改页面的链接地址' },
+      sortNo: 90,
+      code: 100,
+      status: { width: 80, clsName: 'menuStatus' },
+      remark: 100,
+      btn: 118
+    }
+    let configDialogItem = [
+      {
+        parentId: {
+          label: '上级部门',
+          type: 'selectTree',
+          defaultProps: { children: 'list', label: 'departmentName' },
+          dialogData: []
+        }
+      },
+      'departmentName',
+      {
+        departmentType: { type: 'select', options: [{ label: '集团', value: 0 }, { label: '公司', value: 1 }, { label: '事业部', value: 2 }, { label: '部门', value: 3 }] }
+      },
+      { sortNo: { type: 'number' } },
+      { directorId: {
+        label: '负责人',
+        type: 'selectTree2',
+        defaultProps: { children: 'childIdList', label: 'departmentName' },
+        dialogData: [],
+        textTip: '部门负责人即为部门管理人员'
+      } },
+      { departmentStatus: { type: 'radio', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }] } }
+    ]
+    this.searchItem = this.$setItem(tybeObj['menu-manage1'], configSearchItem, 'search')
+    this.tableItem = this.$setItem(tybeObj['menu-manage1'], configTableItem, 'table')
+    if (this.tableBtn.filter(item => item.show).length === 0) {
+      this.tableItem.splice(this.tableItem.length - 1, 1)
+    }
+    let dialogItem = this.dialogItem = this.$setItem(tybeObj['organization-manage1'], configDialogItem, 'dialog')
   }
 }
