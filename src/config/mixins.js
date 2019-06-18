@@ -112,7 +112,7 @@ export default {
       }
       if (!this.searched && savedSearchValues) { // 第一次读缓存
         let obj = savedSearchValues
-        this.searchValues = val = obj.searchValues
+        this.searchValues = val = JSON.parse(JSON.stringify(obj.searchValues))
         Object.assign(this.searchValues, this.searchDefaultObj)
         this.tablePages.current = currentPage = obj.currentPage
         this.activeTabName = obj.activeTabName

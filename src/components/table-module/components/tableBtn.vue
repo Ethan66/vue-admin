@@ -94,6 +94,7 @@ export default {
   methods: {
     // 是否显示按钮
     handleShowBtn (btn, row) {
+      if (this.isInlineEdit) return true
       if (!btn.show) return false
       if (row.showBtnCode && row.showBtnCode.includes(btn.code)) return true
       if (btn.inlineShow !== false) return true

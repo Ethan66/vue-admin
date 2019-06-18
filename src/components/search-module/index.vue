@@ -130,7 +130,7 @@ export default {
     // 初始化searchValues
     initSearchValues (type) {
       if (type === 'start') {
-        let temp = JSON.parse(sessionStorage.getItem(this.$parent.$options.name.split('-').join('')))
+        let temp = JSON.parse(sessionStorage.getItem('activedSearchValues'))
         if (temp && temp.searchValues) {
           Object.keys(temp.searchValues).forEach(key => {
             this.$set(this.searchValues, key, temp.searchValues[key])
@@ -139,7 +139,7 @@ export default {
         return
       }
       if (type === 'end') {
-        sessionStorage.removeItem(this.$parent.$options.name.split('-').join(''))
+        sessionStorage.removeItem('activedSearchValues')
       }
       this.searchItem.forEach(item => {
         if (Array.isArray(item.key)) {
