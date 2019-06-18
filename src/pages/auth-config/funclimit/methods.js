@@ -1,5 +1,4 @@
-import { apiGetAllRoleRequestTree, apiPageQueryUserRole, apiGrantUserRole, apiDelUserRole, apiQueryDepartmentList, apiGetConsoleRoleById } from '@/api/role'
-import { apiQueryDepartmentTree, apiListConsoleUser } from '@/api/staff'
+import { apiQueryDepartmentTree, apiListConsoleUser, apiGetAllRoleRequestTree, apiPageQueryUserRole, apiGrantUserRole, apiDelUserRole, apiQueryDepartmentList, apiGetConsoleRoleById } from '@/api/authority'
 
 export default {
   methods: {

@@ -35,7 +35,7 @@
 <script>
 import { ipControl } from '../../mixins'
 import basicMethod from '@/config/mixins'
-import { apiListSysIpWhite, apiEditIpWhite, apiAddIpWhite, apiEditIpWhiteStatus } from '@/api/visitControl'
+import { apiListSysIpWhite, apiEditIpWhite, apiAddIpWhite, apiEditIpWhiteStatus } from '@/api/authority'
 
 export default {
   name: 'visit-control',

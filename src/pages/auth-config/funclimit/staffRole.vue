@@ -47,8 +47,7 @@ import { staffRole } from '../mixins'
 import methods from './methods'
 import basicMethod from '@/config/mixins'
 import staffDialog from './components/staffDialog'
-import { apiPageQueryUserRole, apiBatchClearUserRole } from '@/api/role'
-import { apiListConsoleUser } from '@/api/staff'
+import { apiListConsoleUser, apiPageQueryUserRole, apiBatchClearUserRole } from '@/api/authority'
 
 export default {
   name: 'staff-role',

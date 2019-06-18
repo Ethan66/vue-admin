@@ -64,9 +64,8 @@
 <script>
 import { account } from '../../mixins'
 import basicMethod from '@/config/mixins'
-import { apiPageConsoleUserWhite, apiAddConsoleUserWhite, apiEditConsoleUserWhiteStatus } from '@/api/visitControl'
+import { apiQueryDepartmentTree, apiListConsoleUser, apiPageConsoleUserWhite, apiAddConsoleUserWhite, apiEditConsoleUserWhiteStatus } from '@/api/authority'
 import treeSelect from '@/components/modules/tree-select'
-import { apiQueryDepartmentTree, apiListConsoleUser } from '@/api/staff'
 
 export default {
   name: 'account-control',

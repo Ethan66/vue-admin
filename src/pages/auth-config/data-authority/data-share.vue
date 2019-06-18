@@ -65,8 +65,7 @@
 <script>
 import { dataShare } from '../mixins'
 import basicMethod from '@/config/mixins'
-import { apiListConsoleUser } from '@/api/staff'
-import { apiQueryDepartmentTree } from '@/api/authority'
+import { apiListConsoleUser, apiQueryDepartmentTree } from '@/api/authority'
 import { menuRelation } from '@/config/utils'
 import { apiListConsoleMenu, apiEditeConsoleMenu, apiCreateConsoleMenu, apiDeleteConsoleMenu } from '@/api/developCenter'
 export default {

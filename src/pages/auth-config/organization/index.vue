@@ -45,8 +45,7 @@
 import { organization } from '../mixins'
 import basicMethod from '@/config/mixins'
 import { menuRelation } from '@/config/utils'
-import { apiListConsoleUser } from '@/api/staff'
-import { apiQueryDepartmentList, apiStopDepartment, apiEditDepartment, apiDelDepartment, apiAddDepartment, apiQueryDepartmentTree } from '@/api/authority'
+import { apiListConsoleUser, apiQueryDepartmentList, apiStopDepartment, apiEditDepartment, apiDelDepartment, apiAddDepartment, apiQueryDepartmentTree } from '@/api/authority'
 
 export default {
   name: 'organization',

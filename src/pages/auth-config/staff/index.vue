@@ -65,7 +65,7 @@ import { methods } from './methods'
 import basicMethod from '@/config/mixins'
 import staffDialog from './staffDialog'
 import staffInfoDialog from './staffInfoDialog'
-import { apiListConsoleUser } from '@/api/staff'
+import { apiListConsoleUser } from '@/api/authority'
 export default {
   name: 'staff-index',
   mixins: [basicMethod, staff, methods],

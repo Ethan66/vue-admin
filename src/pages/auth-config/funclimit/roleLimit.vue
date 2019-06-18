@@ -73,7 +73,7 @@
 import classify from '@/pages/auth-config/funclimit/components/classify'
 import methods from './methods'
 import typeDialog from './components/typeDialog'
-import { apiGetAllPermissionResource, apiSetRolePermissionResource, apiGetRolePermissionFields, apiSetRolePermissionFields } from '@/api/role'
+import { apiGetAllPermissionResource, apiSetRolePermissionResource, apiGetRolePermissionFields, apiSetRolePermissionFields } from '@/api/authority'
 
 const initFormItem = [
   { label: '分类名称', key: 'roleName', type: 'input' },

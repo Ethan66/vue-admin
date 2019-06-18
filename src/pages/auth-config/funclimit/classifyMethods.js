@@ -1,4 +1,4 @@
-import { apiCreateConsoleRole, apiEditeConsoleRole, apiDelConsoleRole, apiGetAllRoleRequestTree, apiGetConsoleRoleById } from '@/api/role'
+import { apiCreateConsoleRole, apiEditeConsoleRole, apiDelConsoleRole, apiGetAllRoleRequestTree, apiGetConsoleRoleById } from '@/api/authority'
 
 export default {
   methods: {
