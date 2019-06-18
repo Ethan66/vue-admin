@@ -10,17 +10,20 @@ export const productManage = {
   },
   created () {
     let configDialogItem = [
-      { name: { label: '产品名称' } },
+      { productName: { label: '产品名称' } },
+      { productColor: { label: '产品颜色', maxlength: 7 } },
       { creater: { label: '创建人', type: 'docs', show: false } },
       { gmtCreate: { label: '创建时间', type: 'docs', show: false } }
     ]
     let dialogItem = this.dialogItem = this.$setItem([], configDialogItem, 'dialog')
-    this.rules = {}
+    this.rules = {
+      productName: [{ required: true, message: dialogItem[0].placeholder, trigger: 'blur' }],
+      productColor: [{ required: true, validator: this.validateProductColor, trigger: 'blur' }]
+    }
   }
 }
 
 // 形态管理
-
 const shapeMoreList = authMoreBtn([
   { code: 'product-shape-edit', clickFn: 'handleEditData' },
   { code: 'product-shape-startup', clickFn: 'handleStartupShape', config: { inlineShow: false } },
@@ -35,48 +38,21 @@ export const shapeManage = {
   },
   created () {
     let configSearchItem = [
-      { menuCode: { type: 'select', placeholder: '请选择菜单名称', label: '菜单名称', options: [] } },
-      { pageStatus: { type: 'select', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }] } }
+      'id',
+      { productFormStatus: { label: '状态', type: 'select', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }] } }
     ]
     let configTableItem = {
-      pageName: { width: 100, clsName: 'cm-btn-color' },
-      pageCode: 80,
-      menuCode: 120,
-      userName: 80,
-      pageStatus: { width: 80, clsName: 'pageStatus' },
-      remark: 80,
-      pageUrl: 200,
+      productFormName: { width: 100, clsName: 'cm-btn-color' },
+      productFormVersionName: 80,
+      productFormObject: 120,
+      sceneName: 80,
+      productFormStatus: { width: 80, clsName: 'productFormStatus' },
       btn: 120
     }
-    let configDialogItem = [
-      'pageName', 'pageCode', 'pageUrl', 'menuCode',
-      { pageStatus: { type: 'radio', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }] } },
-      { userName: { label: '创建人', type: 'docs', show: false } },
-      { gmtCreate: { label: '创建时间', type: 'docs', show: false } },
-      { remark: { label: '描述', type: 'textarea', rows: 4, show: false, placeholder: '100字以内' } }
-    ]
-    this.searchItem = this.$setItem(tybeObj['page-manage1'], configSearchItem, 'search')
-    this.tableItem = this.$setItem(tybeObj['page-manage1'], configTableItem, 'table')
+    this.searchItem = this.$setItem(tybeObj['shape-manage'], configSearchItem, 'search')
+    this.tableItem = this.$setItem(tybeObj['shape-manage'], configTableItem, 'table')
     if (this.tableBtn.filter(item => item.show).length === 0) {
       this.tableItem.splice(this.tableItem.length - 1, 1)
-    }
-    let dialogItem = this.dialogItem = this.$setItem(tybeObj['page-manage1'], configDialogItem, 'dialog')
-    this.rules = {
-      pageName: [
-        { required: true, trigger: 'blur', validator: this.validatePageName }
-      ],
-      pageCode: [
-        { required: true, trigger: 'blur', validator: this.validatePageCode }
-      ],
-      pageUrl: [
-        { required: true, trigger: 'blur', validator: this.validatePageUrl }
-      ],
-      menuCode: [
-        { required: true, message: dialogItem[3].placeholder, trigger: 'blur' }
-      ],
-      pageStatus: [
-        { required: true, message: dialogItem[4].placeholder, trigger: 'change' }
-      ]
     }
   }
 }
@@ -88,9 +64,9 @@ export const shapeHistory = {
   },
   created () {
     this.tableItem = [
-      { label: '版本号', prop: 'pageName', type: 'cell', width: 80 },
-      { label: '创建人', prop: 'pageName', type: 'cell', width: 80 },
-      { label: '创建时间', prop: 'pageName', type: 'cell', width: 80 },
+      { label: '版本号', prop: 'productFormVersion', type: 'cell', width: 80 },
+      { label: '创建人', prop: 'createrName', type: 'cell', width: 80 },
+      { label: '创建时间', prop: 'gmtCreate', type: 'cell', width: 80 },
       { label: '操作', prop: 'btn', type: 'btn', width: 80 }
     ]
   }

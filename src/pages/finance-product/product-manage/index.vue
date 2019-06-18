@@ -11,14 +11,14 @@
     <ul class="productList">
       <li v-for="(item, i) in productList" :key="i">
         <div class="header cm-bg-color">
-          <h3>{{ item.product_name }}</h3>
+          <h3>{{ item.productName }}</h3>
           <p class="btn">
             <button
-              v-if="$authBtn('product-manage-edit')"
+              v-if="$authBtn('product-manage-edit') && item.sharePermission===1"
               @click="handleEditData(item)"
             >{{ $authBtn('product-manage-edit') }}</button>
             <button
-              v-if="$authBtn('product-manage-delete')"
+              v-if="$authBtn('product-manage-delete') && item.sharePermission===1"
               @click="handleDeleteData(item)"
             >{{ $authBtn('product-manage-delete') }}</button>
           </p>
@@ -26,20 +26,20 @@
         <div class="info">
           <div class="yesterday">
             <div class="lend">
-              <p>{{ item.lendingAmount }}万</p>
+              <p>{{ item.yesterdayInLoan }}万</p>
               <p class="title">昨日在贷(元)</p>
             </div>
             <div class="lend">
-              <p>{{ item.lendAmount }}万</p>
+              <p>{{ item.yesterdaysLoan }}万</p>
               <p class="title">昨日放贷(元)</p>
             </div>
           </div>
           <div class="lend total">
-            <p>{{ item.total }}万</p>
+            <p>{{ item.yesterdayAllLoans }}万</p>
             <p class="title">昨日累计放贷</p>
           </div>
           <div class="shape">
-            <p>启用的形态{{ item.num }}个</p>
+            <p>启用的形态{{ item.formNum }}个</p>
             <button
               class="cm-color"
               v-if="$authBtn('product-manage-watch')"
@@ -64,37 +64,49 @@
 <script>
 import { productManage } from '../mixin'
 import basicMethod from '@/config/mixins'
+import { apiListProduct, apiCreateOrEditeProduct, apiDeleteProduct } from '@/api/financeProduct'
 
 export default {
   mixins: [basicMethod, productManage],
   data () {
     return {
-      productList: [
-        { id: 1, product_name: '百凌白条', creater: '系统1', gmt_create: '时间1', lendingAmount: 87.77, lendAmount: 1.65, total: 65.65, num: 6 },
-        { id: 2, product_name: '百凌白条', creater: '系统2', gmt_create: '时间2', lendingAmount: 345.77, lendAmount: 9.65, total: 12.65, num: 6 },
-        { id: 3, product_name: '百凌白条', creater: '系统3', gmt_create: '时间3', lendingAmount: 12.77, lendAmount: 76.65, total: 435.65, num: 6 },
-        { id: 4, product_name: '百凌白条', creater: '系统4', gmt_create: '时间4', lendingAmount: 54233.77, lendAmount: 1823.65, total: 113.65, num: 6 }
-      ]
+      productList: []
     }
+  },
+  created () {
+    this.handleGetProduct()
   },
   methods: {
     // 新建产品
     handleCreateData () {
-      this.editData = { product_name: '' }
-      this.dialogItem[1].show = false
+      this.editData = { productName: '', productColor: '' }
+      this.isEdit = 0
       this.dialogItem[2].show = false
+      this.dialogItem[3].show = false
       this.showDialogForm = true
     },
     // 编辑产品
     handleEditData (item) {
-      this.dialogItem[1].show = true
+      this.isEdit = 1
       this.dialogItem[2].show = true
-      this.editData = JSON.parse(JSON.stringify(item))
+      this.dialogItem[3].show = true
+      this.editData = { productName: item.productName, productColor: item.productColor || '', id: item.id }
       this.showDialogForm = true
     },
     // 对话框点击确定
     handleSubmit () {
-      console.log(this.editData)
+      apiCreateOrEditeProduct(this.editData).then(res => {
+        if (res.code === '208999') {
+          this.$refs.dialog.showDialogForm1 = false
+          this.$message({
+            message: res.message,
+            type: 'success'
+          })
+          this.handleGetProduct()
+        } else {
+          this.$message.error(res.message)
+        }
+      })
     },
     // 删除产品
     handleDeleteData (item) {
@@ -104,7 +116,17 @@ export default {
         type: 'warning',
         callback: action => {
           if (action === 'confirm') {
-            console.log(item)
+            apiDeleteProduct({ id: item.id }).then(res => {
+              if (res.code === '208999') {
+                this.$message({
+                  message: res.message,
+                  type: 'success'
+                })
+                this.handleGetProduct()
+              } else {
+                this.$message.error(res.message)
+              }
+            })
           }
         }
       })
@@ -114,9 +136,29 @@ export default {
       this.$router.push({
         path: '/finance-product/product-manage/shape-manage/index',
         query:{
-          id: item.id
+          productId: item.id
         }
       })
+    },
+    // 获取金融产品
+    handleGetProduct () {
+      apiListProduct().then(res => {
+        if (res.code === '208999') {
+          this.productList = res.resultMap.list || []
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+    },
+    validateProductColor (rule, value, callback) {
+      let val = value && value.trim() || ''
+      if (!val) {
+        return callback(new Error(this.dialogItem[0].placeholder))
+      }
+      if (!/^#[a-zA-Z\d]{6}$/.test(val)) {
+        return callback(new Error('输入内容必须满足第一位是#且后6位是数字或字母'))
+      }
+      callback()
     }
   }
 }
