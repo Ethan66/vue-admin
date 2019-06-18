@@ -1,10 +1,6 @@
 import { getRequest, postRequest } from '@/config/network'
 const base = '/bl/console/api'
 const baseuser = '/bl/console/user'
-// 获取验证码
-export const apiGetCode = (params) => {
-  return postRequest('/bl/console/user/getVerificationCode', params)
-}
 
 // 获取IP
 export const apiGetIp = (params) => {

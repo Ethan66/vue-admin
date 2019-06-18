@@ -215,6 +215,12 @@ input[type="number"] {
   border-color: @buttonColor !important;
 }
 
-.el-message--success{
-  // top: 250px;
+.el-radio-group{
+  .el-radio__input.is-checked .el-radio__inner{
+    border-color: @buttonColor;
+    background: @buttonColor;
+  }
+  .el-radio__input.is-checked+.el-radio__label{
+    color: @buttonColor;
+  }
 }

@@ -19,7 +19,7 @@
 <script>
 import basicMethod from '@/config/mixins'
 import { dataAuth } from '../mixins'
-import { apiQueryPageList, apiAddPage, apiUpdatePage, apiListConsoleMenu, apiAddBatchPageField, apiQueryParentConsoleMenu } from '@/api/developCenter'
+import { apiQueryMenuPageList, apiOperateMenuDataRule } from '@/api/authority'
 
 export default {
   data () {
@@ -29,59 +29,22 @@ export default {
   mixins: [dataAuth, basicMethod],
   created () {
     this.tablePages.pageSize = 1000
-    this.handleGetTableData(apiQueryPageList)
+    this.handleGetTableData(apiQueryMenuPageList)
   },
   methods: {
     // 单选框点击选择
     handleChooseAuth (row) {
-      console.log(row)
-    },
-    // 处理表格数据
-    handleTableData (tableData, index) {
-      if (tableData.length === 0) {
-        this.tableData = []
-        return
-      }
-      tableData.forEach(item => {
-        item.pageStatusStash = item.pageStatus
-        item.showBtnCode = item.pageStatusStash === 0 ? ['product-shape-stop'] : ['product-shape-startup']
-        switch (item.pageStatus) {
-          case 0:
-            item.pageStatus = '正常'
-            break
-          case 1:
-            item.pageStatus = '停用'
-            break
+      apiOperateMenuDataRule({ code: row.code, sharePermission: row.sharePermission }).then(res => {
+        if (res.code === '208999') {
+          this.$message({
+            type: 'success',
+            message: res.message
+          })
+        } else {
+          this.$message.error(res.message)
         }
       })
-    },
-    validatePageName (rule, value, callback) {
-      if (!value.trim()) {
-        return callback(new Error(this.dialogItem[0].placeholder))
-      }
-      if (value.length > 20) {
-        return callback(new Error('输入内容不能超过20字'))
-      }
-      callback()
-    },
-    validatePageCode (rule, value, callback) {
-      if (!value.trim()) {
-        return callback(new Error(this.dialogItem[1].placeholder))
-      }
-      if (value.length > 20) {
-        return callback(new Error('输入内容不能超过20字'))
-      }
-      callback()
-    },
-    validatePageUrl (rule, value, callback) {
-      if (!value.trim()) {
-        return callback(new Error(this.dialogItem[2].placeholder))
-      }
-      if (value.length > 100) {
-        return callback(new Error('输入内容不能超过100字'))
-      }
-      callback()
-    },
+    }
   }
 }
 </script>

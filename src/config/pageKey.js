@@ -33,7 +33,9 @@ const config = {
       // ['shape-manage', '对象', 'productFormObject'],
       // ['shape-manage', '适用场景', 'sceneName'],
       // ['shape-manage', '状态', 'productFormStatus'],
-      ['shape-manage', '状态', 'productFormStatusName'],
+      // ['shape-manage', '状态', 'productFormStatusName'],
+      // ['data-auth', '菜单名称', 'menuName'],
+      // ['data-auth', '权限', 'sharePermission'],
       // ['', '', ''],
     ]
   }

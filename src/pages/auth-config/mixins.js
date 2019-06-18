@@ -272,15 +272,10 @@ export const dataAuth = {
   },
   created () {
     let configTableItem = {
-      pageName: { width: 100, clsName: 'cm-btn-color' },
-      pageCode: { width: 200, type: 'radio', options: [{ label: '私有', value: 0 }, { label: '公开只读', value: 1 }, { label: '公开读写', value: 2 }], changeFn: 'handleChooseAuth' },
-      menuCode: 120,
-      userName: 80,
-      pageStatus: { width: 80, clsName: 'pageStatus' },
-      remark: 80,
-      pageUrl: 200
+      menuName: { width: 100, clsName: 'cm-btn-color' },
+      sharePermission: { width: 200, type: 'radio', options: [{ label: '私有', value: 2 }, { label: '公开只读', value: 0 }, { label: '公开读写', value: 1 }], changeFn: 'handleChooseAuth' }
     }
-    this.tableItem = this.$setItem(tybeObj['page-manage1'], configTableItem, 'table')
+    this.tableItem = this.$setItem(tybeObj['data-auth'], configTableItem, 'table')
   }
 }
 
