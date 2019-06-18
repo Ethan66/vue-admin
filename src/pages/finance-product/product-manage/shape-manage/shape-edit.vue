@@ -9,7 +9,7 @@
       <section>
         <h4>基础信息</h4>
         <el-form-item label="名称" prop="productFormName">
-          <el-input placeholder="请输入" v-model="newShapeData.productFormName"></el-input>
+          <el-input placeholder="请输入" maxlength="20" v-model="newShapeData.productFormName"></el-input>
         </el-form-item>
         <el-form-item label="对象" prop="productFormObject">
           <el-select v-model="newShapeData.productFormObject" placeholder="请选择">
@@ -19,7 +19,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="适用场景" prop="sceneName">
-          <el-input placeholder="请输入" v-model="newShapeData.sceneName"></el-input>
+          <el-input placeholder="请输入" maxlength="20" v-model="newShapeData.sceneName"></el-input>
         </el-form-item>
         <el-form-item label="状态" prop="productFormStatus">
           <el-radio-group v-model="newShapeData.productFormStatus">
@@ -32,18 +32,18 @@
         <h4>基本配置</h4>
         <div class="region">
           <el-form-item label="额度区间" prop="limit_min_range">
-            <el-input placeholder="最小值/千" v-model="newShapeData.basicConfig.limit_min_range"></el-input>
+            <el-input placeholder="最小值/千" type="number" v-model="newShapeData.basicConfig.limit_min_range"></el-input>
           </el-form-item>
           <el-form-item label="额度区间" prop="limit_max_range">
-            <el-input placeholder="最大值/千" v-model="newShapeData.basicConfig.limit_max_range"></el-input>
+            <el-input placeholder="最大值/千" type="number" v-model="newShapeData.basicConfig.limit_max_range"></el-input>
           </el-form-item>
         </div>
         <div class="region">
           <el-form-item label="单笔贷款区间" prop="limit_min_using">
-            <el-input placeholder="最小值/千" v-model="newShapeData.basicConfig.limit_min_using"></el-input>
+            <el-input placeholder="最小值/千" type="number" v-model="newShapeData.basicConfig.limit_min_using"></el-input>
           </el-form-item>
           <el-form-item label="单笔贷款区间" prop="limit_max_using">
-            <el-input placeholder="最大值/千" v-model="newShapeData.basicConfig.limit_max_using"></el-input>
+            <el-input placeholder="最大值/千" type="number" v-model="newShapeData.basicConfig.limit_max_using"></el-input>
           </el-form-item>
         </div>
         <el-form-item label="" prop="stage_days">
@@ -92,7 +92,7 @@
         </el-form-item>
       </section>
       <section>
-        <h4>还款配置 <span class="cm-color" @click="handleAddRepayConfig">添加组</span><span class="cm-color" @click="handleRemoveRepayConfig">删除组</span></h4>
+        <h4>还款配置 <span class="cm-color" @click="handleAddRepayConfig">添加组 </span><span class="cm-color" @click="handleRemoveRepayConfig"> 删除组</span></h4>
         <template v-for="(item, i) in newShapeData.repaymentConfig">
           <el-form-item label="还款方式" :prop="`interest_ways${i}`" :key="`interest_ways${i}`">
             <el-select v-model="newShapeData.repaymentConfig[i].interest_ways" placeholder="请选择">
@@ -104,32 +104,32 @@
             </el-select>
           </el-form-item>
           <el-form-item label="日利率" :prop="`poundage_rate${i}`" :key="`poundage_rate${i}`">
-            <el-input placeholder="请输入" v-model="newShapeData.repaymentConfig[i].poundage_rate"></el-input>
+            <el-input type="number" placeholder="请输入" v-model="newShapeData.repaymentConfig[i].poundage_rate"></el-input>
           </el-form-item>
         </template>
       </section>
       <section>
         <h4>逾期配置</h4>
         <el-form-item label="罚息日利率" prop="penalty_rate_day">
-          <el-input placeholder="请输入，单位%" v-model="newShapeData.overdureConfig.penalty_rate_day"></el-input>
+          <el-input type="number" placeholder="请输入，单位%" v-model="newShapeData.overdureConfig.penalty_rate_day"></el-input>
         </el-form-item>
         <el-form-item label="宽限期" prop="breach_days">
           <template slot="label">
             宽限期
-            <el-tooltip popper-class="shapeEdit" class="tip" effect="light" content="Top Left 提示文字" placement="top-start">
+            <el-tooltip popper-class="shapeEdit" class="tip" effect="light" content="在宽限期内结清逾期相关费用则不收取逾期违约金" placement="top-start">
               <i class="el-icon-warning"></i>
             </el-tooltip>
           </template>
-          <el-input placeholder="请输入，单位天" v-model="newShapeData.overdureConfig.breach_days"></el-input>
+          <el-input type="number" placeholder="请输入，单位天" v-model="newShapeData.overdureConfig.breach_days"></el-input>
         </el-form-item>
         <el-form-item label="逾期违约金比例" prop="breach_rate">
            <template slot="label">
             逾期违约金比例
-            <el-tooltip popper-class="shapeEdit" class="tip" effect="light" content="Top Left 提示文字" placement="top-start">
+            <el-tooltip popper-class="shapeEdit" class="tip" effect="light" content="逾期违约金=逾期金额*逾期违约金比例，逾期金额=逾期本金+逾期利息" placement="top-start">
               <i class="el-icon-warning"></i>
             </el-tooltip>
           </template>
-          <el-input placeholder="请输入，单位天" v-model="newShapeData.overdureConfig.breach_rate"></el-input>
+          <el-input type="number" placeholder="请输入，单位天" v-model="newShapeData.overdureConfig.breach_rate"></el-input>
         </el-form-item>
       </section>
       <section>
@@ -137,20 +137,20 @@
         <el-form-item label="提前还款征收点" prop="early_repay_breach_scale">
           <template slot="label">
             提前还款征收点
-            <el-tooltip popper-class="shapeEdit" class="tip" effect="light" content="Top Left 提示文字" placement="top-start">
+            <el-tooltip popper-class="shapeEdit" class="tip" effect="light" content="冲销完当前账期未还本金和未还利息后，多还金额超过当前贷款剩余本金的一定比例则需要收取提前还款违约金" placement="top-start">
               <i class="el-icon-warning"></i>
             </el-tooltip>
           </template>
-          <el-input placeholder="请输入，单位%" v-model="newShapeData.prepayConfig.early_repay_breach_scale"></el-input>
+          <el-input type="number" placeholder="请输入，单位%" v-model="newShapeData.prepayConfig.early_repay_breach_scale"></el-input>
         </el-form-item>
         <el-form-item label="提前还款违约金比例" prop="early_repay_breach_rate">
            <template slot="label">
             提前还款违约金比例
-            <el-tooltip popper-class="shapeEdit" class="tip" effect="light" content="Top Left 提示文字" placement="top-start">
+            <el-tooltip popper-class="shapeEdit" class="tip" effect="light" content="提前还款违约金=当前贷款剩余本金*比例" placement="top-start">
               <i class="el-icon-warning"></i>
             </el-tooltip>
           </template>
-          <el-input placeholder="请输入，单位%" v-model="newShapeData.prepayConfig.early_repay_breach_rate"></el-input>
+          <el-input type="number" placeholder="请输入，单位%" v-model="newShapeData.prepayConfig.early_repay_breach_rate"></el-input>
         </el-form-item>
       </section>
       <section>
@@ -158,11 +158,11 @@
         <el-form-item label="提前结清费用比例" prop="early_settle_cost_rate">
           <template slot="label">
             提前结清费用比例
-            <el-tooltip popper-class="shapeEdit" class="tip" effect="light" content="Top Left 提示文字" placement="top-start">
+            <el-tooltip popper-class="shapeEdit" class="tip" effect="light" content="提前结清费用=当前贷款剩余本金*比例" placement="top-start">
               <i class="el-icon-warning"></i>
             </el-tooltip>
           </template>
-          <el-input placeholder="请输入，单位%" v-model="newShapeData.settleConfig.early_settle_cost_rate"></el-input>
+          <el-input type="number" placeholder="请输入，单位%" v-model="newShapeData.settleConfig.early_settle_cost_rate"></el-input>
         </el-form-item>
       </section>
     </el-form>
@@ -314,6 +314,7 @@ export default {
       this.textTip[`poundage_rate${length}`] = { type: 'repaymentConfig', text: '请输入日利率' }
     },
     handleRemoveRepayConfig () {
+      if (this.newShapeData.repaymentConfig.length === 1) return false
       this.newShapeData.repaymentConfig.pop()
       let length = this.newShapeData.repaymentConfig.length
       delete this.rules[`interest_ways${length}`]
@@ -358,6 +359,9 @@ export default {
 
 <style lang="less">
   .shapeEdit{
+    .cm-color{
+      cursor: pointer;
+    }
     &.el-tooltip__popper{
       border-color: #e8e8e8;
       .popper__arrow{

@@ -42,6 +42,9 @@ export default {
       }
     }
   },
+  created () {
+    this.tablePages.pageSize = 4
+  },
   methods: {
     // 获取表格数据
     handleGetTableData (api, val, currentPage = 1) {
@@ -101,6 +104,11 @@ export default {
             transform: translateX(-50%);
           }
         }
+      }
+    }
+    .el-table__row{
+      td:nth-child(2) {
+        border-right: 1px solid #e8e8e8;
       }
     }
   }
