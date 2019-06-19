@@ -2,7 +2,7 @@ export const circle = {
   color: ['red', 'green', 'yellow'],
   tooltip: {
     trigger: 'item',
-    formatter: '{a} <br/>{b}: {c} ({d}%)',
+    formatter: '{a} <br/>{b}: {c}%',
     backgroundColor: 'rgba(0,0,0,0.75)',
     padding: 13,
     axisPointer: {
@@ -32,13 +32,13 @@ export const circle = {
       labelLine: {
         show: true
       },
-      data: [
+      /* data: [
         { value: 335, name: '直接访问' },
         { value: 310, name: '邮件营销' },
         { value: 234, name: '联盟广告' },
         { value: 135, name: '视频广告' },
         { value: 1548, name: '搜索引擎' }
-      ]
+      ] */
     }
   ]
 }
@@ -104,35 +104,17 @@ export const tree = {
         color: '#E9E9E9'
       }
     },
-    data: ['周一', '周二', '周三', '周四', '周五']
+    // data: ['周一', '周二', '周三', '周四', '周五']
+  },
+  dataset: {
+    // source: [
+    //   ['dateTime', '借款人数', '借款金额'],
+    //   ['2019-05-11', 200, 10],
+    //   ['2019-05-13', 100, 20],
+    //   ['2019-05-14', 300, 30]
+    // ]
   },
   series: [
-    {
-      name: '直接访问',
-      type: 'bar',
-      stack: '总量',
-      barWidth: '50%',
-      label: {
-        normal: {
-          show: true,
-          position: 'insideRight'
-        }
-      },
-      data: [320, 302, 301, 334, 390]
-    },
-    {
-      name: '邮件营销',
-      type: 'bar',
-      stack: '总量',
-      barWidth: '50%',
-      label: {
-        normal: {
-          show: true,
-          position: 'insideRight'
-        }
-      },
-      data: [120, 132, 101, 134, 90]
-    }
   ]
 }
 
@@ -161,12 +143,12 @@ export const line = {
     }
   },
   dataset: {
-    source: [
-      ['dateTime', '借款人数', '借款金额'],
-      ['2019-05-11', 200],
-      ['2019-05-13', 100],
-      ['2019-05-14', 300]
-    ]
+    // source: [
+    //   ['dateTime', '借款人数', '借款金额'],
+    //   ['2019-05-11', 200],
+    //   ['2019-05-13', 100],
+    //   ['2019-05-14', 300]
+    // ]
   },
   xAxis: {
     type: 'category',
@@ -219,19 +201,5 @@ export const line = {
   ],
   // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
   series: [
-    {
-      type: 'line',
-      areaStyle: {
-        opacity: 0
-      },
-      label: {
-        show: true,
-        color: '#999',
-        fontSize: 16
-      },
-      itemStyle: {
-      },
-      smooth: true
-    }
   ]
 }

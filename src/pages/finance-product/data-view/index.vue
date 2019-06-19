@@ -5,7 +5,7 @@
         <h4>数据概览</h4>
         <div class="lend">
           <div class="img">
-            <img src="" />
+            <img src="~@/assets/img/finance-total.png" />
           </div>
           <div class="text">
             <p class="amount">{{ totalData.yesterdaySumLoanAmount }}万</p>
@@ -14,7 +14,7 @@
         </div>
         <div class="lending">
           <div class="img">
-            <img src="" />
+            <img src="~@/assets/img/finance-lending.png" />
           </div>
           <div class="text">
             <p class="amount">{{ totalData.yesterdaySumFlowOutAmount }}万</p>
@@ -27,7 +27,10 @@
         <div class="circleContent">
           <div class="circle" style="width: 150px; height: 150px;"></div>
           <div class="tip">
-            <p class="rate" v-for="(item, i) in scaleList" :key="i">{{ item.scale }}</p>
+            <p v-for="(item, i) in scaleList" :key="i">
+              <span class="rate">{{ item.scale }}%</span>
+              {{ item.productName }}
+            </p>
           </div>
         </div>
       </div>
@@ -70,18 +73,18 @@ export default {
     }
   },
   created () {
-    this.handleGetDataOverView(this.value)
+    this.handleGetDataOverView(this.value, 'init')
   },
   mounted () {
-    let $circle = echarts.init(document.querySelector('.circle'))
+    let $circle = this.$circle = echarts.init(document.querySelector('.circle'))
     $circle.setOption(circle)
-    let $tree = echarts.init(document.querySelector('.tree'))
+    let $tree = this.$tree = echarts.init(document.querySelector('.tree'))
     $tree.setOption(tree)
-    let $line = echarts.init(document.querySelector('.line'))
+    let $line = this.$line = echarts.init(document.querySelector('.line'))
     $line.setOption(line)
   },
   methods: {
-    handleGetDataOverView (day) {
+    handleGetDataOverView (day, type) {
       apiDateOverView({ day }).then(res => {
         if (res.code === '208999') {
           let data = res.resultMap.data
@@ -90,23 +93,88 @@ export default {
           this.$set(this.totalData, 'yesterdaySumLoanAmount', (data.yesterdaySumLoanAmount/10000).toFixed(2))
           this.scaleList = data.productScale.map(item => {
             let obj = productList.find(product => product.productCode === item.productCode)
-            item.productName = obj ? obj.productName : ''
+            item.productName = obj ? obj.productName : item.productCode
             return item
           })
-          this.product5Day = data.product5Day.map(item => {
-            let obj = productList.find(product => product.productCode === item.productCode)
-            item.productName = obj ? obj.productName : ''
-            return item
+          if (type == 'init') {
+            circle.series[0].data = this.scaleList.map(item => ({ value: item.scale, name: item.productName }))
+            this.$circle.setOption(circle)
+            this.product5Day = this.handleSetData(data.product5Day, tree, 'tree')
+            tree.dataset.source = this.product5Day
+            this.$tree.setOption(tree)
+          }
+          this.borrowDataList = this.handleSetData(data.productResult, line, 'line')
+          line.dataset.source = this.borrowDataList
+          let max = 0
+          data.productResult.forEach(item => {
+            if (Number(item.yesterdayLoanAmount) > max) {
+              max = Number(item.yesterdayLoanAmount)
+            }
           })
-          this.borrowDataList = data.productResult.map(item => {
-            let obj = productList.find(product => product.productCode === item.productCode)
-            item.productName = obj ? obj.productName : ''
-            return item
-          })
+          line.yAxis[0].max = (max + max/5).toFixed(3)
+          line.yAxis[0].interval = (line.yAxis[0].max/5).toFixed(3)
+          this.$line.setOption(line)
         } else {
           this.$message.error(res.message)
         }
       })
+    },
+    handleSetData (data, echartConfig, type) {
+      let productObj = {}
+      let sumObj = {}
+      let titleObj = {}
+      let timeArr = []
+      let result = [['datetime']]
+      data.forEach(item => {
+        let obj = this.productList.find(product => product.productCode === item.productCode)
+        item.productName = obj ? obj.productName : item.productCode
+        let time = item.sumDay.split(' ')[0]
+        !timeArr.includes(time) && timeArr.push(time)
+        !productObj[item.productCode] && (productObj[item.productCode] = {})
+        !sumObj[item.productCode] && (sumObj[item.productCode] = {})
+        productObj[item.productCode][time] = item.yesterdayLoanAmount
+        sumObj[item.productCode] += Number(item.yesterdayLoanAmount)
+        !titleObj[item.productCode] && (titleObj[item.productCode] = item.productName)
+      })
+      for(let code in titleObj) {
+        result[0].push(titleObj[code])
+        if (type === 'tree') {
+          echartConfig.series.push({
+            name: titleObj[code],
+            type: 'bar',
+            stack: '总量',
+            barWidth: '50%',
+            label: {
+              normal: {
+                show: true,
+                position: 'insideRight'
+              }
+            }
+          })
+        } else {
+          echartConfig.series.push({
+            type: 'line',
+            areaStyle: {
+              opacity: 0
+            },
+            label: {
+              show: true,
+              color: '#999',
+              fontSize: 16
+            },
+            itemStyle: {
+            },
+            smooth: true
+          })
+        }
+        let length = timeArr.length + 1
+        for(let i = 1; i < length; i++) {
+          !result[i] && (result[i] = [])
+          result[i].push(timeArr[i - 1])
+          result[i].push(productObj[code][timeArr[i - 1]])
+        }
+      }
+      return result
     }
   }
 }
@@ -143,7 +211,6 @@ export default {
             img{
               width: 100%;
               height: 100%;
-              background: black;
               vertical-align: middle;
             }
           }

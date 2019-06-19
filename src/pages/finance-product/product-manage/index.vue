@@ -153,7 +153,7 @@ export default {
     validateProductColor (rule, value, callback) {
       let val = value && value.trim() || ''
       if (!val) {
-        return callback(new Error(this.dialogItem[0].placeholder))
+        return callback(new Error(this.dialogItem[1].placeholder))
       }
       if (!/^#[a-zA-Z\d]{6}$/.test(val)) {
         return callback(new Error('输入内容必须满足第一位是#且后6位是数字或字母'))

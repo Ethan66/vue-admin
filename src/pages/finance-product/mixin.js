@@ -11,7 +11,7 @@ export const productManage = {
   created () {
     let configDialogItem = [
       { productName: { label: '产品名称' } },
-      { productColor: { label: '产品颜色', maxlength: 7 } },
+      { productColor: { label: '产品颜色', type: 'select', options: [{ label: '蓝色(#335EFE)', value: '#335EFE' }, { label: '天蓝色(#86A0FF)', value: '#86A0FF' }, { label: '紫色(#6D52E4)', value: '#6D52E4' }, { label: '玫红色(#B772FF)', value: '#B772FF' }, { label: '黄色(#F7BF5E)', value: '#F7BF5E' }] } },
       { creater: { label: '创建人', type: 'docs', show: false } },
       { gmtCreate: { label: '创建时间', type: 'docs', show: false } }
     ]
@@ -46,7 +46,7 @@ export const shapeManage = {
       productFormVersionName: 80,
       productFormObject: 120,
       sceneName: 80,
-      productFormStatus: { width: 80, clsName: 'productFormStatus' },
+      productFormStatusName: { width: 80, clsName: 'productFormStatusName' },
       btn: 120
     }
     this.searchItem = this.$setItem(tybeObj['shape-manage'], configSearchItem, 'search')

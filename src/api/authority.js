@@ -108,6 +108,11 @@ export const apiEditDataRule = (params) => {
   return postRequest(base + '/editDataRule', params)
 }
 
+// 修改数据权限共享状态和删除
+export const apiOperateDataRuleStatus = (params) => {
+  return postRequest(base + '/operateDataRuleStatus', params)
+}
+
 // 新增角色或角色分类
 export const apiCreateConsoleRole = (params) => {
   return postRequest(base + '/createConsoleRole', params)

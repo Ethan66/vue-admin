@@ -11,6 +11,7 @@ module.exports = {
       '/bl/console': {
         target: 'https://tconsole4.bailingpay.com'
         // target: 'http://10.0.1.76:8210'
+        // target: 'http://10.0.0.43:8210'
       },
       '/uploadFile': {
         target: 'https://tconsole4.bailingpay.com',

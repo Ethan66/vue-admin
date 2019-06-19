@@ -300,25 +300,22 @@ export const dataShare = {
       menuNames: 100,
       dataTo: 100,
       dataPermission: 200,
-      ruleStatus: 90,
+      ruleStatus: { width: 90, clsName: 'ruleStatus' },
       btn: 118
     }
     let configDialogItem = [
       {
-        parentId: {
-          label: '上级部门',
+        dataFrom: {
           type: 'selectTree',
-          defaultProps: { children: 'list', label: 'departmentName' },
+          defaultProps: { children: 'childIdList', label: 'departmentName' },
           dialogData: []
         }
       },
-      'menuNames',
-      { directorId: {
-        label: '负责人',
+      { menuCode: { label: '共享菜单', type: 'selectMore', options: [] } },
+      { dataTo: {
         type: 'selectTree2',
         defaultProps: { children: 'childIdList', label: 'departmentName' },
-        dialogData: [],
-        textTip: '部门负责人即为部门管理人员'
+        dialogData: []
       } },
       { dataPermission: { type: 'radio', options: [{ label: '只读', value: 0 }, { label: '读写', value: 1 }] } }
     ]

@@ -42,5 +42,13 @@ export default {
     '允许登陆': 'colorBlue',
     '停用': 'colorRed',
     '禁止登陆': 'colorRed'
+  },
+  ruleStatus: {
+    '正常': 'colorBlue',
+    '停用': 'colorRed'
+  },
+  productFormStatusName: {
+    '正常': 'colorBlue',
+    '停用': 'colorRed'
   }
 }
