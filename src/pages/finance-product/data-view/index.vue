@@ -8,7 +8,7 @@
             <img src="" />
           </div>
           <div class="text">
-            <p class="amount">1988.45万</p>
+            <p class="amount">{{ totalData.yesterdaySumLoanAmount }}万</p>
             <p>昨日累计放贷(元)</p>
           </div>
         </div>
@@ -17,7 +17,7 @@
             <img src="" />
           </div>
           <div class="text">
-            <p class="amount">988.45万</p>
+            <p class="amount">{{ totalData.yesterdaySumFlowOutAmount }}万</p>
             <p>昨日在贷金额(元)</p>
           </div>
         </div>
@@ -27,30 +27,7 @@
         <div class="circleContent">
           <div class="circle" style="width: 150px; height: 150px;"></div>
           <div class="tip">
-            <p>
-              <span class="rate">65%</span>
-              白条分期1
-            </p>
-            <p>
-              <span class="rate">65%</span>
-              白条分期1
-            </p>
-            <p>
-              <span class="rate">65%</span>
-              白条分期1
-            </p>
-            <p>
-              <span class="rate">65%</span>
-              白条分期1
-            </p>
-            <p>
-              <span class="rate">65%</span>
-              白条分期1
-            </p>
-            <p>
-              <span class="rate">65%</span>
-              白条分期1
-            </p>
+            <p class="rate" v-for="(item, i) in scaleList" :key="i">{{ item.scale }}</p>
           </div>
         </div>
       </div>
@@ -62,7 +39,7 @@
     <div class="chartContent">
       <div class="title">
         <span>申请借款</span>
-        <el-select v-model="value" placeholder="请选择" popper-class="dataView">
+        <el-select v-model="value" placeholder="请选择" popper-class="dataView" @change="handleGetDataOverView">
           <el-option
             v-for="item in [{ value: 7, label: '近7天' }, { value: 14, label: '近14天' }]"
             :key="item.value"
@@ -79,12 +56,21 @@
 <script>
 import echarts from 'echarts'
 import { circle, tree, line } from './options'
+import { apiDateOverView } from '@/api/financeProduct'
 export default {
   name: 'chart',
   data () {
     return {
-      value: ''
+      value: 7,
+      totalData: {},
+      productList: [],
+      scaleList: [],
+      product5Day: [],
+      borrowDataList: []
     }
+  },
+  created () {
+    this.handleGetDataOverView(this.value)
   },
   mounted () {
     let $circle = echarts.init(document.querySelector('.circle'))
@@ -93,6 +79,35 @@ export default {
     $tree.setOption(tree)
     let $line = echarts.init(document.querySelector('.line'))
     $line.setOption(line)
+  },
+  methods: {
+    handleGetDataOverView (day) {
+      apiDateOverView({ day }).then(res => {
+        if (res.code === '208999') {
+          let data = res.resultMap.data
+          let productList = this.productList = res.resultMap.product.list
+          this.$set(this.totalData, 'yesterdaySumFlowOutAmount', (data.yesterdaySumFlowOutAmount/10000).toFixed(2))
+          this.$set(this.totalData, 'yesterdaySumLoanAmount', (data.yesterdaySumLoanAmount/10000).toFixed(2))
+          this.scaleList = data.productScale.map(item => {
+            let obj = productList.find(product => product.productCode === item.productCode)
+            item.productName = obj ? obj.productName : ''
+            return item
+          })
+          this.product5Day = data.product5Day.map(item => {
+            let obj = productList.find(product => product.productCode === item.productCode)
+            item.productName = obj ? obj.productName : ''
+            return item
+          })
+          this.borrowDataList = data.productResult.map(item => {
+            let obj = productList.find(product => product.productCode === item.productCode)
+            item.productName = obj ? obj.productName : ''
+            return item
+          })
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+    }
   }
 }
 </script>

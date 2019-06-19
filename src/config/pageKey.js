@@ -36,6 +36,11 @@ const config = {
       // ['shape-manage', '状态', 'productFormStatusName'],
       // ['data-auth', '菜单名称', 'menuName'],
       // ['data-auth', '权限', 'sharePermission'],
+      // ['data-share', '数据来源', 'dataFrom'],
+      // ['data-share', '共享菜单', 'menuNames'],
+      // ['data-share', '共享范围', 'dataTo'],
+      // ['data-share', '共享权限', 'dataPermission'],
+      // ['data-share', '状态', 'ruleStatus'],
       // ['', '', ''],
     ]
   }

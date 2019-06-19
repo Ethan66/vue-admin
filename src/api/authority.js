@@ -93,6 +93,21 @@ export const apiOperateMenuDataRule = (params) => {
   return postRequest(base + '/operateMenuDataRule', params)
 }
 
+// 数据权限共享查询
+export const apiQueryDataRulePageList = (params) => {
+  return postRequest(base + '/queryDataRulePageList', params)
+}
+
+// 新增数据权限共享
+export const apiCreateDataRule = (params) => {
+  return postRequest(base + '/createDataRule', params)
+}
+
+// 编辑数据权限共享
+export const apiEditDataRule = (params) => {
+  return postRequest(base + '/editDataRule', params)
+}
+
 // 新增角色或角色分类
 export const apiCreateConsoleRole = (params) => {
   return postRequest(base + '/createConsoleRole', params)

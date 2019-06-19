@@ -292,18 +292,15 @@ export const dataShare = {
   },
   created () {
     let configSearchItem = [
-      'menuName',
-      { status: { type: 'select', options: [{ label: '显示', value: 0 }, { label: '隐藏', value: 1 }] } }
+      'dataFrom',
+      { ruleStatus: { type: 'select', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }] } }
     ]
     let configTableItem = {
-      menuName: 200,
-      menuType: 80,
-      menuLevel: 100,
-      menuUrl: { width: 200, textTip: '改页面的链接地址' },
-      sortNo: 90,
-      code: 100,
-      status: { width: 80, clsName: 'menuStatus' },
-      remark: 100,
+      dataFrom: 200,
+      menuNames: 100,
+      dataTo: 100,
+      dataPermission: 200,
+      ruleStatus: 90,
       btn: 118
     }
     let configDialogItem = [
@@ -315,11 +312,7 @@ export const dataShare = {
           dialogData: []
         }
       },
-      'departmentName',
-      {
-        departmentType: { type: 'select', options: [{ label: '集团', value: 0 }, { label: '公司', value: 1 }, { label: '事业部', value: 2 }, { label: '部门', value: 3 }] }
-      },
-      { sortNo: { type: 'number' } },
+      'menuNames',
       { directorId: {
         label: '负责人',
         type: 'selectTree2',
@@ -327,13 +320,13 @@ export const dataShare = {
         dialogData: [],
         textTip: '部门负责人即为部门管理人员'
       } },
-      { departmentStatus: { type: 'radio', options: [{ label: '正常', value: 0 }, { label: '停用', value: 1 }] } }
+      { dataPermission: { type: 'radio', options: [{ label: '只读', value: 0 }, { label: '读写', value: 1 }] } }
     ]
-    this.searchItem = this.$setItem(tybeObj['menu-manage1'], configSearchItem, 'search')
-    this.tableItem = this.$setItem(tybeObj['menu-manage1'], configTableItem, 'table')
+    this.searchItem = this.$setItem(tybeObj['data-share'], configSearchItem, 'search')
+    this.tableItem = this.$setItem(tybeObj['data-share'], configTableItem, 'table')
     if (this.tableBtn.filter(item => item.show).length === 0) {
       this.tableItem.splice(this.tableItem.length - 1, 1)
     }
-    let dialogItem = this.dialogItem = this.$setItem(tybeObj['organization-manage1'], configDialogItem, 'dialog')
+    let dialogItem = this.dialogItem = this.$setItem(tybeObj['data-share'], configDialogItem, 'dialog')
   }
 }

@@ -3,6 +3,7 @@
     <article>
       <el-menu
         text-color="#999"
+        default-active="0"
         active-text-color="#4162DB"
         @select="handleSelectMenu"
       >
@@ -15,9 +16,9 @@
         <el-menu-item
           v-for="(item, i) in menuData"
           :key="i"
-          :index="String(item.id)"
+          :index="String(item.menuCode)"
         >
-          <span slot="title">{{ item.menuName }}</span>
+          <span slot="title">{{ `${item.menuName}(${item.num})` }}</span>
         </el-menu-item>
       </el-menu>
     </article>
@@ -32,13 +33,15 @@
         :table-data="tableData"
         :table-item="tableItem"
         :table-btn="tableBtn"
+        :table-pages="tablePages"
+        @table-jump="handleJump"
       >
         <div class="btn-content" slot="btn">
           <el-button @click="handleAdd" v-if="$authBtn('data-share-create-rule')">{{ $authBtn('data-share-create-rule') }}</el-button>
         </div>
       </table-module>
     </section>
-    <dialog-module
+    <!-- <dialog-module
       ref="dialog"
       :dialogTitle="dialogTitle"
       :showDialogForm.sync="showDialogForm"
@@ -58,7 +61,7 @@
       @handleSelectTreeValue2="handleSelectTreeValue2"
       @handleClearSelectTree="handleClearSelectTree"
       @handleClearSelectTree2="handleClearSelectTree2"
-    />
+    /> -->
   </div>
 </template>
 
@@ -68,6 +71,7 @@ import basicMethod from '@/config/mixins'
 import { apiListConsoleUser, apiQueryDepartmentTree } from '@/api/authority'
 import { menuRelation } from '@/config/utils'
 import { apiListConsoleMenu, apiEditeConsoleMenu, apiCreateConsoleMenu, apiDeleteConsoleMenu } from '@/api/developCenter'
+import { apiQueryDataRulePageList, apiCreateDataRule, apiEditDataRule } from '@/api/authority'
 export default {
   name: 'data-share',
   mixins: [dataShare, basicMethod],
@@ -80,24 +84,17 @@ export default {
     }
   },
   created () {
-    this.handleGetTableData(apiListConsoleMenu)
-    this.handleGetMenuData()
-    this.handleGetAllStaff()
+    // this.handleGetTableData(apiListConsoleMenu)
+    // this.handleGetAllStaff()
+    this.handleGetTableData(apiQueryDataRulePageList)
   },
   methods: {
-    // 获取二级菜单
-    handleGetMenuData () {
-      apiListConsoleMenu({ currentPage: 1, pageSize: 10000 }).then(res => {
-        if(res.code === '208999') {
-          this.menuData = res.resultMap.page.list.filter(item => item.menuLevel === 2)
-        } else {
-          this.message.error(res.message)
-        }
-      })
-    },
     // 选中菜单
-    handleSelectMenu (index) {
-      console.log(index)
+    handleSelectMenu (menuCode) {
+      if (menuCode === '0') {
+        menuCode = undefined
+      }
+      this.handleGetTableData(apiQueryDataRulePageList, { menuCode })
     },
     // 新建规则
     handleAdd () {
@@ -150,9 +147,34 @@ export default {
     // 处理表格数据
     handleTableData (tableData) {
       tableData.forEach(item => {
-        item.showBtnCode = item.status === 0 ? ['data-share-stop'] : ['data-share-startup']
+        item.showBtnCode = item.ruleStatus === 0 ? ['data-share-stop'] : ['data-share-startup']
       })
     },
+    // 获取表格数据
+    handleGetTableData (api, val, currentPage = 1) {
+      let obj = this.handleSaveSearchValues(val, currentPage)
+      val = obj.val || val
+      currentPage = obj.currentPage || currentPage
+      this.getTableDataApi = api
+      this.tableLoading = true
+      let params = {
+        currentPage: this.tablePages.current, PageSize: this.tablePages.pageSize
+      }
+      Object.assign(params, val)
+      api(params).then(res => {
+        if (res.code === '208999') {
+          this.allData = res.resultMap.page.list
+          this.tablePages.current = currentPage
+          this.tablePages.total = res.resultMap.page.total
+          this.tableData = JSON.parse(JSON.stringify(this.allData))
+          this.menuData = res.resultMap.menuRuls
+          this.handleTableData && this.handleTableData(this.tableData || [])
+          this.tableLoading = false
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+    }
   }
 }
 </script>

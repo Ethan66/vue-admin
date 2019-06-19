@@ -50,3 +50,8 @@ export const apiListHistoryProductFrom = (params) => {
 export const apiDeleteProductFrom = (params) => {
   return postRequest(base + '/deleteProductFrom', params)
 }
+
+// 获取数据概览
+export const apiDateOverView = (params) => {
+  return postRequest(base + '/dateOverView', params)
+}
