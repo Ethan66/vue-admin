@@ -1,5 +1,5 @@
 export const circle = {
-  color: ['red', 'green', 'yellow'],
+  color: [],
   tooltip: {
     trigger: 'item',
     formatter: '{a} <br/>{b}: {c}%',
@@ -20,7 +20,7 @@ export const circle = {
   },
   series: [
     {
-      name: '访问来源',
+      name: '项目',
       type: 'pie',
       radius: ['46%', '80%'],
       avoidLabelOverlap: false,
@@ -30,7 +30,7 @@ export const circle = {
         show: false
       },
       labelLine: {
-        show: true
+        show: false
       },
       /* data: [
         { value: 335, name: '直接访问' },
@@ -44,7 +44,7 @@ export const circle = {
 }
 
 export const tree = {
-  color: ['red', 'green', 'yellow'],
+  color: [],
   grid: {
     left: 10,
     top: 6,
@@ -85,7 +85,28 @@ export const tree = {
       show: false
     }
   },
-  yAxis: {
+  yAxis: [{
+    type: 'category',
+    axisLabel: {
+      color: '#333',
+      padding: [0, 0, 0, 0]
+    },
+    axisTick: {
+      show: false
+    },
+    axisLine: {
+      show: false,
+      onZero: false
+    },
+    splitLine: {
+      lineStyle: {
+        type: 'dashed',
+        color: '#E9E9E9'
+      }
+    }
+    // data: ['周一', '周二', '周三', '周四', '周五']
+  },
+  {
     type: 'category',
     axisLabel: {
       color: '#333',
@@ -104,8 +125,8 @@ export const tree = {
         color: '#E9E9E9'
       }
     },
-    // data: ['周一', '周二', '周三', '周四', '周五']
-  },
+    data: []
+  }],
   dataset: {
     // source: [
     //   ['dateTime', '借款人数', '借款金额'],
@@ -119,7 +140,7 @@ export const tree = {
 }
 
 export const line = {
-  color: ['#355CD0', '#FF8085'],
+  color: [],
   grid: {
     left: 20,
     top: 30,
@@ -152,23 +173,37 @@ export const line = {
   },
   xAxis: {
     type: 'category',
-    boundaryGap: false,
+    boundaryGap: true,
     axisLine: {
       show: true,
       lineStyle: {
-        color: '#ccc'
+        color: '#eee',
+        width: 2
       }
     },
     axisLabel: {
       margin: 20,
-      interval: 4,
+      interval: 0,
       textStyle: {
-        color: '#333',
+        color: '#999',
         fontSize: 13
       }
     },
     axisTick: {
       show: false
+    },
+    axisPointer: {
+      show: true,
+      lineStyle: {
+        type: 'dashed'
+      }
+    },
+    splitLine: {
+      show: true,
+      lineStyle: {
+        type: 'dashed',
+        color: '#ddd'
+      }
     }
   },
   yAxis: [
@@ -178,8 +213,14 @@ export const line = {
       max: 250,
       interval: 50,
       axisLabel: {
-        color: '#333',
-        padding: [0, 15, 0, 0]
+        color: '#999',
+        padding: [0, 1, 0, 0],
+        formatter: (value) => {
+          if (value > 0) {
+            return (value / 10000).toFixed(2) + '万'
+          }
+          return value
+        }
       },
       axisTick: {
         show: false
@@ -188,13 +229,14 @@ export const line = {
         show: true,
         onZero: false,
         lineStyle: {
-          color: '#ccc'
+          color: '#eee',
+          width: 2
         }
       },
       splitLine: {
         lineStyle: {
           type: 'dashed',
-          color: '#E9E9E9'
+          color: '#ddd'
         }
       }
     }

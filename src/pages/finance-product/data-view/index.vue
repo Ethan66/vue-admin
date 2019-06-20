@@ -36,7 +36,7 @@
       </div>
       <div class="lastFive dataContent">
         <h4>今5天每日放款数据</h4>
-        <div class="tree" style="width: 100%; height: 210px;"></div>
+        <div class="tree" style="width: calc(100% - 10px); height: 210px;"></div>
       </div>
     </div>
     <div class="chartContent">
@@ -44,14 +44,19 @@
         <span>申请借款</span>
         <el-select v-model="value" placeholder="请选择" popper-class="dataView" @change="handleGetDataOverView">
           <el-option
-            v-for="item in [{ value: 7, label: '近7天' }, { value: 14, label: '近14天' }]"
+            v-for="item in [{ value: 7, label: '近7天' }, { value: 15, label: '近15天' }, { value: 30, label: '近30天' }]"
             :key="item.value"
             :label="item.label"
             :value="item.value">
           </el-option>
         </el-select>
       </div>
-      <div class="line" style="width: 100%; height: calc(100% - 60px);"></div>
+      <div class="line" style="width: 100%; height: calc(100% - 100px);"></div>
+      <div class="tipContent">
+        <p v-for="(item, i) in colorObj" :key="i">
+          <span :style="`background: ${item.color}`"></span>{{ item.name }}
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -65,6 +70,7 @@ export default {
   data () {
     return {
       value: 7,
+      colorObj: {},
       totalData: {},
       productList: [],
       scaleList: [],
@@ -94,10 +100,13 @@ export default {
           this.scaleList = data.productScale.map(item => {
             let obj = productList.find(product => product.productCode === item.productCode)
             item.productName = obj ? obj.productName : item.productCode
+            item.productColor = obj ? obj.productColor : '#335EFE'
             return item
           })
           if (type == 'init') {
-            circle.series[0].data = this.scaleList.map(item => ({ value: item.scale, name: item.productName }))
+            circle.series[0].data = this.scaleList.map(item => ({ value: item.scale, name: item.productName, color: item.productColor }))
+            let colorArr = circle.series[0].data.map(item => item.color)
+            circle.color = colorArr
             this.$circle.setOption(circle)
             this.product5Day = this.handleSetData(data.product5Day, tree, 'tree')
             tree.dataset.source = this.product5Day
@@ -111,8 +120,13 @@ export default {
               max = Number(item.yesterdayLoanAmount)
             }
           })
-          line.yAxis[0].max = (max + max/5).toFixed(3)
-          line.yAxis[0].interval = (line.yAxis[0].max/5).toFixed(3)
+          if (this.value === 15) {
+            line.xAxis.axisLabel.interval = 2
+          } else if (this.value === 30) {
+            line.xAxis.axisLabel.interval = 4
+          }
+          line.yAxis[0].max = Number((max + max/5).toFixed(3))
+          line.yAxis[0].interval = Number((line.yAxis[0].max/5).toFixed(3))
           this.$line.setOption(line)
         } else {
           this.$message.error(res.message)
@@ -125,18 +139,36 @@ export default {
       let titleObj = {}
       let timeArr = []
       let result = [['datetime']]
+      let colorObj = {}
+      let colorArr = []
+      echartConfig.series = []
+      type === 'tree' && (echartConfig.yAxis[1].data = [])
       data.forEach(item => {
         let obj = this.productList.find(product => product.productCode === item.productCode)
         item.productName = obj ? obj.productName : item.productCode
-        let time = item.sumDay.split(' ')[0]
+        colorObj[item.productCode] = obj ? obj.productColor : '#335EFE'
+        if (type === 'line') {
+          !this.colorObj[item.productCode] && (this.colorObj[item.productCode] = {})
+          this.colorObj[item.productCode].color = colorObj[item.productCode]
+          this.colorObj[item.productCode].name = item.productName
+        }
+        let time = String(new Date(item.sumDay).getMonth() + 1).padStart(2, '0') + '/' + String(new Date(item.sumDay).getDate() + 1).padStart(2, '0')
         !timeArr.includes(time) && timeArr.push(time)
         !productObj[item.productCode] && (productObj[item.productCode] = {})
-        !sumObj[item.productCode] && (sumObj[item.productCode] = {})
+        !sumObj[time] && (sumObj[time] = 0)
         productObj[item.productCode][time] = item.yesterdayLoanAmount
-        sumObj[item.productCode] += Number(item.yesterdayLoanAmount)
+        sumObj[time] += Number(item.yesterdayLoanAmount)
         !titleObj[item.productCode] && (titleObj[item.productCode] = item.productName)
       })
+      type === 'tree' && (echartConfig.yAxis[1].data = Object.values(sumObj).map(val =>{
+        if (val > 0) {
+          return (val/10000).toFixed(2) + '万'
+        } else {
+          return val
+        }
+      }))
       for(let code in titleObj) {
+        colorArr.push(colorObj[code])
         result[0].push(titleObj[code])
         if (type === 'tree') {
           echartConfig.series.push({
@@ -147,7 +179,15 @@ export default {
             label: {
               normal: {
                 show: true,
-                position: 'insideRight'
+                position: 'insideRight',
+                formatter: (params) => {
+                  //如果值大于0 正常显示，否则不显示
+                    if (Number(params.value[1]) > 0) {	
+                        return (Number(params.value[1])/10000).toFixed(2) + '万'
+                    } else {
+                        return ''
+                    }
+                }
               }
             }
           })
@@ -158,11 +198,20 @@ export default {
               opacity: 0
             },
             label: {
-              show: true,
+              show: false,
               color: '#999',
-              fontSize: 16
+              fontSize: 16,
+              formatter: (params) => {
+                if (this.value === 30 && params.dataIndex % 3 !== 0) return ''
+                if (params.value[1] > 0) {
+                  return (params.value[1]/10000).toFixed(2) + '万'
+                } else {
+                  return params.value[1]
+                }
+              }
             },
             itemStyle: {
+              borderWidth: 4
             },
             smooth: true
           })
@@ -170,10 +219,14 @@ export default {
         let length = timeArr.length + 1
         for(let i = 1; i < length; i++) {
           !result[i] && (result[i] = [])
-          result[i].push(timeArr[i - 1])
+          if (!result[i][0]) {
+            result[i].push(timeArr[i - 1])
+          }
           result[i].push(productObj[code][timeArr[i - 1]])
         }
       }
+      echartConfig.color = colorArr
+      console.log(result)
       return result
     }
   }
@@ -260,6 +313,7 @@ export default {
       }
     }
     .chartContent{
+      position: relative;
       width: 100%;
       height: calc(100vh - 360px);
       margin-top: 15px;
@@ -289,6 +343,25 @@ export default {
           line-height: 22px;
           color: #333;
           font-size: 12px;
+        }
+      }
+      .tipContent{
+        position: absolute;
+        right: 18px;
+        bottom: 22px;
+        p{
+          display: inline-block;
+          color: #999;
+          font-size: 12px;
+          &+P{
+            margin-left: 20px;
+          }
+          span{
+            display: inline-block;
+            margin-right: 3px;
+            width: 12px;
+            height: 12px;
+          }
         }
       }
     }

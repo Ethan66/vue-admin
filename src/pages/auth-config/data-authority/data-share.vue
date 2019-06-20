@@ -28,6 +28,7 @@
       ></search-module>
       <table-module
         ref="table"
+        totalHeightClsName=".data-share>article"
         :table-data="tableData"
         :table-item="tableItem"
         :table-btn="tableBtn"
@@ -112,7 +113,7 @@ export default {
     // 点击编辑按钮
     handleEditData (row) {
       this.editData = JSON.parse(JSON.stringify(row))
-      this.editData.menuCode = Object.keys(this.editData.menuDetail).join()
+      this.$set(this.editData, 'menuCode', Object.keys(this.editData.menuDetail).join())
       if (this.editData.dataFrom) {
         this.editData.dataFrom = Object.keys(this.editData.dataFromDetail).map(item => 'a' + item).join()
       }
@@ -297,7 +298,7 @@ export default {
         width: 200px;
         min-width: 200px;
         margin-right: 12px;
-        height: calc(100vh - 110px);
+        height: calc(100vh - 125px);
         .el-menu-item{
           padding: 0 15px;
           padding-left: 15px !important;
@@ -317,8 +318,13 @@ export default {
       }
     }
     section{
+      display: flex;
+      flex-direction: column;
       flex: 1;
       width: calc(100% - 212px);
+      .tableModule{
+        flex: 1;
+      }
     }
   }
 </style>
