@@ -184,27 +184,27 @@ export const apiListConsoleUser = (params) => {
 
 // 查询系统用户详情
 export const apiQueryConsoleUserInfo = (params) => {
-  return postRequest(base + '/queryConsoleUserInfo', params)
+  return postRequest(baseuser + '/queryConsoleUserInfo', params)
 }
 // 编辑系统用户
 export const apiEditConsoleUser = (params) => {
-  return postRequest(base + '/editConsoleUser', params)
+  return postRequest(baseuser + '/editConsoleUser', params)
 }
 
 // 新建系统用户
 export const apiCreateConsoleUser = (params) => {
-  return postRequest(base + '/createConsoleUser', params)
+  return postRequest(baseuser + '/createConsoleUser', params)
 }
 
 // 查询用户部门及下级部门列表和人员列表
 export const apiQueryLowerLevelList = (params) => {
-  return postRequest(base + '/queryLowerLevelList', params)
+  return postRequest(baseuser + '/queryLowerLevelList', params)
 }
 // 编辑系统用户状态
 export const apiEditConsoleUserStatus = (params) => {
-  return postRequest(base + '/editConsoleUserStatus', params)
+  return postRequest(baseuser + '/editConsoleUserStatus', params)
 }
 // 重置系统用户密码
 export const apiResetConsoleUserPassword = (params) => {
-  return postRequest(base + '/resetConsoleUserPassword', params)
+  return postRequest(baseuser + '/resetConsoleUserPassword', params)
 }
