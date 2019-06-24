@@ -3,7 +3,7 @@
     <article>
       <el-menu
         text-color="#999"
-        default-active="0"
+        default-active="ALL"
         active-text-color="#4162DB"
         @select="handleSelectMenu"
       >
