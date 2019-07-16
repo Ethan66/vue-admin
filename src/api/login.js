@@ -1,6 +1,5 @@
 import { getRequest, postRequest } from '@/config/network'
 import config from './config'
-const baseuser = '/bl/console/user'
 const { baseUrl } = config
 
 // 获取IP
@@ -30,10 +29,10 @@ export const apiGetUserFields = (reqParams) => {
 
 // 登出
 export const apiUserLoginOut = (reqParams) => {
-  return postRequest(baseuser + '/userLoginOut', reqParams)
+  return postRequest(`${baseUrl}/loginOut`, reqParams)
 }
 
-// 登录状态下修改密码
-export const apiUserModifyPassword = (reqParams) => {
-  return postRequest(baseuser + '/userModifyPassword', reqParams)
+// 修改密码
+export const apiModifyPassword = (reqParams) => {
+  return postRequest(`${baseUrl}/modifyPassword`, reqParams)
 }

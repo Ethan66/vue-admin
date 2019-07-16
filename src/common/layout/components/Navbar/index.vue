@@ -38,7 +38,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getOptionsName } from '@/config/utils'
-import { apiUserLoginOut, apiUserModifyPassword } from '@/api/login'
+import { apiUserLoginOut, apiModifyPassword } from '@/api/login'
 import MD5 from 'js-md5'
 
 export default {
@@ -90,7 +90,7 @@ export default {
     ...mapGetters(['subTabObj'])
   },
   created () {
-    this.userName = JSON.parse(localStorage.getItem('userInfo')).consoleName
+    this.userName = JSON.parse(localStorage.getItem('userInfo')).userName
     if (!this.mainActivedTab.name) {
       this.mainActivedTab = JSON.parse(sessionStorage.getItem('mainActivedTab')) || {}
       this.mainTabs = this.mainActivedTab.name ? [].concat(this.mainActivedTab) : []
@@ -168,8 +168,7 @@ export default {
         callback: action => {
           if (action === 'confirm') {
             apiUserLoginOut().then((res) => {
-              if (res.code === '208999') {
-                localStorage.removeItem('userInfo')
+              if (res.code === '000000') {
                 this.$router.push({ path: '/login' })
               }
             })
@@ -189,12 +188,11 @@ export default {
         password: MD5(this.editData.password),
         newPassword: MD5(this.editData.newPassword)
       }
-      apiUserModifyPassword(params).then(res => {
-        if (res.code === '208999') {
-          localStorage.removeItem('userInfo')
+      apiModifyPassword(params).then(res => {
+        if (res.code === '000000') {
           this.$router.push({ path: '/login' })
         } else {
-          this.$message.error(res.message)
+          this.$message.error(res.msg)
         }
       })
     }

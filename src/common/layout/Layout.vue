@@ -1,7 +1,7 @@
 <template>
   <div class="app-wrapper">
     <sidebar class="sidebar-container el-scrollbar">
-      <h1><img src="~@/assets/img/logo.png" />新百凌后台管理系统</h1>
+      <h1><img src="~@/assets/img/logo.png" />{{ $systemObj.fullName }}</h1>
     </sidebar>
     <div class="main-container">
       <navbar/>
