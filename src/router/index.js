@@ -7,7 +7,7 @@ import Layout from '@/common/layout/Layout'
 
 import globalRoutes from './globalRoutes'
 import configRoutes from './configRoutes'
-import { apiGetUserPermissionResource, apiGetUserAllPermissionFields } from '@/api/login'
+import { apiGetUserResource, apiGetUserFields } from '@/api/login'
 import { menuRelation } from '@/config/utils'
 
 Vue.use(Router)
@@ -43,15 +43,16 @@ router.beforeEach((to, from, next) => {
       from.meta.firstLogin = false
     }
     let { department: departmentId } = JSON.parse(localStorage.getItem('userInfo')) || {}
-    apiGetUserPermissionResource({ departmentId }).then(res => {
-      if (res.code === '208999') {
-        const list = res.resultMap.data.list
+    apiGetUserResource({ departmentId }).then(res => {
+      if (res.code === '000000') {
+        const list = res.data
         let menuList = list.filter(item => item.menuLevel !== 3)
         let menuIdList = menuList.map(item => item.id)
-        apiGetUserAllPermissionFields({ menuIdList }).then(res => {
-          if (res.code === '208999') {
+        // 获取用户字段
+        apiGetUserFields({ menuIdList }).then(res => {
+          if (res.code === '000000') {
             let tybeObj = {}
-            res.resultMap.data.fieldPermissionList.forEach(item => {
+            res.data && res.resultMap.data.fieldPermissionList.forEach(item => {
               item.label = item.fieldName
               item.key = item.fieldValue
               if (!tybeObj[item.pageCode]) {
@@ -64,7 +65,7 @@ router.beforeEach((to, from, next) => {
             const btnList = list.filter(item => item.menuLevel === 3).map(item => ({ btnCode: item.code, btnName: item.menuName }))
             sessionStorage.setItem('btnList', JSON.stringify(btnList || []))
             menuList = menuRelation(menuList, 'id', 'menuParentId', 'menuLevel', 'sortNo')
-            if (from.path === '/login' && menuList && menuList[0].list && menuList[0].list[0]) {
+            if (from.path === '/login' && menuList && menuList[0].list && menuList[0].list[0]) { // 从登录页面过来选择第一个菜单
               let obj = menuList[0].list[0]
               toPath = obj.menuUrl
               let mainActivedTab = { code: obj.code, name: obj.menuName, url: obj.menuUrl }
@@ -156,9 +157,9 @@ function handleCreateRoute (obj, type = 'parent') {
   return route
 }
 
-// 保存二级/三级/四级subTabs
+// 二级菜单有2个以上title到vuex中的subTabs对象
 function handleSaveSubTabs (configRoutes, menuRoutes) {
-  let routeObj = {}
+  let routeObj = {} // 将配置路由和动态路由根据一级路由进行合并，保存至routeObj
   configRoutes.forEach(item => {
     if (item.path && item.children) {
       routeObj[item.path] = JSON.parse(JSON.stringify(item.children))
@@ -178,11 +179,11 @@ function handleSaveSubTabs (configRoutes, menuRoutes) {
     if (Array.isArray(value)) {
       value.forEach(item => {
         let info = { title: item.meta.title, level: item.meta.level, path: item.path }
-        let last = item.path.split('/').slice(-1).join('')
-        let path = item.path.split('/').slice(0, -1).join('/')
+        let last = item.path.split('/').slice(-1).join('') // 获取最后一个
+        let path = item.path.split('/').slice(0, -1).join('/') // 获取除去最后一个的路由
         if (path && obj[path]) {
           if (last === 'index') {
-            obj[path].unshift(info)
+            obj[path].unshift(info) // 将index的路由放到最前面（因为index为默认点击进入的路由，所以放到第一个）
           } else {
             obj[path].push(info)
           }
@@ -193,7 +194,7 @@ function handleSaveSubTabs (configRoutes, menuRoutes) {
     }
   })
   let result = {}
-  Object.keys(obj).forEach(key => {
+  Object.keys(obj).forEach(key => { // 遍历有2个及以上的二级菜单进行保存
     if (obj[key].length >= 2) {
       result[key] = obj[key]
     }
