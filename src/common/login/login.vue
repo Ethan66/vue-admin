@@ -4,7 +4,7 @@
     :model="loginForm"
     key="login"
     :rules="rules">
-    <h3>管理系统</h3>
+    <h3>{{ $systemObj.name }}</h3>
     <el-form-item prop="user">
       <el-input
         autofocus

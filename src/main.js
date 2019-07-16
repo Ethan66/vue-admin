@@ -9,6 +9,7 @@ import store from './store'
 import { adminModule } from '@/components'
 import { format, disposeTreeData } from '@/config/utils'
 import { initEditData, setItem, setBtnConfig, authBtn } from '@/components/methods'
+import systemObj from './config/system'
 
 Vue.use(ElementUI)
 Vue.use(adminModule)
@@ -19,6 +20,7 @@ Vue.prototype.$setBtnConfig = setBtnConfig
 Vue.prototype.$disposeTreeData = disposeTreeData
 Vue.prototype.$format = format
 Vue.prototype.$authBtn = authBtn
+Vue.prototype.$systemObj = systemObj
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
