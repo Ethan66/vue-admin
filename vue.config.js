@@ -8,8 +8,8 @@ module.exports = {
       errors: false
     },
     proxy: {
-      '/bl/console': {
-        target: 'https://tconsole4.bailingpay.com'
+      '/api': {
+        target: 'http://localhost:9000'
         // target: 'http://10.0.1.76:8210'
         // target: 'http://10.0.0.43:8210'
       },
