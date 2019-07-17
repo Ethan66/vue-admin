@@ -102,3 +102,10 @@ export const getOptionsName = (url) => {
     return result
   }
 }
+
+// 接口传参删除多余参数
+export const purifyParams = (params) => {
+  let result = {}
+  Object.keys(params).forEach(key => (params[key] && (result[key] = params[key])))
+  return result
+}

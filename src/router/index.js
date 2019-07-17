@@ -45,7 +45,7 @@ router.beforeEach((to, from, next) => {
     let { department: departmentId } = JSON.parse(localStorage.getItem('userInfo')) || {}
     apiGetUserResource({ departmentId }).then(res => {
       if (res.code === '000000') {
-        const list = res.data
+        const list = res.data.list
         let menuList = list.filter(item => item.menuLevel !== 3)
         let menuIdList = menuList.map(item => item.id)
         // 获取用户字段
@@ -62,7 +62,7 @@ router.beforeEach((to, from, next) => {
               }
             })
             sessionStorage.setItem('tybeObj', JSON.stringify(tybeObj))
-            const btnList = list.filter(item => item.menuLevel === 3).map(item => ({ btnCode: item.code, btnName: item.menuName }))
+            const btnList = list.filter(item => item.menuLevel === 3 && item.status === 1).map(item => ({ btnCode: item.code, btnName: item.menuName }))
             sessionStorage.setItem('btnList', JSON.stringify(btnList || []))
             menuList = menuRelation(menuList, 'id', 'menuParentId', 'menuLevel', 'sortNo')
             if (from.path === '/login' && menuList && menuList[0].list && menuList[0].list[0]) { // 从登录页面过来选择第一个菜单
