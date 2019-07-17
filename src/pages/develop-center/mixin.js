@@ -13,70 +13,103 @@ const menuMoreList = authMoreBtn([
 // 菜单管理
 export const menu = {
   data () {
-    return this.$setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), [{ edit: { code: 'menu-edit-menu' } }, { more: { list: menuMoreList, code: 'menu-more' } }])
-  },
-  created () {
-    let configSearchItem = [
-      'menuName',
-      { status: { type: 'select', options: [{ label: '显示', value: 0 }, { label: '隐藏', value: 1 }] } }
-    ]
-    let configTableItem = {
-      menuName: { type: 'tree', width: 200 },
-      menuType: 80,
-      menuLevel: 100,
-      menuUrl: { width: 200, textTip: '改页面的链接地址' },
-      sortNo: 90,
-      code: 100,
-      status: { width: 80, clsName: 'menuStatus' },
-      remark: 100,
-      btn: 118
-    }
-    let configDialogItem = [
-      { menuParentName: {
-        label: '上级菜单', show: false
-      } },
-      {
-        menuParentId: {
-          label: '上级菜单',
-          type: 'selectTree',
-          defaultProps: { children: 'list', label: 'menuName' },
-          dialogData: []
+    return new this.$InitObj({
+      modules: 'All',
+      btnConfig: {
+        tableBtn: [{ edit: { code: 'menu-edit-menu' } }, { more: { list: menuMoreList, code: 'menu-more' } }]
+      },
+      items: {
+        search: {
+          menuName: { label: '菜单名称' },
+          status: { label: '状态', type: 'select', options: [{ label: '显示', value: 1 }, { label: '隐藏', value: 0 }] }
+        },
+        table: {
+          menuName: { label: '菜单名称', type: 'tree', width: 200 },
+          menuType: { label: '菜单类型', width: 90 },
+          menuLevel: { label: '菜单等级', width: 100 },
+          menuUrl: { label: '菜单链接', width: 200, textTip: '改页面的链接地址' },
+          sortNo: { label: '排序', width: 70 },
+          code: { label: '菜单编码', width: 100 },
+          status: { label: '状态', width: 80, clsName: 'menuStatus' },
+          btn: { width: 118 }
+        },
+        dialog: {
+          menuParentName: { label: '上级菜单', show: false },
+          menuParentId: { label: '上级菜单', type: 'selectTree', defaultProps: { children: 'list', label: 'menuName' }, dialogData: [] },
+          menuName: { label: '菜单名称' },
+          menuType: { label: '菜单类型', type: 'select', options: [{ label: '目录', value: 1 }, { label: '菜单', value: 2 }, { label: '按钮', value: 3 }] },
+          code: { label: '菜单编码' },
+          menuUrl: { label: '菜单链接' },
+          menuIcon: { label: '菜单图标', width: 80 },
+          sortNo: { label: '排序', type: 'number' },
+          status: { label: '状态', type: 'radio', options: [{ label: '显示', value: 1 }, { label: '隐藏', value: 0 }] }
         }
       },
-      'menuName',
-      { menuType: { type: 'select', options: [{ label: '目录', value: 0 }, { label: '菜单', value: 1 }, { label: '按钮', value: 2 }] } },
-      'code', 'menuUrl',
-      { 'menuIcon': { label: '菜单图标', width: 80 } },
-      { sortNo: { type: 'number' } },
-      { status: { type: 'radio', options: [{ label: '显示', value: 0 }, { label: '隐藏', value: 1 }] } },
-      { remark: { label: '描述', type: 'textarea', rows: 4, placeholder: '100字以内' } }
-    ]
-    this.searchItem = this.$setItem(tybeObj['menu-manage1'], configSearchItem, 'search')
-    this.tableItem = this.$setItem(tybeObj['menu-manage1'], configTableItem, 'table')
-    if (this.tableBtn.filter(item => item.show).length === 0) {
-      this.tableItem.splice(this.tableItem.length - 1, 1)
-    }
-    let dialogItem = this.dialogItem = this.$setItem(tybeObj['menu-manage1'], configDialogItem, 'dialog')
-    this.rules = {
-      menuName: [
-        { required: true, trigger: 'blur', validator: this.validateMenuName }
-      ],
-      menuType: [
-        { required: true, message: dialogItem[2].placeholder, trigger: 'change' }
-      ],
-      code: [
-        { required: true, trigger: 'blur', validator: this.validateCode }
-      ],
-      menuUrl: [
-        { required: true, trigger: 'blur', validator: this.validateMenuUrl }
-      ],
-      sortNo: [
-        { required: true, trigger: 'blur', validator: this.validateSortNo }
-      ],
-      status: [
-        { required: true, message: dialogItem[8].placeholder, trigger: 'change' }
-      ]
-    }
+      rules: {
+        menuName: [
+          { required: true, trigger: 'blur', validator: this.validateMenuName }
+        ],
+        menuType: [
+          { required: true, message: '请选择菜单类型', trigger: 'change' }
+        ],
+        code: [
+          { required: true, trigger: 'blur', validator: this.validateCode }
+        ],
+        // menuUrl: [
+        //   { required: true, trigger: 'blur', validator: this.validateMenuUrl }
+        // ],
+        // sortNo: [
+        //   { required: true, trigger: 'blur', validator: this.validateSortNo }
+        // ],
+        status: [
+          { required: true, message: '请选择状态', trigger: 'change' }
+        ]
+      }
+    })
+    // return this.$setBtnConfig(JSON.parse(JSON.stringify(basicInitObj)), [{ edit: { code: 'menu-edit-menu' } }, { more: { list: menuMoreList, code: 'menu-more' } }])
+  },
+  created () {
+    // let configSearchItem = [
+    //   'menuName',
+    //   { status: { type: 'select', options: [{ label: '显示', value: 0 }, { label: '隐藏', value: 1 }] } }
+    // ]
+    // let configTableItem = {
+    //   menuName: { type: 'tree', width: 200 },
+    //   menuType: 80,
+    //   menuLevel: 100,
+    //   menuUrl: { width: 200, textTip: '改页面的链接地址' },
+    //   sortNo: 90,
+    //   code: 100,
+    //   status: { width: 80, clsName: 'menuStatus' },
+    //   remark: 100,
+    //   btn: 118
+    // }
+    // let configDialogItem = [
+    //   { menuParentName: {
+    //     label: '上级菜单', show: false
+    //   } },
+    //   {
+    //     menuParentId: {
+    //       label: '上级菜单',
+    //       type: 'selectTree',
+    //       defaultProps: { children: 'list', label: 'menuName' },
+    //       dialogData: []
+    //     }
+    //   },
+    //   'menuName',
+    //   { menuType: { type: 'select', options: [{ label: '目录', value: 0 }, { label: '菜单', value: 1 }, { label: '按钮', value: 2 }] } },
+    //   'code', 'menuUrl',
+    //   { 'menuIcon': { label: '菜单图标', width: 80 } },
+    //   { sortNo: { type: 'number' } },
+    //   { status: { type: 'radio', options: [{ label: '显示', value: 0 }, { label: '隐藏', value: 1 }] } },
+    //   { remark: { label: '描述', type: 'textarea', rows: 4, placeholder: '100字以内' } }
+    // ]
+    // this.searchItem = this.$setItem(tybeObj['menu-manage1'], configSearchItem, 'search')
+    // this.tableItem = this.$setItem(tybeObj['menu-manage1'], configTableItem, 'table')
+    // if (this.tableBtn.filter(item => item.show).length === 0) {
+    //   this.tableItem.splice(this.tableItem.length - 1, 1)
+    // }
+    // let dialogItem = this.dialogItem = this.$setItem(tybeObj['menu-manage1'], configDialogItem, 'dialog')
   }
 }
 

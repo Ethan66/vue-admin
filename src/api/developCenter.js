@@ -1,5 +1,23 @@
 import { postRequest } from '@/config/network'
+import config from './config'
+const { baseUrl } = config
 const base = '/bl/console/api'
+
+// 菜单管理
+// 新增菜单
+export const apiAddMenu = (params) => {
+  return postRequest(`${baseUrl}/addMenu`, params)
+}
+
+// 修改菜单
+export const apiModifyMenu = (params) => {
+  return postRequest(`${baseUrl}/modifyMenu`, params)
+}
+
+// 删除菜单
+export const apiDeleteMenu = (params) => {
+  return postRequest(`${baseUrl}/deleteMenu`, params)
+}
 
 // 菜单管理
 // 获取所有菜单

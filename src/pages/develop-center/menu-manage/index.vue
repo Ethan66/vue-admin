@@ -50,7 +50,8 @@ import { menu } from '../mixin'
 import basicMethod from '@/config/mixins'
 import { menuRelation } from '@/config/utils'
 import batchConfig from '@/config/menu'
-import { apiListConsoleMenu, apiEditeConsoleMenu, apiCreateConsoleMenu, apiDeleteConsoleMenu } from '@/api/developCenter'
+import { apiModifyMenu, apiAddMenu, apiDeleteMenu } from '@/api/developCenter'
+import { apiGetUserResource } from '@/api/login'
 
 export default {
   name: 'menu-manage',
@@ -74,7 +75,7 @@ export default {
   },
   created () {
     this.tablePages.pageSize = 10000
-    this.handleGetTableData(apiListConsoleMenu)
+    this.handleGetTableData(apiGetUserResource)
   },
   methods: {
     // 获取所有父菜单树
@@ -88,6 +89,7 @@ export default {
       this.dialogItem[0].show = false
       this.dialogItem[1].show = true
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
+      this.$set(this.editData, 'status', 1)
       this.handleClearSelectTree()
       this.handleGetAllParentTree()
       this.isEdit = 0
@@ -111,6 +113,7 @@ export default {
     // 新建平级菜单
     handleCreateLevelMenu (row) {
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
+      this.$set(this.editData, 'status', 1)
       this.dialogItem[0].show = false
       this.dialogItem[1].type = 'input'
       this.dialogItem[1].disabled = true
@@ -126,11 +129,12 @@ export default {
     },
     // 新建下级菜单
     handleCreateNextLevelMenu (row) {
-      if (Number(row.menuTypeStash) === 2) {
+      if (Number(row.menuTypeStash) === 3) {
         this.$message.error('三级不能创建下级菜单')
         return false
       }
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
+      this.$set(this.editData, 'status', 1)
       this.dialogItem[0].show = false
       this.dialogItem[1].type = 'input'
       this.dialogItem[1].disabled = true
@@ -174,23 +178,19 @@ export default {
     },
     // 点击表格删除按钮
     handleDeleteData (row) {
-      this.apiDeleteData(apiDeleteConsoleMenu, row.id, apiListConsoleMenu)
+      this.apiDeleteData(apiDeleteMenu, row.id, apiGetUserResource)
     },
     // 点击对话框确认按钮
     handleSubmit () {
-      if (this.editData.remark.length > 100) {
-        this.$message.error('描述字段长度不能超过100')
-        return
-      }
       if (this.isEdit === 0) {
         if (this.editData.menuParentIdStash) {
           this.editData.menuParentId = this.editData.menuParentIdStash
         }
-        this.editData.menuLevel = this.editData.menuType + 1
-        this.apiCreateData(apiCreateConsoleMenu, this.editData, apiListConsoleMenu)
+        this.editData.menuLevel = this.editData.menuType
+        this.apiCreateData(apiAddMenu, this.$purifyParams(this.editData), apiGetUserResource)
       } else {
-        this.editData.menuLevel = this.editData.menuType + 1
-        this.apiEditData(apiEditeConsoleMenu, this.editData, apiListConsoleMenu)
+        this.editData.menuLevel = this.editData.menuType
+        this.apiEditData(apiModifyMenu, this.editData, apiGetUserResource)
       }
     },
     // 处理表格数据
@@ -204,13 +204,13 @@ export default {
           item.menuTypeStash = item.menuType
         }
         switch (item.menuType) {
-          case 0:
+          case 1:
             item.menuType = '目录'
             break
-          case 1:
+          case 2:
             item.menuType = '菜单'
             break
-          case 2:
+          case 3:
             item.menuType = '按钮'
             break
         }
@@ -220,10 +220,10 @@ export default {
         }
         item.statusStash = item.status
         switch (item.status) {
-          case 0:
+          case 1:
             item.status = '显示'
             break
-          case 1:
+          case 0:
             item.status = '隐藏'
             break
         }
@@ -250,8 +250,8 @@ export default {
         data.forEach(item => {
           item.status = 0
           item.menuType = typeObj[type]
-          item.menuLevel = typeObj[type] + 1
-          this.apiCreateData(apiCreateConsoleMenu, item)
+          item.menuLevel = typeObj[type]
+          this.apiCreateData(apiAddMenu, item)
         })
       } else {
         let menuParentList = {}
@@ -267,8 +267,8 @@ export default {
           item.menuParentId = menuParentList[item.menuParentName]
           item.status = 0
           item.menuType = typeObj[type]
-          item.menuLevel = typeObj[type] + 1
-          this.apiCreateData(apiCreateConsoleMenu, item)
+          item.menuLevel = typeObj[type]
+          this.apiCreateData(apiAddMenu, item)
         })
       }
     },

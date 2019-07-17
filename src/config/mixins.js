@@ -28,15 +28,18 @@ export default {
       }
       Object.assign(params, val)
       api(params).then(res => {
-        if (res.code === '208999') {
-          this.allData = res.resultMap.page.list
-          this.tablePages.current = currentPage
-          this.tablePages.total = res.resultMap.page.total
+        if (res.code === '000000') {
+          const { list, page } = res.data
+          this.allData = list
+          if (page) {
+            this.tablePages.current = page.currentPage
+            this.tablePages.total = page.total
+          }
           this.tableData = JSON.parse(JSON.stringify(this.allData))
           this.handleTableData && this.handleTableData(this.tableData || [])
           this.tableLoading = false
         } else {
-          this.$message.error(res.message)
+          this.$message.error(res.msg)
         }
       })
     },
@@ -47,44 +50,44 @@ export default {
     // 接口：创建表格数据
     apiCreateData (createDataApi, obj, getTableDataApi) {
       return createDataApi(obj).then(res => {
-        if (res.code === '208999') {
+        if (res.code === '000000') {
           this.$refs.dialog.showDialogForm1 = false
           this.$message({
-            message: res.message,
+            message: res.msg,
             type: 'success'
           })
           getTableDataApi && this.handleGetTableData(getTableDataApi, this.searchValues, this.tablePages.current)
         } else {
-          this.$message.error(res.message)
+          this.$message.error(res.msg)
         }
       })
     },
     // 接口：编辑表格数据
     apiEditData (editDataApi, obj, getTableDataApi) {
       return editDataApi(obj).then(res => {
-        if (res.code === '208999') {
+        if (res.code === '000000') {
           this.$refs.dialog && (this.$refs.dialog.showDialogForm1 = false)
           this.$message({
-            message: res.message,
+            message: res.msg,
             type: 'success'
           })
           getTableDataApi && this.handleGetTableData(getTableDataApi, this.searchValues, this.tablePages.current)
         } else {
-          this.$message.error(res.message)
+          this.$message.error(res.msg)
         }
       })
     },
     // 接口：删除表格数据
     apiDeleteData (deleteDataApi, id, getTableDataApi) {
       return deleteDataApi({ id: id }).then(res => {
-        if (res.code === '208999') {
+        if (res.code === '000000') {
           this.$message({
-            message: res.message,
+            message: res.msg,
             type: 'success'
           })
           getTableDataApi && this.handleGetTableData(getTableDataApi, this.searchValues, this.tablePages.current)
         } else {
-          this.$message.error(res.message)
+          this.$message.error(res.msg)
         }
       })
     },
