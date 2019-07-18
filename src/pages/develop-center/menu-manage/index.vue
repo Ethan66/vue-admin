@@ -244,11 +244,11 @@ export default {
     },
     // 批量新建
     handleBatchCreate (type) {
-      const typeObj = { catalogue: 0, menu: 1, btn: 2 }
+      const typeObj = { catalogue: 1, menu: 2, btn: 3 }
       let data = batchConfig[type]
       if (type === 'catalogue') {
         data.forEach(item => {
-          item.status = 0
+          item.status = 1
           item.menuType = typeObj[type]
           item.menuLevel = typeObj[type]
           this.apiCreateData(apiAddMenu, item)
@@ -265,7 +265,7 @@ export default {
         })
         data.forEach(item => {
           item.menuParentId = menuParentList[item.menuParentName]
-          item.status = 0
+          item.status = 1
           item.menuType = typeObj[type]
           item.menuLevel = typeObj[type]
           this.apiCreateData(apiAddMenu, item)
