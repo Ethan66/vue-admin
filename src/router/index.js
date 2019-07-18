@@ -63,6 +63,7 @@ router.beforeEach((to, from, next) => {
             })
             sessionStorage.setItem('tybeObj', JSON.stringify(tybeObj))
             const btnList = list.filter(item => item.menuLevel === 3 && item.status === 1).map(item => ({ btnCode: item.code, btnName: item.menuName }))
+            window.btnList = btnList
             sessionStorage.setItem('btnList', JSON.stringify(btnList || []))
             menuList = menuRelation(menuList, 'id', 'menuParentId', 'menuLevel', 'sortNo')
             if (from.path === '/login' && menuList && menuList[0].list && menuList[0].list[0]) { // 从登录页面过来选择第一个菜单
