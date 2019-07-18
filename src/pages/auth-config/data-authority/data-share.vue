@@ -69,7 +69,6 @@ import { dataShare } from '../mixins'
 import basicMethod from '@/config/mixins'
 import { apiListConsoleUser, apiQueryDepartmentTree } from '@/api/authority'
 import { menuRelation } from '@/config/utils'
-import { apiListConsoleMenu, apiEditeConsoleMenu, apiCreateConsoleMenu, apiDeleteConsoleMenu } from '@/api/developCenter'
 import { apiQueryDataRulePageList, apiCreateDataRule, apiEditDataRule, apiOperateDataRuleStatus } from '@/api/authority'
 export default {
   name: 'data-share',
@@ -84,7 +83,6 @@ export default {
     }
   },
   created () {
-    // this.handleGetTableData(apiListConsoleMenu)
     this.handleGetAllStaff()
     this.handleGetTableData(apiQueryDataRulePageList)
   },

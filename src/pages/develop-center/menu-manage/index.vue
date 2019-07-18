@@ -169,6 +169,12 @@ export default {
       })
       this.$set(this.dialogItem[3], 'options', list)
     },
+    // 点击表格改变状态
+    handleChangeStatus (row) {
+      let id = row.id
+      let status = row.statusStash === 0 ? 1 : 0
+      this.apiEditData(apiModifyMenu, { id, status }, apiGetUserResource)
+    },
     // 点击表格详情按钮
     handleShowDetailDialog (row) {
       this.showDetail = true
@@ -200,6 +206,7 @@ export default {
         return
       }
       tableData.forEach(item => {
+        item.showBtnCode = []
         if (item.menuTypeStash === undefined) {
           item.menuTypeStash = item.menuType
         }
@@ -222,9 +229,11 @@ export default {
         switch (item.status) {
           case 1:
             item.status = '显示'
+            item.showBtnCode.push('menu-hide-menu')
             break
           case 0:
             item.status = '隐藏'
+            item.showBtnCode.push('menu-show-menu')
             break
         }
       })
@@ -246,15 +255,29 @@ export default {
     handleBatchCreate (type) {
       const typeObj = { catalogue: 1, menu: 2, btn: 3 }
       let data = batchConfig[type]
-      if (type === 'catalogue') {
-        data.forEach(item => {
+      let i = 0
+      let menuParentList = {}
+      const createMenuFn = () => {
+        new Promise((resolve, reject) => {
+          if (data.length < i + 1) {
+            reject()
+            return
+          }
+          let item = data[i]
+          type !== 'catalogue' && (item.menuParentId = menuParentList[item.menuParentName])
           item.status = 1
           item.menuType = typeObj[type]
           item.menuLevel = typeObj[type]
-          this.apiCreateData(apiAddMenu, item)
+          this.apiCreateData(apiAddMenu, item).then(createMenuFn)
+          i++
+          resolve(data)
+        }).catch(() => {
+          this.handleGetTableData(apiGetUserResource)
         })
+      }
+      if (type === 'catalogue') {
+        createMenuFn()
       } else {
-        let menuParentList = {}
         data.forEach(item => {
           if (!menuParentList[item.menuParentName]) {
             menuParentList[item.menuParentName] = ''
@@ -263,13 +286,7 @@ export default {
         Object.keys(menuParentList).forEach(name => {
           menuParentList[name] = this.allData.find(item => item.menuName === name).id
         })
-        data.forEach(item => {
-          item.menuParentId = menuParentList[item.menuParentName]
-          item.status = 1
-          item.menuType = typeObj[type]
-          item.menuLevel = typeObj[type]
-          this.apiCreateData(apiAddMenu, item)
-        })
+        createMenuFn()
       }
     },
     validateMenuName (rule, value, callback) {
