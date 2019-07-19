@@ -14,6 +14,7 @@ export default {
       },
       passwordrules: {
         user: [{ required: true, trigger: 'blur', validator: this.validateUser }],
+        userName: [{ required: true, trigger: 'blur', validator: this.validateUserName }],
         password1: [{ required: true, validator: this.checkPassword1, trigger: 'blur' }],
         password2: [{ required: true, validator: this.checkPassword2, trigger: 'blur' }]
       }
@@ -42,7 +43,7 @@ export default {
         callback()
       }
     },
-    // 验证用户名
+    // 验证账号
     validateUser (rule, value, callback) {
       if (!value.trim()) {
         return callback(new Error('请输入账号'))
@@ -50,6 +51,13 @@ export default {
       let code = this.nowErrorCode
       if (code && this.errorCodeObj[code].type === 'user') {
         return callback(new Error(this.errorCodeObj[this.nowErrorCode].msg))
+      }
+      callback()
+    },
+    // 验证用户名
+    validateUserName (rule, value, callback) {
+      if (!value.trim()) {
+        return callback(new Error('请输入用户名'))
       }
       callback()
     },

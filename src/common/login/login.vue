@@ -70,8 +70,7 @@ export default {
           this.isLoading = true
           this.nowErrorCode = ''
           let params = Object.assign({}, this.loginForm)
-          params.userName = params.user
-          delete params.user
+          params.user
           params.password = MD5(params.password)
           params.loginIp = this.ip
           params.ipAddress = this.ipAddress,

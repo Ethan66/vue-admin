@@ -8,6 +8,10 @@
       <el-input autofocus v-model="passwordForm.user"
         placeholder="账号" @blur="handleBlur('user')" />
     </el-form-item>
+    <el-form-item prop="userName">
+      <el-input autofocus v-model="passwordForm.userName"
+        placeholder="用户名" @blur="handleBlur('userName')" />
+    </el-form-item>
 
     <el-form-item prop="password1">
       <el-input type="password" v-model="passwordForm.password1"
@@ -38,7 +42,7 @@ export default {
   mixins: [rules],
   data () {
     return {
-      passwordForm: { user: '', password1: '', password2: '' },
+      passwordForm: { user: '', userName: '', password1: '', password2: '' },
       isLoading: false,
       nowErrorCode: ''
     }
@@ -61,7 +65,8 @@ export default {
           this.isLoading = true
           this.nowErrorCode = ''
           let params = {
-            userName: this.passwordForm.user,
+            user: this.passwordForm.user,
+            userName: this.passwordForm.userName,
             password: MD5(this.passwordForm.password1)
           }
           apiRegister(params).then(res => {
