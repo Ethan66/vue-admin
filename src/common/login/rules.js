@@ -6,7 +6,8 @@ export default {
         '000002': { type: 'user', msg: '账号不存在' },
         '000003': { type: 'user', connect: 'password', msg: '账号或密码不正确，操作5次后将被锁定' },
         '000004': { type: 'user', msg: '该账号已被锁定，请1分钟后再试' },
-        '000005': { type: 'user', msg: '该账号已被停用，请联系管理员' }
+        '000005': { type: 'user', msg: '该账号已被删除' },
+        '000006': { type: 'user', msg: '该账号已被停用，请联系管理员' }
       },
       rules: {
         user: [{ required: true, trigger: 'blur', validator: this.validateUser }],

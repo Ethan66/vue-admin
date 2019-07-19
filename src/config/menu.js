@@ -41,8 +41,9 @@ const config = {
       // // 权限管理
       // { menuParentName: '权限管理', menuName: '组织架构', code: 'organization', menuUrl: '/auth-config/organization/index', sortNo: 1 },
       // ['开发中心', '菜单管理', 'menu-manage', '/develop-center/menu-manage/index'],
-      ['日志管理', '登录日志', 'login-log', '/log/login-log/index'],
-      ['日志管理', '异常日志', 'error-log', '/log/error-log/index']
+      // ['权限管理', '用户管理', 'user-manage', '/auth-config/user-manage/index'],
+      // ['日志管理', '登录日志', 'login-log', '/log/login-log/index'],
+      // ['日志管理', '异常日志', 'error-log', '/log/error-log/index']
     ],
     btn: [
       // // 功能权限管理
@@ -59,8 +60,14 @@ const config = {
       // ['菜单管理', '隐藏', 'menu-hide-menu'],
       // ['菜单管理', '删除', 'menu-delete'],
       // ['菜单管理', '详情', 'menu-detail'],
-      ['', '', ''],
-      ['', '', ''],
+      // ['用户管理', '编辑', 'user-edit-user'],
+      // ['用户管理', '删除', 'user-delete-user'],
+      // ['用户管理', '禁止登录', 'user-bin-login'],
+      // ['用户管理', '允许登录', 'user-agree-login'],
+      // ['用户管理', '新建用户', 'user-create-user'],
+      // ['用户管理', '更多', 'user-more'],
+      // ['用户管理', '批量删除', 'user-delete-batch'],
+      // ['', '', ''],
       // ['产品管理', '编辑', 'product-manage-edit'],
       // ['产品管理', '删除', 'product-manage-delete'],
       // ['产品管理', '查看', 'product-manage-watch'],
@@ -82,7 +89,7 @@ const config = {
   }
 }
 
-const version = '3.0.1'
+const version = '3.0.0'
 
 function transformData (data) {
   data.catalogue = data.catalogue.map((item, i) => {

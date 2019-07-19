@@ -7,7 +7,24 @@ const initData = Object.assign({}, basicInitObj)
 // 登录日志
 export const loginLog = {
   data () {
-    return setBtnConfig(JSON.parse(JSON.stringify(initData)))
+    return new this.$InitObj({
+      modules: ['search', 'table'],
+      items: {
+        search: {
+          userName: { label: '姓名' },
+          loginStatus: { label: '状态', type: 'select', options: [{ label: '成功', value: '0' }, { label: '失败', value: '1' }] }
+        },
+        table: {
+          userName: { label: '姓名', width: 80 },
+          terminalType: { label: '终端', width: 100 },
+          operateSystem: { label: '操作系统', width: 100 },
+          loginIp: { label: 'IP', width: 100 },
+          loginStatus: { label: '状态', width: 80, clsName: 'loginStatus' },
+          loginTime: { label: '登录时间', width: 90 }
+        }
+      }
+    })
+    // return setBtnConfig(JSON.parse(JSON.stringify(initData)))
   },
   created () {
     let configSearchItem = [

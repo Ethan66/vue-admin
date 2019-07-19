@@ -41,6 +41,9 @@ InitObj.prototype.initItem = function (items) {
         if (key === 'btn') {
           obj.type = 'btn'
           !obj.label && (obj.label = '操作')
+        } else if (key === 'selection') {
+          obj.type = 'selection'
+          obj.width = 50
         } else {
           obj.prop = key
         }

@@ -3,6 +3,56 @@ import { authMoreBtn, setBtnConfig } from '@/components/methods'
 
 const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
 
+const userMoreList = authMoreBtn([
+  { code: 'user-agree-login', clickFn: 'handleChangeStatus', config: { inlineShow: false } },
+  { code: 'user-bin-login', clickFn: 'handleChangeStatus', config: { inlineShow: false } },
+  { code: 'user-delete-user', clickFn: 'handleDeleteData' }
+])
+
+// 用户管理
+export const user = {
+  data () {
+    return new this.$InitObj({
+      modules: 'All',
+      btnConfig: {
+        tableBtn: [{ edit: { code: 'user-edit-user' } }, { more: { list: userMoreList, code: 'user-more' } }]
+      },
+      items: {
+        search: {
+          account: { label: '账号' },
+          name: { label: '用户名' },
+          status: { label: '状态', type: 'select', options: [{ label: '允许登录', value: 1 }, { label: '禁止登录', value: 0 }] }
+        },
+        table: {
+          selection: '',
+          account: { label: '账号', width: 100 },
+          name: { label: '用户名', width: 100 },
+          roleName: { label: '角色', width: 100 },
+          status: { label: '状态', width: 90, clsName: 'userStatus' },
+          loginTime: { label: '最近登录', width: 120 },
+          operator: { label: '操作人', width: 100 },
+          btn: { width: 118 }
+        },
+        dialog: {
+          account: { label: '账号' },
+          name: { label: '用户名' },
+          roleId: { label: '角色', type: 'select', options: [] },
+          password: { label: '密码', type: 'password' },
+          status: { label: '状态', type: 'radio', options: [{ label: '允许登录', value: 1 }, { label: '禁止登录', value: 0 }] }
+        }
+      },
+      rules: {
+        userName: [
+          { required: true, trigger: 'blur', message: '请填写账号' }
+        ],
+        // roleId: [
+        //   { required: true, message: '请选择角色', trigger: 'change' }
+        // ]
+      }
+    })
+  }
+}
+
 // IP控制
 export const ipControl = {
   data () {

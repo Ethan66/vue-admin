@@ -1,6 +1,29 @@
 import { postRequest } from '@/config/network'
+import config from './config'
+const { baseUrl } = config
 const base = '/bl/console/api'
 const baseuser = '/bl/console/user'
+
+// 用户管理
+// 新增用户/注册
+export const apiRegister = (params) => {
+  return postRequest(`${baseUrl}/register`, params)
+}
+
+// 获取用户
+export const apiGetUser = (params) => {
+  return postRequest(`${baseUrl}/getUser`, params)
+}
+
+// 修改用户信息
+export const apiModifyUserInfo = (params) => {
+  return postRequest(`${baseUrl}/modifyUserInfo`, params)
+}
+
+// 删除用户
+export const apiDeleteUser = (params) => {
+  return postRequest(`${baseUrl}/deleteUser`, params)
+}
 
 // 访问控制
 // 获取ip授权列表

@@ -47,6 +47,10 @@ export default {
     '正常': 'colorBlue',
     '停用': 'colorRed'
   },
+  userStatus: {
+    '允许登录': 'colorBlue',
+    '禁止登录': 'colorRed'
+  },
   productFormStatusName: {
     '正常': 'colorBlue',
     '停用': 'colorRed'
