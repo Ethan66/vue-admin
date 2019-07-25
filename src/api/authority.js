@@ -15,6 +15,11 @@ export const apiGetUser = (params) => {
   return postRequest(`${baseUrl}/getUser`, params)
 }
 
+// 新增用户
+export const apiAddUser = (params) => {
+  return postRequest(`${baseUrl}/addUser`, params)
+}
+
 // 修改用户信息
 export const apiModifyUserInfo = (params) => {
   return postRequest(`${baseUrl}/modifyUserInfo`, params)

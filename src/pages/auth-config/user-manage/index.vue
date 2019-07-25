@@ -32,7 +32,7 @@
 import { user } from '../mixins'
 import basicMethod from '@/config/mixins'
 import MD5 from 'js-md5'
-import { apiRegister, apiGetUser, apiModifyUserInfo, apiDeleteUser } from '@/api/authority'
+import { apiAddUser, apiGetUser, apiModifyUserInfo, apiDeleteUser } from '@/api/authority'
 
 export default {
   name: 'menu-manage',
@@ -74,9 +74,9 @@ export default {
     },
     // 改变用户状态
     handleChangeStatus (row) {
-      let { userId, status } = row
+      let { userId, status, account } = row
       status = row.statusStash === 1 ? 0 : 1
-      this.apiEditData(apiModifyUserInfo, { userId, status, operator: this.operator }, apiGetUser)
+      this.apiEditData(apiModifyUserInfo, { account, id: userId, status, operator: this.operator }, apiGetUser)
     },
     // 点击表格删除按钮
     handleDeleteData (row) {
@@ -85,10 +85,12 @@ export default {
     // 点击对话框确认按钮
     handleSubmit () {
       let params = Object.assign({}, this.editData)
+      params.id = params.userId
+      delete params.userId
       params.operator = this.operator
       params.password && (this.editData.password = MD5(this.editData.password))
       if (this.isEdit === 0) {
-        this.apiCreateData(apiRegister, this.$purifyParams(params), apiGetUser)
+        this.apiCreateData(apiAddUser, this.$purifyParams(params), apiGetUser)
       } else {
         this.apiEditData(apiModifyUserInfo, this.$purifyParams(params), apiGetUser)
       }
