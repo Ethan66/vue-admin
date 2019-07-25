@@ -66,11 +66,11 @@ function handleSpecialError (response) {
   const res = response.data
   // 用户没登录
   if (res.code === '-208999' && res.message === 'sessionId参数不能为空') {
-    clearUserInfo(0)
+    router.push({ path: '/login' })
     return true
   }
   // 用户登录过期或登录失效
-  if (res.code === '211100' || res.code === '211207') {
+  if (res.code === '210000' || res.code === '200000') {
     let $dialog = document.querySelector('.el-message-box__wrapper')
     if ($dialog && $dialog.style.display !== 'none') return true
     MessageBox.confirm(
@@ -82,7 +82,7 @@ function handleSpecialError (response) {
         type: 'warning'
       }
     ).then(() => {
-      clearUserInfo(0)
+      router.push({ path: '/login' })
     })
     return true
   }
@@ -93,7 +93,7 @@ function handleSpecialError (response) {
     return true
   }
   let path = router.currentRoute.path || ''
-  if (path !== '/login' && res.code === '211201') {
+  if (path !== '/login' && res.code === '000005') {
     MessageBox.confirm(
       '该账号已被停用，请联系管理员',
       '已被停用',
@@ -101,11 +101,12 @@ function handleSpecialError (response) {
         confirmButtonText: '确认',
         type: 'warning'
       }
-    )
-    clearUserInfo()
+    ).then(() => {
+      router.push({ path: '/login' })
+    })
     return true
   }
-  if (path !== '/login' && res.code === '211211') {
+  if (path !== '/login' && res.code === '000006') {
     MessageBox.confirm(
       '该账号已被禁止登录，请联系管理员',
       '已被禁止登录',
@@ -113,18 +114,12 @@ function handleSpecialError (response) {
         confirmButtonText: '确认',
         type: 'warning'
       }
-    )
-    clearUserInfo()
+    ).then(() => {
+      router.push({ path: '/login' })
+    })
     return true
   }
   return false
-}
-
-let clearUserInfo = (time = 1000) => {
-  setTimeout(() => {
-    localStorage.removeItem('userInfo')
-    router.push({ path: '/login' })
-  }, time)
 }
 
 let handleGetMenuCode = () => {
