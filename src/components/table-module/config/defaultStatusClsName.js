@@ -43,7 +43,7 @@ export default {
     '停用': 'colorRed',
     '禁止登陆': 'colorRed'
   },
-  ruleStatus: {
+  roleStatus: {
     '正常': 'colorBlue',
     '停用': 'colorRed'
   },

@@ -12,8 +12,8 @@
       :table-btn="tableBtn"
     >
       <div class="btn-content" slot="btn">
-        <el-button @click="handleAdd" v-if="$authBtn('user-create-user')">{{ $authBtn('user-create-user') }}</el-button>
-        <el-button @click="handleDeleteMore" v-if="$authBtn('user-delete-batch')">{{ $authBtn('user-delete-batch') }}</el-button>
+        <el-button @click="handleAdd" v-if="$authBtn('role-create-role')">{{ $authBtn('role-create-role') }}</el-button>
+        <el-button @click="handleDeleteMore" v-if="$authBtn('role-delete-batch')">{{ $authBtn('role-delete-batch') }}</el-button>
       </div>
     </table-module>
      <dialog-module
@@ -29,21 +29,15 @@
 </template>
 
 <script>
-import { user } from '../mixins'
+import { role } from '../mixins'
 import basicMethod from '@/config/mixins'
-import MD5 from 'js-md5'
-import { apiAddUser, apiGetUser, apiModifyUserInfo, apiDeleteUser } from '@/api/authority'
+import { apiAddRole, apiGetRole, apiModifyRole, apiDeleteRole } from '@/api/authority'
 
 export default {
   name: 'menu-manage',
-  mixins: [basicMethod, user],
-  data () {
-    return {
-      operator: JSON.parse(localStorage.getItem('userInfo')).userName
-    }
-  },
+  mixins: [basicMethod, role],
   created () {
-    this.handleGetTableData(apiGetUser)
+    this.handleGetTableData(apiGetRole)
   },
   methods: {
     // 点击新增按钮
@@ -56,8 +50,8 @@ export default {
     },
     // 批量删除
     handleDeleteMore () {
-      let idArr = this.chooseDataArr.map(item => item.userId)
-      this.apiDeleteData(apiDeleteUser, idArr, apiGetUser)
+      let idArr = this.chooseDataArr.map(item => item.roleId)
+      this.apiDeleteData(apiDeleteRole, idArr, apiGetRole)
     },
     // 点击表格编辑按钮
     handleEditData (row) {
@@ -67,27 +61,23 @@ export default {
       this.dialogTitle = '编辑用户'
       this.showDialogForm = true
     },
-    // 改变用户状态
+    // 改变角色状态
     handleChangeStatus (row) {
-      let { userId, status, account } = row
+      let { roleId, status } = row
       status = row.statusStash === 1 ? 0 : 1
-      this.apiEditData(apiModifyUserInfo, { account, id: userId, status, operator: this.operator }, apiGetUser)
+      this.apiEditData(apiModifyRole, { roleId, status }, apiGetRole)
     },
     // 点击表格删除按钮
     handleDeleteData (row) {
-      this.apiDeleteData(apiDeleteUser, [row.userId], apiGetUser)
+      this.apiDeleteData(apiDeleteRole, [row.roleId], apiGetRole)
     },
     // 点击对话框确认按钮
     handleSubmit () {
       let params = Object.assign({}, this.editData)
-      params.id = params.userId
-      delete params.userId
-      params.operator = this.operator
-      params.password && (params.password = MD5(params.password))
       if (this.isEdit === 0) {
-        this.apiCreateData(apiAddUser, this.$purifyParams(params), apiGetUser)
+        this.apiCreateData(apiAddRole, this.$purifyParams(params), apiGetRole)
       } else {
-        this.apiEditData(apiModifyUserInfo, this.$purifyParams(params), apiGetUser)
+        this.apiEditData(apiModifyRole, this.$purifyParams(params), apiGetRole)
       }
     },
     // 处理表格数据
@@ -101,12 +91,12 @@ export default {
         item.statusStash = item.status
         switch (item.status) {
           case 1:
-            item.status = '允许登录'
-            item.showBtnCode.push('user-bin-login')
+            item.status = '正常'
+            item.showBtnCode.push('role-bin-role')
             break
           case 0:
-            item.status = '禁止登录'
-            item.showBtnCode.push('user-agree-login')
+            item.status = '失效'
+            item.showBtnCode.push('role-agree-role')
             break
         }
       })

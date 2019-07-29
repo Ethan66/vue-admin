@@ -30,6 +30,27 @@ export const apiDeleteUser = (params) => {
   return postRequest(`${baseUrl}/deleteUser`, params)
 }
 
+// 角色管理
+// 新增角色
+export const apiAddRole = (params) => {
+  return postRequest(`${baseUrl}/addRole`, params)
+}
+
+// 查询角色
+export const apiGetRole = (params) => {
+  return postRequest(`${baseUrl}/getRole`, params)
+}
+
+// 编辑角色
+export const apiModifyRole = (params) => {
+  return postRequest(`${baseUrl}/modifyRole`, params)
+}
+
+// 删除角色
+export const apiDeleteRole = (params) => {
+  return postRequest(`${baseUrl}/deleteRole`, params)
+}
+
 // 访问控制
 // 获取ip授权列表
 export const apiListSysIpWhite = (params) => {
