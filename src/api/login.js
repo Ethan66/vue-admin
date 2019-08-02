@@ -18,8 +18,12 @@ export const apiLogin = (params) => {
 }
 
 // 获取菜单按钮权限
-export const apiGetUserResource = (reqParams) => {
-  return postRequest(`${baseUrl}/getUserResource`, reqParams)
+export const apiGetUserAuthMenu = (reqParams) => {
+  return postRequest(`${baseUrl}/getUserAuthMenu`, reqParams)
+}
+// 获取菜单按钮
+export const apiGetAllMenu = (reqParams) => {
+  return postRequest(`${baseUrl}/getAllMenu`, reqParams)
 }
 
 // 获取用户字段权限

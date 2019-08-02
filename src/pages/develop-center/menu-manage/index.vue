@@ -51,7 +51,7 @@ import basicMethod from '@/config/mixins'
 import { menuRelation } from '@/config/utils'
 import batchConfig from '@/config/menu'
 import { apiModifyMenu, apiAddMenu, apiDeleteMenu } from '@/api/developCenter'
-import { apiGetUserResource } from '@/api/login'
+import { apiGetAllMenu } from '@/api/login'
 
 export default {
   name: 'menu-manage',
@@ -75,7 +75,7 @@ export default {
   },
   created () {
     this.tablePages.pageSize = 10000
-    this.handleGetTableData(apiGetUserResource)
+    this.handleGetTableData(apiGetAllMenu)
   },
   methods: {
     // 获取所有父菜单树
@@ -173,7 +173,7 @@ export default {
     handleChangeStatus (row) {
       let id = row.id
       let status = row.statusStash === 0 ? 1 : 0
-      this.apiEditData(apiModifyMenu, { id, status }, apiGetUserResource)
+      this.apiEditData(apiModifyMenu, { id, status }, apiGetAllMenu)
     },
     // 点击表格详情按钮
     handleShowDetailDialog (row) {
@@ -184,7 +184,7 @@ export default {
     },
     // 点击表格删除按钮
     handleDeleteData (row) {
-      this.apiDeleteData(apiDeleteMenu, row.id, apiGetUserResource)
+      this.apiDeleteData(apiDeleteMenu, row.id, apiGetAllMenu)
     },
     // 点击对话框确认按钮
     handleSubmit () {
@@ -193,10 +193,10 @@ export default {
           this.editData.menuParentId = this.editData.menuParentIdStash
         }
         this.editData.menuLevel = this.editData.menuType
-        this.apiCreateData(apiAddMenu, this.$purifyParams(this.editData), apiGetUserResource)
+        this.apiCreateData(apiAddMenu, this.$purifyParams(this.editData), apiGetAllMenu)
       } else {
         this.editData.menuLevel = this.editData.menuType
-        this.apiEditData(apiModifyMenu, this.editData, apiGetUserResource)
+        this.apiEditData(apiModifyMenu, this.editData, apiGetAllMenu)
       }
     },
     // 处理表格数据
@@ -272,7 +272,7 @@ export default {
           i++
           resolve(data)
         }).catch(() => {
-          this.handleGetTableData(apiGetUserResource)
+          this.handleGetTableData(apiGetAllMenu)
         })
       }
       if (type === 'catalogue') {

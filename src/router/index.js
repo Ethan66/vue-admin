@@ -7,7 +7,7 @@ import Layout from '@/common/layout/Layout'
 
 import globalRoutes from './globalRoutes'
 import configRoutes from './configRoutes'
-import { apiGetUserResource, apiGetUserFields } from '@/api/login'
+import { apiGetUserAuthMenu, apiGetUserFields } from '@/api/login'
 import { menuRelation } from '@/config/utils'
 
 Vue.use(Router)
@@ -43,7 +43,7 @@ router.beforeEach((to, from, next) => {
       from.meta.firstLogin = false
     }
     let { department: departmentId } = JSON.parse(localStorage.getItem('userInfo')) || {}
-    apiGetUserResource({ departmentId }).then(res => {
+    apiGetUserAuthMenu({ departmentId }).then(res => {
       if (res.code === '000000') {
         const list = res.data.list
         let menuList = list.filter(item => item.menuLevel !== 3)
