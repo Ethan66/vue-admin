@@ -41,9 +41,19 @@ export const apiGetRole = (params) => {
   return postRequest(`${baseUrl}/getRole`, params)
 }
 
+// 查询角色权限
+export const apiGetRoleAuthority = (params) => {
+  return postRequest(`${baseUrl}/getRoleAuthority`, params)
+}
+
 // 编辑角色
 export const apiModifyRole = (params) => {
   return postRequest(`${baseUrl}/modifyRole`, params)
+}
+
+// 编辑角色权限
+export const apiModifyRoleAuthority = (params) => {
+  return postRequest(`${baseUrl}/modifyRoleAuthority`, params)
 }
 
 // 删除角色

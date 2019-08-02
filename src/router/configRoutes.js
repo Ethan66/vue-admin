@@ -22,6 +22,13 @@ export default [
       { path: 'tybemanage', component: () => import('@/pages/develop-center/page-manage/tybemanage'), meta: { title: '字段页面' } }
     ]
   },
+  // 角色管理
+  { path: '/auth-config/role-manage',
+    component: Layout,
+    children: [
+      { path: 'roleAuth', component: () => import('@/pages/auth-config/role-manage/roleAuth'), meta: { title: '角色授权' } }
+    ]
+  },
   // 形态管理
   { path: '/finance-product/product-manage',
     component: Layout,

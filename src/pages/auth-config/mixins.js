@@ -42,12 +42,15 @@ export const user = {
         }
       },
       rules: {
-        userName: [
+        account: [
           { required: true, trigger: 'blur', message: '请填写账号' }
         ],
-        // roleId: [
-        //   { required: true, message: '请选择角色', trigger: 'change' }
-        // ]
+        name: [
+          { required: true, trigger: 'blur', message: '请填写用户名' }
+        ],
+        roleId: [
+          { required: true, trigger: 'change', message: '请选择角色' }
+        ]
       }
     })
   }
@@ -87,12 +90,34 @@ export const role = {
         }
       },
       rules: {
-        userName: [
-          { required: true, trigger: 'blur', message: '请填写账号' }
+        roleName: [
+          { required: true, trigger: 'blur', message: '请填写角色名' }
+        ]
+      }
+    })
+  }
+}
+
+// 角色授权
+export const roleAuth = {
+  data () {
+    return new this.$InitObj({
+      modules: ['dialog'],
+      btnConfig: {},
+      items: {
+        dialog: {
+          roleName: { label: '角色名' },
+          userIdList: { label: '所属用户', type: 'selectMore', options: [] },
+          status: { label: '状态', type: 'radio', options: [{ label: '正常', value: 1 }, { label: '失效', value: 0 }] }
+        }
+      },
+      rules: {
+        roleName: [
+          { required: true, trigger: 'blur', message: '请填写角色名' }
         ],
-        // roleId: [
-        //   { required: true, message: '请选择角色', trigger: 'change' }
-        // ]
+        userIdList: [
+          { required: true, message: '请选择所属用户', trigger: 'change' }
+        ]
       }
     })
   }
