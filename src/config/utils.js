@@ -22,30 +22,32 @@ export const format = (now, fmt = 'yyyy-MM-dd hh:mm:ss') => {
 }
 
 // 菜单父子级关联
-export const menuRelation = (data, id, pId, level, sort) => {
+export const menuRelation = (data, id, pId, level, sort, list = 'list') => {
   if (!data.length) return data
   let template = {}
   data.forEach(item => {
     item.level = item[level]
-    template[item.id] = item
+    template[item[id]] = item
   })
   let arr = []
   data.forEach(item => {
     if (!item[pId]) {
-      if (!template[item[id]].list) {
-        template[item[id]].list = []
+      if (!template[item[id]][list]) {
+        template[item[id]][list] = []
       }
       arr.push(template[item[id]])
     } else if (template[item[pId]]) {
-      if (!template[item[pId]].list) {
-        template[item[pId]].list = []
+      if (!template[item[pId]][list]) {
+        template[item[pId]][list] = []
       }
-      template[item[pId]].list.push(item)
+      template[item[pId]][list].push(item)
     } else {
       arr.push(item)
     }
   })
-  menuSort(arr, 'list', sort)
+  if (sort) {
+    menuSort(arr, list, sort)
+  }
   return arr
 }
 

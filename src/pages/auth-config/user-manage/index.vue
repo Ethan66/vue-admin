@@ -32,10 +32,10 @@
 import { user } from '../mixins'
 import basicMethod from '@/config/mixins'
 import MD5 from 'js-md5'
-import { apiAddUser, apiGetUser, apiModifyUserInfo, apiDeleteUser } from '@/api/authority'
+import { apiAddUser, apiGetUser, apiModifyUserInfo, apiDeleteUser, apiGetRole } from '@/api/authority'
 
 export default {
-  name: 'menu-manage',
+  name: 'user-manage',
   mixins: [basicMethod, user],
   data () {
     return {
@@ -44,6 +44,11 @@ export default {
   },
   created () {
     this.handleGetTableData(apiGetUser)
+    apiGetRole({}).then(res => {
+      if (res.code === '000000') {
+        this.dialogItem[2].options = res.data.list.map(item => ({ label: item.roleName, value: item.roleId }))
+      }
+    })
   },
   methods: {
     // 点击新增按钮

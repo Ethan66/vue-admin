@@ -14,6 +14,7 @@
       <div class="btn-content" slot="btn">
         <el-button @click="handleAdd" v-if="$authBtn('role-create-role')">{{ $authBtn('role-create-role') }}</el-button>
         <el-button @click="handleDeleteMore" v-if="$authBtn('role-delete-batch')">{{ $authBtn('role-delete-batch') }}</el-button>
+        <el-button @click="$router.push({ path: '/auth-config/role-manage/roleAuth' })" v-if="$authBtn('role-auth-role')">{{ $authBtn('role-auth-role') }}</el-button>
       </div>
     </table-module>
      <dialog-module

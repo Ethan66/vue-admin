@@ -75,6 +75,7 @@ const config = {
       // ['角色管理', '删除', 'role-delete-role'],
       // ['角色管理', '禁止使用', 'role-bin-role'],
       // ['角色管理', '允许使用', 'role-agree-role'],
+      // ['角色管理', '角色授权', 'role-auth-role'],
       // ['', '', ''],
       // ['产品管理', '编辑', 'product-manage-edit'],
       // ['产品管理', '删除', 'product-manage-delete'],
