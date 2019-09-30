@@ -91,13 +91,7 @@ export default {
     return {
       dateObj: {}, // 存储选择的日期范围
       defaultShowNumber: 6, // 默认展示的搜索条数
-      showAll: false,
-      props: {// 配置项（必选）
-        value: 'id',
-        label: 'departmentName',
-        children: 'childIdList'
-        // disabled:true
-      }
+      showAll: false
     }
   },
   computed: {
@@ -124,9 +118,6 @@ export default {
     this.initSearchValues('start')
   },
   methods: {
-    getValue (value, key) {
-      this.searchValues[key] = value
-    },
     // 初始化searchValues
     initSearchValues (type) {
       if (type === 'start') {
