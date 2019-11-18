@@ -4,8 +4,8 @@
     <template v-if="!item.list || item.list.length === 0">
       <router-link :to="item.menuUrl">
         <el-menu-item :index="item.menuUrl" :class="{'nosubmenu-arrow':!isNest}" @click="handleChooseMenu(item)">
-          <template>
-            <img v-if="item.menuIcon" :src="require(`@/assets/img${item.menuIcon}.png`)" class="iconfont" />{{ item.menuName }}
+          <template slot="title">
+            <img v-if="item.menuIcon" :src="require(`@/assets/img${item.menuIcon}.png`)" class="iconfont" /><span slot="title">{{ item.menuName }}</span>
           </template>
         </el-menu-item>
       </router-link>
@@ -14,9 +14,7 @@
     <!--二级菜单-->
     <el-submenu v-else :index="item.code">
       <template slot="title">
-        <template>
-          <img v-if="item.menuIcon" :src="require(`@/assets/img${item.menuIcon}.png`)" class="iconfont" />{{ item.menuName }}
-        </template>
+        <img v-if="item.menuIcon" :src="require(`@/assets/img${item.menuIcon}.png`)" class="iconfont" /><span slot="title">{{ item.menuName }}</span>
       </template>
 
       <template v-for="child in item.list">
@@ -29,8 +27,8 @@
           class="nest-menu" />
         <router-link v-else :to="child.menuUrl" :key="child.name">
           <el-menu-item :index="child.menuUrl" @click="handleChooseMenu(child)">
-            <template>
-              <i v-if="child.menuIcon" class="iconfont" :class="child.menuIcon" />{{ child.menuName }}
+            <template slot="title">
+              <i v-if="child.menuIcon" class="iconfont" :class="child.menuIcon" /><span slot="title">{{ child.menuName }}</span>
             </template>
           </el-menu-item>
         </router-link>

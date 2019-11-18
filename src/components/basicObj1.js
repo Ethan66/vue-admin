@@ -112,6 +112,7 @@ InitObj.prototype.setBtn = function (config, type) {
       let arr = Object.entries(key)[0]
       if (arr[1].constructor !== Object) {
         console.error('数组里的对象的value值必须为对象')
+        return false
       }
       let config = Object.assign({}, basicConfig[arr[0]], arr[1])
       if (config.code) {

@@ -111,3 +111,15 @@ export const purifyParams = (params) => {
   Object.keys(params).forEach(key => ((params[key] !== '' && params[key] !== null && params[key] !== undefined) && (result[key] = params[key])))
   return result
 }
+
+// 防抖
+export const debounce = (fn, delay = 500) => {
+  let timer = null
+  return () => {
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      fn()
+      clearTimeout(timer)
+    }, delay)
+  }
+}

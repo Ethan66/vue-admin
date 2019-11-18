@@ -5,7 +5,7 @@
       <el-menu
         :show-timeout="200"
         :default-active="$route.path"
-        :collapse="isCollapse"
+        :collapse="!sidebar.opened"
         text-color="#fff"
         active-text-color="#fff"
       >
@@ -18,6 +18,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import subSidebar from './subSidebar'
+import { debounce } from '@/config/utils'
 
 export default {
   components: { subSidebar },
@@ -29,10 +30,18 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar'
-    ]),
-    isCollapse () {
-      return !this.sidebar.opened
+    ])
+  },
+  mounted () {
+    let changeSidebar = () => {
+      if (+this.$systemObj.minScreenWidth > window.innerWidth) {
+        this.$store.commit('TOGGLE_SIDEBAR', false)
+      } else {
+        this.$store.commit('TOGGLE_SIDEBAR', true)
+      }
     }
+    changeSidebar()
+    window.addEventListener('resize', debounce(changeSidebar))
   }
 }
 </script>
