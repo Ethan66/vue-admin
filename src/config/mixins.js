@@ -51,7 +51,7 @@ export default {
     apiCreateData (createDataApi, obj, getTableDataApi) {
       return createDataApi(obj).then(res => {
         if (res.code === '000000') {
-          this.$refs.dialog.showDialogForm1 = false
+          this.$refs.dialog && (this.$refs.dialog.showDialogForm1 = false)
           this.$message({
             message: res.msg,
             type: 'success'
@@ -93,16 +93,13 @@ export default {
     },
     // searchValues vuex缓存
     handleSaveSearchValues (val, currentPage) {
+      // keepAlive不需要存取数据
       if (this.keepAlive) return { val, currentPage }
-      let lowName
-      if (this.$options.name) {
-        lowName = this.$options.name.toLowerCase()
-      } else {
-        lowName = {}
-      }
-      let savedSearchValues = this.pageSearchValues[lowName]
-      if (this.pageSearchValues) {
-        if (this.pageSearchValues[lowName]) {
+      // 只有第一次搜索读取缓存数据
+      let lowName = this.$options.name ? this.$options.name.toLowerCase() : ''
+      if (!this.searched) {
+        let savedSearchValues = null
+        if (this.pageSearchValues && this.pageSearchValues[lowName]) {
           savedSearchValues = this.pageSearchValues[lowName]
         } else {
           let obj = sessionStorage.getItem('activedSearchValues')
@@ -112,18 +109,19 @@ export default {
             }
           }
         }
-      }
-      if (!this.searched && savedSearchValues) { // 第一次读缓存
-        let obj = savedSearchValues
-        this.searchValues = val = JSON.parse(JSON.stringify(obj.searchValues))
-        Object.assign(this.searchValues, this.searchDefaultObj)
-        this.tablePages.current = currentPage = obj.currentPage
-        this.activeTabName = obj.activeTabName
+        if (savedSearchValues) {
+          let obj = savedSearchValues
+          this.searchValues = val = JSON.parse(JSON.stringify(obj.searchValues))
+          Object.assign(this.searchValues, this.searchDefaultObj)
+          this.tablePages.current = currentPage = obj.currentPage
+          this.activeTabName = obj.activeTabName
+        }
       }
       this.searched = true
+      // 将搜索等数据缓存
       this.$store.commit('UPDATE_PAGE_SEARCH_VALUES', {
         name: lowName,
-        value: { searchValues: val, currentPage, activeTabName: this.activeTabName } // 将搜索等数据缓存
+        value: { searchValues: val, currentPage, activeTabName: this.activeTabName }
       })
       return { val, currentPage }
     },
