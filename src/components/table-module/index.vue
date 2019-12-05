@@ -48,7 +48,8 @@
             @click="handleCellClick(item.clickFn, scope.row)"
           >
             <i :class="handleSetStatusClsName(item.clsName || '', scope.row[item.prop], 'i')"></i>
-            {{ scope.row[item.prop] }}
+            <template v-if="item.formatterFn">{{ item.formatterFn(scope.row[item.prop]) }}</template>
+            <template v-else>{{ scope.row[item.prop] }}</template>
           </span>
         </template>
         </el-table-column>

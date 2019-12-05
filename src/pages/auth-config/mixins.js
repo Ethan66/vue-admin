@@ -28,7 +28,7 @@ export const user = {
           account: { label: '账号', width: 100 },
           name: { label: '用户名', width: 100 },
           roleName: { label: '角色', width: 100 },
-          status: { label: '状态', width: 90, clsName: 'userStatus' },
+          status: { label: '状态', width: 90, clsName: 'userStatus', formatterFn: this.$InitObj.prototype.formmater(['禁止登录', '允许登录']) },
           loginTime: { label: '最近登录', width: 120 },
           operator: { label: '操作人', width: 100 },
           btn: { width: 118 }
@@ -79,7 +79,7 @@ export const role = {
           selection: '',
           roleName: { label: '角色名', width: 100 },
           roleId: { label: '角色Id', width: 100 },
-          status: { label: '状态', width: 90, clsName: 'roleStatus' },
+          status: { label: '状态', width: 90, clsName: 'roleStatus', formatterFn: this.$InitObj.prototype.formmater(['失效', '正常']) },
           updateDate: { label: '更新时间', width: 100 },
           operator: { label: '操作人', width: 100 },
           btn: { width: 118 }

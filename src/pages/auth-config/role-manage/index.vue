@@ -57,7 +57,6 @@ export default {
     // 点击表格编辑按钮
     handleEditData (row) {
       this.editData = JSON.parse(JSON.stringify(row))
-      this.editData.status = this.editData.statusStash
       this.isEdit = 1
       this.dialogTitle = '编辑用户'
       this.showDialogForm = true
@@ -65,7 +64,7 @@ export default {
     // 改变角色状态
     handleChangeStatus (row) {
       let { roleId, status } = row
-      status = row.statusStash === 1 ? 0 : 1
+      status = row.status === 1 ? 0 : 1
       this.apiEditData(apiModifyRole, { roleId, status }, apiGetRole)
     },
     // 点击表格删除按钮
@@ -89,14 +88,11 @@ export default {
       }
       tableData.forEach(item => {
         item.showBtnCode = []
-        item.statusStash = item.status
         switch (item.status) {
           case 1:
-            item.status = '正常'
             item.showBtnCode.push('role-bin-role')
             break
           case 0:
-            item.status = '失效'
             item.showBtnCode.push('role-agree-role')
             break
         }

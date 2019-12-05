@@ -65,6 +65,15 @@ InitObj.prototype.initTableItem = function (configTableObj) {
   })
 }
 
+InitObj.prototype.formmater = function (config) {
+  return function (val) {
+    if (config.constructor === Array && !Number(val)) {
+      throw new Error('当config为Array时，val必须为Number')
+    }
+    return config[val]
+  }
+}
+
 InitObj.prototype.initSearchObj = function () {
   this.searched = false
   this.showAll = false

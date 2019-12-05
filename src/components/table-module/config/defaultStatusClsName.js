@@ -44,12 +44,12 @@ export default {
     '禁止登陆': 'colorRed'
   },
   roleStatus: {
-    '正常': 'colorBlue',
-    '停用': 'colorRed'
+    '1': 'colorBlue',
+    '0': 'colorRed'
   },
   userStatus: {
-    '允许登录': 'colorBlue',
-    '禁止登录': 'colorRed'
+    '1': 'colorBlue',
+    '0': 'colorRed'
   },
   productFormStatusName: {
     '正常': 'colorBlue',
