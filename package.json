@@ -18,6 +18,7 @@
     "normalize.css": "^8.0.1",
     "nprogress": "^0.2.0",
     "vue": "^2.6.10",
+    "vue-admin-methods": "^1.0.13",
     "vue-router": "^3.0.3",
     "vuex": "^3.0.1"
   },
