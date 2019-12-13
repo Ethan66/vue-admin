@@ -21,11 +21,13 @@ const pageCashe = {
     UPDATE_PAGE_SEARCH_VALUES: (state, payload) => {
       let { type, name, value } = payload
       let data = state.pageSearchValues
+      // 登录后清除所有缓存
       if (type === 'deleteAll') {
         data = []
         return true
       }
       if (data[name]) {
+        // 每关闭一个tab后清除相应缓存
         if (type === 'delete') {
           delete data[name]
           return true
@@ -35,6 +37,7 @@ const pageCashe = {
       data[name] = value
       let obj = {}
       obj[name] = value
+      console.log(JSON.stringify(value))
       sessionStorage.setItem('activedSearchValues', JSON.stringify(obj))
     },
     SAVE_SUBTABS_OBJ: (state, data) => {

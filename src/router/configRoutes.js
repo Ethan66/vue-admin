@@ -42,5 +42,11 @@ export default [
     children: [
       { path: '/auth-config/data-authority/data-share', component: () => import('@/pages/auth-config/data-authority/data-share'), meta: { title: '数据权限共享' } }
     ]
+  },
+  { path: '/demo',
+    component: Layout,
+    children: [
+      { path: 'search', component: () => import('@/pages/demo/search'), meta: { title: 'demo' } }
+    ]
   }
 ]
