@@ -1,6 +1,6 @@
 <template>
   <div class="searchContent">
-    <h3>查询条件<span class="cm-btn-color" @click="handleShowAll" v-if="searchItem1.length > 6">更多搜索</span></h3>
+    <h3>查询条件<span class="cm-btn-color" @click="handleShowAll" v-if="searchItem.length > 6">更多搜索</span></h3>
     <el-form :inline="true" :model="searchValues" size="small">
       <div class="searchWrap" :class="{ onlyTwoSearchItem: searchItem1.length < 3 }">
         <template v-for="(item, i) in searchItem1">
@@ -28,11 +28,15 @@
               v-if="item.type === 'selectTree'"
               ref="selectTree"
               clearable
-              :width="selectTreeWidth"
-              :data="item.dialogData"
+              collapseTags
+              :checkStrictly="item.checkStrictly"
+              :searchItemKey="item.key"
+              :multiple="item.treeMultiple"
+              width="100%"
+              :height="item.treeHeight || 400"
+              :data="item.data"
               :defaultProps="item.defaultProps"
-              nodeKey="id" :checkedKeys="selectTreeCheckedValue"
-              @change="handleClearSelectTree"
+              nodeKey="id" :defaultCheckedKeys="item.treeDefaultCheckedValue"
               @popoverHide="popoverHide"
             />
           </el-form-item>
@@ -78,14 +82,8 @@ export default {
       type: Boolean,
       default: true
     },
-    // 默认搜索条件
-    searchDefaultObj: Object,
-    // 搜索树宽度
-    selectTreeWidth: Number,
-    // 搜素树key值
-    selectTreekey: String,
-    // 搜索树默认已经选择的值
-    selectTreeCheckedValue: Array
+    // 搜索默认值
+    searchDefaultObj: Object
   },
   data () {
     return {
@@ -156,21 +154,22 @@ export default {
     },
     // 监听输入框数据变化
     handleChange (fn) {
-      if (fn && !this.parent) {
-        let i = 0
-        let parent = this.$parent
-        while (!parent[fn]) {
-          parent = parent.$parent
-          i++
-          if (i === 5) break
-        }
+      if (fn) {
+        if (!this.parent) {
+          let i = 0
+          parent = this.$parent
+          while (!parent[fn]) {
+            parent = parent.$parent
+            i++
+            if (i === 5) break
+          }
         this.parent = parent
+        }
         this.parent[fn]()
       }
     },
     // 是否展示全部
     handleShowAll () {
-      if (this.searchItem.length <= 6) return false
       this.$parent.showAll = true
       this.showAll = true
     },
@@ -187,13 +186,9 @@ export default {
       console.log(this.searchValues)
       this.$emit('handleSearch', this.searchValues)
     },
-    // 清空搜索树内容
-    handleClearSelectTree (val) {
-      this.$emit('handleClearSelectTree', val)
-    },
     // 拿到选择树的值
-    popoverHide (checkedIds, checkedData) {
-      this.searchValues[this.selectTreekey] = checkedIds
+    popoverHide (checkedIds, checkedData, searchItemKey) {
+      this.$set(this.searchValues, searchItemKey, checkedIds)
       this.$emit('handleSelectTreeValue', checkedData)
     }
   },

@@ -1,31 +1,41 @@
 
 <!--
-    /**
-     * 树形下拉选择组件，下拉框展示树形结构，提供选择某节点功能，方便其他模块调用
-     * @author ljn
-     * @date 2019-04-02
-     * 调用示例：
+    /** 单多选（父子互相关联并且父亲id可以传给后端）
      * <tree-select :height="400" // 下拉框中树形高度
-     *              :width="200" // 下拉框中树形宽度
-     *              size="small"  // 输入框的尺寸: medium/small/mini
-     *              :data="data" // 树结构的数据
-     *              :defaultProps="defaultProps" // 树结构的props
-     *              multiple   // 多选
-     *              clearable   // 可清空选择
-     *              collapseTags   // 多选时将选中值按文字的形式展示
-     *              checkStrictly // 多选时，严格遵循父子不互相关联
-     *              :nodeKey="nodeKey"   // 绑定nodeKey，默认绑定'id'
-     *              :checkedKeys="defaultCheckedKeys"  // 传递默认选中的节点key组成的数组
-     *              @popoverHide="popoverHide"> // 事件有两个参数：第一个是所有选中的节点ID，第二个是所有选中的节点数据
-     *              </tree-select>
+     *          :width="200" // 下拉框中树形宽度
+     *         size="small"  // 输入框的尺寸: medium/small/mini
+     *         :data="data" // [{ name: '一级', id: '1', children: [{ name: '二级', id: '2' }] }]
+     *         :defaultProps="defaultProps" // { label: 'name', children: 'children' }
+     *         multiple   // 是否多选
+     *         clearable   // 可清空选择
+     *         collapseTags   // 多选时将选中值按文字的形式展示
+     *         :nodeKey="nodeKey"   // 绑定nodeKey，默认绑定'id'
+     *         :checkedKeys="defaultCheckedKeys"  // 传递默认选中的节点key组成的数组
+     *         @popoverHide="popoverHide"> // 事件有两个参数：第一个是所有选中的节点ID，第二个是所有选中的节点数据
+     *         </tree-select>
      */
+-->
+<!--
+  /* 单多选（父子不互相关联，且父亲id不能传给后端）
+   <tree-select :height="400" :width="200" size="small"
+     *         :data="data" // [{ name: '一级', cannotClick: true, id: '1', children: [{ name: '二级', id: '2' }] }], 设置父亲不可以点击
+     *         :defaultProps="defaultProps" // { label: 'name', children: 'children', disabled: 'cannotClick' }
+     *         multiple
+     *         clearable
+     *         collapseTags
+     *         checkStrictly // 多选时，严格遵循父子不互相关联
+     *         :nodeKey="nodeKey"
+     *         :checkedKeys="defaultCheckedKeys"
+     *         @popoverHide="popoverHide">
+     *         </tree-select>
+   */
 -->
 <template>
   <div class="tree-select">
     <div class="mask" v-show="isShowSelect" @click="isShowSelect = !isShowSelect"></div>
-    <el-popover ref="elPopover" placement="bottom-start" :width="width" trigger="manual"
+    <el-popover ref="elPopover" placement="bottom-start" :width="newWidth || width" trigger="manual"
                 v-model="isShowSelect" @hide="popoverHide">
-      <el-tree class="common-tree" :style="style" ref="tree" :data="data" :props="defaultProps"
+      <el-tree class="common-tree" :style="{ width: width + 'px', height: height + 'px' }" ref="tree" :data="data" :props="defaultProps"
               :show-checkbox="multiple"
               :node-key="nodeKey"
               :check-strictly="checkStrictly"
@@ -35,15 +45,14 @@
               :highlight-current="true"
               @node-click="handleNodeClick"
               @check-change="handleCheckChange"></el-tree>
-      <el-select :style="selectStyle" slot="reference" width="375" ref="select" :size="size"
-                 v-model="selectedData"
+      <el-select :style="{ width: width === '100%' ? width : width + 'px' }" slot="reference" ref="select" :size="size"
+                 v-model="checkedKeys"
                  :multiple="multiple"
                  :clearable="clearable"
                  :collapse-tags="collapseTags"
                  @click.native="isShowSelect = !isShowSelect"
                  @remove-tag="removeSelectedNodes"
-                 @clear="removeSelectedNode"
-                 @change="changeSelectedNodes"
+                 @clear="clearCheckedKeys"
                  class="tree-select">
         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
       </el-select>
@@ -62,48 +71,22 @@ export default {
         return []
       }
     },
-    defaultProps: {
-      type: Object,
-      default () {
-        return {}
-      }
-    },
+    searchItemKey: String,
+    defaultProps: Object,
     // 配置是否可多选
-    multiple: {
-      type: Boolean,
-      default () {
-        return false
-      }
-    },
+    multiple: Boolean,
     // 配置是否可清空选择
-    clearable: {
-      type: Boolean,
-      default () {
-        return false
-      }
-    },
+    clearable: Boolean,
     // 配置多选时是否将选中值按文字的形式展示
-    collapseTags: {
-      type: Boolean,
-      default () {
-        return false
-      }
-    },
+    collapseTags: Boolean,
     nodeKey: {
       type: String,
-      default () {
-        return 'id'
-      }
+      default: 'id'
     },
     // 显示复选框情况下，是否严格遵循父子不互相关联
-    checkStrictly: {
-      type: Boolean,
-      default () {
-        return false
-      }
-    },
+    checkStrictly: Boolean,
     // 默认选中的节点key数组
-    checkedKeys: {
+    defaultCheckedKeys: {
       type: Array,
       default () {
         return []
@@ -111,170 +94,106 @@ export default {
     },
     size: {
       type: String,
-      default () {
-        return 'small'
-      }
+      default: 'small'
     },
-    width: {
-      type: Number,
-      default () {}
-    },
+    width: Number | String,
     height: {
       type: Number,
-      default () {
-        return 300
-      }
+      default: 300
     }
   },
   data () {
     return {
+      newWidth: '', // 当width为100%时使用
       isShowSelect: false, // 是否显示树状选择器
-      options: [],
-      selectedData: [], // 选中的节点
-      style: 'width:' + this.width + 'px;' + 'height:' + this.height + 'px;',
-      selectStyle: 'width:' + (this.width) + 'px;',
-      checkedIds: [],
-      checkedData: []
+      options: [], // 隐藏的选择器配置
+      checkedKeys: '' // 勾选的id
     }
   },
   mounted () {
     this.initCheckedData()
+    if (this.width === '100%') {
+      this.newWidth = document.querySelector('.tree-select').offsetWidth
+    }
   },
   methods: {
-    // 单选时点击tree节点，设置select选项
-    setSelectOption (node) {
-      let tmpMap = {}
-      tmpMap.value = node.key
-      tmpMap.label = node.label
-      this.options = []
-      this.options.push(tmpMap)
-      this.selectedData = node.key
-    },
-    // 单选，选中传进来的节点
-    checkSelectedNode (checkedKeys) {
-      var item = checkedKeys[0]
-      this.$refs.tree.setCurrentKey(item)
-      var node = this.$refs.tree.getNode(item)
-      if (node) {
-        this.setSelectOption(node)
-      }
-    },
-    // 多选，勾选上传进来的节点
-    checkSelectedNodes (checkedKeys) {
-      this.$refs.tree.setCheckedKeys(checkedKeys)
-    },
-    // 单选，清空选中
-    clearSelectedNode () {
-      this.selectedData = ''
-      this.$refs.tree.setCurrentKey(null)
-    },
-    // 多选，清空所有勾选
-    clearSelectedNodes () {
-      var checkedKeys = this.$refs.tree.getCheckedKeys() // 所有被选中的节点的 key 所组成的数组数据
-      for (let i = 0; i < checkedKeys.length; i++) {
-        this.$refs.tree.setChecked(checkedKeys[i], false)
-      }
-    },
     initCheckedData () {
-      if (this.multiple) {
-        // 多选
-        if (this.checkedKeys.length > 0) {
-          this.checkSelectedNodes(this.checkedKeys)
-        } else {
-          this.clearSelectedNodes()
-        }
-      } else {
-        // 单选
-        if (this.checkedKeys.length > 0) {
-          this.checkSelectedNode(this.checkedKeys)
-        } else {
-          this.clearSelectedNode()
+      let defaultCheckedKeys = this.defaultCheckedKeys
+      if (defaultCheckedKeys.length > 0) {
+        if (this.multiple) { // 多选
+          this.$refs.tree.setCheckedKeys(defaultCheckedKeys)
+        } else { // 单选
+          var checkedKey = defaultCheckedKeys[0]
+          this.$refs.tree.setCurrentKey(checkedKey) // 设置树高亮
+          var node = this.$refs.tree.getNode(checkedKey) // 获取默认选中的节点的node数据
+          node && this.handleNodeClick(undefined, node) // 设置options
         }
       }
     },
-    popoverHide () {
-      if (this.multiple) {
-        this.checkedIds = this.$refs.tree.getCheckedKeys() // 所有被选中的节点的 key 所组成的数组数据
-        this.checkedData = this.$refs.tree.getCheckedNodes() // 所有被选中的节点所组成的数组数据
-      } else {
-        this.checkedIds = this.$refs.tree.getCurrentKey()
-        this.checkedData = this.$refs.tree.getCurrentNode()
-      }
-      this.$emit('popoverHide', this.checkedIds, this.checkedData)
-    },
-    // 单选，节点被点击时的回调,返回被点击的节点数据
+    // 单选模式：点击选中节点事件
     handleNodeClick (data, node) {
-      if (!this.multiple) {
-        this.setSelectOption(node)
-        this.isShowSelect = !this.isShowSelect
-        this.$emit('change', this.selectedData)
+      if (!this.multiple && !node.disabled) {
+        this.options = [].concat({ value: node.key, label: node.label })
+        this.checkedKeys = node.key
+        this.isShowSelect = false
       }
     },
-    // 多选，节点勾选状态发生变化时的回调
+    // 单多选模式：清空选中
+    clearCheckedKeys () {
+      if (this.multiple) {
+        this.$refs.tree.getCheckedKeys().forEach(key => this.$refs.tree.setChecked(key, false)) // 同时修改了this.checkedKeys
+      } else {
+        this.$refs.tree.setCurrentKey(null) // 同时修改了this.checkedKeys
+      }
+      this.popoverHide() // 回调给父组件
+    },
+    // 多选模式：改变勾选状态触发
     handleCheckChange () {
-      var checkedKeys = this.$refs.tree.getCheckedKeys() // 所有被选中的节点的 key 所组成的数组数据
-      this.options = checkedKeys.map((item) => {
-        var node = this.$refs.tree.getNode(item) // 所有被选中的节点对应的node
-        let tmpMap = {}
-        tmpMap.value = node.key
-        tmpMap.label = node.label
-        return tmpMap
+      this.checkedKeys = this.$refs.tree.getCheckedKeys() // 获取已勾选的唯一值
+      this.options = this.checkedKeys.map((key) => {
+        var node = this.$refs.tree.getNode(key) // 获取已勾选的node数据
+        return { value: node.key, label: node.label }
       })
-      this.selectedData = this.options.map((item) => {
-        return item.value
-      })
-      this.$emit('change', this.selectedData)
     },
-    // 多选,删除任一select选项的回调
-    removeSelectedNodes (val) {
-      this.$refs.tree.setChecked(val, false)
-      var node = this.$refs.tree.getNode(val)
+    // 多选模式：从选择器上删除单个选项
+    removeSelectedNodes (key) {
+      this.$refs.tree.setChecked(key, false)
+      var node = this.$refs.tree.getNode(key)
       if (!this.checkStrictly && node.childNodes.length > 0) {
-        this.treeToList(node).map(item => {
-          if (item.childNodes.length <= 0) {
-            this.$refs.tree.setChecked(item, false)
+        // 将对象中的所有子集变成平级
+        function  treeToList (tree) {
+          var queen = []
+          var out = []
+          queen = queen.concat(tree)
+          while (queen.length) {
+            var first = queen.shift()
+            if (first.childNodes) {
+              queen = queen.concat(first.childNodes)
+            }
+            out.push(first)
           }
-        })
-        this.handleCheckChange()
-      }
-      this.$emit('change', this.selectedData)
-    },
-    treeToList (tree) {
-      var queen = []
-      var out = []
-      queen = queen.concat(tree)
-      while (queen.length) {
-        var first = queen.shift()
-        if (first.childNodes) {
-          queen = queen.concat(first.childNodes)
+          return out
         }
-        out.push(first)
+        treeToList(node).map(item => {
+          this.$refs.tree.setChecked(item, false) // 同时修改了this.checkedKeys
+        })
       }
-      return out
     },
-    // 单选,清空select输入框的回调
-    removeSelectedNode () {
-      this.clearSelectedNode()
-      this.$emit('change', this.selectedData)
-    },
-    // 选中的select选项改变的回调
-    changeSelectedNodes (selectedData) {
-      // 多选,清空select输入框时，清除树勾选
-      if (this.multiple && selectedData.length <= 0) {
-        this.clearSelectedNodes()
+    // 回调
+    popoverHide () {
+      let checkedData = null
+      if (this.multiple) {
+        checkedData = this.$refs.tree.getCheckedNodes() // 获取已勾选的数据
+      } else {
+        checkedData = this.$refs.tree.getCurrentNode()
       }
-      this.$emit('change', this.selectedData)
+      this.$emit('popoverHide', this.checkedKeys, checkedData, this.searchItemKey)
     }
   },
   watch: {
     isShowSelect (val) {
       // 隐藏select自带的下拉框
       this.$refs.select.blur()
-    },
-    checkedKeys (val) {
-      if (!val) return
-      this.checkedKeys = val
-      this.initCheckedData()
     }
   }
 }
