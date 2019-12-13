@@ -7,7 +7,7 @@ export default {
   watch: {
     showAll () {
       this.$nextTick(() => {
-        this.$refs.table.handleSetTableHeight()
+        this.$refs.table && this.$refs.table.handleSetTableHeight()
       })
     }
   },

@@ -4,6 +4,8 @@ import { authBtn } from './methods'
 const InitObj = function (options) {
   if (options.modules === 'All') {
     this.modules = ['search', 'table', 'dialog']
+  } else if (typeof options.modules === 'string') {
+    this.modules = [].concat(options.modules)
   } else {
     this.modules = options.modules
   }
@@ -48,7 +50,11 @@ InitObj.prototype.initItem = function (items) {
           obj.prop = key
         }
       } else {
-        obj.key = key
+        if (module === 'search' && configObj[key].key) {
+          obj.key = configObj[key].key
+        } else {
+          obj.key = key
+        }
         obj.placeholder = `${placeholderObj[obj.type]}${obj.label}`
       }
       result.push(obj)
