@@ -1,9 +1,6 @@
-import { basicInitObj, tableInitObj, dialogInitObj } from '@/components/basicObj'
-import { authMoreBtn } from '@/components/methods'
+// import { authMoreBtn } from '@/components/methods'
 
-const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
-
-// 产品管理
+/* // 产品管理
 export const productManage = {
   data () {
     return this.$setBtnConfig(JSON.parse(JSON.stringify(dialogInitObj)))
@@ -71,3 +68,4 @@ export const shapeHistory = {
     ]
   }
 }
+ */

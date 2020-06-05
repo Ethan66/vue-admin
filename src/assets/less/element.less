@@ -20,23 +20,12 @@
   border-color: @buttonColor;
 }
 
-.el-button{
-  color: @buttonColor;
-  border-color: @buttonColor;
+.el-button:not(.el-button--text){
   border-radius: 2px;
-  &:hover{
-    color: @buttonColor;
-    border-color: @buttonColor;
-    background-color: transparent;
-  }
   &.el-button--primary{
     color: #fff;
     background: @buttonColor;
     border-color: @buttonColor;
-    &:hover{
-      background: @buttonColor;
-      border-color: @buttonColor;
-    }
   }
   &.el-button--success{
     color: #fff !important;
@@ -179,10 +168,6 @@
 }
 .el-checkbox__input.is-disabled+span.el-checkbox__label{
   color: #ccc;
-}
-.el-checkbox:first-child{
-  margin-right: 30px;
-  margin-bottom: 15px;
 }
 .el-checkbox+.el-checkbox{
   margin: 0 30px 15px 0;

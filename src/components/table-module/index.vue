@@ -1,21 +1,51 @@
 <template>
   <div class="tableModule">
     <!-- 头部按钮 -->
-    <slot name="btn"></slot>
+    <slot name="header-btn"></slot>
     <el-table
       :data="tableData"
       :max-height="tableHeight"
       v-loading="tableLoading"
-      :header-cell-class-name="handleSetCellClass"
+      :header-cell-class-name="handleSetHeaderCellClass"
       :cell-class-name="handleSetCellClass"
       border
       style="width: 100%;"
       class="table"
-      @sort-change="handleSort"
-      @selection-change="handleSelectChange"
+      v-bind="$attrs"
+      v-on="$listeners"
     >
       <template v-for="(item, i) in tableItem">
         <el-table-column
+          v-if="item.type==='selection'"
+          :key="`selection${i}`"
+          align="center"
+          v-bind="item"
+        />
+        <el-table-column
+          v-if="['cell'].includes(item.type)"
+          :key="`content${i}`"
+          :min-width="item.width"
+          :width="undefined"
+          :slot="undefined"
+          v-bind="item"
+        >
+          <template slot-scope="scope">
+            <slot
+              :name="item.slot"
+              :row="scope.row"
+              :$index="scope.$index"
+            ></slot>
+            <template v-if="!item.slot">
+              {{ scope.row[item.prop] }}
+            </template>
+          </template>
+        </el-table-column>
+        <slot
+          v-if="['btn'].includes(item.type) && item.show !== false"
+          name="btn"
+          :$index="i"
+        ></slot>
+        <!-- <el-table-column
           v-if="item.type==='selection' && item.show !== false"
           :key="`selection${i}`"
           :width="item.width"
@@ -23,8 +53,8 @@
           align="center"
           type="selection"
           :fixed="item.fixed"
-        />
-        <el-table-column
+        /> -->
+        <!-- <el-table-column
           v-if="['cell', 'input', 'select'].includes(item.type)"
           :key="`content${i}`"
           :min-width="item.width"
@@ -52,7 +82,7 @@
             <template v-else>{{ scope.row[item.prop] }}</template>
           </span>
         </template>
-        </el-table-column>
+        </el-table-column> -->
         <cell-radio
           v-if="item.type==='radio'"
           :key="`radio${i}`"
@@ -60,7 +90,7 @@
           :prop="item.prop"
           :parent="parent"
         />
-        <cell-tree
+       <!--  <cell-tree
           v-if="item.type==='tree'"
           :key="`tree${i}`"
           :item="item"
@@ -73,8 +103,8 @@
           @handAddTableData="handAddTableData"
           @clickGetTreeData="handleClickGetTreeData"
         >
-        </cell-tree>
-        <table-btn
+        </cell-tree> -->
+       <!--  <table-btn
           v-if="item.type==='btn' && item.show !== false"
           :key="`btn${i}`"
           :item="item"
@@ -85,7 +115,7 @@
           :tableItem="tableItem"
           :rowOrignData="rowOrignData"
           @handleInlineEditTableData="handleInlineEditTableData"
-        />
+        /> -->
         <el-table-column
           v-if="item.type==='setting'"
           :key="`selection${i}`"
@@ -116,37 +146,46 @@
       />
     </div>
     <!-- 自定义表头 -->
-    <user-define-head-list
+    <!-- <user-define-head-list
       v-if="showTableHeadSetting"
       :totalSetHeadList="totalSetHeadList"
       :choosedHeadList="choosedHeadList"
       @handleSendHead="handleSendHead"
-    />
+    /> -->
   </div>
 </template>
 
 <script>
-import userDefineHeadList from './components/userDefineHeadList' // 自定义表头设置模块
-import tableBtn from './components/tableBtn' // 按钮模块
-import inlineEdit from './components/inlineEdit' // 行内编辑
-import cellTree from './components/cellTree' // 表格树
+// import userDefineHeadList from './components/userDefineHeadList' // 自定义表头设置模块
+// import tableBtn from './components/tableBtn' // 按钮模块
+// import inlineEdit from './components/inlineEdit' // 行内编辑
+// import cellTree from './components/cellTree' // 表格树
 import cellRadio from './components/cellRadio' // 表格单选框
-import statusClsName from './config/defaultStatusClsName'
+// import statusClsName from './config/defaultStatusClsName'
 import { getTableHeight, getCellClass, setHeadIcon, setInitTableStyle } from './config/method'
 export default {
   name: 'tableModule',
-  components: { userDefineHeadList, tableBtn, inlineEdit, cellTree, cellRadio },
+  components: { cellRadio },
   props: {
-    // 全部的自定义表头
-    totalSetHeadList: Array,
-    // 已勾选的自定义表头
-    choosedHeadList: Array,
     // 已经处理过的表格数据
-    tableData: {
+    data: {
       type: Array,
       required: true
     },
-    // 表格树最开始的等级
+    // 初始化表头映射关系
+    items: {
+      type: Array,
+      required: true
+    },
+    // 自定义最大高度
+    maxHeight: String,
+    headerCellClassName: Function || String,
+    cellClassName: Function || String,
+    /* // 全部的自定义表头
+    totalSetHeadList: Array, */
+    /* // 已勾选的自定义表头
+    choosedHeadList: Array, */
+    /* // 表格树最开始的等级
     treeInitLevel: Number,
     // 表格树打开是否需要请求接口
     getTreeDataByPost: Boolean,
@@ -156,18 +195,11 @@ export default {
       default: 'parentId'
     },
     // 保存表格树打开的ids
-    treeExpandIds: Array,
-    // 初始化表头映射关系
-    tableItem: {
-      type: Array,
-      required: true
-    },
-    // 自定义最大高度
-    maxHeight: String,
+    treeExpandIds: Array, */
     // 是否为行内编辑
-    isInlineEdit: Boolean,
+    // isInlineEdit: Boolean,
     // 选择框中文转value
-    inlineLabelToValue: Object,
+    // inlineLabelToValue: Object,
     // 默认总高度为菜单高度
     totalHeightClsName: {
       type: String,
@@ -175,8 +207,8 @@ export default {
     },
     // 需要减掉的高度
     reduceHeightClsNameList: Array,
-    // 按钮
-    tableBtn: Array,
+    /* // 按钮
+    btns: Array, */
     // 分页
     tablePages: {
       type: Object,
@@ -189,31 +221,34 @@ export default {
       type: String,
       default: 'total, sizes, prev, pager, next, jumper'
     },
-    // 排序方法
-    sortFn: String,
-    partShowBtn: Boolean,
-    // 判断哪几行需要勾选
-    selectableFn: Function
+    /*  // 判断哪几行需要勾选
+    selectableFn: Function */
   },
   data () {
     return {
       tableHeight: 10000,
-      rowOrignData: [], // 行内编辑编辑时保存的原始数据
+      // rowOrignData: [], // 行内编辑编辑时保存的原始数据
       parent: ''
     }
   },
   computed: {
-    // 表头过滤tableItem
-    newTableItem () {
-      return this.tableItem
+    tableData () {
+      return this.data
     },
-    // 是否展示自定义表头
+    // 表头过滤tableItem
+    tableItem () {
+      return this.items
+    },
+    /* tableBtn () {
+      return this.btns
+    }, */
+    /* // 是否展示自定义表头
     showTableHeadSetting () {
       if (this.tableItem.findIndex(item => item.type === 'setting') > -1) {
         return true
       }
       return false
-    },
+    }, */
     tableLoading () {
       let parent = this.$parent
       let i = 0
@@ -235,7 +270,7 @@ export default {
   },
   mounted () {
     this.$nextTick(() => {
-      this.showTableHeadSetting && setHeadIcon()
+      // this.showTableHeadSetting && setHeadIcon()
       if (this.maxHeight) {
         this.tableHeight = this.maxHeight
         return false
@@ -251,7 +286,7 @@ export default {
         this.tableHeight = this.maxHeight
         return false
       }
-      this.showTableHeadSetting && setHeadIcon()
+      // this.showTableHeadSetting && setHeadIcon()
       this.handleSetTableHeight()
     }
   },
@@ -260,7 +295,7 @@ export default {
     handleSetTableHeight () {
       this.tableHeight = getTableHeight(this.totalHeightClsName, this.reduceHeightClsNameList)
     },
-    // 设置状态clsName
+    /* // 设置状态clsName
     handleSetStatusClsName (type, value, i) {
       if (type) {
         if (i && statusClsName[type]) {
@@ -270,21 +305,20 @@ export default {
         }
         return [type, value]
       }
-    },
-    // 发送自定义表头
+    }, */
+    /* // 发送自定义表头
     handleSendHead (val) {
       this.$emit('handleSendHead', val)
-    },
+    }, */
     // 自定义设置列样式
     handleSetCellClass (row) {
-      return getCellClass(row, this.newTableItem)
+      return getCellClass(row, this.tableItem, this.headerCellClassName)
     },
-    // 监听排序
-    handleSort (column, prop, order) {
-      if (!this.sortFn) return
-      this.parent[this.sortFn](column, prop, order)
+    // 自定义设置列样式
+    handleSetHeaderCellClass (row) {
+      return getCellClass(row, this.tableItem, this.cellClassName)
     },
-    // 判断此行是否要勾选
+    /* // 判断此行是否要勾选
     handleSelect (row, index) {
       if (this.selectableFn) {
         if (this.selectableFn(row, index)) {
@@ -295,31 +329,27 @@ export default {
       } else {
         return true
       }
-    },
-    // 行内编辑点击编辑按钮时修改tableData
+    }, */
+    /* // 行内编辑点击编辑按钮时修改tableData
     handleInlineEditTableData (index, row, delete1) {
       this.$set(this.tableData, index, row)
       if (delete1 === 'delete') {
         this.tableData.splice(index, 1)
         this.$set(this, 'tableData', this.tableData)
       }
-    },
-    // 树表格点击请求子数据
+    }, */
+    /* // 树表格点击请求子数据
     handleClickGetTreeData (row, index) {
       this.$emit('clickGetTreeData', row, index)
     },
     // 树表格修改tableData
     handAddTableData (tableData) {
-      this.$emit('update:tableData', tableData)
+      this.$emit('update:data', tableData)
     },
     // 表格树保存已打开的id
     handleSaveOpenIds (idList) {
       this.$emit('update:treeExpandIds', idList)
-    },
-    // 事件：选中一条数据后保存选中状态按钮
-    handleSelectChange (val) {
-      this.parent.chooseDataArr = val
-    },
+    }, */
     // 事件：每页几条
     handleSizeChange (val) {
       console.log(`每页 ${val} 条`)
@@ -331,9 +361,9 @@ export default {
       this.$emit('table-jump', val)
       this.tablePages.current = val
     },
-    handleCellClick (fn, row) {
+    /*  handleCellClick (fn, row) {
       this.parent[fn] && this.parent[fn](row)
-    }
+    } */
   }
 }
 </script>

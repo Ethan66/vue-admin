@@ -1,29 +1,40 @@
 <template>
   <div class="substance user-manage">
     <search-module
-      :search-item="searchItem"
-      :search-values="searchValues"
-      @handleSearch="handleSearch"
+      :items="searchItem"
+      v-model="searchValues"
+      @search="handleSearch"
     ></search-module>
     <table-module
       ref="table"
-      :table-data="tableData"
-      :table-item="tableItem"
-      :table-btn="tableBtn"
+      :data="tableData"
+      :items="tableItem"
     >
-      <div class="btn-content" slot="btn">
+      <div class="btn-content" slot="header-btn">
         <el-button @click="handleAdd" v-if="$authBtn('role-create-role')">{{ $authBtn('role-create-role') }}</el-button>
         <el-button @click="handleDeleteMore" v-if="$authBtn('role-delete-batch')">{{ $authBtn('role-delete-batch') }}</el-button>
         <el-button @click="$router.push({ path: '/auth-config/role-manage/roleAuth' })" v-if="$authBtn('role-auth-role')">{{ $authBtn('role-auth-role') }}</el-button>
       </div>
+     <template slot="status" slot-scope="scope">
+        <table-status
+          :item="tableItem[3]"
+          :row="scope.row"
+        ></table-status>
+      </template>
+      <template slot="btn" slot-scope="scope">
+        <table-btn
+          :row="scope.row"
+          :btns="tableBtn"
+        />
+      </template>
     </table-module>
      <dialog-module
       ref="dialog"
-      :dialog-title="dialogTitle"
-      :showDialogForm.sync="showDialogForm"
-      :edit-data="editData"
-      :dialog-item="dialogItem"
-      :dialog-btn="dialogBtn"
+      :title="dialogTitle"
+      :showDialog.sync="showDialogForm"
+      :data="editData"
+      :items="dialogItem"
+      :btns="dialogBtn"
       :rules="rules"
     />
   </div>
@@ -33,10 +44,18 @@
 import { role } from '../mixins'
 import basicMethod from '@/config/mixins'
 import { apiAddRole, apiGetRole, apiModifyRole, apiDeleteRole } from '@/api/authority'
+import tableStatus from '@/components/page-module/table-status'
+import tableBtn from '@/components/page-module/tableBtn' // 按钮模块
 
 export default {
   name: 'menu-manage',
   mixins: [basicMethod, role],
+  components: { tableStatus, tableBtn },
+  data () {
+    return {
+      tableBtn: []
+    }
+  },
   created () {
     this.handleGetTableData(apiGetRole)
   },

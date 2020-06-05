@@ -25,11 +25,11 @@
     </el-dropdown>
     <dialog-module
       ref="dialog"
-      dialogTitle="修改密码"
-      :showDialogForm.sync="showDialogForm"
-      :editData="editData"
-      :dialogItem="dialogItem"
-      :dialogBtn="dialogBtn"
+      title="修改密码"
+      :showDialog.sync="showDialogForm"
+      :data="editData"
+      :items="dialogItem"
+      :btns="dialogBtn"
       :rules="rules"
     />
   </div>
@@ -43,19 +43,33 @@ import MD5 from 'js-md5'
 
 export default {
   data () {
-    return {
+    return Object.assign({
       userName: '',
       showDialogForm: false,
       editData: {},
-      dialogItem: [
-        { key: 'password', label: '原密码', type: 'input', show: true },
-        { key: 'newPassword', label: '新密码', type: 'password', show: true },
-        { key: 'checkNewPassword', label: '确认密码', type: 'password', show: true }
-      ],
-      dialogBtn: [
-        { name: '取消', type: 'delete', show: true, disabled: false, clickFn: 'btnCancel' },
-        { name: '确认', type: 'edit', show: true, color: 'primary', disabled: false, clickFn: 'handleChangePassword' }
-      ],
+      // dialogItem: [
+      //   { key: 'password', label: '原密码', type: 'input', show: true },
+      //   { key: 'newPassword', label: '新密码', type: 'password', show: true },
+      //   { key: 'checkNewPassword', label: '确认密码', type: 'password', show: true }
+      // ],
+      // dialogBtn: [
+      //   { name: '取消', type: 'delete', show: true, disabled: false, clickFn: 'btnCancel' },
+      //   { name: '确认', type: 'edit', show: true, color: 'primary', disabled: false, clickFn: 'handleChangePassword' }
+      // ],
+    }, new this.$InitObj({
+      btnConfig: {
+        dialogBtn: [
+          { confirm: { clickFn: 'handleChangePassword' } },
+          { cancel: { clickFn: 'btnCancel' } }
+        ]
+      },
+      items: {
+        dialog: {
+          password: { label: '原密码' },
+          newPassword: { label: '新密码' },
+          checkNewPassword: { label: '确认密码' }
+        }
+      },
       rules: {
         password: [
           { required: true, message: '请输入原密码', trigger: 'blur' }
@@ -67,7 +81,7 @@ export default {
           { required: true, message: '请输入确认密码', trigger: 'blur' }
         ]
       }
-    }
+    }))
   },
   watch: {
     $route (val) {
@@ -177,7 +191,7 @@ export default {
       })
     },
     btnCancel () {
-      this.$refs.dialog.showDialogForm1 = false
+      this.$refs.dialog.showDialog1 = false
     },
     handleChangePassword () {
       if (this.editData.newPassword !== this.editData.checkNewPassword) {

@@ -1,37 +1,25 @@
-import { basicInitObj, tableInitObj } from '@/components/basicObj'
-import { authMoreBtn, setBtnConfig } from '@/components/methods'
-
-const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
-
-const userMoreList = authMoreBtn([
-  { code: 'user-agree-login', clickFn: 'handleChangeStatus', config: { inlineShow: false } },
-  { code: 'user-bin-login', clickFn: 'handleChangeStatus', config: { inlineShow: false } },
-  { code: 'user-delete-user', clickFn: 'handleDeleteData' }
-])
+import { configBtn } from '@/components/methods.js'
 
 // 用户管理
 export const user = {
   data () {
     return new this.$InitObj({
-      modules: 'All',
-      btnConfig: {
-        tableBtn: [{ edit: { code: 'user-edit-user' } }, { more: { list: userMoreList, code: 'user-more' } }]
-      },
       items: {
         search: {
-          account: { label: '账号' },
+          account: { label: '账号', name: '你好', clearable: true, change: this.handleChange },
           name: { label: '用户名' },
-          status: { label: '状态', type: 'select', options: [{ label: '允许登录', value: 1 }, { label: '禁止登录', value: 0 }] }
+          status: { label: '状态', type: 'select', options: [{ label: '允许登录', value: 1 }, { label: '禁止登录', value: 0 }] },
+          date: { label: '时间', key: 'str1', type: 'date', rangeSeparator: '至', startPlaceholder: '开始日期', endPlaceholder: '结束日期' }
         },
         table: {
           selection: '',
           account: { label: '账号', width: 100 },
           name: { label: '用户名', width: 100 },
           roleName: { label: '角色', width: 100 },
-          status: { label: '状态', width: 90, clsName: 'userStatus', formatterFn: this.$InitObj.prototype.formmater(['禁止登录', '允许登录']) },
+          status: { label: '状态', width: 90, slot: 'status', clsName: 'userStatus', formatterFn: this.$InitObj.prototype.formmater(['禁止登录', '允许登录']) },
           loginTime: { label: '最近登录', width: 120 },
           operator: { label: '操作人', width: 100 },
-          btn: { width: 118 }
+          btn: { width: 118, slot: 'btn' }
         },
         dialog: {
           account: { label: '账号' },
@@ -53,23 +41,25 @@ export const user = {
         ]
       }
     })
+  },
+  created () {
+    this.tableBtn = configBtn([
+      { code: 'menu-edit-menu', clickFn: this.handleEditData },
+      { code: 'menu-delete', clickFn: this.handleDeleteData }
+    ])
   }
 }
 
-const roleMoreList = authMoreBtn([
-  { code: 'role-agree-role', clickFn: 'handleChangeStatus', config: { inlineShow: false } },
-  { code: 'role-bin-role', clickFn: 'handleChangeStatus', config: { inlineShow: false } },
-  { code: 'role-delete-role', clickFn: 'handleDeleteData' }
-])
+// const roleMoreList = authMoreBtn([
+//   { code: 'role-agree-role', clickFn: 'handleChangeStatus', config: { inlineShow: false } },
+//   { code: 'role-bin-role', clickFn: 'handleChangeStatus', config: { inlineShow: false } },
+//   { code: 'role-delete-role', clickFn: 'handleDeleteData' }
+// ])
 
 // 角色管理
 export const role = {
   data () {
     return new this.$InitObj({
-      modules: 'All',
-      btnConfig: {
-        tableBtn: [{ edit: { code: 'role-edit-role' } }, { more: { list: roleMoreList, code: 'role-more' } }]
-      },
       items: {
         search: {
           roleName: { label: '角色名' },
@@ -79,7 +69,7 @@ export const role = {
           selection: '',
           roleName: { label: '角色名', width: 100 },
           roleId: { label: '角色Id', width: 100 },
-          status: { label: '状态', width: 90, clsName: 'roleStatus', formatterFn: this.$InitObj.prototype.formmater(['失效', '正常']) },
+          status: { label: '状态', width: 90, slot: 'status', clsName: 'roleStatus', formatterFn: this.$InitObj.prototype.formmater(['失效', '正常']) },
           updateDate: { label: '更新时间', width: 100 },
           operator: { label: '操作人', width: 100 },
           btn: { width: 118 }
@@ -95,6 +85,12 @@ export const role = {
         ]
       }
     })
+  },
+  created () {
+    this.tableBtn = configBtn([
+      { code: 'menu-edit-menu', clickFn: this.handleEditData },
+      { code: 'menu-delete', clickFn: this.handleDeleteData }
+    ])
   }
 }
 
@@ -102,8 +98,6 @@ export const role = {
 export const roleAuth = {
   data () {
     return new this.$InitObj({
-      modules: ['dialog'],
-      btnConfig: {},
       items: {
         dialog: {
           roleName: { label: '角色名' },
@@ -122,7 +116,7 @@ export const roleAuth = {
     })
   }
 }
-
+/* 
 // IP控制
 export const ipControl = {
   data () {
@@ -447,3 +441,4 @@ export const dataShare = {
     let dialogItem = this.dialogItem = this.$setItem(tybeObj['data-share'], configDialogItem, 'dialog')
   }
 }
+ */

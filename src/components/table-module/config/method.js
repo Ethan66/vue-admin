@@ -17,21 +17,25 @@ export const getTableHeight = (totalClsName, reduceClsNameList = []) => {
 }
 
 // 设置table单元格className
-export const getCellClass = (row, newTableItem) => {
+export const getCellClass = (row, newTableItem, cb) => {
   let result = []
-  let firstIndex = 0
-  if (newTableItem[0].type === 'selection') {
-    firstIndex = 1
+  if (typeof cb === 'function') {
+    result.push(cb(row))
+  } else if (typeof cb === 'string') {
+    result.push(cb)
   }
-  if (row.columnIndex === firstIndex) {
-    result.push('starting')
+  if (row.columnIndex === 1) {
+    if (newTableItem[0].type === 'selection') {
+      result.push('starting')
+    }
+    return result
   }
-  if (newTableItem.slice(-1)[0].type !== 'btn') return
-  const lastIndex = newTableItem.length - 1
-  if (row.columnIndex === lastIndex) {
-    result.push('headSetting')
+  if (row.columnIndex === newTableItem.length - 1) {
+    if (newTableItem.slice(-1)[0].type === 'btn') {
+      result.push('headSetting')
+    }
+    return result
   }
-  return result
 }
 
 // 修改筛选图标

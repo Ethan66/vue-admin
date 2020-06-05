@@ -1,96 +1,102 @@
 <template>
   <div class="substance menu-manage">
     <search-module
-      :search-item="searchItem"
-      :search-values="searchValues"
-      @handleSearch="handleSearch"
+      :items="searchItem"
+      v-model="searchValues"
+      @search="handleSearch"
     ></search-module>
     <table-module
       ref="table"
-      :table-data.sync="tableData"
-      :table-item="tableItem"
-      :table-btn="tableBtn"
-      :tree-expand-ids.sync="saveExpendIdList"
-      :tree-parent-id="'menuParentId'"
+      :data="tableData"
+      :items="tableItem"
     >
-      <div class="btn-content" slot="btn">
+      <div class="btn-content" slot="header-btn">
         <el-button @click="handleAdd" v-if="$authBtn('menu-add-menu')">{{ $authBtn('menu-add-menu') }}</el-button>
         <!-- <el-button @click="$router.push({ path: '/main/develop-center/menu-manage/newpage' })">跳转页面</el-button> -->
         <el-button @click="handleBatchCreate('catalogue')" v-if="$authBtn('menu-add-catogue-all')">{{ $authBtn('menu-add-catogue-all') }}</el-button>
         <el-button @click="handleBatchCreate('menu')" v-if="$authBtn('menu-add-menu-all')">{{ $authBtn('menu-add-menu-all') }}</el-button>
         <el-button @click="handleBatchCreate('btn')" v-if="$authBtn('menu-add-btn-all')">{{ $authBtn('menu-add-btn-all') }}</el-button>
       </div>
+      <template slot="tree" slot-scope="scope">
+        <cell-tree
+          :scope="scope"
+          :item="tableItem[0]"
+          :tableData.sync="tableData"
+          :treeExpandIds.sync="saveExpendIdList"
+          treeParentId="menuParentId"
+        >
+        </cell-tree>
+      </template>
+      <template slot="btn" slot-scope="scope">
+        <table-btn
+          :row="scope.row"
+          :btns="tableBtn"
+        />
+      </template>
     </table-module>
     <dialog-module
       ref="dialog"
-      doubleColumn
-      :dialog-title="dialogTitle"
-      :showDialogForm.sync="showDialogForm"
-      :edit-data="editData"
-      :dialog-item="dialogItem"
-      :dialog-btn="dialogBtn"
+      :title="dialogTitle"
+      :showDialog.sync="showDialogForm"
+      :data="editData"
+      :items="dialogItem"
+      :btns="dialogBtn"
       :rules="rules"
-      :selectTreeWidth="244"
-      :select-tree-checked-value="selectTreeCheckedValue"
-      selectTreekey="menuParentId"
-      @handleSelectTreeValue="handleSelectTreeValue"
-      @handleClearSelectTree="handleClearSelectTree"
-    />
-    <dialog-detail
-      title="详情"
-      :showDetail.sync="showDetail"
-      :dialogItem="dialogItem"
-      :editData="editData"
-    />
+    >
+      <select-tree
+        slot="tree"
+        v-model="editData.menuParentId"
+        clearable
+        :data="allParentMenu"
+        :defaultChecked="checkedKeys"
+        :defaultProps="{ children: 'list', label: 'menuName' }"
+        nodeKey="id"
+      />
+    </dialog-module>
   </div>
 </template>
 
 <script>
 import { menu } from '../mixin'
 import basicMethod from '@/config/mixins'
-import { menuRelation } from '@/config/utils'
 import batchConfig from '@/config/menu'
 import { apiModifyMenu, apiAddMenu, apiDeleteMenu } from '@/api/developCenter'
 import { apiGetAllMenu } from '@/api/login'
+import { cellTree, adminMethods, selectTree } from 'vue-admin-ui-lib' // 表格树
+import tableBtn from '@/components/page-module/tableBtn' // 按钮模块
 
 export default {
   name: 'menu-manage',
   mixins: [basicMethod, menu],
+  components: { cellTree, tableBtn, selectTree },
   data () {
     return {
+      tableBtn: [],
       showDetail: false,
       allParentMenu: [],
-      selectTreeCheckedValue: [],
-      saveExpendIdList: []
-    }
-  },
-  watch: {
-    showDialogForm (val) {
-      if (!val) {
-        this.dialogItem[1].type = 'selectTree'
-        this.dialogItem[1].disabled = false
-        this.dialogItem[3].disabled = false
-      }
+      checkedKeys: [],
+      saveExpendIdList: [],
+      menuTypes: [{ label: '目录', value: 1 }, { label: '菜单', value: 2 }, { label: '按钮', value: 3 }],
+      statusList: [{ label: '显示', value: 1 }, { label: '隐藏', value: 0 }]
     }
   },
   created () {
+    this.dialogItem[2].options = this.menuTypes
+    this.dialogItem[7].options = this.statusList
+    this.searchItem[1].options = this.statusList
     this.tablePages.pageSize = 10000
     this.handleGetTableData(apiGetAllMenu)
   },
   methods: {
     // 获取所有父菜单树
     handleGetAllParentTree () {
-      this.selectTreeCheckedValue = []
+      this.checkedKeys = []
       let filterArr = JSON.parse(JSON.stringify(this.allData.filter(item => item.menuLevel !== 3)))
-      this.allParentMenu = this.dialogItem[1].dialogData = menuRelation(filterArr, 'id', 'menuParentId', 'menuLevel', 'sortNo')
+      this.allParentMenu = adminMethods.menuRelation(filterArr, 'id', 'menuParentId', 'menuLevel', 'sortNo')
     },
     // 点击新增按钮
     handleAdd () {
-      this.dialogItem[0].show = false
-      this.dialogItem[1].show = true
-      this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
       this.$set(this.editData, 'status', 1)
-      this.handleClearSelectTree()
       this.handleGetAllParentTree()
       this.isEdit = 0
       this.dialogTitle = '新增菜单'
@@ -98,89 +104,12 @@ export default {
     },
     // 点击表格编辑按钮
     handleEditData (row) {
-      this.dialogItem[0].show = false
       this.editData = JSON.parse(JSON.stringify(row))
-      this.handleClearSelectTree()
       this.handleGetAllParentTree()
-      this.selectTreeCheckedValue = [this.editData.menuParentId]
-      this.editData.status = this.editData.statusStash
-      this.editData.menuType = this.editData.menuTypeStash
-      this.editData.menuLevel = this.editData.menuLevel[0]
+      this.checkedKeys = [this.editData.menuParentId]
       this.isEdit = 1
       this.dialogTitle = '编辑菜单'
       this.showDialogForm = true
-    },
-    // 新建平级菜单
-    handleCreateLevelMenu (row) {
-      this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
-      this.$set(this.editData, 'status', 1)
-      this.dialogItem[0].show = false
-      this.dialogItem[1].type = 'input'
-      this.dialogItem[1].disabled = true
-      this.dialogItem[3].disabled = true
-      this.editData.menuParentIdStash = row.menuParentId
-      let obj = this.allData.find(item => item.id === row.menuParentId)
-      obj && (this.editData.menuParentId = obj.menuName)
-      this.editData.menuType = row.menuTypeStash
-      this.editData.menuLevel = Number(row.menuLevel[0])
-      this.isEdit = 0
-      this.dialogTitle = '新建菜单'
-      this.showDialogForm = true
-    },
-    // 新建下级菜单
-    handleCreateNextLevelMenu (row) {
-      if (Number(row.menuTypeStash) === 3) {
-        this.$message.error('三级不能创建下级菜单')
-        return false
-      }
-      this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
-      this.$set(this.editData, 'status', 1)
-      this.dialogItem[0].show = false
-      this.dialogItem[1].type = 'input'
-      this.dialogItem[1].disabled = true
-      this.dialogItem[3].disabled = true
-      this.editData.menuParentIdStash = row.id
-      this.editData.menuParentId = row.menuName
-      this.editData.menuType = Number(row.menuTypeStash) + 1
-      this.editData.menuLevel = Number(row.menuLevel[0])
-      this.isEdit = 0
-      this.dialogTitle = '新建菜单'
-      this.showDialogForm = true
-    },
-    // 选择菜单树的值后
-    handleSelectTreeValue (row) {
-      if (!row) return false
-      this.editData.menuType = Number(row.menuType) + 1
-      let list = this.dialogItem[3].options.map(item => {
-        if (item.value <= row.menuType) {
-          item.disabled = true
-        } else {
-          item.disabled = false
-        }
-        return item
-      })
-      this.$set(this.dialogItem[3], 'options', list)
-    },
-    // 清空菜单树的值
-    handleClearSelectTree () {
-      let list = this.dialogItem[3].options.map(item => {
-        item.disabled = false
-        return item
-      })
-      this.$set(this.dialogItem[3], 'options', list)
-    },
-    // 点击表格改变状态
-    handleChangeStatus (row) {
-      let id = row.id
-      let status = row.statusStash === 0 ? 1 : 0
-      this.apiEditData(apiModifyMenu, { id, status }, apiGetAllMenu)
-    },
-    // 点击表格详情按钮
-    handleShowDetailDialog (row) {
-      this.showDetail = true
-      this.dialogItem[0].show = true
-      this.dialogItem[1].show = false
-      this.editData = row
     },
     // 点击表格删除按钮
     handleDeleteData (row) {
@@ -188,16 +117,14 @@ export default {
     },
     // 点击对话框确认按钮
     handleSubmit () {
-      if (this.isEdit === 0) {
-        if (this.editData.menuParentIdStash) {
-          this.editData.menuParentId = this.editData.menuParentIdStash
-        }
-        this.editData.menuLevel = this.editData.menuType
-        this.apiCreateData(apiAddMenu, this.$purifyParams(this.editData), apiGetAllMenu)
-      } else {
-        this.editData.menuLevel = this.editData.menuType
-        this.apiEditData(apiModifyMenu, this.editData, apiGetAllMenu)
-      }
+      console.log(111, this.editData)
+      // if (this.isEdit === 0) {
+      //   this.editData.menuLevel = this.editData.menuType
+      //   this.apiCreateData(apiAddMenu, this.$purifyParams(this.editData), apiGetAllMenu)
+      // } else {
+      //   this.editData.menuLevel = this.editData.menuType
+      //   this.apiEditData(apiModifyMenu, this.editData, apiGetAllMenu)
+      // }
     },
     // 处理表格数据
     handleTableData (tableData) {
@@ -205,39 +132,7 @@ export default {
         this.tableData = []
         return
       }
-      tableData.forEach(item => {
-        item.showBtnCode = []
-        if (item.menuTypeStash === undefined) {
-          item.menuTypeStash = item.menuType
-        }
-        switch (item.menuType) {
-          case 1:
-            item.menuType = '目录'
-            break
-          case 2:
-            item.menuType = '菜单'
-            break
-          case 3:
-            item.menuType = '按钮'
-            break
-        }
-        if (item.menuLevelStash === undefined) {
-          item.menuLevelStash = item.menuLevel - 1
-          item.menuLevel = `${item.menuLevel}级`
-        }
-        item.statusStash = item.status
-        switch (item.status) {
-          case 1:
-            item.status = '显示'
-            item.showBtnCode.push('menu-hide-menu')
-            break
-          case 0:
-            item.status = '隐藏'
-            item.showBtnCode.push('menu-show-menu')
-            break
-        }
-      })
-      this.tableData = menuRelation(tableData, 'id', 'menuParentId', 'menuLevelStash', 'sortNo')
+      this.tableData = adminMethods.menuRelation(tableData, 'id', 'menuParentId', 'menuLevel', 'sortNo')
       function fn (data) {
         data.forEach(item => {
           if (item.list && item.list.length > 0) {
@@ -290,28 +185,28 @@ export default {
       }
     },
     validateMenuName (rule, value, callback) {
-      if (!value.trim()) {
+      if (value && !value.trim()) {
         return callback(new Error(this.dialogItem[2].placeholder))
       }
-      if (value.length > 20) {
+      if (value && value.length > 20) {
         return callback(new Error('输入内容不能超过20字'))
       }
       callback()
     },
     validateCode (rule, value, callback) {
-      if (!value.trim()) {
+      if (value && !value.trim()) {
         return callback(new Error(this.dialogItem[4].placeholder))
       }
-      if (value.length > 30) {
+      if (value && value.length > 30) {
         return callback(new Error('输入内容不能超过30字'))
       }
       callback()
     },
     validateMenuUrl (rule, value, callback) {
-      if (!value.trim()) {
+      if (value && !value.trim()) {
         return callback(new Error(this.dialogItem[5].placeholder))
       }
-      if (value.length > 100) {
+      if (value && value.length > 100) {
         return callback(new Error('输入内容不能超过100字'))
       }
       callback()

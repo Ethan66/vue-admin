@@ -1,28 +1,40 @@
 <template>
   <div class="substance user-manage">
     <search-module
-      :search-item="searchItem"
-      :search-values="searchValues"
-      @handleSearch="handleSearch"
+      :items="searchItem"
+      v-model="searchValues"
+      @search="handleSearch"
     ></search-module>
     <table-module
       ref="table"
-      :table-data="tableData"
-      :table-item="tableItem"
-      :table-btn="tableBtn"
+      :data="tableData"
+      :items="tableItem"
+      @selection-change="handleSelectChange"
     >
-      <div class="btn-content" slot="btn">
+      <div class="btn-content" slot="header-btn">
         <el-button @click="handleAdd" v-if="$authBtn('user-create-user')">{{ $authBtn('user-create-user') }}</el-button>
         <el-button @click="handleDeleteMore" v-if="$authBtn('user-delete-batch')">{{ $authBtn('user-delete-batch') }}</el-button>
       </div>
+      <template slot="status" slot-scope="scope">
+        <table-status
+          :item="tableItem[4]"
+          :row="scope.row"
+        ></table-status>
+      </template>
+      <template slot="btn" slot-scope="scope">
+        <table-btn
+          :row="scope.row"
+          :btns="tableBtn"
+        />
+      </template>
     </table-module>
      <dialog-module
       ref="dialog"
-      :dialog-title="dialogTitle"
-      :showDialogForm.sync="showDialogForm"
-      :edit-data="editData"
-      :dialog-item="dialogItem"
-      :dialog-btn="dialogBtn"
+      :title="dialogTitle"
+      :showDialog.sync="showDialogForm"
+      :data="editData"
+      :items="dialogItem"
+      :btns="dialogBtn"
       :rules="rules"
     />
   </div>
@@ -30,6 +42,8 @@
 
 <script>
 import { user } from '../mixins'
+import tableStatus from '@/components/page-module/table-status'
+import tableBtn from '@/components/page-module/tableBtn' // 按钮模块
 import basicMethod from '@/config/mixins'
 import MD5 from 'js-md5'
 import { apiAddUser, apiGetUser, apiModifyUserInfo, apiDeleteUser, apiGetRole } from '@/api/authority'
@@ -37,8 +51,10 @@ import { apiAddUser, apiGetUser, apiModifyUserInfo, apiDeleteUser, apiGetRole } 
 export default {
   name: 'user-manage',
   mixins: [basicMethod, user],
+  components: { tableStatus, tableBtn },
   data () {
     return {
+      tableBtn: [],
       operator: JSON.parse(localStorage.getItem('userInfo')).userName
     }
   },
@@ -50,7 +66,18 @@ export default {
       }
     })
   },
+  mounted () {
+    setTimeout(() => {
+      console.log(22, this.searchItem[0])
+    })
+  },
   methods: {
+    handleSelectChange (val) {
+      this.chooseDataArr = val
+    },
+    handleChange () {
+      console.log(11, this.searchItem)
+    },
     // 点击新增按钮
     handleAdd () {
       this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据

@@ -1,5 +1,4 @@
-import { basicInitObj } from '@/components/basicObj'
-import { setBtnConfig } from '@/components/methods'
+/* import { setBtnConfig } from '@/components/methods'
 
 const tybeObj = JSON.parse(sessionStorage.getItem('tybeObj') || '{}')
 const initData = Object.assign({}, basicInitObj)
@@ -91,3 +90,4 @@ export const errorLog = {
     }
   }
 }
+ */
