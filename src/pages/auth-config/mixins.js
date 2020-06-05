@@ -1,4 +1,4 @@
-import { configBtn } from '@/components/methods.js'
+import { configBtn } from '@/config/methods.js'
 
 // 用户管理
 export const user = {

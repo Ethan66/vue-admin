@@ -7,9 +7,9 @@ import App from './App'
 import router from './router'
 import store from './store'
 import { format, disposeTreeData, purifyParams } from '@/config/utils'
-import { authBtn } from '@/components/methods'
+import { authBtn } from '@/config/methods'
 import systemObj from './config/system'
-import { dialogBtn } from '@/components/table-module/config/defaultBtnData'
+import { dialogBtn } from '@/config/defaultBtnData'
 import 'vue-admin-ui-lib/lib/style/index.css'
 import {
   adminMethods,
