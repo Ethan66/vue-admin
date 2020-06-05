@@ -44,8 +44,8 @@
 import { role } from '../mixins'
 import basicMethod from '@/config/mixins'
 import { apiAddRole, apiGetRole, apiModifyRole, apiDeleteRole } from '@/api/authority'
-import tableStatus from '@/components/page-module/table-status'
-import tableBtn from '@/components/page-module/tableBtn' // 按钮模块
+import tableStatus from '@/components/table-status'
+import tableBtn from '@/components/tableBtn' // 按钮模块
 
 export default {
   name: 'menu-manage',
@@ -62,7 +62,6 @@ export default {
   methods: {
     // 点击新增按钮
     handleAdd () {
-      this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
       this.$set(this.editData, 'status', 1)
       this.isEdit = 0
       this.dialogTitle = '新增用户'

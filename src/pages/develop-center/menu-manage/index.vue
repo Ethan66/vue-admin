@@ -63,7 +63,7 @@ import batchConfig from '@/config/menu'
 import { apiModifyMenu, apiAddMenu, apiDeleteMenu } from '@/api/developCenter'
 import { apiGetAllMenu } from '@/api/login'
 import { cellTree, adminMethods, selectTree } from 'vue-admin-ui-lib' // 表格树
-import tableBtn from '@/components/page-module/tableBtn' // 按钮模块
+import tableBtn from '@/components/tableBtn' // 按钮模块
 
 export default {
   name: 'menu-manage',

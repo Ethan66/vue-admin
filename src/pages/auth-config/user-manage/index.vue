@@ -42,8 +42,8 @@
 
 <script>
 import { user } from '../mixins'
-import tableStatus from '@/components/page-module/table-status'
-import tableBtn from '@/components/page-module/tableBtn' // 按钮模块
+import tableStatus from '@/components/table-status'
+import tableBtn from '@/components/tableBtn' // 按钮模块
 import basicMethod from '@/config/mixins'
 import MD5 from 'js-md5'
 import { apiAddUser, apiGetUser, apiModifyUserInfo, apiDeleteUser, apiGetRole } from '@/api/authority'
@@ -80,7 +80,6 @@ export default {
     },
     // 点击新增按钮
     handleAdd () {
-      this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
       this.$set(this.editData, 'status', 1)
       this.isEdit = 0
       this.dialogTitle = '新增用户'

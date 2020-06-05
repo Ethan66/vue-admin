@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import statusClsName from './config/defaultStatusClsName'
+import statusClsName from './defaultStatusClsName'
 
 export default {
   props: {
