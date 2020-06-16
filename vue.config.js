@@ -1,3 +1,5 @@
+const path = require('path')
+
 module.exports = {
   indexPath: 'blow/index.html',
   assetsDir: 'blow/static',
@@ -17,6 +19,12 @@ module.exports = {
         target: 'https://tconsole4.bailingpay.com',
         changeOrigin: true
       }
+    }
+  },
+  pluginOptions: {
+    'style-resources-loader': {
+      preProcessor: 'less',
+      patterns: [path.resolve(__dirname, './src/assets/less/variable.less')]
     }
   }
 }
