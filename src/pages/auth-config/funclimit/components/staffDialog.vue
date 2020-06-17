@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import treeSelect from '@/components/modules/tree-select'
+// import treeSelect from '@/components/modules/tree-select'
 export default {
   props: {
     dialogTitle: {
@@ -137,7 +137,7 @@ export default {
     }
   },
   components: {
-    treeSelect
+    // treeSelect
   }
 }
 </script>

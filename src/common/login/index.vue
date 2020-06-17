@@ -84,7 +84,7 @@ export default {
       width: 450px;
     }
     .el-input__inner{
-      height: 46px;
+      .wh(100%, 46px);
       line-height: 46px;
       border: 1px solid hsla(0,0%,100%,.1);
       background: rgba(0,0,0,.1);
@@ -94,8 +94,7 @@ export default {
       margin-bottom: 10px;
     }
     .el-button.cm-bg-color{
-      width: 100%;
-      height: 46px;
+      .wh(100%, 46px);
       border-radius: 4px;
       padding: 0;
     }

@@ -19,9 +19,7 @@ export default {
 <style lang="less">
 .page-404{
   .wrap{
-    position: absolute;
-    left: 50%;
-    top: 50%;
+    .absolute(50%, 50%);
     transform: translate(-50%, -60%);
     text-align: center;
     img{
@@ -35,8 +33,7 @@ export default {
     }
     .button{
       button{
-        width: 104px;
-        height: 40px;
+        .wh(104px, 40px);
         padding: 0;
         line-height: 40px;
       }

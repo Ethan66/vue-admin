@@ -36,7 +36,6 @@
 <script>
 import { tybeManage } from '../mixin'
 import basicMethod from '@/config/mixins'
-import { menuRelation } from '@/config/utils'
 import { apiPageFiledQueryList, apiUpdatePageField, apiDeletePageField, apiAddPageField, apiPageFieldRapidGeneration } from '@/api/developCenter'
 import createTybe from './createtybe'
 

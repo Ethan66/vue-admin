@@ -6,7 +6,7 @@ import '@/assets/less/index.less'
 import App from './App'
 import router from './router'
 import store from './store'
-import { format, disposeTreeData, purifyParams } from '@/config/utils'
+import { disposeTreeData, purifyParams } from '@/config/utils'
 import { authBtn } from '@/config/methods'
 import systemObj from './config/system'
 import { dialogBtn } from '@/config/defaultBtnData'
@@ -18,6 +18,8 @@ import {
   dialogModule
 } from 'vue-admin-ui-lib'
 
+import { formatDate } from 'vue-admin-methods'
+
 Vue.use(ElementUI)
   .use(searchModule)
   .use(tableModule)
@@ -25,7 +27,7 @@ Vue.use(ElementUI)
 
 Vue.prototype.$disposeTreeData = disposeTreeData
 Vue.prototype.$purifyParams = purifyParams
-Vue.prototype.$format = format
+Vue.prototype.$format = formatDate
 Vue.prototype.$authBtn = authBtn
 Vue.prototype.$InitObj = adminMethods.onCreateBasicData({ defaultDialogBtn: dialogBtn })
 Vue.prototype.$setItem = adminMethods.setItemProp

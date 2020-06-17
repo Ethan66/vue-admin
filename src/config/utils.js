@@ -1,26 +1,3 @@
-// 转换时间戳
-export const format = (now, fmt = 'yyyy-MM-dd hh:mm:ss') => {
-  now = new Date(now)
-  const o = {
-    'M+': now.getMonth() + 1, // 月份
-    'd+': now.getDate(), // 日
-    'h+': now.getHours(), // 小时
-    'm+': now.getMinutes(), // 分
-    's+': now.getSeconds(), // 秒
-    'q+': Math.floor((now.getMonth() + 3) / 3), // 季度
-    'S': now.getMilliseconds() // 毫秒
-  }
-  if (/(y+)/.test(fmt)) {
-    fmt = fmt.replace(RegExp.$1, (now.getFullYear() + '').substr(4 - RegExp.$1.length))
-  }
-  for (let k in o) {
-    if (new RegExp('(' + k + ')').test(fmt)) {
-      fmt = fmt.replace(RegExp.$1, String(o[k]).padStart(RegExp.$1.length, 0))
-    }
-  }
-  return fmt
-}
-
 // 菜单父子级关联
 export const menuRelation = (data, id, pId, level, sort, list = 'list') => {
   if (!data.length) return data
@@ -110,16 +87,4 @@ export const purifyParams = (params) => {
   let result = {}
   Object.keys(params).forEach(key => ((params[key] !== '' && params[key] !== null && params[key] !== undefined) && (result[key] = params[key])))
   return result
-}
-
-// 防抖
-export const debounce = (fn, delay = 500) => {
-  let timer = null
-  return () => {
-    clearTimeout(timer)
-    timer = setTimeout(() => {
-      fn()
-      clearTimeout(timer)
-    }, delay)
-  }
 }

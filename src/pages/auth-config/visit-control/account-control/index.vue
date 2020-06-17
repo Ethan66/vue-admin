@@ -65,12 +65,12 @@
 import { account } from '../../mixins'
 import basicMethod from '@/config/mixins'
 import { apiQueryDepartmentTree, apiListConsoleUser, apiPageConsoleUserWhite, apiAddConsoleUserWhite, apiEditConsoleUserWhiteStatus } from '@/api/authority'
-import treeSelect from '@/components/modules/tree-select'
+// import treeSelect from '@/components/modules/tree-select'
 
 export default {
   name: 'account-control',
   mixins: [basicMethod, account],
-  components: { treeSelect },
+  // components: { treeSelect },
   created () {
     this.handleGetTableData(apiPageConsoleUserWhite)
     this.handleApiListConsoleUser()

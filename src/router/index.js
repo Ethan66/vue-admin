@@ -7,8 +7,8 @@ import Layout from '@/common/layout/Layout'
 
 import globalRoutes from './globalRoutes'
 import configRoutes from './configRoutes'
-import { apiGetUserAuthMenu, apiGetUserFields } from '@/api/login'
-import { menuRelation } from '@/config/utils'
+import { apiGetUserAuthMenu } from '@/api/login'
+import { adminMethods } from 'vue-admin-ui-lib'
 
 Vue.use(Router)
 
@@ -17,28 +17,28 @@ const router = new Router({
   base: '/blow/',
   mode: 'history',
   scrollBehavior: () => ({ y: 0 }),
-  isAddDynamicMenuRoutes: false, // 记录是否已加载动态路由
+  isAddDynamicRoutes: false, // 记录是否已加载动态路由
   routes: globalRoutes
 })
 
 router.beforeEach((to, from, next) => {
   NProgress.start()
   let toPath = ''
-  if (localStorage.getItem('userInfo')) { // 有userInfo，跳转login的时候进入首页
-    if (to.path === '/login') {
-      // toPath = '/'
-    }
-  } else { // userInfo不存在，全跳转login
+  if (!localStorage.getItem('userInfo')) { // userInfo不存在，全跳转login
     if (to.path !== '/login') {
       toPath = `/login?redirect=${to.path}`
     }
   }
   // 是否已加载路由或访问的是全局路由不用请求路由接口
-  if ((router.options.isAddDynamicMenuRoutes || handleNowRouteType(to, globalRoutes) === 'global') && !from.meta.firstLogin) {
+  if ((router.options.isAddDynamicRoutes || handleNowRouteType(to, globalRoutes) === 'global') && !from.meta.firstLogin) {
     document.title = to.meta.title ? to.meta.title : '首页'
     !toPath ? next() : next({ path: toPath })
-  } else { // 否则访问路由接口
+  } else {
     // 后台请求菜单列表
+    /*
+      此方法默认只有3级菜单
+      1级目录，2级菜单，3级按钮
+    */
     if (from.path === '/login') {
       from.meta.firstLogin = false
     }
@@ -47,39 +47,23 @@ router.beforeEach((to, from, next) => {
       if (res.code === '000000') {
         const list = res.data.list
         let menuList = list.filter(item => item.menuLevel !== 3)
-        let menuIdList = menuList.map(item => item.id)
-        // 获取用户字段
-        apiGetUserFields({ menuIdList }).then(res => {
-          if (res.code === '000000') {
-            let tybeObj = {}
-            res.data && res.resultMap.data.fieldPermissionList.forEach(item => {
-              item.label = item.fieldName
-              item.key = item.fieldValue
-              if (!tybeObj[item.pageCode]) {
-                tybeObj[item.pageCode] = [item]
-              } else {
-                tybeObj[item.pageCode].push(item)
-              }
-            })
-            sessionStorage.setItem('tybeObj', JSON.stringify(tybeObj))
-            const btnList = list.filter(item => item.menuLevel === 3 && item.status === 1).map(item => ({ btnCode: item.code, btnName: item.menuName }))
-            window.btnList = btnList
-            sessionStorage.setItem('btnList', JSON.stringify(btnList || []))
-            menuList = menuRelation(menuList, 'id', 'menuParentId', 'menuLevel', 'sortNo')
-            if (from.path === '/login' && menuList && menuList[0].list && menuList[0].list[0]) { // 从登录页面过来选择第一个菜单
-              let obj = menuList[0].list[0]
-              toPath = obj.menuUrl
-              let mainActivedTab = { code: obj.code, name: obj.menuName, url: obj.menuUrl }
-              sessionStorage.setItem('mainActivedTab', JSON.stringify(mainActivedTab))
-              store.commit('UPDATETABS', [mainActivedTab])
-              store.commit('UPDATEMINACTIVEDTAB', [mainActivedTab])
-            }
-            handleAddMenuRoutes(menuList, configRoutes)
-            sessionStorage.setItem('menuList', JSON.stringify(menuList || '[]'))
-            router.options.isAddDynamicMenuRoutes = true
-            !toPath ? next({ ...to, replace: true }) : next({ path: toPath })
-          }
-        })
+        const btnList = list.filter(item => item.menuLevel === 3 && item.status === 1).map(item => ({ btnCode: item.code, btnName: item.menuName }))
+        window.btnList = btnList
+        sessionStorage.setItem('btnList', JSON.stringify(btnList || []))
+        menuList = adminMethods.menuRelation(menuList, 'id', 'menuParentId', 'menuLevel', 'sortNo')
+        // 从登录页面过来选择第一个菜单
+        if (from.path === '/login' && menuList && menuList[0].list && menuList[0].list[0]) {
+          let obj = menuList[0].list[0]
+          toPath = obj.menuUrl
+          let mainActivedTab = { code: obj.code, name: obj.menuName, url: obj.menuUrl }
+          sessionStorage.setItem('mainActivedTab', JSON.stringify(mainActivedTab))
+          store.commit('UPDATETABS', [mainActivedTab])
+          store.commit('UPDATEMINACTIVEDTAB', [mainActivedTab])
+        }
+        handleAddMenuRoutes(menuList, configRoutes)
+        sessionStorage.setItem('menuList', JSON.stringify(menuList || '[]'))
+        router.options.isAddDynamicRoutes = true
+        !toPath ? next({ ...to, replace: true }) : next({ path: toPath })
       } else {
         sessionStorage.setItem('menuList', '[]')
         !toPath ? next() : next({ path: toPath })
@@ -98,15 +82,19 @@ function handleNowRouteType (route, temp = []) {
   for (var i = 0; i < temp.length; i++) {
     if (route.path === temp[i].path) {
       return 'global'
-    } else if (temp[i].children && temp[i].children.length >= 1) {
+    } else if (temp[i].children && temp[i].children.length) {
       temp2 = temp2.concat(temp[i].children)
     }
   }
-  return temp2.length >= 1 ? handleNowRouteType(route, temp2) : 'main'
+  return temp2.length ? handleNowRouteType(route, temp2) : 'main'
 }
 
 // 添加动态(菜单)路由
 // menuList：后台请求的数据，routes：创建的动态路由，用于递归持续添加路由
+/*
+  此方法默认只有3级菜单
+  1级目录，2级菜单，3级按钮
+*/
 function handleAddMenuRoutes (menuList = [], configRoutes = []) {
   router.addRoutes([
     ...configRoutes

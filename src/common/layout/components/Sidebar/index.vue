@@ -18,7 +18,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import subSidebar from './subSidebar'
-import { debounce } from '@/config/utils'
+import { debounce } from 'vue-admin-methods'
 
 export default {
   components: { subSidebar },

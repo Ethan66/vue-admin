@@ -16,7 +16,7 @@
       </span>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item class="width100">
-          <span @click="changePassword">修改密码</span>
+          <span @click="showDialogForm = true">修改密码</span>
         </el-dropdown-item>
         <el-dropdown-item>
           <span @click="logout" class="width100">退出</span>
@@ -46,7 +46,7 @@ export default {
     return Object.assign({
       userName: '',
       showDialogForm: false,
-      editData: {},
+      editData: {}
       // dialogItem: [
       //   { key: 'password', label: '原密码', type: 'input', show: true },
       //   { key: 'newPassword', label: '新密码', type: 'password', show: true },
@@ -59,8 +59,7 @@ export default {
     }, new this.$InitObj({
       btnConfig: {
         dialogBtn: [
-          { confirm: { clickFn: 'handleChangePassword' } },
-          { cancel: { clickFn: 'btnCancel' } }
+          { confirm: { clickFn: 'handleChangePassword' } }, 'cancel'
         ]
       },
       items: {
@@ -171,9 +170,6 @@ export default {
         }
       }
     },
-    changePassword () {
-      this.showDialogForm = true
-    },
     logout () {
       this.$confirm('确定退出', '温馨提醒', {
         confirmButtonText: '确定',
@@ -189,9 +185,6 @@ export default {
           }
         }
       })
-    },
-    btnCancel () {
-      this.$refs.dialog.showDialog1 = false
     },
     handleChangePassword () {
       if (this.editData.newPassword !== this.editData.checkNewPassword) {

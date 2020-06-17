@@ -9,11 +9,11 @@ export const user = {
           account: { label: '账号', name: '你好', clearable: true, change: this.handleChange },
           name: { label: '用户名' },
           status: { label: '状态', type: 'select', options: [{ label: '允许登录', value: 1 }, { label: '禁止登录', value: 0 }] },
-          date: { label: '时间', key: 'str1', type: 'date', rangeSeparator: '至', startPlaceholder: '开始日期', endPlaceholder: '结束日期' }
+          date: { label: '时间', key: 'str1,str2', type: 'daterange', rangeSeparator: '至', startPlaceholder: '开始日期', endPlaceholder: '结束日期' }
         },
         table: {
           selection: '',
-          account: { label: '账号', width: 100 },
+          account: { label: '账号', width: 100, show: false },
           name: { label: '用户名', width: 100 },
           roleName: { label: '角色', width: 100 },
           status: { label: '状态', width: 90, slot: 'status', clsName: 'userStatus', formatterFn: this.$InitObj.prototype.formmater(['禁止登录', '允许登录']) },
