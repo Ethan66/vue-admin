@@ -76,183 +76,185 @@ export default {
   name: 'role-auth',
   mixins: [roleAuth],
   data () {
-      return {
-        menuData: [],
-        checkedRoleId: '',
-        checkedObj: {},
-        userOptionsList: [],
-        operateList: [
-          // { menuId: 1, title: '人员管理', objectList: [{ label: '查看列表', value: '1' }], btnList: [{ label: '启用', value: '1' }, { label: '停用', value: '0' }] },
-          // { menuId: 2, title: '人员管理2', objectList: [{ label: '查看列表2', value: '1' }], btnList: [{ label: '启用2', value: '1' }, { label: '停用2', value: '0' }] }
-        ]
-      }
-    },
-    created () {
-      this.handleGetData()
-    },
+    return {
+      menuData: [],
+      checkedRoleId: '',
+      checkedObj: {},
+      userOptionsList: [],
+      operateList: [
+        // { menuId: 1, title: '人员管理', objectList: [{ label: '查看列表', value: '1' }], btnList: [{ label: '启用', value: '1' }, { label: '停用', value: '0' }] },
+        // { menuId: 2, title: '人员管理2', objectList: [{ label: '查看列表2', value: '1' }], btnList: [{ label: '启用2', value: '1' }, { label: '停用2', value: '0' }] }
+      ]
+    }
+  },
+  created () {
+    this.handleGetData()
+  },
 
-    methods: {
-      handleGetData () {
-        this.userOptionsList = []
-        Promise.all([apiGetRole(), apiGetUser()]).then( arr => {
-          if (arr[0].code === '000000' && arr[1].code === '000000') {
-            arr[0].data.list.forEach(item => {
-              item.id = item.roleId
-              item.label = item.roleName
-            })
-            const userList = arr[1].data.list.map(item => {
-              let { id, userId, roleId, account: label, roleId: parentRoleId } = item
-              this.userOptionsList.push({ label, value: String(userId) })
-              id = `userId${userId}`
-              return { id, roleId, label, parentRoleId }
-            })
-            this.dialogItem[1].options = this.userOptionsList
-            let data = arr[0].data.list.concat(userList)
-            this.menuData = menuRelation(data, 'id', 'parentRoleId', 'level', '', 'children')
-          } else {
-            this.$message.error('请求接口失败')
-          }
-        })
-      },
-      // 选择角色展示所授权限
-      handleChooseRole (data) {
-        this.checkedRoleId = data.roleId
-        apiGetRoleAuthority({ roleId: data.roleId }).then(res => {
-          if (res.code === '000000') {
-            let data = res.data
-            let tempBtnObj = {}
-            data.btnList.forEach(item => {
-              let obj = { label: item.menuName, value: item.menuId }
-              if (tempBtnObj[item.menuParentId]) {
-                tempBtnObj[item.menuParentId].push(obj)
-              } else {
-                tempBtnObj[item.menuParentId] = [obj]
-              }
-            })
-            this.operateList = data.menuList.map(item => {
-              item.title = item.menuName
-              item.btnList = tempBtnObj[item.menuId]
-              item.objectList = [{ label: '查看列表', value: item.menuId }]
-              return item
-            })
-            let checkedObj = {}
-            data.authBtnList.forEach(item => {
-              if (checkedObj[item.menuParentId]) {
-                if (checkedObj[item.menuParentId].btnList) {
-                  checkedObj[item.menuParentId].btnList.push(item.menuId)
-                } else {
-                  checkedObj[item.menuParentId].btnList = item.menuId
-                }
-              } else {
-                checkedObj[item.menuParentId] = { btnList: [item.menuId] }
-              }
-            })
-            data.authObjectList.forEach(id => {
-              if (checkedObj[id]) {
-                if (checkedObj[id].menuList) {
-                  checkedObj[id].menuList.push(id)
-                } else {
-                  checkedObj[id].menuList = [id]
-                }
-              } else {
-                checkedObj[id] = { menuList: [id] }
-              }
-            })
-            this.checkedObj = checkedObj
-            this.operateList.forEach(item => {
-              if (!this.checkedObj[item.menuId]) {
-                this.$set(this.checkedObj, item.menuId, { menuList: [], btnList: [] })
-              } else {
-                let obj = this.checkedObj[item.menuId]
-                if (!obj.menuList) {
-                  obj.menuList = []
-                }
-                if (!obj.btnList) {
-                  obj.btnList = []
-                }
-                this.$set(this.checkedObj, item.menuId, JSON.parse(JSON.stringify(obj)))
-              }
-            })
-          }
-        })
-      },
-      // 点击新增角色按钮
-      handleAddRole (node, data) {
-        this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
-        this.editData.status = 1
-        this.isEdit = 0
-        this.dialogTitle = '新增角色'
-        this.showDialogForm = true
-      },
-      // 点击修改角色按钮
-      handleEditRole (node, data) {
-        data.userIdList = data.children.map(item => Number(item.id.replace(/[^\d]/g, ''))).toString()
-        this.editData = JSON.parse(JSON.stringify(data))
-        this.dialogTitle = '编辑角色'
-        this.isEdit = 1
-        this.showDialogForm = true
-      },
-      // 点击删除角色按钮
-      handleDeleteRole (node, data) {
-        this.$confirm('确认删除', '温馨提醒', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning',
-            callback: action => {
-              if (action === 'confirm') {
-                apiDeleteRole({ id: data.id }).then(res => {
-                  if (res.code === '000000') {
-                    this.$message({
-                      type: 'success',
-                      message: res.msg
-                    })
-                    this.handleGetData()
-                  } else {
-                    this.$message.error(res.msg)
-                  }
-                })
-              }
+  methods: {
+    handleGetData () {
+      this.userOptionsList = []
+      Promise.all([apiGetRole(), apiGetUser()]).then(arr => {
+        if (arr[0].code === '000000' && arr[1].code === '000000') {
+          arr[0].data.list.forEach(item => {
+            item.id = item.roleId
+            item.label = item.roleName
+          })
+          const userList = arr[1].data.list.map(item => {
+            let { id, userId, roleId, account: label, roleId: parentRoleId } = item
+            this.userOptionsList.push({ label, value: String(userId) })
+            id = `userId${userId}`
+            return { id, roleId, label, parentRoleId }
+          })
+          this.dialogItem[1].options = this.userOptionsList
+          let data = arr[0].data.list.concat(userList)
+          this.menuData = menuRelation(data, 'id', 'parentRoleId', 'level', '', 'children')
+        } else {
+          this.$message.error('请求接口失败')
+        }
+      })
+    },
+    // 选择角色展示所授权限
+    handleChooseRole (data) {
+      this.checkedRoleId = data.roleId
+      apiGetRoleAuthority({ roleId: data.roleId }).then(res => {
+        if (res.code === '000000') {
+          let data = res.data
+          let tempBtnObj = {}
+          data.btnList.forEach(item => {
+            let obj = { label: item.menuName, value: item.menuId }
+            if (tempBtnObj[item.menuParentId]) {
+              tempBtnObj[item.menuParentId].push(obj)
+            } else {
+              tempBtnObj[item.menuParentId] = [obj]
             }
           })
-      },
-      // 对话框点击确定
-      handleSubmit () {
-        let params = Object.assign({}, this.editData)
-        params.userIdList = params.userIdList.map(item => Number(item))
-        const api = this.isEdit === 0 ? apiAddRole : apiModifyRole
-        api(this.$purifyParams(params)).then(res => {
-          if (res.code === '000000') {
-            this.$message({
-              message: res.msg,
-              type: 'success'
-            })
-            this.$refs.dialog.showDialogForm1 = false
-            this.handleGetData()
-          } else {
-            this.$message.error(res.msg)
-          }
-        })
-      },
-      // 修改权限
-      handleModifyAuth () {
-        let menuIdList = [], btnIdList = [], checkedObj = this.checkedObj
-        for(let key in checkedObj) {
-          checkedObj[key].menuList && menuIdList.push(...checkedObj[key].menuList)
-          checkedObj[key].btnList && btnIdList.push(...checkedObj[key].btnList)
+          this.operateList = data.menuList.map(item => {
+            item.title = item.menuName
+            item.btnList = tempBtnObj[item.menuId]
+            item.objectList = [{ label: '查看列表', value: item.menuId }]
+            return item
+          })
+          let checkedObj = {}
+          data.authBtnList.forEach(item => {
+            if (checkedObj[item.menuParentId]) {
+              if (checkedObj[item.menuParentId].btnList) {
+                checkedObj[item.menuParentId].btnList.push(item.menuId)
+              } else {
+                checkedObj[item.menuParentId].btnList = item.menuId
+              }
+            } else {
+              checkedObj[item.menuParentId] = { btnList: [item.menuId] }
+            }
+          })
+          data.authObjectList.forEach(id => {
+            if (checkedObj[id]) {
+              if (checkedObj[id].menuList) {
+                checkedObj[id].menuList.push(id)
+              } else {
+                checkedObj[id].menuList = [id]
+              }
+            } else {
+              checkedObj[id] = { menuList: [id] }
+            }
+          })
+          this.checkedObj = checkedObj
+          this.operateList.forEach(item => {
+            if (!this.checkedObj[item.menuId]) {
+              this.$set(this.checkedObj, item.menuId, { menuList: [], btnList: [] })
+            } else {
+              let obj = this.checkedObj[item.menuId]
+              if (!obj.menuList) {
+                obj.menuList = []
+              }
+              if (!obj.btnList) {
+                obj.btnList = []
+              }
+              this.$set(this.checkedObj, item.menuId, JSON.parse(JSON.stringify(obj)))
+            }
+          })
         }
-        apiModifyRoleAuthority({ roleId: this.checkedRoleId, menuIdList, btnIdList }).then(res => {
-          if (res.code === '000000') {
-            this.$message({
-              message: res.msg,
-              type: 'success'
+      })
+    },
+    // 点击新增角色按钮
+    handleAddRole (node, data) {
+      this.editData = this.$initEditData(this.dialogItem) // 初始化编辑数据
+      this.editData.status = 1
+      this.isEdit = 0
+      this.dialogTitle = '新增角色'
+      this.showDialogForm = true
+    },
+    // 点击修改角色按钮
+    handleEditRole (node, data) {
+      data.userIdList = data.children.map(item => Number(item.id.replace(/[^\d]/g, ''))).toString()
+      this.editData = JSON.parse(JSON.stringify(data))
+      this.dialogTitle = '编辑角色'
+      this.isEdit = 1
+      this.showDialogForm = true
+    },
+    // 点击删除角色按钮
+    handleDeleteRole (node, data) {
+      this.$confirm('确认删除', '温馨提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        callback: action => {
+          if (action === 'confirm') {
+            apiDeleteRole({ id: data.id }).then(res => {
+              if (res.code === '000000') {
+                this.$message({
+                  type: 'success',
+                  message: res.msg
+                })
+                this.handleGetData()
+              } else {
+                this.$message.error(res.msg)
+              }
             })
-          } else {
-            this.$message.error(res.msg)
           }
-        })
+        }
+      })
+    },
+    // 对话框点击确定
+    handleSubmit () {
+      let params = Object.assign({}, this.editData)
+      params.userIdList = params.userIdList.map(item => Number(item))
+      const api = this.isEdit === 0 ? apiAddRole : apiModifyRole
+      api(this.$purifyParams(params)).then(res => {
+        if (res.code === '000000') {
+          this.$message({
+            message: res.msg,
+            type: 'success'
+          })
+          this.$refs.dialog.showDialogForm1 = false
+          this.handleGetData()
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+    },
+    // 修改权限
+    handleModifyAuth () {
+      let menuIdList = []
+      let btnIdList = []
+      let checkedObj = this.checkedObj
+      for (let key in checkedObj) {
+        checkedObj[key].menuList && menuIdList.push(...checkedObj[key].menuList)
+        checkedObj[key].btnList && btnIdList.push(...checkedObj[key].btnList)
       }
+      apiModifyRoleAuthority({ roleId: this.checkedRoleId, menuIdList, btnIdList }).then(res => {
+        if (res.code === '000000') {
+          this.$message({
+            message: res.msg,
+            type: 'success'
+          })
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
     }
-  };
+  }
+}
 </script>
 
 <style lang="less">
