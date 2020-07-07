@@ -15,11 +15,11 @@
         <img class="username" src="~@/assets/img/username.png" />{{ userName }}<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item class="width100">
+        <el-dropdown-item>
           <span @click="showDialogForm = true">修改密码</span>
         </el-dropdown-item>
         <el-dropdown-item>
-          <span @click="logout" class="width100">退出</span>
+          <span @click="logout">退出</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>

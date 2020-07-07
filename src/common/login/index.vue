@@ -87,6 +87,7 @@ export default {
       .wh(100%, 46px);
       line-height: 46px;
       border: 1px solid hsla(0,0%,100%,.1);
+      border-color: hsla(0, 0%, 100%, 0.1) !important;
       background: rgba(0,0,0,.1);
       border-radius: 5px;
     }
@@ -94,7 +95,7 @@ export default {
       margin-bottom: 10px;
     }
     .el-button.cm-bg-color{
-      .wh(100%, 46px);
+      .wh(100%, 40px);
       border-radius: 4px;
       padding: 0;
     }
