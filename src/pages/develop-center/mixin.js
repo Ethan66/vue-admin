@@ -1,4 +1,4 @@
-import { configBtn } from '@/config/methods.js'
+import { authBtn } from '@/config/methods.js'
 
 // 菜单管理
 export const menu = {
@@ -53,7 +53,7 @@ export const menu = {
     })
   },
   created () {
-    this.tableBtn = configBtn([
+    this.tableBtn = authBtn.getConfigBtns([
       { code: 'menu-edit-menu', clickFn: this.handleEditData },
       { code: 'menu-delete', clickFn: this.handleDeleteData }
     ])

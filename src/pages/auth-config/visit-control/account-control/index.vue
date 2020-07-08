@@ -16,8 +16,8 @@
       @table-jump="handleJump">
       <div class="btn-content" slot="btn">
         <span v-if="chooseDataArr.length > 0">已选择 <i>{{ chooseDataArr.length }}</i> 条</span>
-        <el-button @click="handleAdd" v-if="chooseDataArr.length < 1 && $authBtn('visit-c-add')">{{$authBtn('visit-c-add')}}</el-button>
-        <el-button @click="handleInvalidPl" v-if="chooseDataArr.length > 0 && $authBtn('visit-c-stop-batch')">{{$authBtn('visit-c-stop-batch')}}</el-button>
+        <el-button @click="handleAdd" v-if="chooseDataArr.length < 1 && $getBtnName('visit-c-add')">{{$getBtnName('visit-c-add')}}</el-button>
+        <el-button @click="handleInvalidPl" v-if="chooseDataArr.length > 0 && $getBtnName('visit-c-stop-batch')">{{$getBtnName('visit-c-stop-batch')}}</el-button>
       </div>
     </table-module>
     <el-dialog title="添加授权" :visible.sync="showDialogForm1" class="dialogModule" :close-on-click-modal="false">

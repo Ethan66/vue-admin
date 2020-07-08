@@ -12,8 +12,8 @@
       @selection-change="handleSelectChange"
     >
       <div class="btn-content" slot="header-btn">
-        <el-button @click="handleAdd" v-if="$authBtn('user-create-user')">{{ $authBtn('user-create-user') }}</el-button>
-        <el-button @click="handleDeleteMore" v-if="$authBtn('user-delete-batch')">{{ $authBtn('user-delete-batch') }}</el-button>
+        <el-button @click="handleAdd" v-if="$getBtnName('user-create-user')">{{ $getBtnName('user-create-user') }}</el-button>
+        <el-button @click="handleDeleteMore" v-if="$getBtnName('user-delete-batch')">{{ $getBtnName('user-delete-batch') }}</el-button>
       </div>
       <template slot="status" slot-scope="scope">
         <table-status

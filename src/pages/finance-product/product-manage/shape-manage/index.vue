@@ -14,7 +14,7 @@
       @table-jump="handleJump"
       >
       <div class="btn-content" slot="btn">
-        <el-button @click="handleAdd" v-if="$authBtn('product-shape-create')">{{$authBtn('product-shape-create')}}</el-button>
+        <el-button @click="handleAdd" v-if="$getBtnName('product-shape-create')">{{$getBtnName('product-shape-create')}}</el-button>
         <el-button @click="handleGoBack">返回</el-button>
       </div>
     </table-module>

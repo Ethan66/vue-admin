@@ -27,7 +27,7 @@ Vue.use(ElementUI)
 Vue.prototype.$disposeTreeData = disposeTreeData
 Vue.prototype.$purifyParams = purifyParams
 Vue.prototype.$format = formatDate
-Vue.prototype.$authBtn = authBtn
+Vue.prototype.$getBtnName = authBtn.getBtnName.bind(authBtn)
 Vue.prototype.$InitObj = adminMethods.onCreateBasicData({ defaultDialogBtn: dialogBtn })
 Vue.prototype.$setItem = adminMethods.setItemProp
 Vue.prototype.$systemObj = systemObj

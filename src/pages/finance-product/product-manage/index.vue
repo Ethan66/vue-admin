@@ -3,10 +3,10 @@
     <header>
       <h2>金融产品</h2>
       <button
-        v-if="$authBtn('product-manage-create')"
+        v-if="$getBtnName('product-manage-create')"
         class="cm-color"
         @click="handleCreateData"
-      >{{ $authBtn('product-manage-create') }}</button>
+      >{{ $getBtnName('product-manage-create') }}</button>
     </header>
     <ul class="productList">
       <li v-for="(item, i) in productList" :key="i">
@@ -14,13 +14,13 @@
           <h3>{{ item.productName }}</h3>
           <p class="btn">
             <button
-              v-if="$authBtn('product-manage-edit') && item.sharePermission===1"
+              v-if="$getBtnName('product-manage-edit') && item.sharePermission===1"
               @click="handleEditData(item)"
-            >{{ $authBtn('product-manage-edit') }}</button>
+            >{{ $getBtnName('product-manage-edit') }}</button>
             <button
-              v-if="$authBtn('product-manage-delete') && item.sharePermission===1"
+              v-if="$getBtnName('product-manage-delete') && item.sharePermission===1"
               @click="handleDeleteData(item)"
-            >{{ $authBtn('product-manage-delete') }}</button>
+            >{{ $getBtnName('product-manage-delete') }}</button>
           </p>
         </div>
         <div class="info">
@@ -42,9 +42,9 @@
             <p>启用的形态{{ item.formNum }}个</p>
             <button
               class="cm-color"
-              v-if="$authBtn('product-manage-watch')"
+              v-if="$getBtnName('product-manage-watch')"
               @click="handleGoShape(item)"
-            >{{ $authBtn('product-manage-watch') }}></button>
+            >{{ $getBtnName('product-manage-watch') }}></button>
           </div>
         </div>
       </li>

@@ -1,43 +1,33 @@
-let btnList = JSON.parse(sessionStorage.getItem('btnList'))
+class BtnList {
+  constructor () {
+    this.setBtnList()
+  }
 
-// 展示、获取按钮
-export const authBtn = (btnCode, type) => {
-  !btnList && (btnList = JSON.parse(sessionStorage.getItem('btnList')))
-  if (window.btnList) { // 刷新页面的window.btnList保存的是最新的按钮权限
-    btnList = window.btnList
-    window.btnList = undefined
+  // 重新设置btnList
+  setBtnList (btnList) {
+    this.btnList = btnList
+    sessionStorage.setItem('btnList', JSON.stringify(btnList || []))
   }
-  let obj = btnList.find(item => item.btnCode === btnCode)
-  if (type) {
-    if (obj) {
-      return true
-    } else {
-      return false
-    }
+
+  // 获取用户授权按钮
+  getBtnName (btnCode) {
+    let btnList = this.btnList
+    if (!btnList) return false
+    let obj = btnList.find(item => item.btnCode === btnCode)
+    return obj && obj.btnName
   }
-  if (obj) {
-    return obj.btnName
-  } else {
-    return false
+
+  // 获取表格或对话框授权按钮
+  getConfigBtns (list) {
+    let btnList = this.btnList
+    if (!btnList) return []
+    return list.map(item => {
+      const result = { code: item.code, clickFn: item.clickFn }
+      const tmp = btnList.find(btn => btn.btnCode === item.code)
+      tmp && Object.assign(result, { name: tmp.btnName })
+      return result
+    })
   }
 }
 
-// 表格更多按钮里按钮列表展示
-export const authMoreBtn = (list) => {
-  return list.map(item => {
-    let obj = { code: item.code, name: '', clickFn: item.clickFn }
-    obj.name = authBtn(item.code)
-    obj.show = authBtn(item.code, 'show')
-    item.config && Object.assign(obj, item.config)
-    return obj
-  })
-}
-
-export const configBtn = list => {
-  return list.map(item => {
-    const result = { code: item.code, clickFn: item.clickFn }
-    const tmp = btnList && btnList.find(btn => btn.btnCode === item.code)
-    tmp && Object.assign(result, { name: tmp.btnName })
-    return result
-  })
-}
+export const authBtn = new BtnList()

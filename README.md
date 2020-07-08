@@ -15,15 +15,6 @@ yarn run serve
 yarn run build
 ```
 
-### Run your tests
-```
-yarn run test
-```
-
-### Lints and fixes files
-```
-yarn run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 用户权限
+btnList: 存在sessionStorage，方便测试人员测试。正常是应该存在vuex里
+menuList: 存在sessionStorage，方便测试人员测试。正常是应该存在vuex里
