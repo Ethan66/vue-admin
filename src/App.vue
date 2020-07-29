@@ -20,6 +20,7 @@ export default class App extends Vue {
   handleGo() {
     let a
     let b
+    let c
     apiLogin()
   }
 }
