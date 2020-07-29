@@ -5,8 +5,9 @@ module.exports = {
   assetsDir: 'blow/static',
   publicPath: '/',
   devServer: {
+    clientLogLevel: 'warning',
     overlay: {
-      warnings: true,
+      warnings: false,
       errors: true
     },
     proxy: {
