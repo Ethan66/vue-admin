@@ -1,7 +1,4 @@
-import Vue from 'vue'
-import {
-  Dialog
-} from 'element-ui'
+import Vue from "vue"
+import { Dialog, Button } from "element-ui"
 
-Vue.use(Dialog)
-
+Vue.use(Dialog).use(Button)
