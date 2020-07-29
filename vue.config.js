@@ -6,8 +6,8 @@ module.exports = {
   publicPath: '/',
   devServer: {
     overlay: {
-      warnings: false,
-      errors: false
+      warnings: true,
+      errors: true
     },
     proxy: {
       '/api': {
