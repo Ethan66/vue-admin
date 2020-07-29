@@ -8,7 +8,7 @@ module.exports = {
     clientLogLevel: 'warning',
     overlay: {
       warnings: false,
-      errors: true
+      errors: false
     },
     proxy: {
       '/api': {
