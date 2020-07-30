@@ -16,7 +16,7 @@ export default class extends Vue {
       <div class="page-404">
         <div class="wrap">
           <p>
-            <img src={require("@/assets/img/404.png")} />
+            <img src={require('@/assets/img/404.png')} />
           </p>
           <p class="text">抱歉！您访问的页面失联啦...</p>
           <p class="button">
