@@ -23,7 +23,10 @@
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
     "element-ui": "^2.13.2",
+    "js-md5": "^0.7.3",
+    "mobile-detect": "^1.4.4",
     "vue": "^2.6.11",
+    "vue-admin-methods": "^1.0.38",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^8.4.2",
     "vue-router": "^3.2.0",
@@ -32,6 +35,7 @@
   "devDependencies": {
     "@commitlint/cli": "^9.1.1",
     "@commitlint/config-conventional": "^9.1.1",
+    "@types/js-md5": "^0.4.2",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "@vue/cli-plugin-babel": "^4.4.0",
