@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios'
+import { AxiosResponse, AxiosRequestConfig } from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import router from '@/router/index'
 axios.defaults.timeout = 50000
