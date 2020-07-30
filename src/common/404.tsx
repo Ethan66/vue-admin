@@ -1,5 +1,5 @@
-import { Component, Vue } from "vue-property-decorator"
-import "./404.less"
+import { Component, Vue } from 'vue-property-decorator'
+import './404.less'
 
 @Component
 export default class extends Vue {
@@ -8,7 +8,7 @@ export default class extends Vue {
   }
 
   private onGoHome(): void {
-    this.$router.push("admin/index")
+    this.$router.push('admin/index')
   }
 
   protected render() {
