@@ -1,4 +1,5 @@
 import { Vue, Component } from 'vue-property-decorator'
+import { ElForm } from 'element-ui/types/form'
 
 @Component
 export default class Rule extends Vue {
@@ -93,7 +94,7 @@ export default class Rule extends Vue {
   protected handleSpeciaCode(code, form = 'login') {
     if (Object.keys(this.errorCodeObj).includes(code)) {
       this.nowErrorCode = code
-      ;(this.$refs[form] as any).validateField([this.errorCodeObj[code].type])
+      ;(this.$refs[form] as ElForm).validateField([this.errorCodeObj[code].type])
       return true
     }
     return false

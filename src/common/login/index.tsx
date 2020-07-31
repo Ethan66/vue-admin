@@ -39,7 +39,7 @@ export default class extends Vue {
 
   private onCheckIp(): void {
     this.systemObj = utils.getSystemVersion()
-    apiGetIp().then((res: any) => {
+    apiGetIp().then((res) => {
       if (res) {
         try {
           let city = res.match(/(?!当前).[\u4e00-\u9fa5]\s/g)
@@ -59,11 +59,7 @@ export default class extends Vue {
   private render() {
     return (
       <div class="bl-login">
-        <Login
-          systemObj={this.systemObj}
-          ipAddress={this.ipAddress}
-          onChangeComponent={this.onChangeComponent}
-        />
+        <Login systemObj={this.systemObj} ipAddress={this.ipAddress} onChangeComponent={this.onChangeComponent} />
       </div>
     )
   }

@@ -16,7 +16,7 @@ export default class Login extends mixins(Rule) {
   isLoading = false
 
   private submitForm(form: string): void {
-    (this.$refs[form] as ElForm).validate((valid: boolean) => {
+    ;(this.$refs[form] as ElForm).validate((valid: boolean) => {
       if (valid) {
         this.isLoading = true
         this.nowErrorCode = ''
@@ -28,7 +28,7 @@ export default class Login extends mixins(Rule) {
         params.ipAddress = this.ipAddress
         params.operatingSystem = this.systemObj.system
         params.terminal = this.systemObj.browser
-        apiLogin(params).then((res: any) => {
+        apiLogin(params).then((res) => {
           this.isLoading = false
           if (res.code === '000000') {
             localStorage.setItem('userInfo', JSON.stringify(res.data))
