@@ -3,7 +3,7 @@ const path = require('path')
 module.exports = {
   indexPath: 'blow/index.html',
   assetsDir: 'blow/static',
-  publicPath: '/',
+  publicPath: '../',
   devServer: {
     clientLogLevel: 'warning',
     overlay: {
