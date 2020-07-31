@@ -4,6 +4,7 @@ import Register from './register'
 import { apiGetIp } from '@/api/login'
 import utils from 'vue-admin-methods'
 import './index.less'
+import { UserModule } from '@/store/modules/pageCashe'
 
 export interface IsystemObj {
   system: string
@@ -29,8 +30,8 @@ export default class extends Vue {
     this.$route.meta.firstLogin = true
     localStorage.clear()
     sessionStorage.clear()
-    // this.$store.commit('UPDATE_KEEP_ALIVE_LIST', { type: 'deleteAll' })
-    // this.$store.commit('UPDATE_PAGE_SEARCH_VALUES', { type: 'deleteAll' })
+    UserModule.UPDATE_KEEP_ALIVE_LIST({ type: 'deleteAll' })
+    UserModule.UPDATE_PAGE_SEARCH_VALUES({ type: 'deleteAll' })
     this.onCheckIp()
   }
 
