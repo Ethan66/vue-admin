@@ -1,5 +1,6 @@
 import { Component, Vue } from 'vue-property-decorator'
 import Login from './login'
+import Register from './register'
 import { apiGetIp } from '@/api/login'
 import utils from 'vue-admin-methods'
 import './index.less'
@@ -9,13 +10,13 @@ export interface IsystemObj {
   browser: string
 }
 
-type vueModule = typeof Login
+type vueModule = typeof Login | typeof Register
 
 @Component({
-  components: { Login }
+  components: { Login, Register }
 })
 export default class extends Vue {
-  component = Login
+  component: vueModule = Login
   systemObj: IsystemObj = {
     system: '',
     browser: 'IE'
@@ -33,7 +34,7 @@ export default class extends Vue {
     this.onCheckIp()
   }
 
-  private onChangeComponent(val: vueModule) {
+  public onChangeComponent(val: vueModule) {
     this.component = val
   }
 
@@ -59,7 +60,11 @@ export default class extends Vue {
   private render() {
     return (
       <div class="bl-login">
-        <Login systemObj={this.systemObj} ipAddress={this.ipAddress} onChangeComponent={this.onChangeComponent} />
+        <this.component
+          systemObj={this.systemObj}
+          ipAddress={this.ipAddress}
+          onChangeComponent={this.onChangeComponent}
+        />
       </div>
     )
   }

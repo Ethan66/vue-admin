@@ -1,14 +1,13 @@
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, Mixins, Emit } from 'vue-property-decorator'
 import { apiLogin } from '@/api/login'
 import MD5 from 'js-md5'
-import { mixins } from 'vue-class-component'
 import { IapiLoginParams } from '@/types/api-params'
 import { IsystemObj } from './index'
 import Rule from './rules'
 import { ElForm } from 'element-ui/types/form'
 
 @Component
-export default class Login extends mixins(Rule) {
+export default class Login extends Mixins(Rule) {
   @Prop() readonly systemObj!: IsystemObj
   @Prop() readonly ipAddress!: string
 
@@ -34,13 +33,18 @@ export default class Login extends mixins(Rule) {
             localStorage.setItem('userInfo', JSON.stringify(res.data))
             // this.$router.push('/')
           } else {
-            /* if (!this.handleSpeciaCode(res.code)) {
+            if (!this.handleSpeciaCode(res.code)) {
               this.$message.error(res.msg)
-            } */
+            }
           }
         })
       }
     })
+  }
+
+  @Emit('changeComponent')
+  changeComponent() {
+    return 'register'
   }
 
   protected render() {
@@ -75,7 +79,7 @@ export default class Login extends mixins(Rule) {
             登 录
           </el-button>
         </el-form-item>
-        <p class="forgetPwd" onClick={this.$emit('handleChangeComponent', 'register')}>
+        <p class="forgetPwd" onClick={this.changeComponent}>
           注册
         </p>
       </el-form>

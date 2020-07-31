@@ -21,8 +21,8 @@ export default class Rule extends Vue {
   passwordrules = {
     user: [{ required: true, trigger: 'blur', validator: this.validateUser }],
     userName: [{ required: true, trigger: 'blur', validator: this.validateUserName }],
-    password1: [{ required: true, validator: this.checkPassword1, trigger: 'blur' }]
-    // password2: [{ required: true, validator: this.checkPassword2, trigger: 'blur' }]
+    password1: [{ required: true, validator: this.checkPassword1, trigger: 'blur' }],
+    password2: [{ required: true, validator: this.checkPassword2.bind(this, 'passwordForm'), trigger: 'blur' }]
   }
 
   protected checkPassword1(rule, value, callback) {
@@ -39,16 +39,16 @@ export default class Rule extends Vue {
     }
   }
 
-  /* checkPassword2 (rule, value, callback) {
+  checkPassword2(key, rule, value, callback) {
     if (!value.trim()) {
       return callback(new Error('请输入密码'))
     }
-    if (this.passwordForm.password1 !== this.passwordForm.password2) {
+    if (this[key].password1 !== this[key].password2) {
       callback(new Error('两次输入密码不一致，请重新输入'))
     } else {
       callback()
     }
-  } */
+  }
 
   // 验证账号
   protected validateUser(rule, value, cb) {

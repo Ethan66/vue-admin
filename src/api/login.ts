@@ -8,3 +8,8 @@ export const apiLogin = (params?: object) => {
 export const apiGetIp = () => {
   return getRequest('//myip.ipip.net')
 }
+
+// 注册
+export const apiRegister = (params) => {
+  return postRequest(`/api/register`, params)
+}

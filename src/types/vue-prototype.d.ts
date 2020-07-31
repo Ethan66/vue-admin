@@ -1,4 +1,4 @@
-import { AxiosInstance, AxiosResponse } from 'axios'
+import { AxiosInstance } from 'axios'
 import { IsystemConfig } from '@/config/system'
 
 declare module 'vue/types/vue' {
@@ -11,5 +11,6 @@ declare module 'vue/types/vue' {
 declare module 'axios' {
   interface AxiosResponse {
     code: string
+    msg: string
   }
 }
