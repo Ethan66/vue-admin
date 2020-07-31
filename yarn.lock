@@ -1094,6 +1094,11 @@
   resolved "https://registry.npm.taobao.org/@types/normalize-package-data/download/@types/normalize-package-data-2.4.0.tgz#e486d0d97396d79beedd0a6e33f4534ff6b4973e"
   integrity sha1-5IbQ2XOW15vu3QpuM/RTT/a0lz4=
 
+"@types/nprogress@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.npm.taobao.org/@types/nprogress/download/@types/nprogress-0.2.0.tgz#86c593682d4199212a0509cc3c4d562bbbd6e45f"
+  integrity sha1-hsWTaC1BmSEqBQnMPE1WK7vW5F8=
+
 "@types/parse-json@^4.0.0":
   version "4.0.0"
   resolved "https://registry.npm.taobao.org/@types/parse-json/download/@types/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
@@ -6501,6 +6506,11 @@ npm-run-path@^4.0.0:
   dependencies:
     path-key "^3.0.0"
 
+nprogress@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.npm.taobao.org/nprogress/download/nprogress-0.2.0.tgz#cb8f34c53213d895723fcbab907e9422adbcafb1"
+  integrity sha1-y480xTIT2JVyP8urkH6UIq28r7E=
+
 nth-check@^1.0.2, nth-check@~1.0.1:
   version "1.0.2"
   resolved "https://registry.npm.taobao.org/nth-check/download/nth-check-1.0.2.tgz#b2bd295c37e3dd58a3bf0700376663ba4d9cf05c"
@@ -9274,6 +9284,13 @@ vue-admin-methods@^1.0.38:
   version "1.0.38"
   resolved "https://registry.npm.taobao.org/vue-admin-methods/download/vue-admin-methods-1.0.38.tgz#820fef9884bf40286afeb41b31cc238d25e8dde7"
   integrity sha1-gg/vmIS/QChq/rQbMcwjjSXo3ec=
+
+vue-admin-ui-lib@^1.0.24:
+  version "1.0.24"
+  resolved "https://registry.npm.taobao.org/vue-admin-ui-lib/download/vue-admin-ui-lib-1.0.24.tgz#b10d683f9f07c9e2fe4fb4155424fd865709c59d"
+  integrity sha1-sQ1oP58HyeL+T7QVVCT9hlcJxZ0=
+  dependencies:
+    "@babel/runtime" "^7.9.6"
 
 vue-class-component@^7.1.0, vue-class-component@^7.2.3:
   version "7.2.5"

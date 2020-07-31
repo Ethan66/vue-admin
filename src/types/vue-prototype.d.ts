@@ -14,3 +14,9 @@ declare module 'axios' {
     msg: string
   }
 }
+
+declare module 'vue-router/types' {
+  interface RouterOptions {
+    isAddDynamicRoutes: boolean
+  }
+}

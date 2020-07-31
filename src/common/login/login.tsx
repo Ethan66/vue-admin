@@ -31,7 +31,7 @@ export default class Login extends Mixins(Rule) {
           this.isLoading = false
           if (res.code === '000000') {
             localStorage.setItem('userInfo', JSON.stringify(res.data))
-            // this.$router.push('/')
+            this.$router.push('/')
           } else {
             if (!this.handleSpeciaCode(res.code)) {
               this.$message.error(res.msg)

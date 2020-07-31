@@ -13,3 +13,8 @@ export const apiGetIp = () => {
 export const apiRegister = (params) => {
   return postRequest(`/api/register`, params)
 }
+
+// 获取菜单按钮权限
+export const apiGetUserAuthMenu = (reqParams) => {
+  return postRequest(`api/getUserAuthMenu`, reqParams)
+}
