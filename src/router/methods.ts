@@ -1,9 +1,40 @@
-// import Layout from '@/common/layout/Layout'
+import Layout from '@/common/layout/Layout'
 import store from '@/store'
 import { Route } from 'vue-router'
+import { Component } from 'vue'
 
-export function handleCreateRoute(obj, type = 'parent') {
-  const route = {
+type keyType = object | number | string
+
+interface FMenuList {
+  id: number
+  menuParentId: number
+  menuLevel: number
+  sortNo: number
+  list?: FMenuList[]
+  menuUrl: string
+  [key: string]: keyType
+}
+
+interface FRouteMeta {
+  menuId: number
+  menuCode: keyType
+  title: keyType
+  isDynamic: boolean
+  isTab: boolean
+  iframeUrl: keyType
+  level: number
+}
+
+interface FRoute {
+  path: string
+  component: Component
+  name: string
+  meta: FRouteMeta
+  children?: FRoute[]
+}
+
+export function handleCreateRoute(obj: FMenuList, type = 'parent'): FRoute {
+  const route: FRoute = {
     path: obj.menuUrl,
     component: null,
     name: obj.menuUrl,
@@ -44,14 +75,14 @@ export function handleNowRouteType(route: Route, temp = []): string {
   此方法默认只有3级菜单
   1级目录，2级菜单，3级按钮
 */
-export function handleGetMenuRoutes(menuList = []) {
-  const menuRoutes = []
+export function handleGetMenuRoutes(menuList: FMenuList[] = []): FRoute[] {
+  const menuRoutes: FRoute[] = []
   for (let i = 0; i < menuList.length; i++) {
-    const route = handleCreateRoute(menuList[i])
+    const route: FRoute = handleCreateRoute(menuList[i])
     if (menuList[i].list && menuList[i].list.length >= 1) {
       // menuList存在children
       menuList[i].list.forEach((item) => {
-        const child = handleCreateRoute(item, 'child')
+        const child: FRoute = handleCreateRoute(item, 'child')
         try {
           const url = item.menuUrl.replace('/main', '')
           child.component = () => import(`@/pages${url}.vue`)

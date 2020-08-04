@@ -51,10 +51,9 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
 
     // 存储用户授权菜单
     let menuList = list.filter((item) => item.menuLevel !== 3)
-    console.log(adminMethods)
     menuList = adminMethods.menuRelation(menuList, 'id', 'menuParentId', 'menuLevel', 'sortNo', 'list')
-    console.log(menuList)
     const menuRoutes = handleGetMenuRoutes(menuList)
+    console.log(11, menuList)
     router.addRoutes([...configRoutes, ...menuRoutes, { path: '*', redirect: { name: '404' } }])
     sessionStorage.setItem('dynamicMenuRoutes', JSON.stringify(menuRoutes || '[]')) // 保存动态路由
     sessionStorage.setItem('menuList', JSON.stringify(menuList || '[]')) // 正常应该存在vuex里

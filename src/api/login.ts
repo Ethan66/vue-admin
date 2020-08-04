@@ -16,5 +16,5 @@ export const apiRegister = (params) => {
 
 // 获取菜单按钮权限
 export const apiGetUserAuthMenu = (reqParams) => {
-  return postRequest(`api/getUserAuthMenu`, reqParams)
+  return postRequest(`/api/getUserAuthMenu`, reqParams)
 }
