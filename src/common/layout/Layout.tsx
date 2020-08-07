@@ -1,6 +1,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { AppModule } from '@/store/modules/app'
 import Sidebar from './components/Sidebar'
+import Navbar from './components/Navbar'
 
 @Component({
   components: { Sidebar }
@@ -20,7 +21,7 @@ export default class Layout extends Vue {
             {systemName}
           </h1>
         </sidebar>
-        <div class="main-container">{/* <navbar/><app-main/> */}</div>
+        <div class="main-container" style="overflow: hidden; background: #f2f4f5;"><Navbar/>{/* <app-main/> */}</div>
       </div>
     )
   }

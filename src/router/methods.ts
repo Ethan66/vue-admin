@@ -85,7 +85,7 @@ export function handleGetMenuRoutes(menuList: FMenuList[] = []): FRoute[] {
         const child: FRoute = handleCreateRoute(item, 'child')
         try {
           const url = item.menuUrl.replace('/main', '')
-          child.component = () => import(`@/pages${url}.vue`)
+          child.component = () => import(`@/pages${url}.tsx`)
         } catch (e) {
           child.component = null
         }
