@@ -5,8 +5,15 @@ export interface FApp {
   sidebar: {
     opened: boolean
   }
-  mainTabs: string[]
-  mainActivedTab: object
+  mainTabs: (FTab | undefined)[]
+  mainActivedTab: FTab | undefined[]
+}
+
+export interface FTab {
+  name: string
+  code: string
+  url: string
+  [key: string]: string | number
 }
 
 @Module({ dynamic: true, store, name: 'app' })
@@ -21,13 +28,14 @@ class App extends VuexModule implements FApp {
   }
 
   @Mutation
-  UPDATETABS(val: string[]): void {
+  UPDATETABS(val: (FTab | undefined)[]): void {
     this.mainTabs = val
   }
 
   @Mutation
-  UPDATEMINACTIVEDTAB(val: object): void {
+  UPDATEMAINACTIVEDTAB(val: FTab | undefined): void {
     this.mainActivedTab = JSON.parse(JSON.stringify(val))
+    sessionStorage.setItem('mainActivedTab', JSON.stringify(val))
   }
 }
 

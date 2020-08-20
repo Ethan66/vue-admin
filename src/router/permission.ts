@@ -8,6 +8,7 @@ import { handleNowRouteType, handleGetMenuRoutes, handleSaveSubTabs } from '@/ro
 import globalRoutes from './globalRoutes'
 import configRoutes from './configRoutes'
 import { adminMethods } from 'vue-admin-ui-lib/lib'
+import { AppModule } from '@/store/modules/app'
 
 router.beforeEach(async (to: Route, from: Route, next: Function) => {
   NProgress.start()
@@ -26,7 +27,6 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
     document.title = to.meta.title ? to.meta.title : '首页'
     !toPath ? next() : next({ path: toPath })
   } else {
-    console.log(111)
     // 后台请求菜单列表
     /*
       此方法默认只有3级菜单，2级菜单下的子页面保存在configRouter里
@@ -53,7 +53,6 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
     let menuList = list.filter((item) => item.menuLevel !== 3)
     menuList = adminMethods.menuRelation(menuList, 'id', 'menuParentId', 'menuLevel', 'sortNo', 'list')
     const menuRoutes = handleGetMenuRoutes(menuList)
-    console.log(11, menuList)
     router.addRoutes([...configRoutes, ...menuRoutes, { path: '*', redirect: { name: '404' } }])
     sessionStorage.setItem('dynamicMenuRoutes', JSON.stringify(menuRoutes || '[]')) // 保存动态路由
     sessionStorage.setItem('menuList', JSON.stringify(menuList || '[]')) // 正常应该存在vuex里
@@ -65,9 +64,8 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
       const obj = menuList[0].list[0]
       toPath = obj.menuUrl
       const mainActivedTab = { code: obj.code, name: obj.menuName, url: obj.menuUrl }
-      sessionStorage.setItem('mainActivedTab', JSON.stringify(mainActivedTab))
-      // store.commit('UPDATETABS', [mainActivedTab])
-      // store.commit('UPDATEMINACTIVEDTAB', [mainActivedTab])
+      AppModule.UPDATEMAINACTIVEDTAB(mainActivedTab)
+      AppModule.UPDATETABS([mainActivedTab])
     }
     !toPath ? next({ ...to, replace: true }) : next({ path: toPath })
   }

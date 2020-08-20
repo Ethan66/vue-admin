@@ -1,7 +1,7 @@
 import Layout from '@/common/layout/Layout'
-import store from '@/store'
 import { Route } from 'vue-router'
 import { Component } from 'vue'
+import { UserModule } from '@/store/modules/pageCashe'
 
 type keyType = object | number | string
 
@@ -27,7 +27,7 @@ interface FRouteMeta {
 
 interface FRoute {
   path: string
-  component: Component
+  component: Component | Function
   name: string
   meta: FRouteMeta
   children?: FRoute[]
@@ -140,5 +140,5 @@ export function handleSaveSubTabs(configRoutes, menuRoutes) {
       result[key] = obj[key]
     }
   })
-  store.commit('SAVE_SUBTABS_OBJ', result)
+  UserModule.SAVE_SUBTABS_OBJ(result)
 }
