@@ -83,8 +83,9 @@ export default {
     }))
   },
   watch: {
-    $route (val) {
-      this.handleJudgeNowRoute(val)
+    $route: {
+      immediate: true,
+      handler: 'handleJudgeNowRoute'
     }
   },
   computed: {

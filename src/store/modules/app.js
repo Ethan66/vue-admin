@@ -4,7 +4,9 @@ const app = {
       opened: true
     },
     mainTabs: [],
-    mainActivedTab: {}
+    mainActivedTab: {},
+    subTabObj: {}, // 副标签
+    isAddDynamicRoutes: false
   },
   mutations: {
     TOGGLE_SIDEBAR: (state, boolean) => {
@@ -14,7 +16,14 @@ const app = {
       state.mainTabs = val
     },
     UPDATEMINACTIVEDTAB: (state, val) => {
-      state.mainActivedTab = JSON.parse(JSON.stringify(val))
+      state.mainActivedTab = Object.assign({}, val)
+      sessionStorage.setItem('mainActivedTab', JSON.stringify(val))
+    },
+    SAVE_SUBTABS_OBJ: (state, data) => {
+      state.subTabObj = data
+    },
+    TOGGLE_ISADDDYNAMICROUTES: (state, boolean) => {
+      state.isAddDynamicRoutes = boolean
     }
   }
 }
