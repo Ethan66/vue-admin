@@ -1,12 +1,31 @@
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import userNameJpg from '@/assets/img/username.png'
 import { AppModule, FTab } from '@/store/modules/app'
 
+interface FElTabs {
+  label: string
+  name: string
+}
 @Component
 export default class Navbar extends Vue {
   private userName = ''
   private showDialogForm = false
   private currentUrl = ''
+
+  @Watch('$route', { immediate: true })
+  protected onJudgeNowRoute(nowRoute): void {
+    if (nowRoute.meta.isTab) {
+      const tab = { name: nowRoute.meta.title, url: nowRoute.path }
+      // tabs数组中没有tab
+      if (!this.mainTabs.some((item) => item.url === tab.url)) {
+        this.mainTabs = this.mainTabs.concat(tab)
+      }
+      // 当前url不是tab的url
+      if (this.mainActivedTab.url !== tab.url) {
+        this.clickTab({ name: tab.name, url: tab.url }, false)
+      }
+    }
+  }
 
   private get mainTabs(): FTab[] {
     return AppModule.mainTabs
@@ -21,6 +40,7 @@ export default class Navbar extends Vue {
   }
 
   private set mainActivedTab(val: FTab) {
+    this.currentUrl = val.url
     AppModule.UPDATEMAINACTIVEDTAB(val)
   }
 
@@ -30,11 +50,19 @@ export default class Navbar extends Vue {
       this.mainTabs = [JSON.parse(sessionStorage.getItem('mainActivedTab'))]
       this.mainActivedTab = JSON.parse(sessionStorage.getItem('mainActivedTab'))
     }
-    this.currentUrl = this.mainTabs[0].url
   }
 
-  private clickTab(): void {
-    console.log(1)
+  private clickTab(tab: FTab | FElTabs, jump = true): void {
+    const result: FTab = { name: '', url: '' }
+    if (tab.label) {
+      result.name = tab.label as string
+      result.url = tab.name
+    } else {
+      result.url = (tab as FTab).url
+      result.name = tab.name
+    }
+    this.mainActivedTab = result
+    jump && this.$router.push(result.url)
   }
 
   private removeTab(): void {

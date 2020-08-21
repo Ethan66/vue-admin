@@ -1,10 +1,6 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import router from '@/router/index'
-const handleGetMenuCode = () => {
-  const mainActivedTab = JSON.parse(sessionStorage.getItem('mainActivedTab') || '{}')
-  return { pmenuCode: mainActivedTab.code, serviceId: 210 }
-}
 
 // 接口请求成功未返回正确code码处理
 function handleSpecialError(response: AxiosResponse): boolean {
@@ -63,9 +59,9 @@ axios.interceptors.request.use(
     const ContentTypeArr: string[] = ['multipart/form-data']
     if (!ContentTypeArr.includes(config.headers['Content-Type'])) {
       if (config.method === 'post') {
-        config.data = Object.assign({}, headParams, config.data, handleGetMenuCode())
+        config.data = Object.assign({}, headParams, config.data)
       } else {
-        config.params = Object.assign({}, headParams, config.params, handleGetMenuCode())
+        config.params = Object.assign({}, headParams, config.params)
       }
     }
     return config

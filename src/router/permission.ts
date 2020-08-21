@@ -8,7 +8,6 @@ import { handleNowRouteType, handleGetMenuRoutes, handleSaveSubTabs } from '@/ro
 import globalRoutes from './globalRoutes'
 import configRoutes from './configRoutes'
 import { adminMethods } from 'vue-admin-ui-lib/lib'
-import { AppModule } from '@/store/modules/app'
 
 router.beforeEach(async (to: Route, from: Route, next: Function) => {
   NProgress.start()
@@ -61,11 +60,7 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
 
     // 从登录页面过来选择第一个菜单
     if (from.path === '/login' && menuList && menuList[0].list && menuList[0].list[0]) {
-      const obj = menuList[0].list[0]
-      toPath = obj.menuUrl
-      const mainActivedTab = { code: obj.code, name: obj.menuName, url: obj.menuUrl }
-      AppModule.UPDATEMAINACTIVEDTAB(mainActivedTab)
-      AppModule.UPDATETABS([mainActivedTab])
+      toPath = menuList[0].list[0].menuUrl
     }
     !toPath ? next({ ...to, replace: true }) : next({ path: toPath })
   }

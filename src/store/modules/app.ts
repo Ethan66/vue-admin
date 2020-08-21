@@ -6,12 +6,11 @@ export interface FApp {
     opened: boolean
   }
   mainTabs: (FTab | undefined)[]
-  mainActivedTab: FTab | undefined[]
+  mainActivedTab: FTab
 }
 
 export interface FTab {
   name: string
-  code: string
   url: string
   [key: string]: string | number
 }
@@ -20,7 +19,7 @@ export interface FTab {
 class App extends VuexModule implements FApp {
   sidebar = { opened: true }
   mainTabs = []
-  mainActivedTab = []
+  mainActivedTab = { name: '', url: '' }
 
   @Mutation
   TOGGLE_SIDEBAR(boolean: boolean): void {
