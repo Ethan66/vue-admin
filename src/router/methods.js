@@ -1,5 +1,4 @@
 import Layout from '@/common/layout/Layout'
-import store from '@/store'
 
 // 判断当前路由类型, global: 全局路由, main: 主入口路由
 // route为当前路由，temp为全局路由
@@ -62,49 +61,4 @@ export function handleCreateRoute (obj, type = 'parent') {
     route.children = []
   }
   return route
-}
-
-// 二级菜单有2个以上title到vuex中的subTabs对象
-export function handleSaveSubTabs (configRoutes, menuRoutes) {
-  let routeObj = {} // 将配置路由和动态路由根据一级路由进行合并，保存至routeObj
-  configRoutes.forEach(item => {
-    if (item.path && item.children) {
-      routeObj[item.path] = JSON.parse(JSON.stringify(item.children))
-    }
-  })
-  menuRoutes.forEach(item => {
-    if (item.path && item.children) {
-      if (routeObj[item.path]) {
-        routeObj[item.path].push(...JSON.parse(JSON.stringify(item.children)))
-      } else {
-        routeObj[item.path] = JSON.parse(JSON.stringify(item.children))
-      }
-    }
-  })
-  let obj = {}
-  Object.values(routeObj).forEach(value => {
-    if (Array.isArray(value)) {
-      value.forEach(item => {
-        let info = { title: item.meta.title, level: item.meta.level, path: item.path }
-        let last = item.path.split('/').slice(-1).join('') // 获取最后一个
-        let path = item.path.split('/').slice(0, -1).join('/') // 获取除去最后一个的路由
-        if (path && obj[path]) {
-          if (last === 'index') {
-            obj[path].unshift(info) // 将index的路由放到最前面（因为index为默认点击进入的路由，所以放到第一个）
-          } else {
-            obj[path].push(info)
-          }
-        } else {
-          obj[path] = [info]
-        }
-      })
-    }
-  })
-  let result = {}
-  Object.keys(obj).forEach(key => { // 遍历有2个及以上的二级菜单进行保存
-    if (obj[key].length >= 2) {
-      result[key] = obj[key]
-    }
-  })
-  store.commit('SAVE_SUBTABS_OBJ', result)
 }

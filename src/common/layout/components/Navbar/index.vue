@@ -91,11 +91,11 @@ export default {
   computed: {
     mainTabs: {
       get () { return this.$store.state.app.mainTabs },
-      set (val) { this.$store.commit('UPDATETABS', val) }
+      set (val) { this.$store.commit('UPDATE_MAINTABS', val) }
     },
     mainActivedTab: {
       get () { return this.$store.state.app.mainActivedTab },
-      set (val) { this.$store.commit('UPDATEMINACTIVEDTAB', val) }
+      set (val) { this.$store.commit('UPDATE_MINACTIVEDTAB', val) }
     },
     currentUrl: {
       get () { return this.mainActivedTab.url || '' },

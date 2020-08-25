@@ -9,7 +9,7 @@
         text-color="#fff"
         active-text-color="#fff"
       >
-        <sub-sidebar v-for="(menu, i) in menuList" :key="menu.menuCode" :index="i" :item="menu" />
+        <sub-sidebar v-for="(menu) in menuList" :key="menu.menuCode" :item="menu" />
       </el-menu>
     </el-scrollbar>
   </div>
@@ -22,14 +22,9 @@ import { debounce } from 'vue-admin-methods'
 
 export default {
   components: { subSidebar },
-  data () {
-    return {
-      menuList: JSON.parse(sessionStorage.getItem('menuList'))
-    }
-  },
   computed: {
     ...mapGetters([
-      'sidebar'
+      'sidebar', 'menuList'
     ])
   },
   mounted () {

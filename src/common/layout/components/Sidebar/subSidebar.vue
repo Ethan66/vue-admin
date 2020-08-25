@@ -18,7 +18,7 @@
       </template>
 
       <template v-for="child in item.list">
-        <my-sidebar
+        <subSidebar
           v-if="child.list&&child.list.length>0"
           :is-nest="true"
           :item="child"
@@ -52,10 +52,6 @@ export default {
     basePath: {
       type: String,
       default: ''
-    },
-    index: {
-      type: Number,
-      required: true
     }
   },
   data () {

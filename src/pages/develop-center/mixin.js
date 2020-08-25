@@ -1,4 +1,4 @@
-import { authBtn } from '@/config/methods.js'
+import authBtn from '@/config/authBtn.js'
 
 // 菜单管理
 export const menu = {
