@@ -26,7 +26,7 @@ export default class Permission {
 
   getMenus (list, config) {
     const { id, parentId, level, sortNo } = config
-    const menuList = list.filter(item => item.menuLevel !== this.levelValue)
+    const menuList = list.filter(item => item[level] !== this.levelValue)
     this.menuList = adminMethods.menuRelation(menuList, id, parentId, level, sortNo)
     this.menuRoutes = handleGetMenuRoutes(this.menuList)
   }
