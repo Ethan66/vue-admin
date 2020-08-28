@@ -1,6 +1,7 @@
 import { apiGetUserAuthMenu } from '@/api/login'
 import systemObj from '@/config/system'
 import Permission from '@/config/permission'
+import authBtn from '@/config/authBtn'
 
 const app = {
   state: {
@@ -14,24 +15,28 @@ const app = {
     isAddDynamicRoutes: false
   },
   mutations: {
-    TOGGLE_SIDEBAR: (state, boolean) => {
+    TOGGLE_SIDEBAR: (state, boolean = true) => {
       state.sidebar.opened = boolean
     },
-    UPDATE_MENULIST: (state, val) => {
+    UPDATE_MENULIST: (state, val = []) => {
       state.menuList = val
       sessionStorage.setItem('menuList', JSON.stringify(val))
     },
-    UPDATE_MAINTABS: (state, val) => {
+    UPDATE_BTNLIST: (state, val = []) => {
+      state.btnList = val
+      sessionStorage.setItem('btnList', JSON.stringify(val))
+    },
+    UPDATE_MAINTABS: (state, val = []) => {
       state.mainTabs = val
     },
-    UPDATE_MINACTIVEDTAB: (state, val) => {
+    UPDATE_MINACTIVEDTAB: (state, val = {}) => {
       state.mainActivedTab = Object.assign({}, val)
       sessionStorage.setItem('mainActivedTab', JSON.stringify(val))
     },
-    SAVE_SUBTABS_OBJ: (state, data) => {
+    SAVE_SUBTABS_OBJ: (state, data = {}) => {
       state.subTabObj = data
     },
-    TOGGLE_ISADDDYNAMICROUTES: (state, boolean) => {
+    TOGGLE_ISADDDYNAMICROUTES: (state, boolean = false) => {
       state.isAddDynamicRoutes = boolean
     }
   },
@@ -45,6 +50,7 @@ const app = {
             menu: systemObj.menuConfig
           })
           permission.createPermission(res.data.list)
+          authBtn.setBtnList(permission.btnList)
           commit('SAVE_SUBTABS_OBJ', permission.subTabs) // 保存二级标签
           commit('UPDATE_MENULIST', permission.menuList)
           commit('TOGGLE_ISADDDYNAMICROUTES', true)

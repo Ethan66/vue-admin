@@ -2,8 +2,6 @@ import { adminMethods } from 'vue-admin-ui-lib'
 import { handleGetMenuRoutes } from '@/router/methods'
 import configRoutes from '@/router/configRoutes'
 
-import authBtn from './authBtn'
-
 export default class Permission {
   constructor (options) {
     this.btn = options.btn
@@ -21,7 +19,6 @@ export default class Permission {
     const { level, levelValue, unique, name } = config
     this.btnList = list.filter(item => item[level] === levelValue)
       .map(item => ({ btnCode: item[unique], btnName: item[name] }))
-    authBtn.setBtnList(this.btnList)
   }
 
   getMenus (list, config) {

@@ -11,9 +11,9 @@
       :items="tableItem"
     >
       <div class="btn-content" slot="header-btn">
-        <el-button @click="handleAdd" v-if="$getBtnName('role-create-role')">{{ $getBtnName('role-create-role') }}</el-button>
-        <el-button @click="handleDeleteMore" v-if="$getBtnName('role-delete-batch')">{{ $getBtnName('role-delete-batch') }}</el-button>
-        <el-button @click="$router.push({ path: '/auth-config/role-manage/roleAuth' })" v-if="$getBtnName('role-auth-role')">{{ $getBtnName('role-auth-role') }}</el-button>
+        <el-button @click="handleAdd" v-btn="'role-create-role'">{{ $getBtnName('role-create-role') }}</el-button>
+        <el-button @click="handleDeleteMore" v-btn="'role-delete-batch'">{{ $getBtnName('role-delete-batch') }}</el-button>
+        <el-button @click="$router.push({ path: '/auth-config/role-manage/roleAuth' })" v-btn="'role-auth-role'">{{ $getBtnName('role-auth-role') }}</el-button>
       </div>
      <template slot="status" slot-scope="scope">
         <table-status

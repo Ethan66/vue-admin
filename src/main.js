@@ -24,6 +24,16 @@ Vue.use(ElementUI)
   .use(tableModule)
   .use(dialogModule)
 
+Vue.directive('btn', {
+  inserted (el, val) {
+    const { value } = val
+    const btnName = value && authBtn.getBtnName(value)
+    if (!btnName && el.parentNode) {
+      el.parentNode.removeChild(el)
+    }
+  }
+})
+
 Vue.prototype.$disposeTreeData = disposeTreeData
 Vue.prototype.$purifyParams = purifyParams
 Vue.prototype.$format = formatDate

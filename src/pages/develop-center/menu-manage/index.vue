@@ -11,11 +11,11 @@
       :items="tableItem"
     >
       <div class="btn-content" slot="header-btn">
-        <el-button @click="handleAdd" v-if="$getBtnName('menu-add-menu')">{{ $getBtnName('menu-add-menu') }}</el-button>
+        <el-button @click="handleAdd" v-btn="'menu-add-menu'">{{ $getBtnName('menu-add-menu') }}</el-button>
         <!-- <el-button @click="$router.push({ path: '/main/develop-center/menu-manage/newpage' })">跳转页面</el-button> -->
-        <el-button @click="handleBatchCreate('catalogue')" v-if="$getBtnName('menu-add-catogue-all')">{{ $getBtnName('menu-add-catogue-all') }}</el-button>
-        <el-button @click="handleBatchCreate('menu')" v-if="$getBtnName('menu-add-menu-all')">{{ $getBtnName('menu-add-menu-all') }}</el-button>
-        <el-button @click="handleBatchCreate('btn')" v-if="$getBtnName('menu-add-btn-all')">{{ $getBtnName('menu-add-btn-all') }}</el-button>
+        <el-button @click="handleBatchCreate('catalogue')" v-btn="'menu-add-catogue-all'">{{ $getBtnName('menu-add-catogue-all') }}</el-button>
+        <el-button @click="handleBatchCreate('menu')" v-btn="'menu-add-menu-all'">{{ $getBtnName('menu-add-menu-all') }}</el-button>
+        <el-button @click="handleBatchCreate('btn')" v-btn="'menu-add-btn-all'">{{ $getBtnName('menu-add-btn-all') }}</el-button>
       </div>
       <template slot="tree" slot-scope="scope">
         <cell-tree
