@@ -1,4 +1,4 @@
-import authBtn from '@/config/authBtn.js'
+/* import authBtn from '@/config/authBtn.js'
 
 // 菜单管理
 export const menu = {
@@ -59,3 +59,4 @@ export const menu = {
     ])
   }
 }
+ */

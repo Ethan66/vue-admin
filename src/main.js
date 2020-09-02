@@ -5,7 +5,7 @@ import '@/assets/less/index.less'
 import App from './App'
 import router from './router'
 import store from './store'
-import { disposeTreeData, purifyParams } from '@/config/utils'
+import { disposeTreeData, purifyParams, mergeData } from '@/config/utils'
 import authBtn from '@/config/authBtn'
 import systemObj from './config/system'
 import { dialogBtn } from '@/config/defaultBtnData'
@@ -38,9 +38,11 @@ Vue.prototype.$disposeTreeData = disposeTreeData
 Vue.prototype.$purifyParams = purifyParams
 Vue.prototype.$format = formatDate
 Vue.prototype.$getBtnName = authBtn.getBtnName.bind(authBtn)
+Vue.prototype.$getAuthBtns = authBtn.getConfigBtns.bind(authBtn)
 Vue.prototype.$InitObj = adminMethods.onCreateBasicData({ defaultDialogBtn: dialogBtn })
 Vue.prototype.$setItem = adminMethods.setItemProp
 Vue.prototype.$systemObj = systemObj
+Vue.prototype.$mergeData = mergeData
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

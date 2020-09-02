@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { role } from '../mixins'
+// import { role } from '../mixins'
 import basicMethod from '@/config/mixins'
 import { apiAddRole, apiGetRole, apiModifyRole, apiDeleteRole } from '@/api/authority'
 import tableStatus from '@/components/table-status'
@@ -49,14 +49,49 @@ import tableBtn from '@/components/tableBtn' // 按钮模块
 
 export default {
   name: 'menu-manage',
-  mixins: [basicMethod, role],
+  mixins: [basicMethod],
   components: { tableStatus, tableBtn },
   data () {
     return {
       tableBtn: []
     }
   },
+  pageData () {
+    return {
+      items: {
+        search: {
+          roleName: { label: '角色名' },
+          status: { label: '状态', type: 'select', options: [{ label: '正常', value: 1 }, { label: '失效', value: 0 }] }
+        },
+        table: {
+          selection: '',
+          roleName: { label: '角色名', width: 100 },
+          roleId: { label: '角色Id', width: 100 },
+          status: { label: '状态', width: 90, slot: 'status', clsName: 'roleStatus', formatterFn: this.$InitObj.prototype.formmater(['失效', '正常']) },
+          updateDate: { label: '更新时间', width: 100 },
+          operator: { label: '操作人', width: 100 },
+          btn: { width: 118 }
+        },
+        dialog: {
+          roleName: { label: '角色名' },
+          status: { label: '状态', type: 'radio', options: [{ label: '正常', value: 1 }, { label: '失效', value: 0 }] }
+        }
+      },
+      rules: {
+        roleName: [
+          { required: true, trigger: 'blur', message: '请填写角色名' }
+        ]
+      }
+    }
+  },
+  beforeCreate () {
+    this.$mergeData()
+  },
   created () {
+    this.tableBtn = this.$getAuthBtns([
+      { code: 'menu-edit-menu', clickFn: this.handleEditData },
+      { code: 'menu-delete', clickFn: this.handleDeleteData }
+    ])
     this.handleGetTableData(apiGetRole)
   },
   methods: {

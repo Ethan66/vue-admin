@@ -1,7 +1,7 @@
-import authBtn from '@/config/authBtn.js'
+// import authBtn from '@/config/authBtn.js'
 
 // 用户管理
-export const user = {
+/* export const user = {
   data () {
     return new this.$InitObj({
       items: {
@@ -48,7 +48,7 @@ export const user = {
       { code: 'menu-delete', clickFn: this.handleDeleteData }
     ])
   }
-}
+} */
 
 // const roleMoreList = authMoreBtn([
 //   { code: 'role-agree-role', clickFn: 'handleChangeStatus', config: { inlineShow: false } },
@@ -57,7 +57,7 @@ export const user = {
 // ])
 
 // 角色管理
-export const role = {
+/* export const role = {
   data () {
     return new this.$InitObj({
       items: {
@@ -92,10 +92,10 @@ export const role = {
       { code: 'menu-delete', clickFn: this.handleDeleteData }
     ])
   }
-}
+} */
 
 // 角色授权
-export const roleAuth = {
+/* export const roleAuth = {
   data () {
     return new this.$InitObj({
       items: {
@@ -115,7 +115,7 @@ export const roleAuth = {
       }
     })
   }
-}
+} */
 /*
 // IP控制
 export const ipControl = {

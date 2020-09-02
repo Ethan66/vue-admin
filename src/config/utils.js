@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 // 菜单父子级关联
 export const menuRelation = (data, id, pId, level, sort, list = 'list') => {
   if (!data.length) return data
@@ -87,4 +89,15 @@ export const purifyParams = (params) => {
   let result = {}
   Object.keys(params).forEach(key => ((params[key] !== '' && params[key] !== null && params[key] !== undefined) && (result[key] = params[key])))
   return result
+}
+
+// 合并Vue中的data参数
+export const mergeData = function () {
+  const proto = Object.getPrototypeOf(this.$options)
+  if (!proto.pageData) return false
+  Object.setPrototypeOf(this.$options, Vue.util.mergeOptions(proto, {
+    data () {
+      return new this.$InitObj(proto.pageData.call(this))
+    }
+  }, this))
 }

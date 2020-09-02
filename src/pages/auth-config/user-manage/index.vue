@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { user } from '../mixins'
+// import { user } from '../mixins'
 import tableStatus from '@/components/table-status'
 import tableBtn from '@/components/tableBtn' // 按钮模块
 import basicMethod from '@/config/mixins'
@@ -50,7 +50,7 @@ import { apiAddUser, apiGetUser, apiModifyUserInfo, apiDeleteUser, apiGetRole } 
 
 export default {
   name: 'user-manage',
-  mixins: [basicMethod, user],
+  mixins: [basicMethod],
   components: { tableStatus, tableBtn },
   data () {
     return {
@@ -58,7 +58,54 @@ export default {
       operator: JSON.parse(localStorage.getItem('userInfo')).userName
     }
   },
+  pageData () {
+    return {
+      items: {
+        search: {
+          account: { label: '账号', name: '你好', clearable: true, change: this.handleChange },
+          name: { label: '用户名' },
+          status: { label: '状态', type: 'select', options: [{ label: '允许登录', value: 1 }, { label: '禁止登录', value: 0 }] },
+          date: { label: '时间', key: 'str1,str2', type: 'daterange', rangeSeparator: '至', startPlaceholder: '开始日期', endPlaceholder: '结束日期' }
+        },
+        table: {
+          selection: '',
+          account: { label: '账号', width: 100, show: false },
+          name: { label: '用户名', width: 100 },
+          roleName: { label: '角色', width: 100 },
+          status: { label: '状态', width: 90, slot: 'status', clsName: 'userStatus', formatterFn: this.$InitObj.prototype.formmater(['禁止登录', '允许登录']) },
+          loginTime: { label: '最近登录', width: 120 },
+          operator: { label: '操作人', width: 100 },
+          btn: { width: 118, slot: 'btn' }
+        },
+        dialog: {
+          account: { label: '账号' },
+          name: { label: '用户名' },
+          roleId: { label: '角色', type: 'select', options: [] },
+          password: { label: '密码', type: 'password' },
+          status: { label: '状态', type: 'radio', options: [{ label: '允许登录', value: 1 }, { label: '禁止登录', value: 0 }] }
+        }
+      },
+      rules: {
+        account: [
+          { required: true, trigger: 'blur', message: '请填写账号' }
+        ],
+        name: [
+          { required: true, trigger: 'blur', message: '请填写用户名' }
+        ],
+        roleId: [
+          { required: true, trigger: 'change', message: '请选择角色' }
+        ]
+      }
+    }
+  },
+  beforeCreate () {
+    this.$mergeData()
+  },
   created () {
+    this.tableBtn = this.$getAuthBtns([
+      { code: 'menu-edit-menu', clickFn: this.handleEditData },
+      { code: 'menu-delete', clickFn: this.handleDeleteData }
+    ])
     this.handleGetTableData(apiGetUser)
     apiGetRole({}).then(res => {
       if (res.code === '000000') {
