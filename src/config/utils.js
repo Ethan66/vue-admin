@@ -91,6 +91,15 @@ export const purifyParams = (params) => {
   return result
 }
 
+// 深拷贝对象
+export function clone (obj) {
+  let result = obj
+  if (typeof obj === 'object') {
+    result = JSON.parse(JSON.stringify(obj))
+  }
+  return result
+}
+
 // 合并Vue中的data参数
 export const mergeData = function () {
   const proto = Object.getPrototypeOf(this.$options)
