@@ -77,7 +77,8 @@ export default {
       checkedKeys: [],
       saveExpendIdList: [],
       menuTypes: [{ label: '目录', value: 1 }, { label: '菜单', value: 2 }, { label: '按钮', value: 3 }],
-      statusList: [{ label: '显示', value: 1 }, { label: '隐藏', value: 0 }]
+      statusList: [{ label: '显示', value: 1 }, { label: '隐藏', value: 0 }],
+      rules: {}
     }
   },
   pageData () {

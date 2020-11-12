@@ -1,3 +1,4 @@
+import Vue from 'vue'
 class BtnList {
   constructor () {
     this.setBtnList()
@@ -6,6 +7,7 @@ class BtnList {
   // 重新设置btnList
   setBtnList (btnList) {
     this.btnList = btnList // 刷新更新，不取本地
+    Vue.$InitObj.btnList = btnList
     sessionStorage.setItem('btnList', JSON.stringify(btnList || []))
   }
 

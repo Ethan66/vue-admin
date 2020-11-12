@@ -33,7 +33,7 @@ router.beforeEach(async (to, from, next) => {
       toPath = `/login?redirect=${to.path}`
     }
   }
-  // 是否已加载路由或访问的是全局路由不用请求路由接口, firstLogin表示退出重新登录
+  // 是否已加载路由或访问的是全局路由不用请求路由接口
   if ((store.getters.isAddDynamicRoutes || handleNowRouteType(to, globalRoutes) === 'global')) {
     document.title = to.meta.title ? to.meta.title : '首页'
     !toPath ? next() : next({ path: toPath })

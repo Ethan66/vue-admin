@@ -24,7 +24,7 @@
     "sortablejs": "^1.12.0",
     "vue": "^2.6.10",
     "vue-admin-methods": "^1.0.38",
-    "vue-admin-ui-lib": "^1.0.24",
+    "vue-admin-ui-lib": "^1.0.30",
     "vue-router": "^3.0.3",
     "vuex": "^3.0.1"
   },
