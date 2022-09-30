@@ -8224,6 +8224,11 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
+vue-admin-methods@^1.0.15:
+  version "1.0.40"
+  resolved "https://registry.yarnpkg.com/vue-admin-methods/-/vue-admin-methods-1.0.40.tgz#f1a32c9eeec4cc954b61ab6d9a34742fed777041"
+  integrity sha512-/o51Ru0b1Nje5RpWySHIEkUSlNR0jWe+hjxqj65+bRNa9ATd+mAl23FDZM+rin1R8GQfGzYcYnEEPNWeDxqOqA==
+
 vue-eslint-parser@^2.0.3:
   version "2.0.3"
   resolved "https://registry.npm.taobao.org/vue-eslint-parser/download/vue-eslint-parser-2.0.3.tgz#c268c96c6d94cfe3d938a5f7593959b0ca3360d1"
